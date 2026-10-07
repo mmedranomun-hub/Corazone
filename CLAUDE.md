@@ -15,6 +15,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - `js/data/guides.js` — guía (conceptos clave) de cada unidad. Las unidades nuevas pueden llevar la guía dentro: `{ id, title, guide: { intro, sections: [{ title, points, tip? }] }, lessons }`.
 - `js/lesson.js` — motor de lección: tipos de pregunta `mc`, `tf`, `match`; feedback; vidas; XP.
 - `js/storage.js` — progreso en localStorage: xp, vidas, racha (+ protectores), gemas, tienda, repaso espaciado, contadores diarios, ajustes y onboarding.
+- Cuentas (ver `docs/CUENTAS.md`): `js/auth.js` (Firebase opcional + perfiles locales con PBKDF2), `js/sync.js` (`mergeStates`, sincronización nube, código/archivo de progreso `CZ1.…`), `js/views/account.js` (Entrar, Registro, Cuenta con pestañas). Estado por perfil en `corazone:v1:<id>` (invitado: `corazone:v1`).
 - `js/ecg.js` — generador **procedural** de tiras de ECG en SVG (suma de gaussianas por onda). `RHYTHMS` = catálogo con nombre y descripción; `renderEcg(id)` devuelve SVG string. Puro, sin DOM → testeable en Node.
 - `js/pressure.js` — curvas de presión (AD, VD, AP, PCP, VI, Ao y patológicas) en SVG. `PRESSURES`, `renderPressure(id)`.
 - `js/diagrams.js` — esquemas SVG (árbol coronario, planos de eco). `DIAGRAMS`, `renderDiagram(id, highlight)`.

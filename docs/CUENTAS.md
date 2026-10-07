@@ -1,11 +1,64 @@
-# Activar las cuentas de usuario (Firebase)
+# Cuentas de usuario: perfiles locales, código de progreso y Firebase
 
-Corazone funciona sin cuentas: el progreso se guarda en el navegador (localStorage). Si activas
-Firebase, los usuarios podrán **registrarse, iniciar sesión (email/contraseña o Google), recuperar
+Corazone tiene dos modos de cuenta:
+
+- **Sin Firebase** (`firebaseConfig = null`, por defecto): **perfiles locales** en el dispositivo +
+  **código de progreso** para pasar el progreso a otro dispositivo. No hay servidor ni red.
+- **Con Firebase** (sección 1 en adelante): registro e inicio de sesión en la nube (email/contraseña o
+  Google), recuperación de contraseña y sincronización automática. Exportar/importar sigue disponible.
+
+## Perfiles locales (sin servidor)
+
+- **Registro**: nombre + email o usuario + contraseña (mín. 6). La contraseña se guarda como hash
+  **PBKDF2-SHA-256** (310 000 iteraciones, sal aleatoria de 16 bytes, Web Crypto `crypto.subtle`);
+  nunca en claro. Requiere contexto seguro (HTTPS o `localhost`). No hay recuperación de contraseña.
+- **Varios perfiles por dispositivo**, cada uno con su progreso:
+
+  | Clave localStorage | Contenido |
+  |---|---|
+  | `corazone:profiles` | `[{ id, name, login, created, pw: { algo, iter, salt, hash } }]` |
+  | `corazone:profile` | id del perfil activo (ausente = invitado) |
+  | `corazone:v1` | progreso del invitado (sin perfil) |
+  | `corazone:v1:<id>` | progreso de cada perfil |
+
+- **Migración**: al crear un perfil sin haber ninguno activo, el progreso del invitado pasa al perfil
+  y `corazone:v1` se borra. Un perfil creado desde otro perfil empieza de cero (y hace el onboarding).
+- **Cerrar sesión** vuelve al invitado; si hay perfiles y el invitado no ha hecho el onboarding, la app
+  muestra «¿Quién está aprendiendo?». **Reiniciar progreso** sólo afecta al perfil activo.
+- Código: `js/auth.js` (`createProfile`, `signInLocal`, `signOutLocal`, `deleteProfile`, `listProfiles`,
+  `localProfile`, `hashPassword`, `verifyPassword`) y `js/storage.js` (`useProfile`, `activeProfileId`,
+  `onProfile`, `peekState`).
+
+## Pasar el progreso a otro dispositivo (código o archivo)
+
+**Cuenta → Pasar progreso**:
+
+- **Exportar**: archivo `<nombre>-AAAA-MM-DD.corazone.json` o código de texto para copiar.
+- **Importar**: pegar el código o elegir el archivo → previsualización (nombre, XP, lecciones, racha) →
+  **Fusionar** (`mergeStates`, conserva lo mejor de ambos) o **Reemplazar** (con confirmación).
+  Se aplica al perfil activo (o al invitado). No incluye la contraseña.
+
+Formatos (en `js/sync.js`: `makeBackup`, `encodeBackup`, `readBackup`, `applyBackup`):
+
+```
+Archivo: { "app": "corazone", "kind": "progress", "v": 1, "exportedAt": <ms>, "name": "Ana", "state": { … } }
+Código:  CZ1.<z|j>.<base64url>.<checksum>
+         z = JSON comprimido con CompressionStream('deflate-raw'); j = JSON sin comprimir (navegadores sin CompressionStream)
+         checksum = FNV-1a 32 bits (8 hex) del tramo base64url
+```
+
+`readBackup` ignora espacios y saltos de línea, y da mensajes claros si el código está incompleto,
+es de otra versión, no es de Corazone o está dañado.
+
+---
+
+# Activar las cuentas en la nube (Firebase)
+
+Si activas Firebase, los usuarios podrán **registrarse, iniciar sesión (email/contraseña o Google), recuperar
 la contraseña** y **continuar en cualquier dispositivo** donde lo dejaron.
 
 Mientras `js/firebase-config.js` tenga `firebaseConfig = null`, la app no hace ninguna petición a
-Firebase y las pantallas de cuenta explican que aún no están activadas.
+Firebase y usa los perfiles locales.
 
 Tiempo estimado: 10–15 minutos. Plan gratuito (Spark) suficiente.
 

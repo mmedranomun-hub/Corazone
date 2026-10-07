@@ -6,6 +6,7 @@
   <title>Corazone — Aprende ECG, eco y cateterismo</title>
   <meta name="description" content="Aprende electrocardiografía, ecocardiograma y cateterismo con lecciones cortas estilo Duolingo." />
   <meta name="theme-color" content="#e5484d" />
+  <meta name="color-scheme" content="light dark" />
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icons/icon.svg" />
   <link rel="manifest" href="manifest.webmanifest" />
@@ -14,6 +15,21 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/visuals.css" />
   <link rel="stylesheet" href="css/fx.css" />
+  <!-- Evita la cascada de imports: el navegador pide en paralelo los módulos del primer render.
+       Los cursos se cargan bajo demanda (js/data/courses.js); sólo se adelanta el de ECG. -->
+  <link rel="modulepreload" href="js/app.js" />
+  <link rel="modulepreload" href="js/ui.js" />
+  <link rel="modulepreload" href="js/storage.js" />
+  <link rel="modulepreload" href="js/game.js" />
+  <link rel="modulepreload" href="js/fx.js" />
+  <link rel="modulepreload" href="js/mascot.js" />
+  <link rel="modulepreload" href="js/views/learn.js" />
+  <link rel="modulepreload" href="js/views/lessonFlow.js" />
+  <link rel="modulepreload" href="js/lesson.js" />
+  <link rel="modulepreload" href="js/visuals.js" />
+  <link rel="modulepreload" href="js/ecg.js" />
+  <link rel="modulepreload" href="js/data/courses.js" />
+  <link rel="modulepreload" href="js/data/ecg.js" />
 </head>
 <body>
   <div id="app"></div>
