@@ -2,9 +2,9 @@
 // funcione sin conexión. Estrategia "stale-while-revalidate": responde desde la caché y, en
 // segundo plano, actualiza la copia (la versión nueva se ve en la siguiente visita).
 // Sube CACHE al cambiar la lista o la estrategia para invalidar las cachés antiguas.
-const CACHE = 'corazone-v3';
+const CACHE = 'corazone-v4';
 const SHELL = [
-  './', 'index.html', 'manifest.webmanifest', 'icons/icon.svg',
+  './', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
   'css/styles.css', 'css/visuals.css', 'css/fx.css',
   'js/app.js', 'js/ui.js', 'js/storage.js', 'js/game.js', 'js/fx.js', 'js/lesson.js', 'js/achievements.js',
   'js/mascot.js', 'js/sound.js', 'js/confetti.js', 'js/visuals.js', 'js/ecg.js', 'js/pressure.js', 'js/diagrams.js',
