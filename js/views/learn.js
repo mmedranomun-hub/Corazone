@@ -95,7 +95,7 @@ export async function viewGuide(unitId) {
   if (!course) return go('#/');
   const unit = course.units.find((u) => u.id === unitId);
   const guides = await import('../data/guides.js').then((m) => m.default).catch(() => ({}));
-  const g = guides[unitId];
+  const g = guides[unitId] || unit.guide;
   const body = g
     ? `<p class="lead">${esc(g.intro)}</p>${g.sections.map((s) => `
         <section class="guide-sec"><h2>${esc(s.title)}</h2><ul>${s.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>

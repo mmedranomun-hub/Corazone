@@ -12,7 +12,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - `css/styles.css` — todos los estilos. Tokens de color en `:root` (modo claro/oscuro).
 - `js/app.js` — router por hash (tabla `ROUTES`). Vistas en `js/views/`: `learn.js` (ruta, cursos, guía), `lessonFlow.js` (lección, resultados, racha, misión, sin vidas), `practice.js` (práctica y atlas), `social.js` (ligas, misiones, tienda), `me.js` (perfil, logros, racha, ajustes, onboarding).
 - `js/ui.js` — topbar, bottomnav, `shell`, `screen`, `modal`, `esc`. `js/game.js` — misiones diarias y ligas (rivales simulados). `js/fx.js` — adaptador de mascota/sonido/confeti.
-- `js/data/guides.js` — guía (conceptos clave) de cada unidad.
+- `js/data/guides.js` — guía (conceptos clave) de cada unidad. Las unidades nuevas pueden llevar la guía dentro: `{ id, title, guide: { intro, sections: [{ title, points, tip? }] }, lessons }`.
 - `js/lesson.js` — motor de lección: tipos de pregunta `mc`, `tf`, `match`; feedback; vidas; XP.
 - `js/storage.js` — progreso en localStorage: xp, vidas, racha (+ protectores), gemas, tienda, repaso espaciado, contadores diarios, ajustes y onboarding.
 - `js/ecg.js` — generador **procedural** de tiras de ECG en SVG (suma de gaussianas por onda). `RHYTHMS` = catálogo con nombre y descripción; `renderEcg(id)` devuelve SVG string. Puro, sin DOM → testeable en Node.
