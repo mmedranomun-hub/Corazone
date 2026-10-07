@@ -2,26 +2,49 @@
 const KEY = 'corazone:v1';
 export const MAX_HEARTS = 5;
 const HEART_REGEN_MS = 30 * 60 * 1000;
-
-const today = () => new Date().toISOString().slice(0, 10);
-export const DAILY_GOAL = 30;
 const DAY = 864e5;
 // Intervalos de repaso (días) según la "caja" de Leitner de cada pregunta fallada
 const REVIEW_DAYS = [0, 1, 3, 7];
+export const GOALS = [
+  { xp: 10, label: 'Casual', desc: '5 min / día' },
+  { xp: 20, label: 'Normal', desc: '10 min / día' },
+  { xp: 30, label: 'Serio', desc: '15 min / día' },
+  { xp: 50, label: 'Intenso', desc: '20 min / día' },
+];
+export const PRICES = { hearts: 350, freeze: 200, boost: 100 };
+export const MAX_FREEZES = 2;
 
-const defaults = () => ({ xp: 0, hearts: MAX_HEARTS, heartsAt: Date.now(), streak: 0, bestStreak: 0, lastDay: null, completed: {}, xpByDay: {}, review: {}, perfect: 0, answered: 0, correct: 0 });
+// Fecha local AAAA-MM-DD (la racha sigue el día del usuario, no UTC).
+export function dayKey(d = new Date()) {
+  const x = new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+}
+const today = () => dayKey();
+const daysAgo = (n) => dayKey(Date.now() - n * DAY);
+
+const defaults = () => ({
+  xp: 0, hearts: MAX_HEARTS, heartsAt: Date.now(), streak: 0, bestStreak: 0, lastDay: null,
+  completed: {}, xpByDay: {}, review: {}, perfect: 0, answered: 0, correct: 0,
+  // Duolingo-like
+  onboarded: false, name: '', level: null, course: null, dailyGoal: 20, joined: Date.now(),
+  gems: 500, freezes: 0, frozenDays: [], boostUntil: 0, sound: true, theme: 'auto',
+  daily: {}, claimed: {}, league: { tier: 0, week: null }, lastLeagueResult: null,
+});
 
 let state = load();
 
 function load() {
   try {
-    return { ...defaults(), ...JSON.parse(localStorage.getItem(KEY) || '{}') };
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    // Usuarios anteriores al onboarding no deben verlo
+    if (saved.completed && Object.keys(saved.completed).length && saved.onboarded === undefined) saved.onboarded = true;
+    return { ...defaults(), ...saved };
   } catch {
     return defaults();
   }
 }
 
-function save() {
+export function save() {
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
   } catch {
@@ -41,11 +64,31 @@ function regenHearts() {
   }
 }
 
+// Si faltó exactamente un día y hay protector de racha, se consume y la racha sigue.
+function checkStreak() {
+  if (!state.lastDay || state.lastDay === today() || state.lastDay === daysAgo(1)) return;
+  if (state.lastDay === daysAgo(2) && state.freezes > 0) {
+    state.freezes--;
+    state.frozenDays.push(daysAgo(1));
+    state.lastDay = daysAgo(1);
+    save();
+    return;
+  }
+  if (state.streak) {
+    state.streak = 0;
+    save();
+  }
+}
+
 export function getState() {
   regenHearts();
-  // La racha se rompe si el último día activo no es hoy ni ayer.
-  const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
-  if (state.lastDay && state.lastDay !== today() && state.lastDay !== yesterday) state.streak = 0;
+  checkStreak();
+  return state;
+}
+
+export function update(fn) {
+  fn(state);
+  save();
   return state;
 }
 
@@ -60,16 +103,50 @@ export function loseHeart() {
   save();
 }
 
+export function gainHeart() {
+  state.hearts = Math.min(MAX_HEARTS, state.hearts + 1);
+  save();
+}
+
 export function refillHearts() {
   state.hearts = MAX_HEARTS;
   state.heartsAt = Date.now();
   save();
 }
 
+// Compra en la tienda: devuelve true si había gemas suficientes.
+export function buy(item) {
+  const price = PRICES[item];
+  if (state.gems < price) return false;
+  if (item === 'hearts' && state.hearts >= MAX_HEARTS) return false;
+  if (item === 'freeze' && state.freezes >= MAX_FREEZES) return false;
+  state.gems -= price;
+  if (item === 'hearts') refillHearts();
+  if (item === 'freeze') state.freezes++;
+  if (item === 'boost') state.boostUntil = Math.max(Date.now(), state.boostUntil) + 15 * 60 * 1000;
+  save();
+  return true;
+}
+
+export const boostActive = () => state.boostUntil > Date.now();
+
+// Contadores del día para las misiones diarias.
+export function daily() {
+  const d = today();
+  if (state.daily.day !== d) state.daily = { day: d, lessons: 0, perfect: 0, correct: 0, combo: 0, reviews: 0, tap: 0, minutes: 0 };
+  return state.daily;
+}
+
 // Registra cada respuesta para el repaso espaciado y las estadísticas.
-export function recordAnswer(key, ok) {
+export function recordAnswer(key, ok, { type, combo = 0 } = {}) {
   state.answered++;
-  if (ok) state.correct++;
+  const dly = daily();
+  if (ok) {
+    state.correct++;
+    dly.correct++;
+    if (type === 'tap') dly.tap++;
+  }
+  dly.combo = Math.max(dly.combo, combo);
   if (!key) return save();
   const r = state.review[key];
   if (!ok) state.review[key] = { box: 0, due: Date.now() };
@@ -84,22 +161,39 @@ export const dueReviews = () => Object.entries(state.review).filter(([, r]) => r
 
 export const todayXp = () => state.xpByDay[today()] || 0;
 
-export function completeLesson(lessonId, { xp, stars, review = false }) {
+export const xpOn = (key) => state.xpByDay[key] || 0;
+
+// Devuelve { streakExtended } para mostrar la pantalla de racha.
+export function completeLesson(lessonId, { xp, stars, review = false, minutes = 0 }) {
   const d = today();
+  let streakExtended = false;
   if (state.lastDay !== d) {
-    const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
-    state.streak = state.lastDay === yesterday ? state.streak + 1 : 1;
+    state.streak = state.lastDay === daysAgo(1) ? state.streak + 1 : 1;
     state.lastDay = d;
     state.bestStreak = Math.max(state.bestStreak, state.streak);
+    streakExtended = true;
   }
   state.xp += xp;
   state.xpByDay[d] = (state.xpByDay[d] || 0) + xp;
-  if (stars === 3) state.perfect++;
+  const dly = daily();
+  dly.lessons++;
+  dly.minutes += minutes;
+  if (review) dly.reviews++;
+  if (stars === 3) {
+    state.perfect++;
+    dly.perfect++;
+  }
   if (!review) state.completed[lessonId] = Math.max(state.completed[lessonId] || 0, stars);
   save();
+  return { streakExtended };
 }
 
 export function resetProgress() {
   state = defaults();
   save();
+}
+
+// Sólo para tests: fija el estado en memoria.
+export function _setState(s) {
+  state = { ...defaults(), ...s };
 }

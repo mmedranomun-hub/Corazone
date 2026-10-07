@@ -1,7 +1,11 @@
 // Motor de lección: preguntas tipo mc / tf / match, vidas, XP y feedback.
 import { waveTimes, WAVE_TOLERANCE } from './ecg.js';
 import { visualFor } from './visuals.js';
-import { getState, loseHeart, completeLesson, recordAnswer } from './storage.js';
+import { getState, loseHeart, completeLesson, recordAnswer, boostActive } from './storage.js';
+import { sfx, cora } from './fx.js';
+
+const PRAISE = ['¡Correcto!', '¡Genial!', '¡Excelente!', '¡Bien hecho!', '¡Perfecto!', '¡Así se hace!'];
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
 
 const shuffle = (arr) => {
   const a = [...arr];
@@ -31,13 +35,18 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   let selected = null;
   let phase = 'answer'; // answer | feedback
   let matchState = null;
+  let combo = 0;
+  let bestCombo = 0;
+  const started = Date.now();
+  // En práctica/repaso no se pierden vidas (como en Duolingo)
+  const usesHearts = !lesson.practice;
 
   root.innerHTML = `
     <div class="lesson" style="--accent:${course.color}">
       <header class="lesson-top">
         <button class="icon-btn" data-act="exit" aria-label="Salir">✕</button>
         <div class="bar"><div class="bar-fill"></div></div>
-        <div class="hearts">❤️ <span></span></div>
+        <div class="hearts">${usesHearts ? '❤️ <span></span>' : '♾️'}</div>
       </header>
       <main class="lesson-body"></main>
       <footer class="lesson-foot">
@@ -52,12 +61,13 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   const updateTop = () => {
     $('.bar-fill').style.width = `${(done / total) * 100}%`;
-    $('.hearts span').textContent = getState().hearts;
+    const h = $('.hearts span');
+    if (h) h.textContent = getState().hearts;
   };
 
   function next() {
     if (!queue.length) return finish();
-    if (getState().hearts <= 0) { cleanup(); return onExit('sin-vidas'); }
+    if (usesHearts && getState().hearts <= 0) { cleanup(); return onExit('sin-vidas'); }
     current = queue.shift();
     selected = null;
     phase = 'answer';
@@ -99,11 +109,14 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   function showFeedback(ok, correctLabel) {
     phase = 'feedback';
-    recordAnswer(current.src.key, ok);
+    combo = ok ? combo + 1 : 0;
+    bestCombo = Math.max(bestCombo, combo);
+    recordAnswer(current.src.key, ok, { type: current.type, combo });
+    sfx(ok ? 'Correct' : 'Wrong');
     if (ok) done++;
     else {
       mistakes++;
-      loseHeart();
+      if (usesHearts) loseHeart();
       // Como en Duolingo: la pregunta fallada vuelve al final (una vez).
       if (!retried.has(current.src)) {
         retried.add(current.src);
@@ -113,7 +126,8 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     updateTop();
     foot.className = `lesson-foot ${ok ? 'ok' : 'ko'}`;
     $('.feedback').innerHTML = `
-      <strong>${ok ? '¡Correcto!' : 'Incorrecto'}</strong>
+      <strong>${ok ? pick(PRAISE) : 'Incorrecto'}</strong>
+      ${ok && combo >= 3 ? `<span class="combo pop-in">🔥 ${combo} seguidas</span>` : ''}
       ${!ok && correctLabel ? `<p>Respuesta: <b>${esc(correctLabel)}</b></p>` : ''}
       ${current.explain ? `<p>${esc(current.explain)}</p>` : ''}`;
     checkBtn.hidden = false;
@@ -130,7 +144,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     body.querySelectorAll('.choice').forEach((b, i) => {
       b.disabled = true;
       if (current.choices[i].correct) b.classList.add('right');
-      else if (i === selected) b.classList.add('wrong');
+      else if (i === selected) b.classList.add('wrong', 'shake');
     });
     showFeedback(ok, current.choices.find((c) => c.correct).label);
   }
@@ -194,10 +208,13 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   function finish() {
     const stars = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
-    const xp = 10 + (mistakes === 0 ? 5 : 0);
-    completeLesson(lesson.id, { xp, stars, review: !!lesson.review });
+    // XP: base + bonus por lección perfecta y por combo; doble con potenciador
+    const base = 10 + (mistakes === 0 ? 5 : 0) + (bestCombo >= 5 ? 3 : 0);
+    const xp = boostActive() ? base * 2 : base;
+    const seconds = Math.round((Date.now() - started) / 1000);
+    const { streakExtended } = completeLesson(lesson.id, { xp, stars, review: !!lesson.review, minutes: seconds / 60 });
     cleanup();
-    onFinish({ xp, stars, mistakes, total });
+    onFinish({ xp, stars, mistakes, total, seconds, bestCombo, streakExtended, boosted: boostActive() });
   }
 
   function onClick(e) {
@@ -205,15 +222,30 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     if (tapSvg) return pickTap(e, tapSvg);
     const btn = e.target.closest('button');
     if (!btn) return;
-    if (btn.dataset.act === 'exit') { cleanup(); return onExit('salir'); }
+    if (btn.dataset.act === 'exit') return done > 0 ? confirmExit() : (cleanup(), onExit('salir'));
+    if (btn.dataset.act === 'stay') return root.querySelector('.modal-back')?.remove();
+    if (btn.dataset.act === 'leave') { cleanup(); return onExit('salir'); }
     if (btn.dataset.act === 'check') return check();
     if (phase !== 'answer') return;
     if (btn.dataset.side) return pickMatch(btn);
     if (btn.dataset.c !== undefined) {
       selected = Number(btn.dataset.c);
+      sfx('Tap');
       body.querySelectorAll('.choice').forEach((b) => b.classList.toggle('selected', b === btn));
       checkBtn.disabled = false;
     }
+  }
+
+  // "¡Espera, no te vayas!" como en Duolingo
+  function confirmExit() {
+    root.querySelector('.lesson').insertAdjacentHTML('beforeend', `
+      <div class="modal-back"><div class="sheet slide-up">
+        ${cora('sad', 90)}
+        <h2>¡Espera, no te vayas!</h2>
+        <p class="muted">Si sales ahora perderás el progreso de esta lección.</p>
+        <button class="btn primary" data-act="stay">Seguir aprendiendo</button>
+        <button class="btn ghost danger-text" data-act="leave">Salir</button>
+      </div></div>`);
   }
 
   function onKey(e) {

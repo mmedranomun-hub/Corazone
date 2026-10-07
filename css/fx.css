@@ -1,0 +1,146 @@
+/* Efectos: mascota Cora (js/mascot.js), confeti (js/confetti.js) y animaciones reutilizables */
+:root {
+  --cora-body: #f2545b;
+  --cora-dark: #c53038;
+  --cora-shine: #ff9ea2;
+  --cora-cheek: #ff8fa6;
+  --cora-line: #4b1d22;
+  --cora-eye: #ffffff;
+  --cora-pupil: #2b1215;
+  --cora-mouth: #6e1a22;
+  --cora-tongue: #ff8a9a;
+  --cora-aorta: #e23a44;
+  --cora-aorta-end: #9e1f2a;
+  --cora-pulm: #8f6bd8;
+  --cora-pulm-end: #5f40a8;
+  --cora-vein: #4c8ff0;
+  --cora-vein-end: #2a5fb8;
+  --cora-tear: #5ab8ff;
+  --cora-flame: #ff9600;
+  --cora-flame-in: #ffc800;
+  --cora-spark: #ffc800;
+  --cora-zz: #8aa1b1;
+  --cora-bubble: #c9d3da;
+  --speech-bg: #ffffff;
+  --speech-border: #e5e5e5;
+  --speech-text: #3c3c3c;
+  --confetti-1: #58cc02;
+  --confetti-2: #1cb0f6;
+  --confetti-3: #ffc800;
+  --confetti-4: #ff4b4b;
+  --confetti-5: #ce82ff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --cora-body: #ff5c64; --cora-dark: #c9343d; --cora-shine: #ff9ca1; --cora-cheek: #ff8fa6;
+    --cora-line: #3a1216; --cora-pupil: #1f0c0f; --cora-mouth: #5c121a;
+    --cora-aorta: #ef4650; --cora-aorta-end: #a3202b; --cora-pulm: #a183ea; --cora-pulm-end: #6a4bb8;
+    --cora-vein: #5c9cff; --cora-vein-end: #2f66c4; --cora-zz: #9bb0bc; --cora-bubble: #4a5c66;
+    --speech-bg: #1c2b33; --speech-border: #37464f; --speech-text: #f1f7fb;
+  }
+}
+:root[data-theme='dark'] {
+  --cora-body: #ff5c64; --cora-dark: #c9343d; --cora-shine: #ff9ca1; --cora-cheek: #ff8fa6;
+  --cora-line: #3a1216; --cora-pupil: #1f0c0f; --cora-mouth: #5c121a;
+  --cora-aorta: #ef4650; --cora-aorta-end: #a3202b; --cora-pulm: #a183ea; --cora-pulm-end: #6a4bb8;
+  --cora-vein: #5c9cff; --cora-vein-end: #2f66c4; --cora-zz: #9bb0bc; --cora-bubble: #4a5c66;
+  --speech-bg: #1c2b33; --speech-border: #37464f; --speech-text: #f1f7fb;
+}
+
+/* ---- Mascota ---- */
+.cora { display: inline-block; vertical-align: middle; overflow: visible; flex: none; }
+.cora-body { fill: var(--cora-body); }
+.cora-shade { fill: var(--cora-dark); opacity: .45; }
+.cora-groove { stroke: var(--cora-dark); opacity: .55; }
+.cora-shine { stroke: var(--cora-shine); opacity: .9; }
+.cora-shine-s { stroke: #fff; opacity: .35; }
+.cora-cheek { fill: var(--cora-cheek); opacity: .75; }
+.cora-eye { fill: var(--cora-eye); }
+.cora-pupil { fill: var(--cora-pupil); }
+.cora-glint { fill: #fff; }
+.cora-line { stroke: var(--cora-line); }
+.cora-mouth { fill: var(--cora-mouth); }
+.cora-tongue { fill: var(--cora-tongue); }
+.cora-teeth { fill: #fff; }
+.cora-arm { stroke: var(--cora-dark); }
+.cora-hand { fill: var(--cora-body); stroke: var(--cora-dark); stroke-width: 2; }
+.cora-aorta-s { stroke: var(--cora-aorta); }
+.cora-aorta-end { fill: var(--cora-aorta-end); }
+.cora-pulm-s { stroke: var(--cora-pulm); }
+.cora-pulm-end { fill: var(--cora-pulm-end); }
+.cora-vein-s { stroke: var(--cora-vein); }
+.cora-vein-end { fill: var(--cora-vein-end); }
+.cora-tear { fill: var(--cora-tear); }
+.cora-flame-out { fill: var(--cora-flame); }
+.cora-flame-in { fill: var(--cora-flame-in); }
+.cora-spark { fill: var(--cora-spark); }
+.cora-zz { fill: var(--cora-zz); }
+.cora-bubble { fill: var(--cora-bubble); }
+.cora-sleep .cora-figure { filter: saturate(.75); }
+
+/* Latido: doble pulso "lub-dub" */
+.cora.beat .cora-figure { transform-box: fill-box; transform-origin: 50% 90%; animation: cora-beat 1.2s ease-in-out infinite; }
+@keyframes cora-beat {
+  0%, 40%, 100% { transform: scale(1); }
+  10% { transform: scale(1.07, 1.05); }
+  20% { transform: scale(.98); }
+  28% { transform: scale(1.04, 1.03); }
+}
+.cora-fire .cora-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: cora-flicker .9s ease-in-out infinite alternate; }
+@keyframes cora-flicker { from { transform: scale(1, 1); } to { transform: scale(1.04, 1.08); } }
+.cora-sleep .cora-zz { animation: cora-float 2.4s ease-in-out infinite; }
+@keyframes cora-float { 0%, 100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(-4px); opacity: 1; } }
+
+/* ---- Bocadillo junto a la mascota ---- */
+.cora-row { display: flex; align-items: center; gap: 12px; }
+.speech {
+  position: relative; background: var(--speech-bg); color: var(--speech-text);
+  border: 2px solid var(--speech-border); border-radius: 16px; padding: 12px 16px;
+  font-weight: 700; line-height: 1.35; max-width: 280px;
+}
+/* Flechita a la izquierda (apunta a la mascota situada antes) */
+.speech::before, .speech::after {
+  content: ''; position: absolute; top: 50%; width: 0; height: 0; transform: translateY(-50%);
+  border-style: solid;
+}
+.speech::before { left: -12px; border-width: 10px 12px 10px 0; border-color: transparent var(--speech-border) transparent transparent; }
+.speech::after { left: -9px; border-width: 8px 10px 8px 0; border-color: transparent var(--speech-bg) transparent transparent; }
+/* Variante: flecha abajo (mascota debajo del bocadillo) */
+.speech.speech-down::before { left: 50%; top: auto; bottom: -12px; transform: translateX(-50%); border-width: 12px 10px 0 10px; border-color: var(--speech-border) transparent transparent transparent; }
+.speech.speech-down::after { left: 50%; top: auto; bottom: -9px; transform: translateX(-50%); border-width: 10px 8px 0 8px; border-color: var(--speech-bg) transparent transparent transparent; }
+/* Variante: flecha a la derecha (mascota después) */
+.speech.speech-right::before { left: auto; right: -12px; border-width: 10px 0 10px 12px; border-color: transparent transparent transparent var(--speech-border); }
+.speech.speech-right::after { left: auto; right: -9px; border-width: 8px 0 8px 10px; border-color: transparent transparent transparent var(--speech-bg); }
+
+/* ---- Animaciones reutilizables ---- */
+.pop-in { animation: fx-pop-in .45s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes fx-pop-in { 0% { transform: scale(.4); opacity: 0; } 70% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+.shake { animation: fx-shake .4s ease-in-out; }
+@keyframes fx-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); } 40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); } 80% { transform: translateX(3px); }
+}
+.slide-up { animation: fx-slide-up .35s cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes fx-slide-up { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* ---- Confeti ---- */
+.confetti-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 50; }
+.confetti-layer.in-container { position: absolute; }
+.confetti-piece {
+  position: absolute; top: -16px; width: 9px; height: 14px; border-radius: 2px;
+  background: var(--c, var(--confetti-1));
+  animation: fx-confetti var(--d, 2.2s) cubic-bezier(.25, .6, .45, 1) var(--delay, 0s) forwards;
+  opacity: 0;
+}
+.confetti-piece.round { border-radius: 50%; width: 9px; height: 9px; }
+@keyframes fx-confetti {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate(var(--dx, 0px), var(--dy, 100vh)) rotate(var(--rot, 540deg)); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cora.beat .cora-figure, .cora-fire .cora-flame, .cora-sleep .cora-zz,
+  .pop-in, .shake, .slide-up { animation: none; }
+}
