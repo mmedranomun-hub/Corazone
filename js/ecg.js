@@ -232,7 +232,7 @@ export const RHYTHMS = {
   },
   torsade: {
     name: 'Torsade de pointes',
-    desc: 'TV polimorfa con QRS anchos cuya amplitud crece y decrece "girando" alrededor de la línea de base. Suele iniciarse con un latido sinusal con QT largo y un extrasístole sobre la T. Tratamiento: sulfato de magnesio; si es sostenida, desfibrilación.',
+    desc: 'TV polimorfa con QRS anchos cuya amplitud crece y decrece "girando" alrededor de la línea de base. Suele iniciarse con un latido sinusal con QT largo y una extrasístole sobre la T, típicamente tras una secuencia corto-largo-corto. Tratamiento: sulfato de magnesio; si es sostenida, desfibrilación.',
     build: (s) => {
       const t0 = 0.8; // extrasístole sobre la T del latido con QT largo
       const beats = [{ t: 0.3, qt: 0.56, tWidth: 0.06 }];
@@ -251,7 +251,7 @@ export const RHYTHMS = {
   },
   'afib-wpw': {
     name: 'FA preexcitada (FA + WPW)',
-    desc: 'Taquicardia muy rápida (> 200 lpm) e irregular, con QRS anchos de morfología cambiante latido a latido (grado variable de preexcitación). Riesgo de FV: evitar frenadores del nodo AV; cardioversión o procainamida.',
+    desc: 'Taquicardia muy rápida (a menudo > 200 lpm) e irregular, con QRS anchos de morfología cambiante latido a latido (grado variable de preexcitación). RR preexcitado más corto ≤ 250 ms = alto riesgo de FV. Evitar frenadores del nodo AV (incluida amiodarona IV): ibutilida o procainamida, o cardioversión.',
     build: (s, r) => {
       const beats = [];
       for (let t = 0.2; t < s + 1; t += 0.2 + r() * 0.2) {
@@ -263,7 +263,7 @@ export const RHYTHMS = {
   },
   'pacer-vvi': {
     name: 'Marcapasos ventricular (VVI)',
-    desc: 'Espiga de marcapasos seguida de inmediato de un QRS ancho (morfología de BRI, captura ventricular). Sin relación con la actividad auricular. FC fija a la frecuencia programada (aquí 60 lpm).',
+    desc: 'Espiga de marcapasos seguida de inmediato de un QRS ancho (morfología de BRI, captura ventricular). Sin relación con la actividad auricular. Estimula a la frecuencia programada (aquí 60 lpm) sólo si no hay ritmo propio más rápido; si lo hay, se inhibe.',
     build: (s) => ({ beats: sinusBeats(60, s, { p: false, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 }) }),
   },
   'pacer-ddd': {
@@ -273,12 +273,12 @@ export const RHYTHMS = {
   },
   junctional: {
     name: 'Ritmo de escape nodal (de la unión)',
-    desc: 'Ritmo regular de QRS estrecho a 40–60 lpm sin onda P previa (puede verse una P retrógrada, negativa en II, tras el QRS). Aparece cuando falla el nódulo sinusal.',
+    desc: 'Ritmo regular de QRS estrecho a 40–60 lpm sin onda P previa (puede verse una P retrógrada, negativa en II, tras el QRS). Aparece cuando falla el nódulo sinusal o hay un bloqueo AV.',
     build: (s) => ({ beats: sinusBeats(45, s, { p: false, retroP: -0.1 }) }),
   },
   'sinus-arrest': {
     name: 'Paro (pausa) sinusal',
-    desc: 'Ritmo sinusal que se interrumpe con una pausa sin ondas P ni QRS; la pausa NO es múltiplo del PP previo (a diferencia del bloqueo sinoauricular). Pausas > 3 s sintomáticas: marcapasos.',
+    desc: 'Ritmo sinusal que se interrumpe con una pausa sin ondas P ni QRS; la pausa NO es múltiplo del PP previo (a diferencia del bloqueo sinoauricular). Si las pausas se correlacionan con síntomas: marcapasos.',
     build: (s) => {
       const beats = [];
       for (let t = 0.35; t < s + 1; t += t > 1.5 && t < 2 ? 2.85 : 0.8) beats.push({ t });
@@ -479,7 +479,7 @@ export const TWELVE_LEAD = {
   },
   brugada1: {
     name: 'Patrón de Brugada tipo 1',
-    desc: 'En V1–V2: elevación del punto J ≥ 2 mm con ST "en cúpula" (coved), convexo y descendente, que termina en una T negativa. Es el único patrón diagnóstico de Brugada (canalopatía con riesgo de muerte súbita).',
+    desc: 'En ≥ 1 precordial derecha (V1–V2, registrada en el 2.º, 3.º o 4.º espacio intercostal): elevación del punto J ≥ 2 mm con ST "en cúpula" (coved), convexo y descendente, que termina en una T negativa. Es el único patrón diagnóstico de Brugada (canalopatía con riesgo de muerte súbita).',
     extra: {
       V1: { rAmp: 0.25, sAmp: 0.35, coved: 0.34, tAmp: -0.3, tWidth: 0.05 },
       V2: { rAmp: 0.35, sAmp: 0.55, coved: 0.3, tAmp: -0.25, tWidth: 0.05 },
@@ -518,17 +518,17 @@ export const TWELVE_LEAD = {
   },
   lowvoltage: {
     name: 'Bajo voltaje',
-    desc: 'Amplitud del QRS < 5 mm en todas las derivaciones de miembros y < 10 mm en las precordiales. Causas: derrame pericárdico, obesidad, EPOC, amiloidosis, hipotiroidismo.',
+    desc: 'Amplitud del QRS < 5 mm en todas las derivaciones de miembros y/o < 10 mm en todas las precordiales. Causas: derrame pericárdico, obesidad, EPOC, miocardiopatías infiltrativas (amiloidosis), hipotiroidismo.',
     gain: 0.35,
     rate: 95,
   },
   'early-repol': {
     name: 'Repolarización precoz',
-    desc: 'Elevación cóncava del ST en V2–V5 (y a veces inferior) con muesca o empastamiento en el punto J y T altas, sin descenso especular del ST ni del PR. Variante habitual en jóvenes, deportistas y bradicardia.',
+    desc: 'Muesca o empastamiento del punto J (≥ 1 mm) en ≥ 2 derivaciones contiguas inferiores y/o laterales (II, III, aVF, I, aVL, V4–V6), con elevación cóncava del ST y T altas, sin descenso especular del ST ni del PR. Variante habitual en jóvenes, deportistas y bradicardia. La elevación cóncava aislada en V2–V3 es otra variante normal.',
     rate: 58,
     extra: {
-      II: { st: 0.06, jNotch: 0.08 }, aVF: { st: 0.05, jNotch: 0.07 },
-      V2: { st: 0.15, jNotch: 0.12, sAmp: 0.9, tAmp: 0.6 }, V3: { st: 0.2, jNotch: 0.18, sAmp: 0.4, tAmp: 0.7 },
+      II: { st: 0.06, jNotch: 0.08 }, III: { st: 0.05, jNotch: 0.07 }, aVF: { st: 0.05, jNotch: 0.07 },
+      V2: { st: 0.15, sAmp: 0.9, tAmp: 0.6 }, V3: { st: 0.2, sAmp: 0.4, tAmp: 0.7 }, V6: { st: 0.08, jNotch: 0.12 },
       V4: { st: 0.18, jNotch: 0.22, sAmp: 0.15, tAmp: 0.65 }, V5: { st: 0.12, jNotch: 0.18, sAmp: 0.08, tAmp: 0.5 },
     },
   },
