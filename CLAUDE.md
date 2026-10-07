@@ -22,6 +22,11 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - `js/sound.js` — sonidos WebAudio sintetizados (`playCorrect/Wrong/Complete/Tap/Streak`, `setMuted`, `isMuted`; clave `corazone:muted`). No-op sin AudioContext.
 - `js/confetti.js` — `confetti(container, { count })`, DOM+CSS, se autoelimina; respeta reduced-motion.
 - `css/fx.css` — tokens `--cora-*`/`--confetti-*`, `.beat`, `.speech`, `.pop-in`, `.shake`, `.slide-up`, confeti.
+- `js/firebase-config.js` — config de Firebase (`null` = modo local, sin red). Guía: `docs/CUENTAS.md`; reglas: `firestore.rules`.
+- `js/auth.js` — wrapper de Firebase Auth (carga el SDK por CDN con import dinámico sólo si hay config): `init`, `onUser`, `signUp`, `signIn`, `signInGoogle`, `signOut`, `resetPassword`, `currentUser`, `authError` (mensajes en español).
+- `js/sync.js` — sincronización con Firestore `users/{uid}`: `mergeStates(local, remote)` (pura), subida con debounce vía `onSave` de storage, `initSync`, `syncStatus`/`onStatus`.
+- `js/views/account.js` — pantallas `#/entrar`, `#/registro`, `#/cuenta` y tarjeta "Cuenta" del perfil (`accountCard`, `bindAccountCard`).
+- `tests/sync.test.js` — fusión de estados y modo sin configuración (no importa Firebase).
 - `js/data/courses.js` — índice de cursos. Contenido en `js/data/ecg.js`, `js/data/eco.js`, `js/data/cateterismo.js`.
 
 ## Formato de contenido

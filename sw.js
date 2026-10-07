@@ -1,5 +1,5 @@
 // Service worker: red primero (siempre contenido fresco) con caché de respaldo para uso offline.
-const CACHE = 'corazone-v1';
+const CACHE = 'corazone-v2';
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => {
@@ -8,6 +8,9 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  // Sólo la propia app y las fuentes: Firebase/Google APIs van directas a la red
+  const url = new URL(e.request.url);
+  if (url.origin !== location.origin && !url.hostname.startsWith('fonts.g')) return;
   e.respondWith(
     fetch(e.request)
       .then((res) => {

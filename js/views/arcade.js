@@ -341,7 +341,7 @@ export function viewGuardia(id) {
         el.insertAdjacentHTML('beforeend', `<div class="chat-fb ${ok ? 'ok' : 'ko'} pop-in"><b>${ok ? '¡Correcto!' : 'No exactamente'}</b><p>${esc(q.explain)}</p></div>`);
         waiting = false;
         nextBtn.disabled = false;
-        scrollEnd();
+        el.lastElementChild.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
       };
     });
   }
@@ -357,7 +357,9 @@ export function viewGuardia(id) {
       sfx('Tap');
     }
     if (i >= total) nextBtn.textContent = 'Terminar';
-    scrollEnd();
+    // La pregunta se muestra desde su enunciado; el resto, pegado al final del chat
+    if (waiting) chat.lastElementChild.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+    else scrollEnd();
   }
 
   function finish() {

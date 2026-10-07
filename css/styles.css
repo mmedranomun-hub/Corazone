@@ -520,3 +520,7 @@ a.trophy.won:active { transform: translateY(6px); box-shadow: none; }
 .btn.danger-soft { color: var(--ko); }
 .ob-account { width: 100%; max-width: 360px; display: flex; flex-direction: column; }
 .sheet .btn { max-width: 420px; }
+.chat-q { scroll-margin-top: 72px; }
+.chat-fb { scroll-margin-bottom: 96px; }
+.msg:has(.ecg-wrap, .visual-wrap) { max-width: 100%; }
+.msg:has(.ecg-wrap, .visual-wrap) .bub { flex: 1; }
