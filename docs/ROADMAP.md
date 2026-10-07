@@ -7,12 +7,19 @@
 - [x] Contenido inicial: 3 cursos × 3 unidades (~90 preguntas)
 - [x] Tests de integridad de contenido
 
-## Próximo
-- [ ] ECG de 12 derivaciones (vectores por derivación) para localizar IAM y eje
-- [ ] Pregunta tipo "toca la onda" (señalar P, QRS, T o medir intervalos con calipers)
-- [ ] Imágenes/vídeos de eco (planos) y esquemas SVG de anatomía coronaria y proyecciones
-- [ ] Curvas de presión (AD, VD, AP, PCP, Ao) generadas para la unidad de hemodinámica
-- [ ] Repaso espaciado (SRS) con las preguntas falladas
-- [ ] Objetivo diario, logros y ligas
-- [ ] PWA (offline, instalable) y despliegue en GitHub Pages
+## Hecho (v0.2)
+- [x] ECG de 12 derivaciones + unidad de localización de IAM, eje y bloqueos de rama
+- [x] Pregunta "toca la onda"
+- [x] Curvas de presión y esquemas SVG (coronarias, A4C, PLAX, PSAX)
+- [x] Curso de casos clínicos (ETT, ETE, cateterismo)
+- [x] Repaso espaciado, objetivo diario y logros
+- [x] PWA instalable/offline
+- [x] Carpeta `recursos/` y agentes del proyecto; primera revisión médica aplicada
+
+## Próximo (ver `recursos/ordenes/`)
+- [ ] Órdenes 01–10 de `recursos/ordenes/` (hipertrofias, OMI, valvulopatías avanzado, SCA y shock…)
+- [ ] Nuevos casos: TEP, disección aórtica tipo A, perforación coronaria, TAVI
+- [ ] Más detalle en el esquema coronario; tiras de alternancia eléctrica y PCP elevada
+- [ ] Confirmar clase ESC del soporte mecánico en shock (`// REVISAR` en casos.js)
+- [ ] Ligas y despliegue en GitHub Pages
 - [ ] Cuentas de usuario y sincronización (backend opcional)
