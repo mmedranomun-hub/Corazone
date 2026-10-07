@@ -375,5 +375,399 @@ export default {
         },
       ],
     },
+    {
+      id: 'casos-u6',
+      title: 'Eco en urgencias y complicaciones',
+      guide: {
+        intro: 'El ecocardiograma a pie de cama resuelve en minutos el shock y el deterioro brusco tras un infarto o una cirugía cardiaca. Busca siempre lo que se trata con cirugía urgente.',
+        sections: [
+          {
+            title: 'Complicaciones mecánicas del IAM',
+            points: [
+              'Sospéchalas ante shock, edema agudo de pulmón o soplo nuevo, sobre todo tras un IAMCEST no reperfundido o tardío (días 2–7).',
+              'CIV posinfarto: shunt sistólico VI→VD en el septo; salto oximétrico en el VD; Qp/Qs = (SaO₂ − SvO₂)/(SvpO₂ − SapO₂).',
+              'Rotura de papilar (casi siempre posteromedial): velo flail con IM aguda excéntrica, VI hiperdinámico y ondas v gigantes en la PCP.',
+              'Rotura de pared libre: derrame con ecos densos (hemopericardio) y taponamiento; si se contiene forma un pseudoaneurisma de cuello estrecho.',
+              'Todas requieren Heart Team y cirugía; el soporte circulatorio mecánico sirve de puente (ESC 2023).',
+            ],
+            tip: 'Un VI hiperdinámico en un shock posinfarto no es fallo de bomba: busca una complicación mecánica.',
+          },
+          {
+            title: 'Insuficiencia aórtica aguda y taponamiento',
+            points: [
+              'IAo aguda grave: VI no dilatado, THP < 200 ms, cierre mitral precoz y flujo holodiastólico inverso en la aorta abdominal.',
+              'En la disección tipo A, el ETT puede mostrar el flap y la raíz dilatada; la cirugía es urgente y el balón de contrapulsación está contraindicado.',
+              'El taponamiento posquirúrgico suele ser localizado (coágulo posterior) y sin signos clásicos: si el ETT no es concluyente, haz ETE.',
+              'El derrame localizado posterior comprime la AI y se trata con reintervención más que con pericardiocentesis.',
+            ],
+          },
+          {
+            title: 'Shock indiferenciado (RUSH/FoCUS)',
+            points: [
+              'Bomba: función del VI, tamaño del VD y derrame pericárdico.',
+              'Tanque: VCI, líquido libre (FAST) y deslizamiento pleural.',
+              'Tuberías: aorta (aneurisma, disección) y venas de las piernas (TVP).',
+              'Hipovolémico: VI hiperdinámico y VCI pequeña colapsable; cardiogénico: VI hipocinético y VCI plétora; obstructivo: VD dilatado o taponamiento.',
+            ],
+            tip: 'La eco no ve bien el retroperitoneo: una rotura de AAA puede no mostrar líquido libre.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u6-l1',
+          title: 'Comunicación interventricular posinfarto',
+          case: {
+            title: 'Varón de 71 años con shock al cuarto día de un infarto',
+            text: 'Varón de 71 años, diabético, que acudió 30 horas después del inicio del dolor con un IAMCEST anterior; la coronariografía mostró oclusión de la DA media, que se trató con ICP. Al cuarto día presenta disnea brusca e hipotensión (TA 90/60 mmHg, FC 115 lpm, extremidades frías). Aparece un soplo holosistólico rudo con frémito en el borde esternal izquierdo que no existía al ingreso.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Ante el deterioro brusco con un soplo nuevo, ¿cuál es la primera prueba que debes hacer?', options: ['Ecocardiograma transtorácico urgente a pie de cama', 'Nueva coronariografía urgente', 'Angio-TC de aorta y arterias pulmonares', 'Cateterismo derecho con Swan-Ganz'], answer: 0, explain: 'El ETT diferencia en minutos CIV, IM aguda por rotura de papilar y rotura de pared libre, que cambian el tratamiento. Las guías ESC 2023 lo recomiendan de inmediato ante inestabilidad tras un IAM.' },
+            { type: 'mc', context: 'ETT: acinesia anteroapical y solución de continuidad en el septo apical con flujo sistólico VI→VD en Doppler color. La Vmax del chorro a través del defecto es 3,5 m/s. TA sistólica 90 mmHg.', prompt: 'Sin estenosis aórtica, ¿cuál es la presión sistólica estimada del VD?', diagram: { id: 'a4c', highlight: 'septum' }, options: ['≈ 41 mmHg', '≈ 49 mmHg', '≈ 139 mmHg', '≈ 76 mmHg'], answer: 0, explain: 'Gradiente VI-VD = 4 × 3,5² = 49 mmHg; PSVD = PAS − gradiente = 90 − 49 ≈ 41 mmHg. Un gradiente bajo a través de la CIV indica presiones de VD elevadas.' },
+            { type: 'tf', prompt: 'La CIV de un IAM anterior suele ser apical y más sencilla de reparar que la de un IAM inferior, que es basal inferoseptal.', answer: true, explain: 'La CIV basal del IAM inferior se asocia a infarto de VD y tiene peor pronóstico. A menudo el trayecto es serpiginoso y es difícil verlo en un solo plano.' },
+            { type: 'mc', context: 'Se coloca un catéter de Swan-Ganz: SatO₂ en la AD 62 %, en la arteria pulmonar 84 % y arterial sistémica 95 %. Se asume SatO₂ en las venas pulmonares del 98 %.', prompt: 'Calcula el Qp/Qs.', options: ['≈ 2,4', '≈ 1,1', '≈ 0,4', '≈ 3,9'], answer: 0, explain: 'Qp/Qs = (SaO₂ − SvO₂)/(SvpO₂ − SapO₂), tomando la venosa mixta antes del shunt (AD): (95 − 62)/(98 − 84) = 33/14 ≈ 2,4. El salto oximétrico de AD a AP (> 7 %) localiza el shunt a nivel ventricular.' },
+            { type: 'match', prompt: 'Relaciona cada complicación del IAM con su hallazgo ecocardiográfico', pairs: [['CIV posinfarto', 'Shunt sistólico VI→VD en el septo'], ['Rotura de músculo papilar', 'Velo flail con IM excéntrica'], ['Pseudoaneurisma', 'Saco con cuello estrecho'], ['Aneurisma verdadero', 'Pared discinética con cuello ancho']], explain: 'Todas aparecen sobre todo en infartos transmurales extensos o reperfundidos tarde. El pseudoaneurisma es una rotura contenida por pericardio y trombo.' },
+            { type: 'mc', context: 'Pese a noradrenalina y dobutamina, persiste en shock con lactato en ascenso.', prompt: '¿Qué actitud recomiendan las guías ESC 2023?', options: ['Soporte circulatorio mecánico como puente y cirugía (Heart Team)', 'Tratamiento médico y cierre diferido a las 6 semanas', 'Fibrinólisis por posible reoclusión de la DA', 'Anticoagulación y nuevo ETT en una semana'], answer: 0, explain: 'La CIV en shock refractario tiene una mortalidad cercana al 100 % sin cirugía. El balón de contrapulsación, Impella o ECMO estabilizan y permiten operar; el cierre percutáneo es una alternativa en casos seleccionados.' }, // REVISAR: momento óptimo de la cirugía (urgente vs diferida tras estabilizar con SCM) según ESC 2023
+          ],
+        },
+        {
+          id: 'casos-u6-l2',
+          title: 'Rotura de músculo papilar',
+          case: {
+            title: 'Mujer de 66 años con edema agudo de pulmón tras un IAM inferior',
+            text: 'Mujer de 66 años, hipertensa, con un IAMCEST inferolateral por oclusión de una circunfleja dominante, tratado con ICP a las 9 horas. Al tercer día presenta disnea súbita, ortopnea y crepitantes hasta los vértices. TA 85/55 mmHg, FC 120 lpm, SatO₂ 84 % con mascarilla. Solo se ausculta un soplo sistólico suave y corto en el ápex.',
+          },
+          questions: [
+            { type: 'tf', prompt: 'Que el soplo sea suave y corto hace improbable una insuficiencia mitral aguda grave.', answer: false, explain: 'En la IM aguda la AI no se ha adaptado: su presión sube enseguida y se iguala con la del VI, por lo que el soplo es corto, suave o incluso inaudible.' },
+            { type: 'mc', prompt: '¿Qué músculo papilar se rompe con más frecuencia y por qué?', options: ['Posteromedial, por irrigación de una sola arteria', 'Anterolateral, por irrigación de una sola arteria', 'Posteromedial, por tener doble irrigación', 'Anterolateral, por su mayor tamaño'], answer: 0, explain: 'El posteromedial depende de la descendente posterior (CD o Cx dominante); el anterolateral recibe flujo de la DA y la Cx, y es más resistente a la isquemia.' },
+            { type: 'mc', context: 'ETT: VI no dilatado, hipercinético salvo acinesia inferolateral. El velo posterior mitral es flail, con una masa móvil (cabeza del papilar) que prolapsa a la AI en sístole.', prompt: '¿Hacia dónde esperas que se dirija el chorro de IM?', options: ['Excéntrico, hacia la pared anterior de la AI', 'Excéntrico, hacia la pared posterior de la AI', 'Central, hacia el techo de la AI', 'Hacia la orejuela izquierda'], answer: 0, explain: 'En el flail, el chorro se dirige en sentido opuesto al velo afectado: velo posterior → chorro anterior. Los chorros excéntricos se pegan a la pared (efecto Coandă) y se subestiman en color.' },
+            { type: 'mc', context: 'PISA: radio 1,0 cm con velocidad de aliasing 40 cm/s. Vmax de la IM 5 m/s y VTI de la IM 150 cm.', prompt: 'Calcula el orificio regurgitante efectivo (ORE) y el volumen regurgitante.', options: ['ORE 0,50 cm²; volumen 75 ml', 'ORE 0,25 cm²; volumen 37 ml', 'ORE 5,0 cm²; volumen 750 ml', 'ORE 0,05 cm²; volumen 8 ml'], answer: 0, explain: 'ORE = 2π × r² × Va / Vmax = 6,28 × 1 × 40 / 500 ≈ 0,50 cm²; volumen = ORE × VTI = 0,50 × 150 = 75 ml. Ambos superan los umbrales de IM primaria grave (≥ 0,40 cm² y ≥ 60 ml).' },
+            { type: 'mc', context: 'Se coloca un catéter de Swan-Ganz. Observa la curva de presión capilar pulmonar.', pressure: 'pcwp-v', prompt: '¿Qué muestra el trazado?', options: ['Ondas v gigantes por insuficiencia mitral aguda', 'Ondas a en cañón por disociación AV', 'Patrón dip-plateau por constricción', 'Ausencia de onda a por fibrilación auricular'], answer: 0, explain: 'La regurgitación a una AI pequeña y rígida genera ondas v altas y precoces. No son específicas: también aparecen en la CIV posinfarto por el aumento del retorno venoso pulmonar.' },
+            { type: 'mc', prompt: '¿Cuál es el tratamiento indicado?', options: ['Cirugía urgente, habitualmente sustitución mitral', 'Tratamiento médico y cirugía electiva a los 3 meses', 'Nueva ICP de la circunfleja', 'Diuréticos y ETE de control en 48 horas'], answer: 0, explain: 'La rotura de papilar es una indicación de cirugía urgente (ESC 2023); rara vez se puede reparar. El balón de contrapulsación o Impella reducen la poscarga como puente; la reparación borde a borde percutánea es una opción en pacientes inoperables.' }, // REVISAR: papel de la TEER en rotura de papilar según ESC 2023
+          ],
+        },
+        {
+          id: 'casos-u6-l3',
+          title: 'Rotura de pared libre y pseudoaneurisma',
+          case: {
+            title: 'Mujer de 79 años con dolor recurrente tras un infarto no reperfundido',
+            text: 'Mujer de 79 años, hipertensa, con su primer infarto: IAMCEST lateral evolucionado que consultó a las 48 horas y no se reperfundió. Al quinto día presenta dolor torácico recurrente, náuseas y un episodio de hipotensión con bradicardia que se recupera con sueroterapia. El ECG muestra persistencia de la elevación del ST en I, aVL, V5 y V6.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Qué perfil de riesgo de rotura de pared libre presenta esta paciente?', options: ['Edad avanzada, mujer, primer IAM y sin reperfusión', 'Diabetes, infartos previos y circulación colateral', 'Juventud, varón y reperfusión primaria precoz', 'IAM sin elevación del ST y FEVI conservada'], answer: 0, explain: 'La rotura de pared libre es más frecuente en mujeres mayores, hipertensas, con un primer infarto transmural no reperfundido o fibrinolisado tarde. La circulación colateral y los infartos previos protegen.' },
+            { type: 'mc', context: 'FoCUS: derrame pericárdico de 14 mm con ecos densos y heterogéneos en su interior y colapso diastólico de la AD. FEVI 45 % con acinesia lateral.', prompt: '¿Qué sugiere el contenido ecodenso del derrame?', options: ['Hemopericardio con coágulo por rotura', 'Derrame seroso del síndrome de Dressler', 'Grasa epicárdica prominente', 'Pericarditis epistenocárdica fibrinosa'], answer: 0, explain: 'Un derrame con ecos densos tras un infarto transmural sugiere sangre coagulada por una rotura subaguda. La pericarditis epistenocárdica produce derrames pequeños, sin repercusión.' },
+            { type: 'mc', context: 'Se estabiliza. Un ETT con contraste muestra un saco de 4 cm junto a la pared inferolateral comunicado con el VI por un cuello de 1,2 cm, con flujo bidireccional en Doppler color y paredes de trombo.', prompt: '¿Cuál es el diagnóstico?', options: ['Pseudoaneurisma ventricular', 'Aneurisma ventricular verdadero', 'Divertículo congénito del VI', 'Quiste pericárdico'], answer: 0, explain: 'El pseudoaneurisma es una rotura contenida por pericardio y trombo, sin miocardio en su pared. El cuello estrecho (cociente cuello/diámetro máximo < 0,5) y la localización inferolateral son típicos.' },
+            { type: 'tf', prompt: 'Como está contenido, el pseudoaneurisma tiene bajo riesgo de rotura y puede seguirse con ecocardiogramas seriados.', answer: false, explain: 'Hasta un tercio de los pseudoaneurismas se rompen; por ello se recomienda cirugía. El aneurisma verdadero, con pared de miocardio, rara vez se rompe y suele manejarse médicamente.' },
+            { type: 'tf', prompt: 'El ecocardiograma con contraste ayuda a delimitar el saco y a demostrar que se rellena desde el VI.', answer: true, explain: 'El contraste mejora la definición del borde endocárdico y muestra la comunicación con la cavidad. La RM o la TC confirman la ausencia de miocardio en la pared.' },
+            { type: 'mc', prompt: '¿Qué tratamiento corresponde?', options: ['Cirugía cardiaca urgente', 'Pericardiocentesis evacuadora completa y observación', 'Anticoagulación por el trombo del saco', 'ETT de control a los 3 meses'], answer: 0, explain: 'La rotura de pared libre, aguda o contenida, requiere cirugía urgente (ESC 2023). Si hay taponamiento, la pericardiocentesis solo es un puente: evacuar todo puede reabrir la rotura.' },
+          ],
+        },
+        {
+          id: 'casos-u6-l4',
+          title: 'Insuficiencia aórtica aguda por disección',
+          case: {
+            title: 'Varón de 52 años con dolor desgarrante y disnea',
+            text: 'Varón de 52 años con hipertensión mal controlada. Presenta un dolor torácico brusco y desgarrante irradiado a la espalda, seguido de disnea. TA 110/60 mmHg en el brazo derecho y 85/50 mmHg en el izquierdo, FC 118 lpm. Crepitantes bibasales y un soplo diastólico corto en el borde esternal izquierdo. ECG: taquicardia sinusal sin elevación del ST.',
+          },
+          questions: [
+            { type: 'mc', context: 'FoCUS en urgencias. En el plano paraesternal largo, la raíz aórtica mide 52 mm y se ve una membrana móvil en la aorta ascendente.', prompt: '¿Cuál es el diagnóstico más probable?', diagram: { id: 'plax', highlight: 'ao' }, options: ['Disección aórtica tipo A de Stanford', 'Disección aórtica tipo B de Stanford', 'Aneurisma aórtico sin disección', 'Úlcera penetrante de aorta descendente'], answer: 0, explain: 'Un flap en la aorta ascendente define el tipo A. El ETT es poco sensible para descartar la disección, pero ver el flap acelera el diagnóstico; la angio-TC lo confirma y delimita la extensión.' },
+            { type: 'mc', context: 'Doppler: chorro de IAo ancho, tiempo de hemipresión (THP) 170 ms y flujo holodiastólico inverso en la aorta abdominal. En modo M, la mitral se cierra antes del QRS.', prompt: '¿Qué indica el cierre mitral precoz?', options: ['Presión diastólica del VI que supera pronto a la de la AI', 'Bloqueo AV de primer grado asociado', 'Disfunción sistólica grave del VI', 'Estenosis mitral reumática asociada'], answer: 0, explain: 'En la IAo aguda grave, un VI no dilatado recibe mucho volumen y su presión diastólica sube rápido hasta superar la de la AI y cerrar la mitral. Es un signo de gravedad.' },
+            { type: 'tf', prompt: 'En la IAo aguda grave, el THP corto refleja la rápida igualación de presiones entre aorta y VI.', answer: true, explain: 'Un THP < 200 ms apoya una IAo grave. En la crónica, el VI dilatado y distensible amortigua la subida de presión y el THP es más largo.' },
+            { type: 'match', prompt: 'Relaciona cada mecanismo de IAo en la disección tipo A con su explicación', pairs: [['Dilatación de la unión sinotubular', 'Coaptación central incompleta'], ['Prolapso del flap por la válvula', 'Obstrucción intermitente del TSVI'], ['Desinserción de una comisura', 'Prolapso del velo afectado'], ['Válvula bicúspide previa', 'Anomalía valvular de base']], explain: 'Identificar el mecanismo en el ETE intraoperatorio decide si se resuspende la válvula o se sustituye.' },
+            { type: 'tf', prompt: 'El balón de contrapulsación intraaórtico es un buen puente a la cirugía en la IAo aguda grave.', answer: false, explain: 'El balón se infla en diástole y aumenta el volumen regurgitante: está contraindicado en la IAo significativa y en la disección aórtica.' },
+            { type: 'mc', prompt: '¿Cuál es la actitud correcta?', options: ['Cirugía urgente de aorta ascendente y válvula', 'Coronariografía previa a la cirugía', 'Control de TA y cirugía electiva en 2 semanas', 'Endoprótesis en la aorta descendente'], answer: 0, explain: 'La disección tipo A requiere cirugía urgente; la mortalidad aumenta un 1–2 % por hora. La coronariografía rutinaria retrasa la cirugía y no se recomienda; el ETE se hace en quirófano.' },
+          ],
+        },
+        {
+          id: 'casos-u6-l5',
+          title: 'Taponamiento posquirúrgico localizado',
+          case: {
+            title: 'Mujer de 67 años con hipotensión tras una sustitución mitral',
+            text: 'Mujer de 67 años, cuarto día tras una sustitución valvular mitral por una prótesis mecánica, con heparina sódica. Se retiraron los drenajes el segundo día. Presenta hipotensión progresiva (88/60 mmHg), taquicardia de 120 lpm, oliguria y presión venosa central de 18 cmH₂O. No tiene pulso paradójico. El ETT tiene mala ventana: derrame anterior escaso, sin colapso de AD ni de VD.',
+          },
+          questions: [
+            { type: 'tf', prompt: 'Que no haya colapso de cavidades derechas ni pulso paradójico descarta un taponamiento.', answer: false, explain: 'Tras la cirugía cardiaca el derrame suele ser localizado (coágulo) y comprimir una sola cavidad, a menudo izquierda; los signos clásicos pueden faltar.' },
+            { type: 'mc', prompt: 'El ETT no es concluyente. ¿Qué prueba es la más útil?', options: ['Ecocardiograma transesofágico', 'Radiografía de tórax', 'ECG de 12 derivaciones', 'Gammagrafía de perfusión pulmonar'], answer: 0, explain: 'El ETE ve bien las colecciones posteriores y retroauriculares, que el ETT pasa por alto. La TC es una alternativa si el ETE no es posible.' },
+            { type: 'mc', context: 'ETE: colección ecodensa de 3 cm detrás de la AI que la comprime y reduce su tamaño. VI pequeño e hipercinético; prótesis mitral normofuncionante.', prompt: '¿Cuál es el mecanismo del bajo gasto?', options: ['Compresión de la AI que limita el llenado del VI', 'Disfunción sistólica del VI posquirúrgica', 'Obstrucción de la prótesis mitral por trombo', 'Hipovolemia por sangrado digestivo'], answer: 0, explain: 'La compresión de la AI (y de las venas pulmonares) reduce la precarga del VI. El VI pequeño e hipercinético encaja con un llenado restringido, no con un fallo de bomba.' },
+            { type: 'match', prompt: 'Relaciona cada colección localizada con su repercusión', pairs: [['Colección anterior al VD', 'Colapso del VD y del TSVD'], ['Colección posterior a la AI', 'Compresión de AI y venas pulmonares'], ['Colección junto a la AD', 'Colapso de AD y VCI dilatada'], ['Derrame circunferencial', 'Signos clásicos de taponamiento']], explain: 'La repercusión depende de qué cavidad se comprime. En el posoperatorio hay que rastrear todos los recesos, mejor con ETE.' },
+            { type: 'mc', prompt: '¿Qué tratamiento es el más adecuado?', options: ['Reintervención quirúrgica para evacuar el hematoma', 'Pericardiocentesis subxifoidea percutánea', 'Diuréticos intravenosos', 'Fibrinólisis intrapericárdica'], answer: 0, explain: 'Un coágulo posterior localizado no se drena bien con aguja y el acceso es arriesgado: se recomienda revisión quirúrgica (ESC 2015). La pericardiocentesis sirve para derrames libres y accesibles.' },
+            { type: 'tf', prompt: 'La anticoagulación y el síndrome pospericardiotomía favorecen los derrames pericárdicos tardíos tras la cirugía cardiaca.', answer: true, explain: 'Los derrames tardíos (> 1 semana) se asocian a anticoagulación y a inflamación pospericardiotomía. Con prótesis mecánica, la anticoagulación se ajusta, no se suspende sin más.' },
+          ],
+        },
+        {
+          id: 'casos-u6-l6',
+          title: 'Shock indiferenciado: protocolo RUSH',
+          case: {
+            title: 'Varón de 74 años con hipotensión y dolor lumbar',
+            text: 'Varón de 74 años, exfumador e hipertenso, traído a urgencias por un dolor lumbar intenso de 2 horas y un síncope. TA 78/45 mmHg, FC 128 lpm, palidez, sudoración y relleno capilar lento. No hay fiebre. El abdomen es doloroso, sin defensa clara. Se hace una ecografía clínica a pie de cama siguiendo el protocolo RUSH.',
+          },
+          questions: [
+            { type: 'match', prompt: 'Relaciona cada componente del protocolo RUSH con lo que valora', pairs: [['Bomba', 'Función ventricular y derrame pericárdico'], ['Tanque', 'VCI, líquido libre y neumotórax'], ['Tuberías', 'Aorta y trombosis venosa profunda']], explain: 'RUSH ordena la exploración en tres pasos para clasificar el shock en minutos. FoCUS es la parte cardiaca.' },
+            { type: 'match', prompt: 'Relaciona cada tipo de shock con su patrón ecográfico más típico', pairs: [['Hipovolémico', 'VI hiperdinámico y VCI colapsada'], ['Cardiogénico', 'VI hipocinético y VCI plétora'], ['Obstructivo por TEP', 'VD dilatado y septo en "D"'], ['Obstructivo por taponamiento', 'Derrame con colapso de AD y VD']], explain: 'El shock distributivo inicial también muestra un VI hiperdinámico, pero con piel caliente y vasodilatación.' },
+            { type: 'mc', context: 'Bomba: VI pequeño e hiperdinámico con obliteración de la cavidad en sístole, VD normal, sin derrame pericárdico. Tanque: VCI de 9 mm con colapso inspiratorio > 50 %, sin líquido libre intraperitoneal ni neumotórax.', prompt: '¿Qué tipo de shock sugieren estos hallazgos?', options: ['Hipovolémico', 'Cardiogénico', 'Obstructivo', 'Distributivo por sepsis'], answer: 0, explain: 'Cavidades vacías y VCI pequeña colapsable indican una precarga baja. Sin fiebre ni vasodilatación, con dolor lumbar y síncope, piensa en una hemorragia.' },
+            { type: 'mc', context: 'Tuberías: aorta abdominal infrarrenal de 68 mm con trombo mural. Venas femorales compresibles.', prompt: '¿Cuál es el diagnóstico más probable?', options: ['Rotura de aneurisma de aorta abdominal', 'Disección aórtica tipo A', 'Cólico renoureteral complicado', 'Isquemia mesentérica aguda'], answer: 0, explain: 'Dolor lumbar, hipotensión y un AAA > 5 cm forman la tríada clásica de la rotura. La ecografía confirma el aneurisma, no la rotura.' },
+            { type: 'tf', prompt: 'Si no se ve líquido libre intraperitoneal, la ecografía descarta la rotura de un aneurisma abdominal.', answer: false, explain: 'La mayoría de las roturas son retroperitoneales y la ecografía las detecta mal. En el paciente inestable con AAA conocido o visto, el diagnóstico es clínico.' },
+            { type: 'mc', prompt: '¿Cuál es la actitud inicial?', options: ['Avisar a cirugía vascular para reparación urgente', 'Fluidos hasta normalizar la TA y luego TC', 'Fibrinólisis por sospecha de TEP', 'Noradrenalina y observación en la UCI'], answer: 0, explain: 'El paciente inestable con sospecha de rotura de AAA va directamente a reparación (EVAR o abierta). Se aplica hipotensión permisiva: fluidos limitados para mantener la consciencia y una PAS ≈ 70–90 mmHg.' }, // REVISAR: cifra de hipotensión permisiva (ESC 2024 aorta / ESVS)
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u7',
+      title: 'Cardiopatías congénitas del adulto por eco',
+      guide: {
+        intro: 'Cada vez más adultos viven con cardiopatías congénitas, operadas o no. El ecocardiograma es la herramienta de seguimiento: mide gradientes, shunts y la respuesta del VD, y marca cuándo intervenir (ESC 2020).',
+        sections: [
+          {
+            title: 'Lesiones obstructivas y aorta',
+            points: [
+              'Coartación: HTA en un joven, pulsos femorales débiles y retrasados; en el Doppler de la aorta descendente, gradiente alto y flujo diastólico persistente.',
+              'Las colaterales extensas hacen que el gradiente Doppler infraestime la gravedad; confirma con RM o TC.',
+              'Repara la coartación si hay HTA con gradiente pico-pico invasivo ≥ 20 mmHg; en adultos se prefiere el stent si la anatomía es adecuada.',
+              'Bicúspide: cirugía de aorta ascendente si ≥ 55 mm, ≥ 50 mm con factores de riesgo (historia familiar de disección, coartación, HTA, crecimiento ≥ 3 mm/año) y ≥ 45 mm si se opera la válvula.',
+            ],
+            tip: 'Ante una bicúspide busca siempre una coartación y criba a los familiares de primer grado.',
+          },
+          {
+            title: 'Corazón derecho: Ebstein y Fallot reparado',
+            points: [
+              'Ebstein: desplazamiento apical del velo septal tricuspídeo ≥ 8 mm/m² respecto al velo anterior mitral, con porción atrializada del VD.',
+              'Se asocia a CIA o FOP (cianosis por shunt D-I) y a vías accesorias (preexcitación).',
+              'Fallot reparado: la IP grave (chorro ancho, THP corto, reversión en las ramas) dilata el VD con los años.',
+              'Recambio valvular pulmonar si hay síntomas, o en asintomáticos con VTSVD ≥ 80 ml/m², VTDVD ≥ 160 ml/m² o IT progresiva.',
+            ],
+            tip: 'En el Fallot, QRS ≥ 180 ms, disfunción ventricular y arritmias marcan riesgo de muerte súbita.',
+          },
+          {
+            title: 'Shunts restrictivos',
+            points: [
+              'En la CIV restrictiva el chorro VI→VD es de alta velocidad: PSVD = PAS − 4V².',
+              'Qp/Qs = (D²TSVD × VTI TSVD)/(D²TSVI × VTI TSVI); ≥ 1,5 o un VI dilatado indican shunt significativo.',
+              'Cierra la CIV si hay sobrecarga de volumen del VI sin HAP; considéralo tras endocarditis o con prolapso aórtico e IAo progresiva.',
+              'Una CIV pequeña sin HP es de bajo riesgo en el embarazo.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u7-l1',
+          title: 'Coartación aórtica en un joven hipertenso',
+          case: {
+            title: 'Varón de 19 años con hipertensión en una revisión deportiva',
+            text: 'Varón de 19 años, jugador de baloncesto, al que en la revisión deportiva se detecta una TA de 165/85 mmHg en el brazo derecho. Refiere cansancio en las piernas al correr. Los pulsos femorales son débiles y se retrasan respecto a los radiales. Se ausculta un clic de eyección y un soplo sistólico en la región interescapular.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Qué exploración sencilla apoya la sospecha antes de pedir pruebas?', options: ['Medir la TA en los brazos y en las piernas', 'Fondo de ojo', 'Índice tobillo-brazo con ejercicio', 'Ortostatismo activo'], answer: 0, explain: 'Una TA en las piernas menor que en los brazos (normalmente es mayor) y el retraso radiofemoral son los signos clave. El clic sugiere una válvula aórtica bicúspide asociada.' },
+            { type: 'mc', context: 'ETT desde el plano supraesternal: Vmax en la aorta descendente proximal 3,8 m/s; la velocidad antes del estrechamiento es 1,5 m/s.', prompt: '¿Cuál es el gradiente pico estimado a través de la coartación?', options: ['≈ 49 mmHg', '≈ 58 mmHg', '≈ 9 mmHg', '≈ 25 mmHg'], answer: 0, explain: 'Con velocidad proximal > 1 m/s se usa la ecuación de Bernoulli ampliada: 4 × (3,8² − 1,5²) = 4 × 12,2 ≈ 49 mmHg. La simplificada (4 × 3,8² ≈ 58) lo sobrestima.' },
+            { type: 'tf', context: 'El Doppler continuo muestra que el flujo anterógrado persiste durante toda la diástole ("cola diastólica").', prompt: 'El flujo diastólico persistente en la aorta descendente indica una coartación significativa.', answer: true, explain: 'Durante la diástole se mantiene un gradiente a través de la estenosis. Es más específico de gravedad que el gradiente sistólico aislado.' },
+            { type: 'mc', prompt: '¿Qué situación hace que el gradiente Doppler infraestime la gravedad de la coartación?', options: ['Colaterales extensas que derivan el flujo', 'Anemia con gasto cardiaco elevado', 'Ejercicio durante la medición', 'Insuficiencia aórtica asociada'], answer: 0, explain: 'Las colaterales (intercostales, mamarias) reducen el flujo por la coartación y el gradiente. La anemia, el ejercicio o la IAo aumentan el flujo y lo sobrestiman.' },
+            { type: 'mc', context: 'RM: coartación ístmica con diámetro mínimo de 8 mm frente a 20 mm a nivel del diafragma y colaterales. El cateterismo confirma un gradiente pico-pico de 32 mmHg.', prompt: '¿Qué recomiendan las guías ESC 2020?', options: ['Reparación, preferiblemente con stent', 'Tratamiento antihipertensivo y revisión anual', 'Cirugía solo si aparece insuficiencia cardiaca', 'Repetir la RM en 5 años'], answer: 0, explain: 'La reparación está indicada en pacientes hipertensos con gradiente invasivo ≥ 20 mmHg (clase I). En adultos con anatomía adecuada se prefiere el stent.' },
+            { type: 'match', prompt: 'Relaciona cada asociación de la coartación con su implicación', pairs: [['Válvula aórtica bicúspide', 'Asociación más frecuente'], ['Síndrome de Turner', 'Pensar en él en mujeres jóvenes'], ['Aneurismas intracraneales', 'Riesgo de hemorragia cerebral'], ['Recoartación', 'Seguimiento de por vida tras reparar']], explain: 'Incluso reparada, la coartación exige seguimiento por HTA residual, recoartación, aneurismas en la zona de reparación y aortopatía.' },
+          ],
+        },
+        {
+          id: 'casos-u7-l2',
+          title: 'Anomalía de Ebstein',
+          case: {
+            title: 'Mujer de 32 años con palpitaciones y cianosis de esfuerzo',
+            text: 'Mujer de 32 años con episodios de taquicardia paroxística desde la adolescencia. En el último año nota disnea con esfuerzos moderados y labios violáceos al subir cuestas. SatO₂ 95 % en reposo y 86 % tras caminar 6 minutos. Superficie corporal 1,6 m². En la tira de ritmo basal se observa el trazado mostrado.',
+          },
+          questions: [
+            { type: 'mc', ecg: 'wpw', prompt: 'Observa la tira basal. ¿Qué hallazgo muestra y con qué se asocia en esta cardiopatía?', options: ['Preexcitación por vía accesoria derecha', 'Bloqueo AV de primer grado nodal', 'Síndrome de QT largo congénito', 'Bloqueo de rama izquierda'], answer: 0, explain: 'PR corto y onda delta indican preexcitación. En el Ebstein, el 10–30 % tiene vías accesorias, a menudo derechas y múltiples.' },
+            { type: 'mc', context: 'ETT apical de 4 cámaras: el velo septal tricuspídeo se inserta 25 mm más hacia el ápex que el velo anterior mitral. El velo anterior tricuspídeo es grande y redundante.', prompt: 'Calcula el desplazamiento indexado e interprétalo.', diagram: { id: 'a4c', highlight: 'tv' }, options: ['15,6 mm/m²: diagnóstico de Ebstein', '15,6 mm/m²: dentro de la normalidad', '40 mm/m²: diagnóstico de Ebstein', '6,4 mm/m²: dentro de la normalidad'], answer: 0, explain: '25 / 1,6 ≈ 15,6 mm/m², por encima del umbral de 8 mm/m². Normalmente la tricúspide se inserta algo más apical que la mitral, pero menos de ese valor.' },
+            { type: 'tf', prompt: 'En un adulto de 1,6 m², una distancia de 10 mm entre las inserciones septales tricuspídea y mitral basta para diagnosticar un Ebstein.', answer: false, explain: '10 / 1,6 ≈ 6,3 mm/m², por debajo de 8 mm/m²: es un desplazamiento fisiológico. Hay que indexar siempre por superficie corporal.' },
+            { type: 'match', prompt: 'Relaciona cada componente de la anomalía de Ebstein con su descripción', pairs: [['VD atrializado', 'Porción entre anillo y velos desplazados'], ['VD funcional', 'Cavidad distal a la inserción de los velos'], ['Velo anterior "en vela"', 'Grande y redundante; facilita reparar'], ['CIA o FOP asociado', 'Shunt D-I y cianosis de esfuerzo']], explain: 'Cuanto más pequeño es el VD funcional y mayor la IT, peor es la tolerancia. El shunt D-I también expone a embolias paradójicas.' },
+            { type: 'mc', context: 'IT grave, AD muy dilatada, VD funcional con fracción de acortamiento conservada y CIA tipo ostium secundum con shunt D-I en el esfuerzo.', prompt: 'Según ESC 2020, ¿qué actitud corresponde?', options: ['Reparación quirúrgica de la tricúspide y cierre de la CIA', 'Cierre percutáneo aislado de la CIA', 'Tratamiento médico con diuréticos y revisión anual', 'Trasplante cardiaco'], answer: 0, explain: 'La IT grave con síntomas o con deterioro objetivo de la capacidad de esfuerzo es indicación de cirugía (reparación tipo cono). Cerrar solo la CIA puede descompensar un VD pequeño.' }, // REVISAR: indicación concreta de cierre de CIA en Ebstein (ESC 2020)
+            { type: 'tf', prompt: 'Con preexcitación o arritmias sintomáticas se recomienda estudio electrofisiológico y ablación antes de la cirugía, o tratar la arritmia en el quirófano.', answer: true, explain: 'Las vías accesorias del Ebstein son difíciles de ablacionar tras la cirugía. Las taquiarritmias son una causa importante de muerte súbita en estos pacientes.' },
+          ],
+        },
+        {
+          id: 'casos-u7-l3',
+          title: 'Tetralogía de Fallot reparada',
+          case: {
+            title: 'Varón de 34 años operado de Fallot en la infancia',
+            text: 'Varón de 34 años con tetralogía de Fallot corregida a los 2 años con cierre de la CIV y parche transanular. Hasta ahora estaba asintomático. Desde hace un año nota disnea al subir dos pisos (NYHA II) y palpitaciones. ECG: ritmo sinusal con bloqueo de rama derecha y QRS de 180 ms. En la prueba de esfuerzo cardiopulmonar el consumo de oxígeno ha bajado respecto a la previa.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Qué indica un QRS de 180 ms en un Fallot reparado?', options: ['Mayor riesgo de TV y muerte súbita', 'Bloqueo de rama sin significado pronóstico', 'Indicación directa de marcapasos', 'Hipertrofia ventricular izquierda'], answer: 0, explain: 'El QRS ≥ 180 ms refleja la dilatación del VD (interacción mecanoeléctrica) y es un marcador clásico de arritmias ventriculares y muerte súbita.' },
+            { type: 'mc', context: 'ETT: chorro de IP que ocupa todo el TSVD, THP de la IP 80 ms, terminación precoz del flujo diastólico y flujo diastólico inverso en las ramas pulmonares.', prompt: '¿Qué indican estos hallazgos?', options: ['Insuficiencia pulmonar grave', 'Estenosis pulmonar residual grave', 'Hipertensión pulmonar grave', 'Insuficiencia pulmonar leve fisiológica'], answer: 0, explain: 'THP < 100 ms y reversión en las ramas son signos de IP grave. El parche transanular suprime la función valvular y la IP grave es la secuela más común.' },
+            { type: 'tf', prompt: 'En la IP grave el soplo diastólico es largo y de intensidad alta.', answer: false, explain: 'Las presiones de AP y VD se igualan pronto en diástole, de modo que el soplo es corto y suave, y puede pasar inadvertido. La IP grave puede ser casi silente.' },
+            { type: 'match', prompt: 'Relaciona cada parámetro con el umbral relevante en el Fallot reparado', pairs: [['Fracción regurgitante pulmonar', '> 30–40 %: IP grave'], ['VTDVD indexado (RM)', '≥ 160 ml/m²'], ['VTSVD indexado (RM)', '≥ 80 ml/m²'], ['Duración del QRS', '≥ 180 ms']], explain: 'La RM es la referencia para medir volúmenes y fracción regurgitante; el ETT sirve para el seguimiento y para estimar la presión del VD.' },
+            { type: 'mc', context: 'RM: VTDVD 165 ml/m², VTSVD 85 ml/m², FEVD 42 %, fracción regurgitante pulmonar 45 %. Sin obstrucción del TSVD.', prompt: 'Según ESC 2020, ¿qué está indicado?', options: ['Reemplazo valvular pulmonar', 'Seguimiento con RM anual', 'DAI sin otra intervención', 'Tratamiento con diuréticos e IECA'], answer: 0, explain: 'En el Fallot reparado con IP grave y síntomas, el recambio pulmonar es clase I. Aunque estuviera asintomático, estos volúmenes ya lo justificarían.' },
+            { type: 'tf', prompt: 'Si la anatomía del TSVD lo permite, el implante percutáneo de válvula pulmonar es una alternativa a la cirugía.', answer: true, explain: 'Antes se comprueba con angiografía que el stent no comprime una coronaria. Los TSVD con parche transanular muy dilatado pueden necesitar dispositivos autoexpandibles o cirugía.' },
+          ],
+        },
+        {
+          id: 'casos-u7-l4',
+          title: 'Válvula aórtica bicúspide con aortopatía',
+          case: {
+            title: 'Varón de 45 años con soplo y antecedente familiar de disección',
+            text: 'Varón de 45 años, hipertenso controlado, remitido por un soplo sistólico. Su padre murió de una disección aórtica a los 50 años. Está asintomático. ETT: válvula aórtica bicúspide con fusión de los velos coronarianos derecho e izquierdo, Vmax aórtica 2,5 m/s, IAo ligera, raíz aórtica de 42 mm y aorta ascendente tubular de 52 mm.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'En el plano paraesternal largo, ¿qué hallazgo valvular sugiere una válvula bicúspide?', diagram: { id: 'plax', highlight: 'av' }, options: ['Apertura sistólica "en cúpula" (doming)', 'Calcificación de la cara ventricular', 'Vibración diastólica del velo mitral anterior', 'Movimiento sistólico anterior de la mitral'], answer: 0, explain: 'Los velos fusionados no se abren del todo y se abomban en sístole. En el eje corto se ve una apertura elíptica con 2 comisuras y, a menudo, un rafe.' },
+            { type: 'tf', prompt: 'En el ETT, los diámetros aórticos se miden en telediástole con el método de borde de ataque a borde de ataque.', answer: true, explain: 'Es la convención recomendada para el ETT; la TC y la RM miden de borde interno a borde interno. Usa el mismo método para comparar mediciones.' },
+            { type: 'mc', context: 'Hace 12 meses, con el mismo método, la aorta ascendente medía 48 mm. La TC confirma ahora 52 mm.', prompt: '¿Cuál es la velocidad de crecimiento y qué implica?', options: ['4 mm/año: factor de riesgo (≥ 3 mm/año)', '4 mm/año: crecimiento normal con la edad', '0,4 mm/año: estable', '8 mm/año: rotura inminente'], answer: 0, explain: 'Un crecimiento ≥ 3 mm/año (confirmado con la misma técnica) es un factor de riesgo de disección y adelanta el umbral quirúrgico.' },
+            { type: 'mc', prompt: 'Con aorta ascendente de 52 mm, historia familiar de disección y crecimiento rápido, ¿qué está indicado?', options: ['Cirugía de la aorta ascendente', 'Esperar a que alcance 55 mm', 'Betabloqueante y TC en 2 años', 'Recambio valvular aórtico aislado'], answer: 0, explain: 'En la bicúspide se opera la aorta con ≥ 55 mm, o con ≥ 50 mm si hay factores de riesgo (historia familiar, HTA, coartación, crecimiento ≥ 3 mm/año). Con ≥ 45 mm se trata si se opera la válvula.' }, // REVISAR: umbrales ESC 2021 valvulopatías / ESC 2024 aorta
+            { type: 'tf', prompt: 'El fenotipo de raíz (dilatación de la raíz aórtica, a menudo con IAo) se asocia a mayor progresión que el fenotipo de aorta ascendente.', answer: true, explain: 'El fenotipo de raíz, más frecuente en varones jóvenes, se comporta como una aortopatía más agresiva, con más riesgo de disección.' },
+            { type: 'match', prompt: 'Relaciona cada aspecto del manejo de la bicúspide con la recomendación', pairs: [['Familiares de primer grado', 'Cribado con ETT'], ['Coartación aórtica', 'Buscarla en todo paciente con bicúspide'], ['Embarazo con aorta > 50 mm', 'Desaconsejado'], ['Deporte isométrico intenso', 'Evitarlo si la aorta está dilatada']], explain: 'La bicúspide tiene carácter familiar (≈ 10 % de los familiares de primer grado), por lo que se recomienda el cribado.' },
+          ],
+        },
+        {
+          id: 'casos-u7-l5',
+          title: 'Comunicación interventricular restrictiva',
+          case: {
+            title: 'Mujer de 26 años con un soplo desde la infancia que desea embarazo',
+            text: 'Mujer de 26 años, asintomática, con un soplo conocido desde la infancia del que nunca se hizo seguimiento. Consulta antes de buscar un embarazo. Se ausculta un soplo holosistólico rudo 4/6 con frémito en el tercer espacio intercostal izquierdo. TA 120/75 mmHg. ECG normal.',
+          },
+          questions: [
+            { type: 'tf', prompt: 'Un soplo de CIV muy intenso con frémito indica un defecto grande.', answer: false, explain: 'Al revés: un defecto pequeño mantiene un gradiente VI-VD alto y un chorro turbulento muy audible (enfermedad de Roger). Las CIV grandes con HP pueden tener soplos suaves.' },
+            { type: 'mc', context: 'ETT: CIV perimembranosa de 5 mm con chorro VI→VD de Vmax 5,0 m/s. No hay obstrucción del TSVI.', prompt: '¿Cuál es la presión sistólica estimada del VD?', options: ['≈ 20 mmHg', '≈ 100 mmHg', '≈ 25 mmHg', '≈ 45 mmHg'], answer: 0, explain: 'Gradiente = 4 × 5² = 100 mmHg; PSVD = PAS − gradiente = 120 − 100 = 20 mmHg. Un gradiente alto confirma una CIV restrictiva sin HP.' },
+            { type: 'mc', context: 'Diámetro del TSVD 2,2 cm con VTI 22 cm; diámetro del TSVI 2,0 cm con VTI 20 cm.', prompt: 'Calcula el Qp/Qs.', options: ['≈ 1,3', '≈ 1,1', '≈ 1,5', '≈ 0,75'], answer: 0, explain: 'Qp/Qs = (2,2² × 22)/(2,0² × 20) = 106,5/80 ≈ 1,3. Olvidar el diámetro y comparar solo los VTI da 1,1, un error típico.' },
+            { type: 'mc', context: 'VI de tamaño normal, sin IAo ni prolapso de velos aórticos, sin antecedente de endocarditis.', prompt: 'Según ESC 2020, ¿qué actitud corresponde?', options: ['Seguimiento clínico y ecográfico, sin cierre', 'Cierre quirúrgico de la CIV antes del embarazo', 'Cierre percutáneo de la CIV', 'Contraindicar el embarazo'], answer: 0, explain: 'Se cierra la CIV si hay sobrecarga de volumen del VI sin HAP. Con Qp/Qs < 1,5, VI normal y sin complicaciones, basta con seguimiento.' },
+            { type: 'match', prompt: 'Relaciona cada complicación de la CIV perimembranosa con su mecanismo', pairs: [['Insuficiencia aórtica progresiva', 'Prolapso del velo coronario derecho'], ['Endocarditis', 'Lesión endocárdica por el chorro'], ['VD de doble cámara', 'Hipertrofia de bandas musculares del VD'], ['Cierre espontáneo parcial', 'Tejido accesorio tricuspídeo']], explain: 'El prolapso de un velo aórtico con IAo progresiva es indicación de cierre aunque el shunt sea pequeño.' },
+            { type: 'tf', prompt: 'Una CIV pequeña sin hipertensión pulmonar ni otras lesiones es de bajo riesgo en el embarazo (clase mWHO I).', answer: true, explain: 'Según ESC 2018 el embarazo es bien tolerado; la profilaxis de endocarditis solo se plantea si hubo una endocarditis previa.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u8',
+      title: 'Miocardio, masas y situaciones especiales',
+      guide: {
+        intro: 'Masas, miocardiopatías poco frecuentes, embarazo, oncología y dispositivos: escenarios en los que el ecocardiograma orienta el diagnóstico y decide el siguiente paso.',
+        sections: [
+          {
+            title: 'Masas y dispositivos',
+            points: [
+              'Mixoma: masa pediculada en la AI anclada a la fosa oval, que protruye por la mitral en diástole; capta contraste.',
+              'Trombo: orejuela o ápex acinético, con sustrato (FA, estenosis mitral, infarto); no capta contraste.',
+              'Endocarditis de cable: el ETE es más sensible que el ETT; un ETE negativo no la descarta (PET-TC o gammagrafía con leucocitos).',
+              'La endocarditis sobre dispositivo exige extraer todo el sistema (generador y cables), habitualmente por vía percutánea (ESC 2023).',
+            ],
+            tip: 'Mixomas múltiples, recidivantes o en jóvenes: piensa en el complejo de Carney.',
+          },
+          {
+            title: 'Miocardio en situaciones especiales',
+            points: [
+              'Miocardiopatía periparto: FEVI < 45 % al final del embarazo o en los meses posteriores sin otra causa; FEVI < 30 % predice peor recuperación.',
+              'Cardiotoxicidad (ESC 2022): leve si FEVI ≥ 50 % con caída relativa del GLS > 15 %; moderada si FEVI 40–49 % con descenso ≥ 10 puntos (o menor con GLS o biomarcadores); grave si FEVI < 40 %.',
+              'Mide FEVI (mejor 3D) y GLS con el mismo equipo y software en cada control.',
+              'DAVD (criterios 2010): VD dilatado con discinesia regional, T negativas en V1–V3, onda épsilon, TV con morfología de BRI e historia familiar.',
+              'La hipertrabeculación del VI es un rasgo fenotípico (ESC 2023), no un diagnóstico por sí misma.',
+            ],
+          },
+          {
+            title: 'Constricción frente a restricción',
+            points: [
+              'Constricción: rebote septal, variación respiratoria de la E mitral > 25 %, e′ medial conservada (≥ 9 cm/s) y annulus reversus (e′ medial > lateral).',
+              'Restricción: e′ baja (< 6 cm/s) por enfermedad del miocardio, sin variación respiratoria significativa y con NT-proBNP más alto.',
+              'El dip-plateau del VD aparece en ambas; el dato hemodinámico discriminante es la discordancia respiratoria de las presiones de VI y VD.',
+              'La constricción crónica sintomática se trata con pericardiectomía; si hay inflamación activa, prueba antes tratamiento antiinflamatorio.',
+            ],
+            tip: 'La radioterapia mediastínica puede producir ambas, a veces en el mismo paciente.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u8-l1',
+          title: 'Mixoma auricular izquierdo',
+          case: {
+            title: 'Mujer de 54 años con disnea y síncope al incorporarse',
+            text: 'Mujer de 54 años con 3 meses de disnea progresiva, febrícula, pérdida de 4 kg de peso y artralgias. Ha tenido dos síncopes al levantarse de la cama. Ritmo sinusal. Se ausculta un ruido protodiastólico de baja frecuencia seguido de un soplo diastólico apical que varía con la postura. VSG 68 mm/h y anemia leve.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: masa de 4 × 3 cm en la AI, móvil, de aspecto gelatinoso, unida por un pedículo al septo interauricular a nivel de la fosa oval, que protruye a través de la mitral en diástole.', prompt: '¿Cuál es el diagnóstico más probable?', diagram: { id: 'a4c', highlight: 'la' }, options: ['Mixoma auricular', 'Trombo en la orejuela izquierda', 'Fibroelastoma papilar', 'Vegetación endocardítica mitral'], answer: 0, explain: 'El mixoma es el tumor cardiaco primario más frecuente del adulto; el 75 % asienta en la AI con anclaje en la fosa oval. El ruido protodiastólico es el "plop tumoral".' },
+            { type: 'match', prompt: 'Relaciona cada rasgo ecocardiográfico con la masa que sugiere', pairs: [['Anclaje en la fosa oval', 'Mixoma'], ['Orejuela con FA y AI dilatada', 'Trombo'], ['Pequeña y frondosa en la válvula aórtica', 'Fibroelastoma papilar'], ['Infiltración y derrame pericárdico', 'Tumor maligno o metástasis']], explain: 'Localización, sustrato y movilidad orientan el diagnóstico; la RM caracteriza el tejido y el contraste ecográfico valora la vascularización.' },
+            { type: 'tf', prompt: 'Con contraste ecográfico, el trombo auricular suele captar de forma intensa, a diferencia del mixoma.', answer: false, explain: 'Es al revés: el trombo es avascular y no capta; el mixoma muestra captación parcial y los tumores malignos muy vascularizados captan intensamente.' },
+            { type: 'mc', context: 'Doppler: gradiente medio transmitral 9 mmHg con FC 80 lpm. Vmax de la IT 3,2 m/s y VCI de 18 mm con colapso < 50 % (PAD estimada 8 mmHg).', prompt: '¿Cuál es la PSAP estimada?', options: ['≈ 49 mmHg', '≈ 41 mmHg', '≈ 21 mmHg', '≈ 34 mmHg'], answer: 0, explain: 'PSAP = 4 × 3,2² + PAD = 41 + 8 ≈ 49 mmHg. El mixoma obstruye la mitral como una estenosis funcional, que varía con la postura y explica los síncopes.' }, // REVISAR: PAD 8 mmHg con VCI 18 mm y colapso < 50 % (ASE: intermedia)
+            { type: 'mc', prompt: '¿Qué tratamiento corresponde?', options: ['Resección quirúrgica sin demora', 'Anticoagulación y ETT de control en 3 meses', 'Biopsia percutánea guiada por ETE', 'Quimioterapia neoadyuvante'], answer: 0, explain: 'El mixoma debe extirparse pronto por riesgo de embolia y de obstrucción mitral con muerte súbita. Se reseca con su base de implantación para evitar recidivas.' },
+            { type: 'tf', prompt: 'Ante mixomas múltiples, recidivantes o en pacientes jóvenes debe sospecharse un complejo de Carney.', answer: true, explain: 'Es un síndrome autosómico dominante (PRKAR1A) con lentiginosis y tumores endocrinos. Requiere seguimiento ecográfico y cribado familiar.' },
+          ],
+        },
+        {
+          id: 'casos-u8-l2',
+          title: 'Miocardiopatía periparto',
+          case: {
+            title: 'Mujer de 31 años con disnea tres semanas después del parto',
+            text: 'Mujer de 31 años, primípara, con un embarazo gemelar complicado con preeclampsia y cesárea en la semana 35. Tres semanas después del parto presenta disnea progresiva, ortopnea y edemas en los tobillos. TA 135/85 mmHg, FC 110 lpm, crepitantes bibasales. NT-proBNP 4200 pg/ml. Está dando lactancia materna.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Qué define la miocardiopatía periparto?', options: ['FEVI < 45 % al final del embarazo o meses después, sin otra causa', 'FEVI < 35 % solo durante el tercer trimestre', 'Dilatación del VI con FEVI conservada tras el parto', 'Insuficiencia cardiaca con miocardiopatía previa conocida'], answer: 0, explain: 'Es un diagnóstico de exclusión: disfunción sistólica (FEVI < 45 %) hacia el final del embarazo o en los meses siguientes. El VI puede no estar dilatado.' },
+            { type: 'mc', context: 'ETT (Simpson biplano): volumen telediastólico del VI 150 ml y telesistólico 105 ml. Diámetro telediastólico 60 mm. IM funcional moderada. Sin trombos.', prompt: 'Calcula la FEVI.', options: ['30 %', '45 %', '70 %', '42 %'], answer: 0, explain: 'FEVI = (VTD − VTS)/VTD = (150 − 105)/150 = 30 %. El 70 % sale de dividir VTS entre VTD, un error frecuente.' },
+            { type: 'mc', prompt: '¿Qué hallazgos basales se asocian a peor recuperación de la función ventricular?', options: ['FEVI < 30 % y diámetro telediastólico ≥ 60 mm', 'FEVI 40–45 % sin dilatación del VI', 'Hipertrofia concéntrica del VI', 'Derrame pericárdico pequeño'], answer: 0, explain: 'La FEVI muy reducida, la dilatación del VI y la afectación del VD predicen peor evolución. Muchas pacientes recuperan en 3–6 meses.' },
+            { type: 'match', prompt: 'Relaciona cada medida terapéutica con su justificación', pairs: [['Bromocriptina', 'Bloquea la prolactina (fragmento 16 kDa)'], ['Anticoagulación profiláctica', 'Se asocia a la bromocriptina'], ['Enalapril tras el parto', 'Compatible con la lactancia'], ['Suprimir la lactancia', 'Se plantea en disfunción grave']], explain: 'El esquema BOARD resume el tratamiento: bromocriptina, anticoagulación, vasodilatadores, IECA/ARA-II o ARNI tras el parto, betabloqueantes y diuréticos.' }, // REVISAR: grado de recomendación de bromocriptina (ESC 2018 IIb; ESC 2023 IC)
+            { type: 'tf', prompt: 'Los IECA están contraindicados durante el embarazo, pero se pueden usar tras el parto.', answer: true, explain: 'Son teratógenos en el segundo y tercer trimestre. Tras el parto se prefieren enalapril o captopril si la madre da lactancia.' },
+            { type: 'tf', prompt: 'Si la FEVI se normaliza por completo, el riesgo de recaída en un nuevo embarazo es nulo.', answer: false, explain: 'Incluso con recuperación completa hay riesgo de recaída; con FEVI < 50 % persistente se desaconseja un nuevo embarazo (ESC 2018). Requiere consejo preconcepcional.' },
+          ],
+        },
+        {
+          id: 'casos-u8-l3',
+          title: 'Cardiotoxicidad por antraciclinas y trastuzumab',
+          case: {
+            title: 'Mujer de 49 años con cáncer de mama HER2 positivo',
+            text: 'Mujer de 49 años, hipertensa en tratamiento, con un carcinoma de mama HER2 positivo. Recibió doxorrubicina (dosis acumulada 240 mg/m²) y ahora está con trastuzumab. ETT basal: FEVI 62 % (3D) y strain longitudinal global (GLS) −21 %. Troponina basal normal. Acude al control de los 3 meses asintomática.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT de control con el mismo equipo y software: FEVI 55 % y GLS −16 %. Troponina normal.', prompt: '¿Cuál es la caída relativa del GLS?', options: ['≈ 24 %', '≈ 5 %', '≈ 31 %', '≈ 11 %'], answer: 0, explain: 'Caída relativa = (21 − 16)/21 ≈ 24 %. Más de un 15 % se considera significativo; 5 es la diferencia absoluta en puntos, no el porcentaje.' },
+            { type: 'mc', prompt: 'Según la guía de cardio-oncología ESC 2022, ¿cómo se clasifica?', options: ['Disfunción cardiaca asintomática leve', 'Disfunción cardiaca asintomática moderada', 'Disfunción cardiaca asintomática grave', 'No cumple criterios de cardiotoxicidad'], answer: 0, explain: 'Leve: FEVI ≥ 50 % con caída relativa del GLS > 15 % y/o elevación de biomarcadores. Moderada: FEVI 40–49 % con descenso ≥ 10 puntos (o < 10 con GLS o biomarcadores). Grave: FEVI < 40 %.' },
+            { type: 'tf', prompt: 'En la disfunción asintomática leve se recomienda suspender definitivamente el trastuzumab.', answer: false, explain: 'Se continúa el trastuzumab con controles más estrechos y se considera iniciar cardioprotección (IECA/ARA-II y/o betabloqueante). La decisión se toma con oncología.' },
+            { type: 'match', prompt: 'Relaciona cada tratamiento oncológico con su cardiotoxicidad característica', pairs: [['Antraciclinas', 'Dosis acumulada, a menudo irreversible'], ['Trastuzumab', 'Disfunción del VI, suele ser reversible'], ['Inhibidores de checkpoint', 'Miocarditis'], ['Fluoropirimidinas (5-FU)', 'Vasoespasmo coronario']], explain: 'El riesgo con antraciclinas aumenta claramente por encima de 250 mg/m² de doxorrubicina; el tratamiento previo con antraciclinas aumenta el riesgo del trastuzumab.' },
+            { type: 'mc', prompt: '¿Qué método se prefiere para seguir la FEVI durante el tratamiento?', options: ['ETT 3D, o Simpson biplano si no hay 3D', 'Teichholz en modo M', 'Estimación visual por el operador', 'Fracción de acortamiento en modo M'], answer: 0, explain: 'El 3D tiene la menor variabilidad entre estudios. Los métodos lineales o visuales no detectan cambios de 5–10 puntos con fiabilidad.' },
+            { type: 'mc', context: 'A los 6 meses sigue asintomática, pero la FEVI es 44 % y el GLS −14 %.', prompt: '¿Qué actitud recomienda la guía ESC 2022?', options: ['Interrumpir temporalmente el trastuzumab e iniciar tratamiento de IC', 'Continuar el trastuzumab sin cambios', 'Suspender el trastuzumab de forma definitiva', 'Cambiar a doxorrubicina liposomal'], answer: 0, explain: 'FEVI 44 % con descenso de 18 puntos = disfunción moderada. Se interrumpe temporalmente el anti-HER2, se inicia tratamiento de IC y se reevalúa en unas semanas para reintroducirlo si mejora.' }, // REVISAR: plazo de reevaluación (≈ 3 semanas) en ESC 2022
+          ],
+        },
+        {
+          id: 'casos-u8-l4',
+          title: 'Constricción frente a restricción',
+          case: {
+            title: 'Varón de 63 años con ascitis y edemas tras radioterapia antigua',
+            text: 'Varón de 63 años que recibió radioterapia mediastínica por un linfoma de Hodgkin hace 20 años. Presenta desde hace un año disnea, edemas en las piernas y aumento del perímetro abdominal. Presión venosa yugular elevada que aumenta con la inspiración y descenso y profundo. Ritmo sinusal. FEVI conservada en un ETT previo.',
+          },
+          questions: [
+            { type: 'tf', prompt: 'El aumento de la presión venosa yugular con la inspiración (signo de Kussmaul) es específico de la pericarditis constrictiva.', answer: false, explain: 'Aparece también en la miocardiopatía restrictiva, el infarto de VD y la IT grave. No sirve para distinguir constricción de restricción.' },
+            { type: 'mc', context: 'ETT: rebote septal respiratorio, VCI de 24 mm sin colapso, variación respiratoria de la E mitral del 35 %, e′ medial 14 cm/s y e′ lateral 10 cm/s, y flujo diastólico inverso espiratorio en las venas hepáticas.', prompt: '¿Qué diagnóstico sugieren estos hallazgos?', options: ['Pericarditis constrictiva', 'Miocardiopatía restrictiva', 'Taponamiento cardiaco', 'Insuficiencia tricuspídea grave aislada'], answer: 0, explain: 'Rebote septal, e′ medial conservada y reversión espiratoria en las venas hepáticas son los criterios de la Clínica Mayo. La e′ medial mayor que la lateral es el annulus reversus.' },
+            { type: 'match', prompt: 'Relaciona cada hallazgo con su significado', pairs: [['Rebote septal respiratorio', 'Interdependencia ventricular'], ['e′ medial > e′ lateral', 'Annulus reversus'], ['e′ medial < 6 cm/s', 'Miocardio enfermo (restricción)'], ['Variación de la E mitral > 25 %', 'Disociación de presiones intratorácicas']], explain: 'En la constricción el miocardio está sano (e′ normal) pero el pericardio rígido aísla el corazón de la presión intratorácica y acopla los dos ventrículos.' },
+            { type: 'tf', context: 'Cateterismo: igualación de las presiones diastólicas de las cuatro cavidades. Observa la curva del VD.', pressure: 'rv-dip', prompt: 'La morfología en raíz cuadrada (dip-plateau) de la curva del VD permite distinguir la constricción de la restricción.', answer: false, explain: 'El dip-plateau aparece en ambas. Lo que discrimina es la discordancia respiratoria de las presiones sistólicas de VI y VD (interdependencia), propia de la constricción.' },
+            { type: 'mc', prompt: '¿Qué dato analítico orienta más a constricción que a restricción?', options: ['NT-proBNP relativamente bajo para el grado de congestión', 'NT-proBNP muy elevado', 'Troponina persistentemente elevada', 'Cadenas ligeras libres en suero alteradas'], answer: 0, explain: 'En la constricción el miocardio no se distiende y el péptido natriurético sube poco. Las cadenas ligeras alteradas orientan a amiloidosis AL, causa de restricción.' },
+            { type: 'mc', context: 'TC: pericardio engrosado (6 mm) y calcificado. RM: sin realce pericárdico; PCR normal. NYHA III pese a diuréticos.', prompt: '¿Qué tratamiento corresponde?', options: ['Pericardiectomía', 'Antiinflamatorios durante 3 meses', 'Pericardiocentesis', 'Trasplante cardiaco'], answer: 0, explain: 'La constricción crónica sin inflamación activa y con síntomas avanzados se trata con pericardiectomía. Tras radioterapia el pronóstico es peor por la afectación miocárdica asociada.' }, // REVISAR: confirmar recomendación en guía ESC 2025 de pericardio
+          ],
+        },
+        {
+          id: 'casos-u8-l5',
+          title: 'Displasia arritmogénica del VD e hipertrabeculación',
+          case: {
+            title: 'Varón de 24 años con síncope durante un partido',
+            text: 'Varón de 24 años, futbolista aficionado, que sufre un síncope en pleno esfuerzo. En urgencias se documenta una TV monomorfa sostenida con morfología de bloqueo de rama izquierda y eje superior, mal tolerada, que precisa cardioversión. Un tío murió de forma súbita a los 35 años. En el ECG basal en ritmo sinusal hay ondas T negativas en V1–V3 sin bloqueo de rama derecha. Superficie corporal 1,9 m².',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Una TV con morfología de bloqueo de rama izquierda y eje superior se origina probablemente en…', options: ['La pared inferior o libre del VD', 'El tracto de salida del VI', 'El ápex del VI', 'El fascículo posterior izquierdo'], answer: 0, explain: 'La morfología de BRI indica origen en el VD; el eje superior, en la pared inferior. La TV del tracto de salida del VD idiopática tiene eje inferior.' },
+            { type: 'mc', context: 'ETT: VD dilatado con diámetro del TSVD en paraesternal largo de 37 mm, discinesia de la pared libre subtricuspídea y pequeños aneurismas; FEVI 58 %.', prompt: 'Calcula el TSVD indexado y valora el criterio de imagen (Task Force 2010).', options: ['19,5 mm/m²: criterio mayor', '19,5 mm/m²: criterio menor', '37 mm/m²: criterio mayor', '15,2 mm/m²: no cumple criterio'], answer: 0, explain: '37 / 1,9 ≈ 19,5 mm/m². Discinesia regional del VD con TSVD paraesternal largo ≥ 32 mm (≥ 19 mm/m²) es criterio mayor.' }, // REVISAR: umbrales Task Force 2010 (PLAX ≥ 32 mm o ≥ 19 mm/m² mayor)
+            { type: 'match', prompt: 'Relaciona cada categoría de los criterios de DAVD con un ejemplo', pairs: [['Repolarización', 'T negativas en V1–V3 sin BRD (> 14 años)'], ['Despolarización', 'Onda épsilon en V1–V3'], ['Arritmias', 'TV con morfología de BRI y eje superior'], ['Historia familiar', 'Familiar de primer grado con DAVD']], explain: 'Se necesitan 2 criterios mayores, 1 mayor y 2 menores o 4 menores. Este paciente cumple sobradamente el diagnóstico definitivo.' },
+            { type: 'tf', prompt: 'La dilatación del VD con discinesia regional es un hallazgo esperable en el corazón de deportista.', answer: false, explain: 'El deportista puede tener un VD algo dilatado, pero con contracción global y regional normal. La discinesia regional y los aneurismas orientan a miocardiopatía.' },
+            { type: 'mc', context: 'El ETT también muestra trabeculación prominente en el ápex del VI, con cociente entre capa no compactada y compactada de 2,1 en sístole; FEVI conservada y sin realce del VI en la RM.', prompt: 'Según la guía de miocardiopatías ESC 2023, ¿cómo se interpreta?', options: ['Rasgo fenotípico (hipertrabeculación), no una miocardiopatía en sí', 'Miocardiopatía no compactada que exige anticoagulación', 'Criterio mayor adicional de DAVD', 'Indicación de DAI por sí sola'], answer: 0, explain: 'La ESC 2023 ya no clasifica la no compactación como miocardiopatía: la hipertrabeculación aparece en deportistas, embarazadas y otras miocardiopatías, y se valora en su contexto.' },
+            { type: 'mc', prompt: '¿Qué tratamiento corresponde?', options: ['DAI y abandono del deporte de competición', 'Solo betabloqueante y retorno al deporte', 'Ablación de la TV sin DAI', 'Amiodarona y revisión en 6 meses'], answer: 0, explain: 'En la DAVD con TV sostenida mal tolerada o síncope arrítmico, el DAI es clase I. El ejercicio intenso acelera la progresión y se desaconseja el deporte de competición.' },
+          ],
+        },
+        {
+          id: 'casos-u8-l6',
+          title: 'Endocarditis sobre cable de marcapasos',
+          case: {
+            title: 'Varón de 76 años portador de marcapasos con fiebre',
+            text: 'Varón de 76 años con marcapasos bicameral implantado hace 6 años por bloqueo AV; hace 2 meses se le cambió el generador. Presenta fiebre intermitente de 3 semanas y astenia. El bolsillo del generador no muestra signos inflamatorios. Hemocultivos: 3 de 3 positivos para Staphylococcus aureus sensible a meticilina.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'El ETT no muestra vegetaciones. ¿Cuál es el siguiente paso?', options: ['Ecocardiograma transesofágico', 'Repetir el ETT en 2 semanas', 'TC torácica sin contraste', 'Retirar el generador sin más estudios'], answer: 0, explain: 'El ETE es mucho más sensible para ver vegetaciones en los cables, en la AD y en la vena cava superior. Con bacteriemia por S. aureus en un portador de dispositivo, la infección del sistema es muy probable.' },
+            { type: 'mc', context: 'ETE: masa móvil de 12 mm adherida al cable auricular en la unión de la VCS con la AD. Tricúspide y válvulas izquierdas sin vegetaciones.', prompt: '¿Cuál es el diagnóstico?', diagram: { id: 'a4c', highlight: 'ra' }, options: ['Endocarditis relacionada con el dispositivo', 'Infección limitada al bolsillo', 'Endocarditis tricuspídea aislada', 'Trombo no infectado sin relevancia'], answer: 0, explain: 'Vegetación en el cable con hemocultivos positivos para un microorganismo típico es endocarditis sobre dispositivo, aunque el bolsillo esté sano.' },
+            { type: 'tf', prompt: 'Una ETE sin vegetaciones descarta la endocarditis sobre cable.', answer: false, explain: 'El ETE puede ser negativo o confundir vegetaciones con trombos o hebras de fibrina. La PET-TC con 18F-FDG y la gammagrafía con leucocitos marcados ayudan al diagnóstico (ESC 2023).' },
+            { type: 'mc', prompt: '¿Qué tratamiento recomienda la guía ESC 2023?', options: ['Extracción completa del sistema y antibiótico', 'Antibiótico prolongado sin extraer el dispositivo', 'Extracción solo del cable afectado', 'Cambio del generador y antibiótico'], answer: 0, explain: 'En la endocarditis sobre dispositivo se extrae todo el sistema, generador y todos los cables (clase I). Sin extracción, las recaídas y la mortalidad son muy altas.' },
+            { type: 'mc', prompt: 'Con una vegetación de 12 mm, ¿cuál es la vía de extracción de elección?', options: ['Percutánea transvenosa en un centro con cirugía', 'Cirugía con circulación extracorpórea', 'Extracción por toracoscopia', 'No extraer por riesgo de embolia'], answer: 0, explain: 'La extracción percutánea es de elección; la cirugía se considera con vegetaciones muy grandes (> 20 mm) o afectación valvular que requiera cirugía. Embolias pulmonares pequeñas son frecuentes y bien toleradas.' }, // REVISAR: umbral de tamaño de vegetación para extracción quirúrgica (ESC 2023)
+            { type: 'match', prompt: 'Relaciona cada aspecto del reimplante con la recomendación', pairs: [['Reevaluar la indicación', 'Antes de reimplantar'], ['Momento del reimplante', 'Hemocultivos negativos ≥ 72 h'], ['Localización del nuevo sistema', 'Lado contralateral'], ['Paciente dependiente de marcapasos', 'Estimulación temporal o sin cables']], explain: 'Hasta un tercio de los pacientes no necesita reimplante. Si hay vegetaciones valvulares se espera al menos 2 semanas.' }, // REVISAR: tiempos de reimplante ESC 2023
+          ],
+        },
+      ],
+    },
   ],
 };
