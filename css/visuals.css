@@ -38,8 +38,8 @@
 .pressure { display: block; width: 100%; min-width: 320px; height: auto; background: var(--pr-paper); }
 .pressure .grid { stroke: var(--pr-grid); stroke-width: 1; }
 .pressure .grid.zero { stroke-width: 1.6; }
-.pressure .lbl { fill: var(--pr-label); font: 700 11px 'Nunito', system-ui, sans-serif; }
-.pressure .trace { fill: none; stroke: var(--pr-trace); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.pressure .lbl { fill: var(--pr-label); font: 700 13px 'Nunito', system-ui, sans-serif; }
+.pressure .trace { fill: none; stroke: var(--pr-trace); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
 .pressure .trace2 { stroke: var(--pr-trace2); }
 
 /* Diagramas */

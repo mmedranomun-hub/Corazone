@@ -235,7 +235,7 @@ export const PRESSURES = {
     desc: 'Al inflar el balón la curva pasa de arterial pulmonar (sístole, diastólica e incisura) a la de enclavamiento (ondas a y v, presión media menor que la diastólica de AP).',
     traces: [one('AP → PCP', (t, s) => {
       const w = smooth((t - 1.6) / 0.16);
-      return (1 - w) * artery(PA, t, s) + w * atrium(PCWP, t, s);
+      return (1 - w) * artery(PA, t, s) + w * atrium({ ...PCWP, base: 7 }, t, s);
     })],
     seconds: 3.2,
   },
@@ -262,7 +262,7 @@ function scaleFor(max) {
   return { top: 200, step: 40 };
 }
 
-export function renderPressure(id, { width = 600, height = 260 } = {}) {
+export function renderPressure(id, { width = 480, height = 230 } = {}) {
   const traces = samplePressure(id);
   const seconds = traces[0].points.at(-1).t;
   const max = Math.max(...traces.flatMap((tr) => tr.points.map((p) => p.p)));
@@ -281,7 +281,7 @@ export function renderPressure(id, { width = 600, height = 260 } = {}) {
   let legend = '';
   if (traces.length > 1) {
     legend = traces.map((tr, i) => {
-      const x = width - R - 130 + i * 66, y = T - 14;
+      const x = width - R - 120 + i * 62, y = T - 14;
       return `<line class="trace${i ? ' trace2' : ''}" x1="${x}" x2="${x + 18}" y1="${y}" y2="${y}"/><text class="lbl leg" x="${x + 24}" y="${y}" dominant-baseline="middle">${tr.label}</text>`;
     }).join('');
   }
