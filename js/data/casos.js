@@ -1747,5 +1747,278 @@ export default {
         },
       ],
     },
+    {
+      id: 'casos-u17',
+      title: 'Casos de cateterismo: multivaso, TAVI, shock y cateterismo derecho',
+      guide: {
+        intro: 'Cinco casos de sala de hemodinámica que exigen decidir con números: qué arterias tratar en el infarto multivaso, cómo vigilar la conducción tras una TAVI, cuándo escalar el soporte en el shock y cómo leer un cateterismo derecho en la HP poscapilar y en la IC avanzada.',
+        sections: [
+          {
+            title: 'Infarto con enfermedad multivaso',
+            points: [
+              'IAMCEST estable hemodinámicamente: revascularización completa, en el mismo procedimiento o en los 45 días siguientes (ESC SCA 2023; ensayo COMPLETE).',
+              'En el IAMCEST, la ICP de las lesiones no culpables se guía por su gravedad angiográfica: la FFR no aportó beneficio (FLOWER-MI).',
+              'Shock cardiogénico: ICP sólo de la arteria culpable en el procedimiento inicial; el resto, de forma diferida (CULPRIT-SHOCK).',
+              'En mayores de 75 años con IAM, la revascularización completa guiada por fisiología también reduce eventos (FIRE).',
+            ],
+            tip: 'Estable → completa; shock → sólo la culpable.',
+          },
+          {
+            title: 'TAVI y conducción',
+            points: [
+              'ESC/EACTS 2025: TAVI transfemoral de elección en EA grave con válvula tricúspide en pacientes ≥ 70 años o de riesgo quirúrgico alto; decisión del Heart Team.',
+              'La TC cardiaca sincronizada mide el anillo, la altura de los ostium coronarios y los accesos iliofemorales.',
+              'El BRD previo es el principal predictor de BAV completo tras la TAVI; las válvulas autoexpandibles y el implante profundo aumentan el riesgo.',
+              'BAV completo o de alto grado que persiste 24–48 h tras la TAVI → marcapasos definitivo (ESC marcapasos 2021).',
+              'BRI nuevo con QRS > 150 ms o PR > 240 ms sin más progresión → Holter ambulatorio o estudio electrofisiológico.',
+            ],
+            tip: 'BRD previo + TAVI: vigila la telemetría como mínimo 48 h.',
+          },
+          {
+            title: 'Shock cardiogénico: los números',
+            points: [
+              'SCAI: A (en riesgo), B (inicio, hipotensión sin hipoperfusión), C (clásico, hipoperfusión), D (deterioro pese al tratamiento inicial), E (extremo, PCR o colapso).',
+              'Potencia cardiaca (CPO) = PAM × GC / 451; < 0,6 W predice mortalidad elevada.',
+              'PAPi = (PAPs − PAPd) / PAD; < 0,9 sugiere fallo del VD. PAD/PCP elevado (> 0,63) también orienta a fallo derecho.',
+              'Bomba microaxial (Impella CP): redujo la mortalidad en el shock por IAMCEST seleccionado (DanGer Shock), a costa de más sangrado e isquemia de miembro. ECMO-VA rutinario: sin beneficio (ECLS-SHOCK). BCIA rutinario: no (IABP-SHOCK II).',
+            ],
+            tip: 'Lactato que sube pese a dos fármacos vasoactivos = SCAI D: es el momento de pensar en soporte mecánico.',
+          },
+          {
+            title: 'Cateterismo derecho: HP e IC avanzada',
+            points: [
+              'HP: PAPm > 20 mmHg. Precapilar: PCP ≤ 15 y RVP > 2 UW. Poscapilar aislada: PCP > 15 y RVP ≤ 2 UW. Combinada: PCP > 15 y RVP > 2 UW (ESC HP 2022).',
+              'La PCP se mide al final de la espiración; con PCP límite y sospecha de IC-FEc, la sobrecarga de volumen o el ejercicio pueden desenmascararla.',
+              'Fick: GC = VO₂ / (CaO₂ − CvO₂), con CaO₂ = 1,36 × Hb × SatO₂ × 10 (ml/l). RVP = (PAPm − PCP) / GC.',
+              'En la HP por cardiopatía izquierda no se recomiendan los vasodilatadores pulmonares específicos.',
+              'Candidato a trasplante con RVP elevada (> 3 UW): test vasodilatador; si la HP es fija, el DAVI puede servir de puente a la candidatura.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u17-l1',
+          title: 'IAMCEST multivaso: ¿sólo la culpable?',
+          case: {
+            title: 'Varón de 63 años con IAMCEST inferior y lesiones en otros vasos',
+            text: 'Varón de 63 años, fumador y dislipémico, con dolor torácico de 2 horas e IAMCEST inferior. Killip I, TA 132/80 mmHg. Coronariografía radial: oclusión trombótica de la coronaria derecha media (culpable), estenosis del 80 % en la circunfleja proximal y del 70 % en la DA media. Se implanta un stent farmacoactivo en la CD con flujo TIMI 3 final.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Está estable y sin dolor. ¿Qué haces con las lesiones no culpables?', options: ['Revascularizarlas: en el mismo acto o en ≤ 45 días', 'Tratamiento médico y sólo ICP si hay angina', 'Cirugía coronaria urgente de los tres vasos', 'Ergometría a los 6 meses y decidir entonces'], answer: 0, explain: 'En el IAMCEST estable, la revascularización completa reduce la muerte cardiovascular y el reinfarto (COMPLETE). La ESC 2023 permite hacerla en el procedimiento índice o en los 45 días siguientes.' },
+            { type: 'mc', prompt: 'La lesión no culpable más grave (80 %) está en la arteria resaltada. ¿Cuál es?', diagram: { id: 'coronary', highlight: 'cx' }, options: ['Circunfleja', 'Descendente anterior', 'Coronaria derecha', 'Primera diagonal'], answer: 0, explain: 'La circunfleja nace del tronco común y recorre el surco auriculoventricular izquierdo; da las ramas marginales obtusas que irrigan la cara lateral.' },
+            { type: 'tf', prompt: 'En el IAMCEST, antes de tratar una lesión no culpable es obligatorio medir su FFR durante la ICP primaria.', answer: false, explain: 'En el IAMCEST la ESC 2023 recomienda guiar la ICP de las no culpables por la gravedad angiográfica: la FFR no mejoró los resultados (FLOWER-MI) y la microcirculación alterada del infarto agudo la hace menos fiable.' },
+            { type: 'mc', context: 'Semanas después ingresa otro paciente con IAMCEST anterior en shock cardiogénico: TA 78/50 mmHg con noradrenalina. Oclusión de la DA proximal y estenosis graves en la CD y la circunfleja.', prompt: '¿Qué estrategia de revascularización eliges?', options: ['ICP sólo de la DA; el resto, diferido', 'ICP de los tres vasos en el mismo acto', 'Cirugía coronaria urgente de los tres vasos', 'Fibrinolisis y coronariografía a las 24 h'], answer: 0, explain: 'En el shock, la ICP multivaso inmediata aumentó la mortalidad o la diálisis a 30 días frente a tratar sólo la culpable (CULPRIT-SHOCK). La ESC 2023 desaconseja la ICP rutinaria de las no culpables en el procedimiento índice.' },
+            { type: 'tf', prompt: 'En pacientes ≥ 75 años con IAM y enfermedad multivaso, la revascularización completa guiada por fisiología reduce eventos frente a tratar sólo la culpable.', answer: true, explain: 'El ensayo FIRE mostró menos muerte, reinfarto, ictus o revascularización a un año en ancianos: la edad por sí sola no justifica dejar lesiones sin tratar.' },
+            { type: 'match', prompt: 'Relaciona cada ensayo con su mensaje', pairs: [['COMPLETE', 'IAMCEST estable: revascularización completa'], ['CULPRIT-SHOCK', 'Shock: sólo la arteria culpable'], ['FLOWER-MI', 'FFR no mejora a la angiografía'], ['FIRE', 'Completa también en ≥ 75 años']], explain: 'Estos cuatro ensayos son la base de las recomendaciones de la ESC 2023 sobre la enfermedad multivaso en el IAM.' },
+          ],
+        },
+        {
+          id: 'casos-u17-l2',
+          title: 'TAVI y bloqueo AV completo',
+          case: {
+            title: 'Mujer de 84 años con estenosis aórtica grave sintomática',
+            text: 'Mujer de 84 años con disnea de moderados esfuerzos y un síncope de esfuerzo. ETT: válvula aórtica tricúspide calcificada, Vmax 4,6 m/s, gradiente medio 52 mmHg, AVA 0,6 cm², FEVI 60 %. ECG basal: ritmo sinusal con bloqueo de rama derecha. STS 5 %, fragilidad moderada. Se cateteriza para descartar enfermedad coronaria antes del implante.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Durante el cateterismo se registran VI y aorta simultáneos: sistólica del VI 184 mmHg y aorta 112/72 mmHg. ¿Cuál es el gradiente pico a pico?', pressure: 'as-lv-ao', options: ['72 mmHg', '112 mmHg', '40 mmHg', '184 mmHg'], answer: 0, explain: 'Pico a pico = sistólica del VI − sistólica aórtica (184 − 112). Los picos no son simultáneos: es menor que el gradiente pico instantáneo del Doppler; para comparar con la eco usa el gradiente medio.' },
+            { type: 'mc', prompt: 'Coronarias sin lesiones. Accesos femorales adecuados en la TC. ¿Qué tratamiento indicas?', options: ['TAVI transfemoral', 'Sustitución valvular quirúrgica', 'Valvuloplastia con balón como tratamiento definitivo', 'Seguimiento con eco anual'], answer: 0, explain: 'EA grave sintomática en una paciente de 84 años con válvula tricúspide y buen acceso femoral: la ESC/EACTS 2025 recomienda TAVI transfemoral (≥ 70 años o riesgo quirúrgico alto). La valvuloplastia sola sólo sirve de puente.' },
+            { type: 'tf', prompt: 'La TC cardiaca sincronizada con el ECG es la técnica de referencia para medir el anillo aórtico antes de una TAVI.', answer: true, explain: 'La TC mide el anillo (perímetro y área), la altura de los ostium coronarios, el calcio y los accesos iliofemorales; con ello se elige el tamaño de la prótesis y la vía.' },
+            { type: 'mc', context: 'Se implanta una válvula autoexpandible. Al retirar los catéteres aparece este ritmo, con TA 92/55 mmHg.', ecg: 'avb3', prompt: '¿Qué dato previo de esta paciente predecía mejor esta complicación?', options: ['Bloqueo de rama derecha previo', 'Fibrilación auricular previa', 'Hipertrofia del VI en el ECG', 'Gradiente medio de 52 mmHg'], answer: 0, explain: 'Bloqueo AV completo: P y QRS disociados. El BRD previo es el predictor más potente porque la prótesis lesiona la rama izquierda, adyacente al anillo; la válvula autoexpandible y el implante profundo suman riesgo.' },
+            { type: 'mc', context: 'Se coloca un marcapasos transitorio. A las 48 h persiste el BAV completo.', prompt: '¿Qué decisión tomas?', options: ['Marcapasos definitivo', 'Esperar 2 semanas con el transitorio', 'Isoproterenol oral y alta', 'Retirar el transitorio y observar'], answer: 0, explain: 'BAV completo o de alto grado que persiste 24–48 h tras la TAVI: marcapasos definitivo (ESC 2021, clase I). Mantener un cable transitorio días aumenta el riesgo de infección, desplazamiento y perforación.' },
+            { type: 'match', prompt: 'Relaciona cada situación tras la TAVI con su conducta (ESC 2021)', pairs: [['BAV completo que persiste 48 h', 'Marcapasos definitivo'], ['BRD previo y nuevo trastorno de conducción', 'Considerar marcapasos precoz'], ['BRI nuevo, QRS > 150 ms o PR > 240 ms', 'Holter ambulatorio o EEF'], ['Sin trastorno de conducción nuevo', 'Alta sin monitorización especial']], explain: 'El riesgo de BAV tardío depende del trastorno basal y del que aparece tras el implante; por eso se estratifica con el ECG antes y después de la TAVI.' },
+          ],
+        },
+        {
+          id: 'casos-u17-l3',
+          title: 'Shock cardiogénico: escalar el soporte',
+          case: {
+            title: 'Mujer de 58 años en shock tras un IAMCEST anterior',
+            text: 'Mujer de 58 años con IAMCEST anterior extenso de 5 horas de evolución; se le implanta un stent en la DA proximal. Seis horas después: TA 82/56 mmHg (PAM 65), FC 118 lpm, frialdad cutánea, oliguria y lactato que sube de 3,1 a 4,8 mmol/l pese a noradrenalina y dobutamina. Swan-Ganz: PAD 10, AP 40/24 (media 30), PCP 26 mmHg; GC 3,1 l/min; SC 1,7 m².',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿En qué estadio SCAI está la paciente?', options: ['D: deterioro pese al tratamiento inicial', 'B: hipotensión sin hipoperfusión', 'C: shock clásico que responde', 'E: extremo, en parada cardiaca'], answer: 0, explain: 'Tiene hipoperfusión (lactato, oliguria) y empeora pese a dos fármacos vasoactivos: SCAI D. El estadio E se reserva para la PCR o el colapso circulatorio refractario.' },
+            { type: 'mc', prompt: 'Calcula su potencia cardiaca (CPO = PAM × GC / 451).', options: ['0,45 W', '0,89 W', '0,20 W', '1,12 W'], answer: 0, explain: '65 × 3,1 / 451 ≈ 0,45 W. Una CPO < 0,6 W es el predictor hemodinámico más potente de mortalidad en el shock cardiogénico. Su índice cardiaco es 3,1 / 1,7 ≈ 1,8 l/min/m².' },
+            { type: 'mc', prompt: 'Calcula el PAPi = (PAPs − PAPd) / PAD. ¿Qué sugiere?', options: ['1,6: el fallo es sobre todo del VI', '0,4: fallo grave del VD', '2,0: fallo biventricular', '4,0: hemodinámica normal'], answer: 0, explain: '(40 − 24) / 10 = 1,6. Un PAPi < 0,9 sugiere fallo del VD; aquí el VD aguanta, y la PCP alta con PAD/PCP bajo (0,38) señala un fallo predominantemente izquierdo.' },
+            { type: 'mc', prompt: 'Sin coma ni contraindicaciones. ¿Qué soporte mecánico tiene evidencia de reducir la mortalidad en este perfil?', options: ['Bomba microaxial (Impella CP)', 'ECMO venoarterial sistemático', 'Balón de contrapulsación intraaórtico', 'Añadir un tercer vasopresor'], answer: 0, explain: 'En el shock por IAMCEST con fallo izquierdo, Impella CP redujo la mortalidad a 180 días (DanGer Shock) a costa de más sangrado e isquemia de miembro. ECMO-VA rutinario (ECLS-SHOCK) y BCIA (IABP-SHOCK II) no la redujeron.' },
+            { type: 'tf', prompt: 'La ECMO venoarterial aumenta la poscarga del VI y puede requerir descargarlo (venting), por ejemplo con un Impella.', answer: true, explain: 'El flujo retrógrado de la ECMO-VA por la aorta eleva la poscarga: si el VI no abre la válvula aórtica aparecen distensión, edema pulmonar y trombo; se descarga con Impella o BCIA (estrategia "ECPELLA").' },
+            { type: 'match', prompt: 'Relaciona cada parámetro con su fórmula o significado', pairs: [['CPO', 'PAM × GC / 451'], ['PAPi', '(PAPs − PAPd) / PAD'], ['Índice cardiaco', 'GC / superficie corporal'], ['PAD/PCP elevado', 'Fallo predominante del VD']], explain: 'Con estos cuatro datos del Swan-Ganz se fenotipa el shock (izquierdo, derecho o biventricular) y se elige el soporte.' },
+          ],
+        },
+        {
+          id: 'casos-u17-l4',
+          title: 'HP poscapilar por IC con FEVI conservada',
+          case: {
+            title: 'Mujer de 74 años con disnea y PSAP elevada',
+            text: 'Mujer de 74 años con HTA, diabetes y FA permanente, con disnea de moderados esfuerzos desde hace un año. ETT: FEVI 62 %, HVI concéntrica, AI 48 ml/m², E/e′ medio 16 y PSAP estimada 55 mmHg, sin valvulopatía significativa. Se remite a cateterismo derecho para caracterizar la hipertensión pulmonar.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la curva al inflar el balón del catéter de Swan-Ganz. ¿Qué presión estima la PCP?', pressure: 'pullback-pa-pcwp', options: ['La presión de la AI', 'La presión sistólica del VD', 'La presión diastólica de la AP', 'La presión de la AD'], answer: 0, explain: 'Con el balón enclavado se crea una columna de sangre estática hasta la AI: la PCP refleja su presión y, sin estenosis mitral, la telediastólica del VI.' },
+            { type: 'tf', prompt: 'La PCP debe medirse al final de la espiración, cuando la presión intratorácica se acerca a cero.', answer: true, explain: 'Al final de la espiración la presión pleural es mínima en respiración espontánea; medir en inspiración infraestima la PCP y puede clasificar mal la HP.' },
+            { type: 'mc', context: 'Resultados: PAD 12, AP 50/24 (media 32), PCP 22 mmHg; GC por termodilución 5,5 l/min.', prompt: '¿Cuál es la RVP?', options: ['1,8 UW', '5,8 UW', '4,0 UW', '0,5 UW'], answer: 0, explain: 'RVP = (PAPm − PCP) / GC = (32 − 22) / 5,5 ≈ 1,8 UW. El error típico es dividir la PAPm (5,8) o la PCP (4,0) por el gasto, sin restar.' },
+            { type: 'match', prompt: 'Relaciona cada perfil hemodinámico con su tipo de HP (ESC 2022, PAPm > 20 mmHg)', pairs: [['PCP ≤ 15, RVP > 2 UW', 'HP precapilar'], ['PCP > 15, RVP ≤ 2 UW', 'HP poscapilar aislada'], ['PCP > 15, RVP > 2 UW', 'HP poscapilar combinada'], ['PAPm ≤ 20 mmHg', 'Sin hipertensión pulmonar']], explain: 'La paciente tiene PAPm 32, PCP 22 y RVP 1,8 UW: HP poscapilar aislada (grupo 2), por IC con FEVI conservada.' },
+            { type: 'mc', prompt: '¿Qué tratamiento indicas?', options: ['Diurético, iSGLT2 y control de la TA y la FC', 'Sildenafilo para bajar la PAP', 'Ambrisentán y diurético', 'Epoprostenol en infusión continua'], answer: 0, explain: 'En la HP por cardiopatía izquierda se trata la causa: congestión, HTA, FA; los iSGLT2 tienen indicación de clase I en la IC-FEc (ESC 2023). Los vasodilatadores pulmonares no se recomiendan y pueden causar edema pulmonar.' },
+            { type: 'tf', prompt: 'Si la PCP en reposo hubiera sido de 13 mmHg con alta sospecha de IC-FEc, una sobrecarga de volumen o el ejercicio podrían desenmascarar la HP poscapilar.', answer: true, explain: 'Con diuréticos o en ayunas la PCP de reposo puede ser normal. Una PCP > 18 mmHg tras 500 ml de suero, o > 25 mmHg con el ejercicio, apoya la disfunción diastólica.' },
+          ],
+        },
+        {
+          id: 'casos-u17-l5',
+          title: 'IC avanzada: Fick, RVP y trasplante',
+          case: {
+            title: 'Varón de 52 años con miocardiopatía dilatada en fase avanzada',
+            text: 'Varón de 52 años con miocardiopatía dilatada idiopática, FEVI 18 %, NYHA III-IV y dos ingresos por IC en 6 meses pese a tratamiento médico completo y TRC-D. VO₂ pico 10 ml/kg/min. Cateterismo derecho para valorar trasplante: AP 62/30 (media 42), PCP 28, PAD 12 mmHg; Hb 13 g/dl, SatAo 96 %, SatAP 52 %, VO₂ estimado 250 ml/min, SC 1,9 m².',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Calcula el GC por Fick: CaO₂ − CvO₂ = 1,36 × Hb × (SatAo − SatAP) × 10.', options: ['3,2 l/min', '1,7 l/min', '4,8 l/min', '2,4 l/min'], answer: 0, explain: '1,36 × 13 × 0,44 × 10 ≈ 78 ml/l; GC = 250 / 78 ≈ 3,2 l/min. El índice cardiaco (3,2 / 1,9 ≈ 1,7 l/min/m²) confirma el bajo gasto.' },
+            { type: 'tf', prompt: 'La termodilución es fiable aunque el paciente tenga una insuficiencia tricuspídea grave.', answer: false, explain: 'La IT grave hace recircular el bolo frío y altera la curva de termodilución; en ella (y en los shunts) se prefiere el Fick, aunque el VO₂ estimado también introduce error.' },
+            { type: 'mc', prompt: '¿Cuál es su resistencia vascular pulmonar?', options: ['4,4 UW', '13,1 UW', '8,8 UW', '2,2 UW'], answer: 0, explain: 'RVP = (42 − 28) / 3,2 ≈ 4,4 UW, con un gradiente transpulmonar de 14 mmHg. Tiene una HP poscapilar combinada.' },
+            { type: 'mc', prompt: 'Con esta RVP, ¿cuál es el siguiente paso para decidir el trasplante?', options: ['Test vasodilatador para ver si la RVP es reversible', 'Descartar el trasplante de forma definitiva', 'Iniciar sildenafilo oral y repetir en un año', 'Incluir en lista sin más estudios'], answer: 0, explain: 'Una RVP elevada (> 3 UW) obliga a un test con nitroprusiato, milrinona o NO inhalado: si es fija, el VD del injerto, no acostumbrado a esa poscarga, puede fallar tras el trasplante.' },
+            { type: 'tf', context: 'Con nitroprusiato la RVP baja a 2,2 UW manteniendo la TAS > 85 mmHg.', prompt: 'La HP reversible no contraindica el trasplante cardiaco.', answer: true, explain: 'La reversibilidad indica que el componente es sobre todo pasivo. Si hubiera sido fija, un DAVI podría descargar la AI y bajar la RVP como puente a la candidatura.' },
+            { type: 'match', prompt: 'Relaciona cada parámetro con su fórmula', pairs: [['GC por Fick', 'VO₂ / (CaO₂ − CvO₂)'], ['CaO₂ (ml/l)', '1,36 × Hb × SatO₂ × 10'], ['RVP', '(PAPm − PCP) / GC'], ['Gradiente transpulmonar', 'PAPm − PCP']], explain: 'El oxígeno disuelto (0,003 × PO₂) suele despreciarse salvo con FiO₂ alta, en la que el Fick pierde precisión.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u18',
+      title: 'Casos integrados: del ECG a la sala',
+      guide: {
+        intro: 'Casos que obligan a juntar ECG, eco y hemodinámica: el dolor torácico que no es un infarto, la muerte súbita en un joven deportista, el edema agudo de pulmón con FEVI normal, la miocardiopatía hipertrófica de principio a fin y el antitrombótico del paciente con FA al que se le pone un stent.',
+        sections: [
+          {
+            title: 'Dolor torácico: IAM, disección o TEP',
+            points: [
+              'Dolor brusco y desgarrador, asimetría de pulsos o de TA (> 20 mmHg) y soplo de IAo nuevo: piensa en disección aunque el ECG muestre elevación del ST.',
+              'La disección tipo A puede ocluir el ostium de la CD y dar un IAMCEST inferior; antiagregar y anticoagular puede ser letal.',
+              'Confirmación: angio-TC de aorta; si el paciente está inestable, ETE a pie de cama o en quirófano.',
+              'Tipo A: cirugía urgente. Mientras tanto, betabloqueante iv hasta FC < 60 lpm y TAS 100–120 mmHg (ESC aorta 2024).',
+            ],
+            tip: 'Antes de cargar antiagregantes en un IAMCEST inferior con dolor atípico, toma la TA en los dos brazos.',
+          },
+          {
+            title: 'Muerte súbita en el joven',
+            points: [
+              'Causas: miocardiopatías (MCH, arritmogénica), canalopatías (QT largo, Brugada), WPW, coronaria anómala, miocarditis.',
+              'Miocardiopatía arritmogénica: T negativas en V1–V3 (> 14 años, sin BRD), onda épsilon, TV con morfología de BRI; dilatación y discinesia del VD.',
+              'Superviviente de una FV sin causa reversible: DAI en prevención secundaria (ESC arritmias ventriculares 2022).',
+              'En la miocardiopatía arritmogénica el ejercicio intenso acelera la enfermedad: no se recomienda el deporte de competición ni de alta intensidad.',
+              'Cribado de familiares de primer grado (ECG, eco, a veces RM) y estudio genético.',
+            ],
+          },
+          {
+            title: 'IC con FEVI conservada y edema agudo de pulmón',
+            points: [
+              'El edema agudo de pulmón hipertensivo es sobre todo una redistribución de volumen por poscarga alta: vasodilatadores iv, VMNI y diurético.',
+              'IC-FEc: síntomas + FEVI ≥ 50 % + evidencia de presiones de llenado altas (E/e′ > 9 de media, AI dilatada, PSAP > 35 mmHg, péptidos natriuréticos).',
+              'H₂FPEF (0–9): IMC > 30 (2), ≥ 2 antihipertensivos (1), FA (3), PSAP > 35 (1), edad > 60 (1), E/e′ > 9 (1); ≥ 6 = probabilidad alta.',
+              'Tratamiento: diurético si hay congestión, iSGLT2 (clase I, ESC 2023), control de la TA, la FA y las comorbilidades.',
+            ],
+          },
+          {
+            title: 'Miocardiopatía hipertrófica',
+            points: [
+              'Grosor ≥ 15 mm (≥ 13 mm en familiares) no explicado por sobrecarga. Obstrucción: gradiente en el TSVI ≥ 30 mmHg; ≥ 50 mmHg es relevante para tratar.',
+              'El gradiente es dinámico: aumenta con Valsalva, bipedestación, nitratos y deshidratación; disminuye con cuclillas y fenilefrina.',
+              'Signo de Brockenbrough: tras una extrasístole aumenta el gradiente y cae la presión de pulso aórtica.',
+              'Tratamiento: betabloqueante; si persisten los síntomas, mavacamten o terapia de reducción septal (miectomía o alcoholización). Evitar vasodilatadores y diuréticos a dosis altas.',
+              'DAI: prevención secundaria; en primaria según HCM Risk-SCD (≥ 6 % a 5 años: debe considerarse).',
+            ],
+          },
+          {
+            title: 'FA y stent: antitrombóticos',
+            points: [
+              'CHA₂DS₂-VA (ESC FA 2024, sin el sexo): IC, HTA, edad ≥ 75 (2), diabetes, ictus/AIT (2), enfermedad vascular, edad 65–74.',
+              'Tras ICP en FA: triple terapia (ACOD + AAS + clopidogrel) hasta 1 semana; luego ACOD + clopidogrel hasta 12 meses; después ACOD solo.',
+              'Si el riesgo trombótico es alto, la triple terapia puede prolongarse hasta 1 mes.',
+              'El P2Y12 de elección es el clopidogrel; prasugrel y ticagrelor aumentan el sangrado con anticoagulantes.',
+              'Apixabán 2,5 mg/12 h sólo si cumple 2 de 3: edad ≥ 80, peso ≤ 60 kg, creatinina ≥ 1,5 mg/dl.',
+            ],
+            tip: 'El ACOD no se suspende por poner un stent: lo que se acorta es la aspirina.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u18-l1',
+          title: 'Dolor torácico: IAM, disección o TEP',
+          case: {
+            title: 'Varón de 66 años con dolor desgarrador y ascenso del ST',
+            text: 'Varón de 66 años con HTA mal controlada que acude por dolor torácico brusco, muy intenso, "desgarrador", irradiado a la espalda, de 1 hora de evolución. TA 168/90 mmHg en el brazo derecho y 128/76 mmHg en el izquierdo; FC 98 lpm. Se ausculta un soplo diastólico aórtico. Se le hace un ECG de inmediato.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Qué muestra?', ecg12: 'stemi-inf', options: ['Elevación del ST inferior', 'Elevación difusa del ST con PR descendido', 'Elevación del ST de V1 a V4', 'Ondas T negativas en V1–V3'], answer: 0, explain: 'Elevación del ST en II, III y aVF con descenso especular en I y aVL: patrón de IAMCEST inferior, típico de la oclusión de la coronaria derecha.' },
+            { type: 'mc', prompt: 'Antes de activar el código infarto, ¿qué diagnóstico debes descartar?', options: ['Disección aórtica que afecta a la CD', 'Pericarditis aguda', 'Espasmo coronario por cocaína', 'TEP masivo con isquemia del VD'], answer: 0, explain: 'Dolor desgarrador irradiado a la espalda, diferencia de TA > 20 mmHg entre brazos y soplo de IAo apuntan a una disección tipo A; el colgajo puede ocluir el ostium de la CD y dar un IAMCEST inferior.' },
+            { type: 'mc', context: 'POCUS: raíz aórtica de 48 mm con un colgajo intimal móvil, IAo moderada y derrame pericárdico leve.', prompt: 'En el plano paraesternal largo, ¿en qué estructura se ve el colgajo?', diagram: { id: 'plax', highlight: 'ao' }, options: ['La raíz aórtica', 'La aurícula izquierda', 'El tracto de salida del VD', 'El septo interventricular'], answer: 0, explain: 'El colgajo móvil en la raíz aórtica dilatada, con IAo y derrame, es muy específico de disección tipo A. La angio-TC confirma la extensión; si el paciente se inestabiliza, ETE en quirófano.' },
+            { type: 'tf', prompt: 'Por el ECG de IAMCEST, conviene cargar ticagrelor y heparina antes de confirmar la disección con la TC.', answer: false, explain: 'Antiagregar y anticoagular a un paciente con disección tipo A multiplica el sangrado y la mortalidad quirúrgica. Ante la sospecha clínica, primero la imagen.' },
+            { type: 'mc', context: 'Angio-TC: disección tipo A desde la raíz hasta la aorta abdominal.', prompt: '¿Qué manejo indicas mientras llega el cirujano?', options: ['Betabloqueante iv: FC < 60 lpm y TAS 100–120 mmHg', 'Nitroprusiato iv sin betabloqueante', 'Fibrinolisis por el IAMCEST asociado', 'Pericardiocentesis del derrame leve'], answer: 0, explain: 'Primero el betabloqueante (esmolol, labetalol) para reducir la dP/dt; el vasodilatador sin él provoca taquicardia refleja. La disección tipo A es indicación de cirugía urgente (ESC aorta 2024).' },
+            { type: 'match', prompt: 'Relaciona cada diagnóstico con su pista clave', pairs: [['IAMCEST', 'Ascenso del ST con imagen especular'], ['Disección tipo A', 'Asimetría de TA y colgajo en la raíz'], ['TEP', 'VD dilatado con signo de McConnell'], ['Pericarditis', 'ST difuso con PR descendido']], explain: 'El ECG, el POCUS y la exploración se combinan para no tratar como infarto lo que no lo es.' },
+          ],
+        },
+        {
+          id: 'casos-u18-l2',
+          title: 'Muerte súbita recuperada en una deportista',
+          case: {
+            title: 'Mujer de 22 años que colapsa durante una carrera',
+            text: 'Mujer de 22 años, triatleta, que se desploma a mitad de una carrera. Recibe RCP de un testigo y el DEA indica una descarga; recupera la circulación espontánea a los 6 minutos. Tres meses antes tuvo un síncope durante un entrenamiento que no se estudió. Un tío materno murió súbitamente a los 38 años.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Esta es la tira registrada por el DEA. ¿Qué ritmo es?', ecg: 'vf', options: ['Fibrilación ventricular', 'Taquicardia ventricular monomorfa', 'Asistolia', 'Fibrilación auricular rápida'], answer: 0, explain: 'Actividad caótica sin QRS identificables: FV. Es un ritmo desfibrilable; cada minuto sin descarga reduce la supervivencia, de ahí el valor del DEA público.' },
+            { type: 'mc', context: 'Tras el ROSC, consciente y estable, se registra este ECG de 12 derivaciones.', ecg12: 'arvc', prompt: '¿Qué diagnóstico sugiere?', options: ['Miocardiopatía arritmogénica del VD', 'Síndrome de Brugada tipo 1', 'Síndrome de Wellens', 'Repolarización precoz benigna'], answer: 0, explain: 'T negativas de V1 a V3 sin BRD y onda épsilon (muescas tras el QRS en V1–V2) son criterios de miocardiopatía arritmogénica; la onda épsilon es muy específica.' },
+            { type: 'tf', prompt: 'Las T negativas de V1 a V3 en una deportista de 22 años son una adaptación normal al entrenamiento que no requiere más estudio.', answer: false, explain: 'Más allá de los 16 años, la T negativa de V1 a V3 (o más allá de V2) obliga a descartar una miocardiopatía, sobre todo con síncope de esfuerzo o antecedente familiar de muerte súbita.' },
+            { type: 'mc', context: 'ETT: VD dilatado (TSVD 38 mm en paraesternal largo) con discinesia de la pared libre. RM: realce tardío en el VD. Sin causa reversible.', prompt: '¿Qué indicas?', options: ['DAI en prevención secundaria', 'Ablación de TV sin DAI', 'Betabloqueante y reevaluar en 6 meses', 'Amiodarona como única terapia'], answer: 0, explain: 'Sobrevivir a una FV sin causa reversible es indicación de DAI de clase I (ESC 2022). La ablación y los antiarrítmicos reducen descargas, pero no sustituyen al DAI.' },
+            { type: 'mc', prompt: '¿Qué recomiendas sobre el deporte?', options: ['Evitar la competición y el ejercicio intenso', 'Seguir compitiendo, ya protegida con el DAI', 'Sólo evitar la natación', 'Sin restricción si toma betabloqueante'], answer: 0, explain: 'En la miocardiopatía arritmogénica el ejercicio intenso y de resistencia acelera la progresión y desencadena arritmias. Se recomienda actividad de baja o moderada intensidad.' },
+            { type: 'match', prompt: 'Relaciona cada causa de muerte súbita en el joven con su pista en el ECG', pairs: [['Miocardiopatía arritmogénica', 'Onda épsilon y T negativa V1–V3'], ['Síndrome de Brugada', 'ST "en cúpula" en V1–V2'], ['Wolff-Parkinson-White', 'PR corto y onda delta'], ['QT largo congénito', 'QTc > 480 ms']], explain: 'El ECG de reposo orienta muchas causas de muerte súbita; la coronaria anómala y algunas miocarditis necesitan imagen (TC, RM).' },
+          ],
+        },
+        {
+          id: 'casos-u18-l3',
+          title: 'Edema agudo de pulmón con FEVI conservada',
+          case: {
+            title: 'Mujer de 78 años con disnea súbita nocturna',
+            text: 'Mujer de 78 años con HTA en tratamiento con dos fármacos, diabetes tipo 2 e IMC 31, que se despierta con disnea intensa. TA 210/110 mmHg, FC 105 lpm, SatO₂ 84 %, crepitantes hasta campos medios, sin dolor torácico. Troponina normal. Se hace un ECG.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Cuál es el hallazgo principal?', ecg12: 'lvh', options: ['HVI con patrón de sobrecarga', 'IAMCEST lateral', 'Bloqueo de rama izquierda', 'Bajo voltaje generalizado'], answer: 0, explain: 'Voltajes altos (Sokolow ≥ 35 mm) con ST descendido y T negativas en V5–V6: HVI con sobrecarga, el sustrato habitual de la cardiopatía hipertensiva.' },
+            { type: 'mc', prompt: '¿Cuál es el tratamiento inicial más adecuado?', options: ['Nitratos iv, VMNI y diurético iv', 'Dobutamina y sueroterapia', 'Betabloqueante iv a dosis altas', 'Diurético oral y alta'], answer: 0, explain: 'En el edema de pulmón hipertensivo el problema es la poscarga: vasodilatadores iv a dosis altas, VMNI (CPAP) y una dosis de diurético. Los inotrópicos y el betabloqueante iv en fase aguda empeoran la situación.' },
+            { type: 'tf', prompt: 'En este cuadro, el edema se debe sobre todo a varios días de retención de líquidos, por lo que la medida clave es el diurético a dosis altas.', answer: false, explain: 'Suele ser una redistribución brusca del volumen central por el aumento de la poscarga, con poco aumento de peso; la medida principal es la vasodilatación.' },
+            { type: 'mc', context: 'ETT a las 24 h: FEVI 60 %, HVI concéntrica, AI 42 ml/m², E/e′ medio 17, PSAP 45 mmHg, sin valvulopatía significativa.', prompt: '¿Cuál es el diagnóstico?', diagram: { id: 'a4c', highlight: 'la' }, options: ['IC con FEVI conservada', 'IC con FEVI reducida', 'IC con FEVI ligeramente reducida', 'Miocardiopatía de Takotsubo'], answer: 0, explain: 'FEVI ≥ 50 % con evidencia de presiones de llenado altas (AI dilatada, E/e′ > 14, PSAP elevada): IC-FEc. La AI dilatada refleja la cronicidad de la presión alta.' },
+            { type: 'mc', prompt: 'Calcula su H₂FPEF: IMC > 30 (2), ≥ 2 antihipertensivos (1), FA (3), PSAP > 35 (1), edad > 60 (1), E/e′ > 9 (1).', options: ['6', '4', '9', '3'], answer: 0, explain: 'IMC 31 (2) + dos antihipertensivos (1) + PSAP 45 (1) + edad (1) + E/e′ 17 (1) = 6, sin FA. Una puntuación ≥ 6 da una probabilidad de IC-FEc > 90 %.' },
+            { type: 'mc', prompt: 'Al alta, ¿qué fármaco ha mostrado reducir hospitalizaciones en la IC-FEc?', options: ['iSGLT2 (empagliflozina o dapagliflozina)', 'Digoxina', 'Ivabradina', 'Sildenafilo'], answer: 0, explain: 'EMPEROR-Preserved y DELIVER: los iSGLT2 reducen el compuesto de muerte CV u hospitalización por IC; clase I en la actualización ESC 2023. Además, control estricto de la TA.' },
+          ],
+        },
+        {
+          id: 'casos-u18-l4',
+          title: 'Miocardiopatía hipertrófica de principio a fin',
+          case: {
+            title: 'Varón de 45 años con presíncope al subir escaleras',
+            text: 'Varón de 45 años con disnea y presíncope al subir escaleras desde hace meses. Su padre murió súbitamente a los 50 años. Exploración: soplo sistólico eyectivo en el borde esternal izquierdo, sin irradiación a carótidas. TA 124/78 mmHg.',
+          },
+          questions: [
+            { type: 'tf', prompt: 'Si el soplo se debe a una MCH obstructiva, aumentará con la maniobra de Valsalva y disminuirá en cuclillas.', answer: true, explain: 'Valsalva reduce la precarga y el tamaño del VI, lo que acerca el septo a la valva mitral y aumenta la obstrucción. En cuclillas aumentan precarga y poscarga y el soplo disminuye. En la EA ocurre lo contrario.' },
+            { type: 'mc', prompt: 'Este es su ECG. En este contexto, ¿qué sugiere?', ecg12: 'lvh', options: ['Hipertrofia miocárdica que obliga a estudio con eco', 'IAM lateral antiguo', 'Hallazgo normal en un varón activo', 'Pericarditis en fase de T negativas'], answer: 0, explain: 'Voltajes altos con T negativas laterales en un hombre normotenso con soplo y antecedente de muerte súbita: hay que descartar una MCH. El ECG es anormal en la gran mayoría de los casos.' },
+            { type: 'mc', context: 'ETT: septo basal de 22 mm, pared posterior de 11 mm, SAM de la valva anterior mitral con IM posterior. Doppler continuo en el TSVI: Vmax 4,6 m/s con Valsalva.', diagram: { id: 'plax', highlight: 'septum' }, prompt: '¿Qué gradiente del TSVI tiene con Valsalva?', options: ['85 mmHg', '18 mmHg', '42 mmHg', '21 mmHg'], answer: 0, explain: 'Bernoulli simplificado: 4 × 4,6² ≈ 85 mmHg. Un gradiente ≥ 50 mmHg (en reposo o provocado) es el umbral para tratar la obstrucción si hay síntomas; la curva tiene pico tardío "en daga".' },
+            { type: 'mc', context: 'En el cateterismo, con registro simultáneo de VI y aorta, aparece una extrasístole ventricular.', prompt: '¿Qué ocurre en el latido posextrasistólico (signo de Brockenbrough)?', options: ['Sube el gradiente y cae la presión de pulso aórtica', 'Sube el gradiente y sube la presión de pulso aórtica', 'Baja el gradiente y sube la presión de pulso aórtica', 'Nada: el gradiente es fijo'], answer: 0, explain: 'La potenciación posextrasistólica aumenta la contractilidad y la obstrucción dinámica, y el volumen que sale a la aorta baja. En la EA fija, en cambio, la presión de pulso aórtica aumenta.' },
+            { type: 'mc', context: 'Pese a bisoprolol a la dosis máxima tolerada sigue en NYHA III con gradiente de 80 mmHg.', prompt: '¿Qué opción terapéutica propones?', options: ['Añadir mavacamten o reducción septal', 'Añadir nitratos de acción prolongada', 'Diurético de asa a dosis altas', 'Añadir digoxina'], answer: 0, explain: 'Si persisten los síntomas con betabloqueante: mavacamten (inhibidor de la miosina) o terapia de reducción septal en un centro con experiencia (ESC MC 2023). Nitratos, diuréticos a dosis altas y digoxina aumentan la obstrucción.' },
+            { type: 'match', prompt: 'Relaciona cada tratamiento de la MCH obstructiva con su mecanismo', pairs: [['Betabloqueante', 'Menos contractilidad y diástole más larga'], ['Mavacamten', 'Inhibe la miosina cardiaca'], ['Alcoholización septal', 'Infarto septal controlado (1.ª septal)'], ['Miectomía de Morrow', 'Resección quirúrgica del septo basal']], explain: 'La miectomía es preferible si hay que corregir además la mitral o los papilares; la alcoholización exige una rama septal adecuada. La miectomía suele dejar un BRI y la alcoholización un BRD o, a veces, un BAV completo.' },
+          ],
+        },
+        {
+          id: 'casos-u18-l5',
+          title: 'FA y stent: el antitrombótico correcto',
+          case: {
+            title: 'Mujer de 76 años anticoagulada que sufre un IAMSEST',
+            text: 'Mujer de 76 años con FA paroxística en tratamiento con apixabán 5 mg/12 h, HTA y diabetes tipo 2, sin sangrados previos. Peso 68 kg, creatinina 1,1 mg/dl. Ingresa por IAMSEST y se le implanta un stent farmacoactivo en la DA media por vía radial, sin complicaciones.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Calcula su CHA₂DS₂-VA tras el infarto (ESC FA 2024).', options: ['5', '6', '4', '3'], answer: 0, explain: 'Edad ≥ 75 (2) + HTA (1) + diabetes (1) + enfermedad vascular por el IAM (1) = 5. La ESC 2024 retiró el sexo femenino de la escala: sumarlo daría el 6 erróneo.' },
+            { type: 'mc', prompt: 'La telemetría del segundo día registra esta tira. ¿Qué ritmo es?', ecg: 'afib', options: ['Fibrilación auricular', 'Flutter auricular 2:1', 'Taquicardia auricular multifocal', 'Ritmo sinusal con extrasístoles'], answer: 0, explain: 'RR irregularmente irregular sin ondas P, con línea de base fibrilatoria. Que la FA sea paroxística no cambia la indicación de anticoagular: la decide el riesgo, no el patrón.' },
+            { type: 'mc', prompt: '¿Qué pauta antitrombótica indicas al alta?', options: ['ACOD + clopidogrel hasta 12 meses tras ≤ 1 semana con AAS', 'ACOD + AAS + ticagrelor durante 12 meses', 'Suspender el ACOD y DAPT con AAS y ticagrelor', 'ACOD en monoterapia desde el alta'], answer: 0, explain: 'ESC 2023/2024: triple terapia (ACOD + AAS + clopidogrel) hasta 1 semana, luego ACOD + clopidogrel hasta los 12 meses y después ACOD solo. Suspender el ACOD deja sin protección frente al ictus.' },
+            { type: 'tf', prompt: 'Prasugrel y ticagrelor son los inhibidores P2Y12 de elección cuando se combinan con un anticoagulante oral.', answer: false, explain: 'Con anticoagulación, el P2Y12 recomendado es el clopidogrel: prasugrel y ticagrelor aumentan el sangrado mayor sin beneficio isquémico demostrado en esta combinación.' },
+            { type: 'mc', prompt: '¿Qué dosis de apixabán le corresponde?', options: ['5 mg/12 h', '2,5 mg/12 h', '5 mg/24 h', '10 mg/12 h'], answer: 0, explain: 'Se reduce a 2,5 mg/12 h sólo si cumple 2 de 3: edad ≥ 80, peso ≤ 60 kg, creatinina ≥ 1,5 mg/dl. No cumple ninguno: infradosificar aumenta el riesgo de ictus.' },
+            { type: 'match', prompt: 'Relaciona cada periodo o situación con la pauta', pairs: [['Periprocedimiento (hasta 1 semana)', 'ACOD + AAS + clopidogrel'], ['De la 1.ª semana a los 12 meses', 'ACOD + clopidogrel'], ['Después de 12 meses', 'ACOD en monoterapia'], ['Riesgo trombótico alto', 'Triple terapia hasta 1 mes']], explain: 'Acortar la aspirina reduce el sangrado sin aumentar los eventos isquémicos de forma clara (AUGUSTUS, ENTRUST-AF PCI).' },
+          ],
+        },
+      ],
+    },
   ],
 };

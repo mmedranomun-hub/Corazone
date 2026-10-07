@@ -8,7 +8,7 @@ Lista maestra de temas para lecciones-caso de `js/data/casos.js` (agente `redact
 - **Estado**: ✅ ya existe como lección con `case:` en `js/data/casos.js` (comprobado con `grep -n` el 7-oct-2026, incluidas las unidades `casos-u6`–`u8` añadidas en paralelo; `js/data/cateterismo.js` no tiene lecciones `case:`) · ⬜ pendiente.
 - **Guías** (ver `bibliografia.md`): ESC IC 2021 + act. 2023; ESC SCA 2023; ESC SCC 2024; ESC FA 2024; ESC valvulopatías 2025 (antes 2021); ESC endocarditis 2023; ESC miocardiopatías 2023; ESC miocarditis y pericarditis 2025; ESC HP 2022; ESC TEP 2019; ESC aorta y arterias periféricas 2024; ESC arritmias ventriculares/MS 2022; ESC TSV 2019; ESC marcapasos y TRC 2021; ESC síncope 2018; ESC cardiopatías congénitas del adulto 2020; ESC embarazo 2025; ESC cardio-oncología 2022; ERC RCP 2025; SCAI shock 2019/2022. Cifras con cambios recientes (edad TAVI, umbrales IAo/IM) → comprobar en la guía antes de usar y marcar `// REVISAR:`.
 
-Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Integrados 13 — **78 ✅ / 66 ⬜**.
+Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Integrados 13 — **88 ✅ / 56 ⬜**.
 
 ---
 
@@ -104,23 +104,23 @@ Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Inte
 | CAT-16 | No-reflow tras ICP primaria | N3 | TIMI 0–1 sin obstrucción mecánica, ST que no resuelve | Grado TIMI, blush | Vasodilatadores intracoronarios (adenosina/verapamilo) | diagram: coronary/lad | ⬜ |
 | CAT-17 | Complicación de acceso: hematoma retroperitoneal/pseudoaneurisma femoral | N2 | Hipotensión y dolor lumbar tras acceso femoral; masa pulsátil | Hb seriada | TC, compresión ecoguiada/trombina; ventaja del acceso radial · ESC SCA 2023 | — (nuevo: esquema de accesos) | ✅ casos-u14-l1 |
 | CAT-18 | Nefropatía por contraste en diabético con ERC | N2 | Creatinina que sube a las 48–72 h | Volumen de contraste/FG | Hidratación, mínimo contraste, retirar nefrotóxicos | — | ⬜ |
-| CAT-19 | TAVI: estudio previo y BAV completo tras implante | N3 ★ | Anillo por TC, acceso femoral; BAV nuevo post-TAVI | Gm residual | Marcapasos definitivo si BAV persistente · ESC valv. 2025 / marcapasos 2021 | ecg: avb3 · pressure: as-lv-ao | ⬜ |
+| CAT-19 | TAVI: estudio previo y BAV completo tras implante | N3 ★ | Anillo por TC, acceso femoral; BAV nuevo post-TAVI | Gm residual | Marcapasos definitivo si BAV persistente · ESC valv. 2025 / marcapasos 2021 | ecg: avb3 · pressure: as-lv-ao | ✅ casos-u17-l2 |
 | CAT-20 | Valvuloplastia mitral percutánea | N3 | Gradiente VI-AI diastólico, onda y descendente lenta | Área por Gorlin; Wilkins | Valvuloplastia si anatomía favorable y sin trombo/IM > moderada | pressure: pcwp · nuevo: VI-AI en EM | ⬜ |
 | CAT-21 | EA en sala: Gorlin y Hakki | N3 | Gradiente VI-Ao, retraso del pulso aórtico | Gorlin; Hakki ≈ GC/√ΔP | Concordancia con eco; Heart Team | pressure: as-lv-ao | ✅ casos-u14-l2 |
 | CAT-22 | Constricción vs restricción en el cateterismo | N3 ★ | Dip-plateau, igualación diastólica; discordancia VI/VD con la respiración | Índice de área sistólica | Pericardiectomía si constricción · ESC peric. 2025 | pressure: rv-dip | ⬜ |
 | CAT-23 | MCH: Brockenbrough y alcoholización septal | N3 | Aumento del gradiente y caída de la presión de pulso aórtica post-extrasístole | Gradiente VI-Ao | Alcoholización vs miectomía · ESC MC 2023 | nuevo: VI-Ao en MCH | ⬜ |
 | CAT-24 | Salto oximétrico y Qp/Qs (shunt) | N2 ★ | Salto de saturación AD vs VCS | Qp/Qs = (SatAo − SatVM)/(SatVP − SatAP) | Cierre si Qp/Qs ≥ 1,5 y RVP aceptable · ESC ACHD 2020 | pressure: ra | ✅ casos-u14-l3 |
-| CAT-25 | HP poscapilar por IC con FEVI conservada | N3 | PAPm > 20, PCP > 15, RVP ≤ 2 UW; onda v | RVP, GTP = PAPm − PCP | Tratar IC; no vasodilatadores pulmonares · ESC HP 2022 | pressure: pullback-pa-pcwp | ⬜ |
+| CAT-25 | HP poscapilar por IC con FEVI conservada | N3 | PAPm > 20, PCP > 15, RVP ≤ 2 UW; onda v | RVP, GTP = PAPm − PCP | Tratar IC; no vasodilatadores pulmonares · ESC HP 2022 | pressure: pullback-pa-pcwp | ✅ casos-u17-l4 |
 | CAT-26 | Test vasodilatador en HAP idiopática | N3 | Respuesta a NO inhalado | Respondedor: ↓PAPm ≥ 10 mmHg hasta ≤ 40 con GC estable | Calcioantagonistas a dosis altas si respondedor · ESC HP 2022 | pressure: pa | ⬜ |
 | CAT-27 | HP tromboembólica crónica | N3 | Disnea persistente tras TEP, defectos V/Q, angiografía con bandas/oclusiones | RVP | Endarterectomía / angioplastia con balón / riociguat · ESC HP 2022 | pressure: pa | ⬜ |
 | CAT-28 | Taponamiento con presiones invasivas | N2 | Igualación diastólica, pérdida del descenso y, pulso paradójico | PAD ≈ PDVD ≈ PCP | Pericardiocentesis | pressure: ra · nuevo: pulso paradójico | ⬜ |
 | CAT-29 | IM aguda: onda v gigante en PCP | N2 ★ | Onda v prominente, edema agudo | Altura onda v vs PCP media | Cirugía/TEER según causa · ESC valv. 2025 | pressure: pcwp-v | ✅ casos-u14-l4 |
-| CAT-30 | Escalada de soporte mecánico en shock (SCAI C → D) | N3 | Lactato que sube pese a inotropos, CPO < 0,6 W | CPO = PAM × GC / 451; PAPi | Impella (DanGer Shock) vs ECMO-VA (ECLS-SHOCK, sin beneficio rutinario) · SCAI 2022 | pressure: pcwp · nuevo: BCIA | ⬜ |
+| CAT-30 | Escalada de soporte mecánico en shock (SCAI C → D) | N3 | Lactato que sube pese a inotropos, CPO < 0,6 W | CPO = PAM × GC / 451; PAPi | Impella (DanGer Shock) vs ECMO-VA (ECLS-SHOCK, sin beneficio rutinario) · SCAI 2022 | pressure: pcwp · nuevo: BCIA | ✅ casos-u17-l3 |
 | CAT-31 | Oclusión total crónica con viabilidad | N3 | OTC de CD con colaterales; RM con viabilidad | J-CTO | ICP si angina refractaria pese a TMO · ESC SCC 2024 | diagram: coronary/rca | ⬜ |
 | CAT-32 | Lesión en bifurcación (Medina 1,1,1) | N3 | DA-diagonal; estrategia provisional vs dos stents | — | Provisional por defecto; dos stents si rama grande enferma | diagram: coronary/diag · nuevo: bifurcación Medina | ⬜ |
-| CAT-33 | IC avanzada: hemodinámica para trasplante/DAVI | N3 | IC < 2,2 l/min/m², RVP elevada | GC por Fick = VO₂/(CaO₂ − CvO₂); RVP; test vasodilatador | Indicación de trasplante/DAVI · ESC IC 2021 | pressure: pcwp | ⬜ |
+| CAT-33 | IC avanzada: hemodinámica para trasplante/DAVI | N3 | IC < 2,2 l/min/m², RVP elevada | GC por Fick = VO₂/(CaO₂ − CvO₂); RVP; test vasodilatador | Indicación de trasplante/DAVI · ESC IC 2021 | pressure: pcwp | ✅ casos-u17-l5 |
 | CAT-34 | Origen anómalo interarterial de coronaria en deportista | N3 | Síncope/MS en esfuerzo, trayecto entre Ao y AP | — | TC coronaria; cirugía si izquierda interarterial o isquemia · ESC ACHD 2020 | diagram: coronary/rca | ⬜ |
-| CAT-35 | IAMCEST multivaso: revascularización completa vs solo culpable | N2 ★ | Lesiones no culpables significativas | — | Completa en estable (COMPLETE); en shock solo culpable (CULPRIT-SHOCK) · ESC SCA 2023 | diagram: coronary/cx | ⬜ |
+| CAT-35 | IAMCEST multivaso: revascularización completa vs solo culpable | N2 ★ | Lesiones no culpables significativas | — | Completa en estable (COMPLETE); en shock solo culpable (CULPRIT-SHOCK) · ESC SCA 2023 | diagram: coronary/cx | ✅ casos-u17-l1 |
 
 ## 4. ECG — 36
 
@@ -167,19 +167,19 @@ Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Inte
 
 | ID | Tema | Nivel | Hallazgos clave | Cálculos | Decisión · guía | Visual | Estado |
 |---|---|---|---|---|---|---|---|
-| INT-01 | Dolor torácico agudo: IAM vs disección vs TEP | N2 ★ | ECG, POCUS (derrame, VD, flap), TC | Probabilidad pretest | Ruta según diagnóstico · ESC SCA 2023 / aorta 2024 / TEP 2019 | ecg12: stemi-inf · diagram: plax/ao | ⬜ |
+| INT-01 | Dolor torácico agudo: IAM vs disección vs TEP | N2 ★ | ECG, POCUS (derrame, VD, flap), TC | Probabilidad pretest | Ruta según diagnóstico · ESC SCA 2023 / aorta 2024 / TEP 2019 | ecg12: stemi-inf · diagram: plax/ao | ✅ casos-u18-l1 |
 | INT-02 | Síncope de esfuerzo en anciano: EA grave + BAV | N2 ★ | HVI y BRI en ECG → EA grave en ETT → TAVI → BAV | AVA | TAVI + marcapasos · ESC valv. 2025 | ecg12: lvh · pressure: as-lv-ao | ⬜ |
 | INT-03 | Taquimiocardiopatía por FA rápida | N3 | FA a 150 lpm, FEVI 30 %, recuperación tras control de ritmo | FEVI seriada | Control de ritmo/ablación · ESC FA 2024 | ecg: afib · diagram: a4c/lv | ⬜ |
-| INT-04 | Muerte súbita recuperada en joven deportista | N3 ★ | Diagnóstico diferencial: MCH, MAVD, QT largo, Brugada, WPW, coronaria anómala | — | DAI en prevención secundaria; cribado familiar · ESC MS 2022 | ecg: vf · diagram: plax/septum | ⬜ |
+| INT-04 | Muerte súbita recuperada en joven deportista | N3 ★ | Diagnóstico diferencial: MCH, MAVD, QT largo, Brugada, WPW, coronaria anómala | — | DAI en prevención secundaria; cribado familiar · ESC MS 2022 | ecg: vf · diagram: plax/septum | ✅ casos-u18-l2 |
 | INT-05 | Fiebre, soplo nuevo y PR largo: endocarditis con absceso | N3 | ECG (BAV) → ETT → ETE → cirugía | Duke-ESC | Cirugía urgente · ESC EI 2023 | ecg: avb1 · diagram: plax/av | ⬜ |
-| INT-06 | Edema agudo de pulmón hipertensivo con FEVI conservada | N2 ★ | FEVI ≥ 50 %, E/e' alta, AI dilatada | H₂FPEF; E/e' | Diuréticos, vasodilatadores, iSGLT2 · ESC IC 2021/23 | ecg12: lvh · diagram: a4c/la | ⬜ |
+| INT-06 | Edema agudo de pulmón hipertensivo con FEVI conservada | N2 ★ | FEVI ≥ 50 %, E/e' alta, AI dilatada | H₂FPEF; E/e' | Diuréticos, vasodilatadores, iSGLT2 · ESC IC 2021/23 | ecg12: lvh · diagram: a4c/la | ✅ casos-u18-l3 |
 | INT-07 | Shock tras IAM: CIV vs rotura papilar vs fallo de VD | N3 ★ | ECG, ETT y Swan-Ganz (salto oximétrico vs onda v) | Qp/Qs; onda v | Cirugía/soporte según mecanismo · ESC SCA 2023 | pressure: pcwp-v · diagram: a4c/septum | ⬜ |
 | INT-08 | Hipotensión tras implante de marcapasos: perforación y taponamiento | N2 | ECG (pérdida de captura), ETT (derrame), presiones | — | Pericardiocentesis, recolocar electrodo | diagram: a4c/rv · pressure: ra | ⬜ |
 | INT-09 | HTA en joven por coartación | N3 | ECG con HVI, eco con gradiente en Ao descendente, gradiente invasivo | Gradiente pico a pico | Stent/cirugía · ESC ACHD 2020 | ecg12: lvh · diagram: plax/ao | ⬜ |
 | INT-10 | Paciente oncológico con disnea: derrame maligno y cardiotoxicidad | N3 | ECG de bajo voltaje/alternancia, ETT con derrame y FEVI baja | ΔFEVI, GLS | Pericardiocentesis + cardioprotección · ESC cardio-onc. 2022 | diagram: a4c/ra | ⬜ |
 | INT-11 | Síndrome de Eisenmenger | N3 | ECG con HVD, shunt bidireccional, RVP muy alta | RVP; Qp/Qs | Cierre contraindicado; tratamiento de HAP · ESC ACHD 2020 / HP 2022 | ecg12: rad · pressure: pa | ⬜ |
-| INT-12 | MCH de principio a fin | N3 ★ | ECG (HVI, Q septales) → eco (SAM) → cate (Brockenbrough) → tratamiento | Gradiente TSVI | Mavacamten, miectomía o alcoholización; DAI · ESC MC 2023 | ecg12: lvh · diagram: plax/septum | ⬜ |
-| INT-13 | FA + SCA que requiere ICP: antitrombóticos | N3 ★ | FA conocida con IAMSEST tratado con ICP | CHA₂DS₂-VA; riesgo hemorrágico | Triple terapia corta (≤ 1 semana) → doble (ACOD + clopidogrel) · ESC FA 2024 / SCA 2023 | ecg: afib · diagram: coronary/lad | ⬜ |
+| INT-12 | MCH de principio a fin | N3 ★ | ECG (HVI, Q septales) → eco (SAM) → cate (Brockenbrough) → tratamiento | Gradiente TSVI | Mavacamten, miectomía o alcoholización; DAI · ESC MC 2023 | ecg12: lvh · diagram: plax/septum | ✅ casos-u18-l4 |
+| INT-13 | FA + SCA que requiere ICP: antitrombóticos | N3 ★ | FA conocida con IAMSEST tratado con ICP | CHA₂DS₂-VA; riesgo hemorrágico | Triple terapia corta (≤ 1 semana) → doble (ACOD + clopidogrel) · ESC FA 2024 / SCA 2023 | ecg: afib · diagram: coronary/lad | ✅ casos-u18-l5 |
 
 ---
 
