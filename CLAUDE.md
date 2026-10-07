@@ -55,6 +55,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - No releas archivos grandes enteros: usa `grep -n` y lee rangos. Los datos (`js/data/*.js`) son largos; consulta sólo la unidad que toques.
 - Delegar en paralelo a agentes con archivos disjuntos; el `integrador` hace commit.
 - Revisar capturas en una sola hoja (PIL) en vez de una por una.
+- Agentes en paralelo: un único archivo de datos por agente; borradores del scratchpad con nombre único (`<agente>-<tarea>.js`), nunca genéricos (`new-units.js`). Antes de insertar, releer el final del archivo y comprobar con grep que no hay ids de otro curso.
 - `recursos/`: temario por curso y nivel, guía editorial, plantilla de lección, checklist de revisión, bibliografía y órdenes de trabajo (`recursos/ordenes/`).
 
 ## Roadmap
