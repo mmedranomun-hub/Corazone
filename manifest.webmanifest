@@ -1,0 +1,14 @@
+{
+  "name": "Corazone — ECG, eco y cateterismo",
+  "short_name": "Corazone",
+  "description": "Aprende ECG, ecocardiograma y cateterismo con lecciones cortas.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e5484d",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

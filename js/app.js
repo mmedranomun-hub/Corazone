@@ -1,7 +1,8 @@
 // Router por hash y vistas principales.
-import { COURSES, courseById, lessonsOf, findLesson } from './data/courses.js';
-import { RHYTHMS, renderEcg } from './ecg.js';
-import { getState, msToNextHeart, refillHearts, resetProgress, MAX_HEARTS } from './storage.js';
+import { COURSES, courseById, lessonsOf, findLesson, questionByKey } from './data/courses.js';
+import { RHYTHMS, renderEcg, TWELVE_LEAD, render12 } from './ecg.js';
+import { ACHIEVEMENTS, unlocked } from './achievements.js';
+import { getState, msToNextHeart, refillHearts, resetProgress, MAX_HEARTS, DAILY_GOAL, todayXp, dueReviews } from './storage.js';
 import { runLesson } from './lesson.js';
 
 const app = document.getElementById('app');
@@ -35,7 +36,7 @@ function topbar() {
 
 function bottomnav(active) {
   const item = (href, icon, label, key) => `<a href="${href}" class="${active === key ? 'active' : ''}"><span>${icon}</span>${label}</a>`;
-  return `<nav class="bottomnav">${item('#/', '🏠', 'Aprender', 'home')}${item('#/atlas', '📈', 'Atlas ECG', 'atlas')}${item('#/perfil', '👤', 'Perfil', 'perfil')}</nav>`;
+  return `<nav class="bottomnav">${item('#/', '🏠', 'Aprender', 'home')}${item('#/atlas', '📈', 'Atlas', 'atlas')}${item('#/perfil', '👤', 'Perfil', 'perfil')}</nav>`;
 }
 
 function shell(content, active) {
@@ -61,7 +62,25 @@ function viewHome() {
       <h1>Aprende cardiología<br/>a sorbos de 3 minutos</h1>
       <p>ECG, ecocardiograma y cateterismo con lecciones cortas, vidas y rachas diarias.</p>
     </section>
+    ${goalCard()}
+    ${reviewCard()}
     <section class="courses">${cards}</section>`, 'home');
+}
+
+function goalCard() {
+  const xp = todayXp();
+  const pct = Math.min(100, Math.round((xp / DAILY_GOAL) * 100));
+  return `
+    <div class="goal-card" style="--accent:#ff9600">
+      <div><b>${pct >= 100 ? '✅ ¡Objetivo diario cumplido!' : '🎯 Objetivo diario'}</b><small>${xp} / ${DAILY_GOAL} XP</small></div>
+      <div class="bar small"><div class="bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+}
+
+function reviewCard() {
+  const n = dueReviews().length;
+  if (!n) return '';
+  return `<a class="review-card" href="#/repaso"><span>🔁</span><div><b>Repaso pendiente</b><small>${n} pregunta${n > 1 ? 's' : ''} que fallaste te esperan</small></div><span class="go">›</span></a>`;
 }
 
 function viewCourse(id) {
@@ -108,40 +127,62 @@ function viewNoHearts(back) {
   app.querySelector('[data-act=refill]').onclick = () => { refillHearts(); location.hash = '#/atlas'; };
 }
 
-function viewLesson(id) {
-  const found = findLesson(id);
-  if (!found) return (location.hash = '#/');
-  const back = `#/curso/${found.course.id}`;
-  const st = lessonStatus(found.course).find((l) => l.id === id);
-  if (st.state === 'locked') return (location.hash = back);
+function startLesson(found, back) {
   if (getState().hearts <= 0) return viewNoHearts(back);
+  const before = unlocked(getState());
   stopLesson = runLesson(app, found, {
     onExit: (reason) => (reason === 'sin-vidas' ? viewNoHearts(back) : (location.hash = back)),
     onFinish: ({ xp, stars, mistakes, total }) => {
+      const fresh = ACHIEVEMENTS.filter((a) => unlocked(getState()).has(a.id) && !before.has(a.id));
+      const badges = fresh.map((a) => `<div class="badge-new">${a.icon} <b>¡Logro!</b> ${esc(a.name)}</div>`).join('');
       app.innerHTML = `
         <div class="center-screen" style="--accent:${found.course.color}">
           <div class="big-emoji">${stars === 3 ? '🏆' : '🎉'}</div>
-          <h1>¡Lección completada!</h1>
+          <h1>${found.lesson.review ? '¡Repaso completado!' : '¡Lección completada!'}</h1>
           <div class="result-stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
           <div class="result-grid">
             <div><b>+${xp}</b><small>XP</small></div>
             <div><b>${Math.round(((total - Math.min(mistakes, total)) / total) * 100)}%</b><small>Precisión</small></div>
             <div><b>🔥 ${getState().streak}</b><small>Racha</small></div>
           </div>
+          ${badges}
           <a class="btn primary" href="${back}">Continuar</a>
         </div>`;
     },
   });
 }
 
-function viewAtlas() {
-  const items = Object.entries(RHYTHMS).map(([id, r]) => `
+function viewLesson(id) {
+  const found = findLesson(id);
+  if (!found) return (location.hash = '#/');
+  const back = `#/curso/${found.course.id}`;
+  const st = lessonStatus(found.course).find((l) => l.id === id);
+  if (st.state === 'locked') return (location.hash = back);
+  startLesson(found, back);
+}
+
+function viewReview() {
+  const questions = dueReviews().map(questionByKey).filter(Boolean).slice(0, 10).map((x) => x.question);
+  if (!questions.length) return (location.hash = '#/');
+  const course = { id: 'repaso', color: '#ff9600' };
+  startLesson({ course, lesson: { id: 'repaso', title: 'Repaso', review: true, questions } }, '#/');
+}
+
+const ATLAS_TABS = {
+  ritmos: { label: 'Ritmos', items: () => Object.entries(RHYTHMS).map(([id, r]) => ({ ...r, svg: renderEcg(id) })), note: 'Tiras de 6 s en derivación II · 25 mm/s · 10 mm/mV' },
+  '12d': { label: '12 derivaciones', items: () => Object.entries(TWELVE_LEAD).map(([id, r]) => ({ ...r, svg: render12(id) })), note: 'Formato estándar 3×4 + tira de ritmo en II. Desliza para ver todo.' },
+};
+
+function viewAtlas(tab = 'ritmos') {
+  const cur = ATLAS_TABS[tab] ? tab : 'ritmos';
+  const tabs = Object.entries(ATLAS_TABS).map(([k, t]) => `<a href="#/atlas/${k}" class="${k === cur ? 'active' : ''}">${t.label}</a>`).join('');
+  const items = ATLAS_TABS[cur].items().map((r) => `
     <article class="atlas-item">
       <h3>${esc(r.name)}</h3>
-      <div class="ecg-wrap">${renderEcg(id)}</div>
+      <div class="ecg-wrap">${r.svg}</div>
       <p>${esc(r.desc)}</p>
     </article>`).join('');
-  shell(`<h1 class="page-title">Atlas de ritmos</h1><p class="muted">Tiras de 6 s en derivación II · 25 mm/s · 10 mm/mV</p>${items}`, 'atlas');
+  shell(`<h1 class="page-title">Atlas</h1><div class="tabs" style="--accent:#1cb0f6">${tabs}</div><p class="muted">${ATLAS_TABS[cur].note}</p>${items}`, 'atlas');
 }
 
 function viewPerfil() {
@@ -153,6 +194,8 @@ function viewPerfil() {
   const max = Math.max(30, ...days.map((d) => d.xp));
   const bars = days.map(({ d, xp }) => `<div class="day"><div class="col-bar" style="height:${(xp / max) * 100}%" title="${xp} XP"></div><small>${['D', 'L', 'M', 'X', 'J', 'V', 'S'][new Date(d).getUTCDay()]}</small></div>`).join('');
   const per = COURSES.map((c) => `<li style="--accent:${c.color}"><span>${c.icon} ${esc(c.subtitle)}</span><div class="bar small"><div class="bar-fill" style="width:${progressOf(c)}%"></div></div></li>`).join('');
+  const got = unlocked(s);
+  const badges = ACHIEVEMENTS.map((a) => `<div class="badge ${got.has(a.id) ? '' : 'off'}" title="${esc(a.desc)}"><span>${a.icon}</span><b>${esc(a.name)}</b><small>${esc(a.desc)}</small></div>`).join('');
   shell(`
     <h1 class="page-title">Tu progreso</h1>
     <div class="result-grid">
@@ -160,10 +203,13 @@ function viewPerfil() {
       <div><b>💎 ${s.xp}</b><small>XP total</small></div>
       <div><b>❤️ ${s.hearts}/${MAX_HEARTS}</b><small>Vidas</small></div>
     </div>
+    <p class="muted">Precisión global: ${s.answered ? Math.round((s.correct / s.answered) * 100) : 0}% · ${s.answered} respuestas · mejor racha ${s.bestStreak} días</p>
     <h2>XP últimos 7 días</h2>
     <div class="week">${bars}</div>
     <h2>Cursos</h2>
     <ul class="course-progress">${per}</ul>
+    <h2>Logros</h2>
+    <div class="badges">${badges}</div>
     <button class="btn ghost danger" data-act="reset">Reiniciar progreso</button>`, 'perfil');
   app.querySelector('[data-act=reset]').onclick = () => {
     if (confirm('¿Seguro que quieres borrar todo tu progreso?')) { resetProgress(); viewPerfil(); }
@@ -176,10 +222,13 @@ function route() {
   const [, view, arg] = location.hash.replace(/^#/, '').split('/');
   if (view === 'curso') return viewCourse(arg);
   if (view === 'leccion') return viewLesson(arg);
-  if (view === 'atlas') return viewAtlas();
+  if (view === 'atlas') return viewAtlas(arg);
+  if (view === 'repaso') return viewReview();
   if (view === 'perfil') return viewPerfil();
   return viewHome();
 }
 
 window.addEventListener('hashchange', route);
 route();
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});

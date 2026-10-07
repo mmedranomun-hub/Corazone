@@ -149,3 +149,30 @@ h1, h2, h3 { font-weight: 900; margin: 0 0 .5rem; }
 .day small { color: var(--muted); }
 .course-progress { list-style: none; padding: 0; display: grid; gap: 14px; }
 .course-progress li { display: grid; gap: 6px; }
+.ecg12 { min-width: 760px; }
+.ecg .lead { font: 800 13px Nunito, sans-serif; fill: var(--ecg-trace); }
+.ecg .sep { stroke: var(--ecg-trace); stroke-width: 1.2; }
+.tappable svg { cursor: crosshair; }
+.tappable.locked svg { cursor: default; }
+.ecg .tap-mark { stroke: #1cb0f6; stroke-width: 3; }
+.ecg .tap-mark.right { stroke: var(--ok); }
+.ecg .tap-mark.wrong { stroke: var(--ko); }
+.ecg .tap-zone { fill: color-mix(in srgb, var(--ok) 28%, transparent); }
+.hint { text-align: center; }
+.case { background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; }
+.case summary { cursor: pointer; font-weight: 800; }
+.case p { margin: 8px 0 2px; font-weight: 600; }
+.context { border-left: 4px solid var(--accent); padding: 6px 12px; margin: 0 0 8px; background: color-mix(in srgb, var(--accent) 8%, transparent); border-radius: 0 10px 10px 0; }
+.goal-card, .review-card { display: flex; flex-direction: column; gap: 8px; border: 2px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-top: 14px; }
+.goal-card > div:first-child { display: flex; justify-content: space-between; align-items: baseline; }
+.goal-card small, .review-card small { color: var(--muted); display: block; }
+.review-card { flex-direction: row; align-items: center; gap: 14px; border-color: #ff9600; background: color-mix(in srgb, #ff9600 10%, transparent); }
+.review-card > span:first-child { font-size: 1.8rem; }
+.review-card div { flex: 1; }
+.review-card .go { font-size: 1.8rem; color: #ff9600; }
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.badge { border: 2px solid var(--border); border-radius: 14px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+.badge span { font-size: 2rem; }
+.badge small { color: var(--muted); font-size: .75rem; }
+.badge.off { opacity: .4; filter: grayscale(1); }
+.badge-new { background: color-mix(in srgb, #ffc800 22%, transparent); border: 2px solid #ffc800; border-radius: 14px; padding: 10px 16px; margin-bottom: 8px; }

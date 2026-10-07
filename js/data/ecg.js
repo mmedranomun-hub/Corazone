@@ -44,6 +44,18 @@ export default {
             { type: 'mc', prompt: '¿Cuántas derivaciones tiene el ECG estándar?', options: ['12', '10', '6', '15'], answer: 0, explain: '6 de miembros (I, II, III, aVR, aVL, aVF) y 6 precordiales (V1–V6), registradas con 10 electrodos.' },
           ],
         },
+        {
+          id: 'ecg-u1-l4',
+          title: 'Toca la onda',
+          questions: [
+            { type: 'tap', prompt: 'Toca una onda P', ecg: 'sinus', wave: 'p', explain: 'La P es la pequeña onda redondeada que precede a cada QRS: despolarización auricular.' },
+            { type: 'tap', prompt: 'Toca un complejo QRS', ecg: 'sinus', wave: 'qrs', explain: 'El QRS es la deflexión rápida y alta: despolarización ventricular.' },
+            { type: 'tap', prompt: 'Toca una onda T', ecg: 'sinus', wave: 't', explain: 'La T sigue al QRS tras el segmento ST: repolarización ventricular.' },
+            { type: 'tap', prompt: 'Toca una onda T picuda', ecg: 'hyperk', wave: 't', explain: 'T alta, estrecha y simétrica: sospecha hiperpotasemia y pide potasio urgente.' },
+            { type: 'tap', prompt: 'Toca la onda P que no conduce', ecg: 'mobitz2', wave: 'pBlocked', explain: 'P sin QRS detrás, con PR constante en los latidos conducidos: Mobitz II.' },
+            { type: 'tap', prompt: 'Toca la extrasístole ventricular', ecg: 'pvc', wave: 'vent', explain: 'Latido prematuro, ancho y sin P previa.' },
+          ],
+        },
       ],
     },
     {
@@ -114,6 +126,36 @@ export default {
             { type: 'mc', prompt: '¿Qué patrón muestra esta tira?', ecg: 'longqt', options: ['QT largo', 'Hipercalcemia', 'Ritmo sinusal normal', 'Elevación del ST'], answer: 0, explain: 'El QT ocupa más de la mitad del RR: QTc prolongado.' },
             { type: 'match', prompt: 'Relaciona alteración con su hallazgo', pairs: [['Hipopotasemia', 'Ondas U'], ['Hipercalcemia', 'QT corto'], ['Pericarditis', 'ST difuso + PR descendido'], ['TEP', 'S1Q3T3']] },
             { type: 'tf', prompt: 'En una FA preexcitada (WPW) están indicados el verapamilo y la digoxina.', answer: false, explain: 'Al frenar el nodo AV favorecen la conducción por la vía accesoria → riesgo de FV. Usar procainamida o cardioversión.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'ecg-u4',
+      title: 'ECG de 12 derivaciones',
+      lessons: [
+        {
+          id: 'ecg-u4-l1',
+          title: 'Localiza el infarto',
+          questions: [
+            { type: 'mc', prompt: '¿Qué cara está afectada?', ecg12: 'stemi-inf', options: ['Inferior', 'Anterior', 'Lateral', 'Ninguna: es una pericarditis'], answer: 0, explain: 'ST elevado en II, III y aVF con descenso especular en I y aVL.' },
+            { type: 'mc', prompt: 'En este ECG, ¿qué arteria es la responsable más probable?', ecg12: 'stemi-inf', options: ['Coronaria derecha', 'Descendente anterior', 'Primera diagonal', 'Tronco común'], answer: 0, explain: 'ST en III > II y descenso en I/aVL orientan a CD; si II ≥ III y ST elevado en I/aVL/V5–V6, pensar en circunfleja.' },
+            { type: 'mc', prompt: '¿Qué cara está afectada?', ecg12: 'stemi-ant', options: ['Anterior', 'Inferior', 'Lateral alta', 'Posterior'], answer: 0, explain: 'Elevación del ST de V1 a V4: territorio de la descendente anterior.' },
+            { type: 'mc', prompt: '¿Qué cara está afectada?', ecg12: 'stemi-lat', options: ['Lateral', 'Inferior', 'Anteroseptal', 'Ventrículo derecho'], answer: 0, explain: 'ST elevado en I, aVL, V5 y V6, con imagen especular inferior.' },
+            { type: 'mc', prompt: 'ST elevado difuso y cóncavo, PR descendido y aVR al revés. Diagnóstico:', ecg12: 'pericarditis', options: ['Pericarditis aguda', 'IAMCEST anterior', 'Repolarización precoz', 'Hiperpotasemia'], answer: 0, explain: 'La elevación no respeta territorios coronarios, no hay imagen especular (salvo aVR/V1) y el PR está descendido.' },
+            { type: 'tf', prompt: 'En un IAMCEST, la elevación del ST suele acompañarse de descenso especular en las derivaciones opuestas.', answer: true, explain: 'La imagen especular apoya el origen isquémico frente a pericarditis o repolarización precoz.' },
+          ],
+        },
+        {
+          id: 'ecg-u4-l2',
+          title: 'Eje, hipertrofia y bloqueos de rama',
+          questions: [
+            { type: 'mc', prompt: '¿Cómo es el eje de este ECG?', ecg12: 'normal', options: ['Normal', 'Desviado a la izquierda', 'Desviado a la derecha', 'Indeterminado'], answer: 0, explain: 'QRS positivo en I y en aVF: eje entre 0° y +90°.' },
+            { type: 'mc', prompt: '¿Cómo es el eje de este ECG?', ecg12: 'lad', options: ['Desviado a la izquierda', 'Normal', 'Desviado a la derecha', 'Indeterminado'], answer: 0, explain: 'Positivo en I y negativo en II y aVF: eje < −30°. Causa típica: hemibloqueo anterior izquierdo.' },
+            { type: 'mc', prompt: '¿Cómo es el eje de este ECG?', ecg12: 'rad', options: ['Desviado a la derecha', 'Desviado a la izquierda', 'Normal', 'Extremo'], answer: 0, explain: 'Negativo en I y positivo en aVF: eje > +90°.' },
+            { type: 'mc', prompt: '¿Qué muestra este ECG?', ecg12: 'lvh', options: ['Hipertrofia ventricular izquierda con sobrecarga', 'IAMCEST lateral', 'Bloqueo de rama izquierda', 'ECG normal de deportista'], answer: 0, explain: 'S profunda en V1–V2 y R alta en V5–V6 (Sokolow ≥ 35 mm) con ST-T "strain" lateral.' },
+            { type: 'mc', prompt: '¿Qué muestra este ECG?', ecg12: 'rbbb', options: ['Bloqueo de rama derecha', 'Bloqueo de rama izquierda', 'Preexcitación', 'Brugada tipo 1'], answer: 0, explain: "rSR' en V1–V2 y S ancha y empastada en I y V6." },
+            { type: 'mc', prompt: '¿Qué muestra este ECG?', ecg12: 'lbbb12', options: ['Bloqueo de rama izquierda', 'Bloqueo de rama derecha', 'Hipertrofia de VI', 'Taquicardia ventricular'], answer: 0, explain: 'QRS ancho con R mellada en I, aVL, V5–V6, QS en V1–V3 y repolarización discordante.' },
           ],
         },
       ],

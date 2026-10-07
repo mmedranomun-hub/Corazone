@@ -1,6 +1,7 @@
 // Motor de lección: preguntas tipo mc / tf / match, vidas, XP y feedback.
-import { renderEcg } from './ecg.js';
-import { getState, loseHeart, completeLesson } from './storage.js';
+import { waveTimes, WAVE_TOLERANCE } from './ecg.js';
+import { visualFor } from './visuals.js';
+import { getState, loseHeart, completeLesson, recordAnswer } from './storage.js';
 
 const shuffle = (arr) => {
   const a = [...arr];
@@ -15,6 +16,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 // Normaliza a { prompt, ecg, choices: [{label, correct}] } o match.
 function prepare(q) {
   if (q.type === 'tf') return { ...q, src: q, choices: [{ label: 'Verdadero', correct: q.answer === true }, { label: 'Falso', correct: q.answer === false }] };
+  if (q.type === 'tap') return { ...q, src: q, targets: waveTimes(q.ecg, q.wave) };
   if (q.type === 'mc') return { ...q, src: q, choices: shuffle(q.options.map((label, i) => ({ label, correct: i === q.answer }))) };
   return { ...q, src: q, left: shuffle(q.pairs.map((p, i) => ({ label: p[0], i }))), right: shuffle(q.pairs.map((p, i) => ({ label: p[1], i }))) };
 }
@@ -65,21 +67,30 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     checkBtn.disabled = true;
     updateTop();
 
-    const ecg = current.ecg ? `<div class="ecg-wrap">${renderEcg(current.ecg)}</div>` : '';
+    const visual = visualFor(current);
+    // Lecciones de caso clínico: la historia queda visible y cada pregunta puede añadir evolución.
+    const caseCard = lesson.case
+      ? `<details class="case" ${done === 0 ? 'open' : ''}><summary>📋 ${esc(lesson.case.title || 'Caso clínico')}</summary><p>${esc(lesson.case.text)}</p></details>`
+      : '';
+    const context = current.context ? `<p class="context">${esc(current.context)}</p>` : '';
+    const head = `${caseCard}${context}<h2 class="prompt">${esc(current.prompt)}</h2>`;
     if (current.type === 'match') {
       matchState = { left: null, matched: new Set(), erred: false };
       body.innerHTML = `
-        <h2 class="prompt">${esc(current.prompt)}</h2>
+        ${head}
         <div class="match">
           <div class="col">${current.left.map((o) => `<button class="choice" data-side="l" data-i="${o.i}">${esc(o.label)}</button>`).join('')}</div>
           <div class="col">${current.right.map((o) => `<button class="choice" data-side="r" data-i="${o.i}">${esc(o.label)}</button>`).join('')}</div>
         </div>`;
       checkBtn.hidden = true;
+    } else if (current.type === 'tap') {
+      checkBtn.hidden = false;
+      body.innerHTML = `${head}${visual}<p class="muted hint">Toca sobre la tira para marcar tu respuesta.</p>`;
     } else {
       checkBtn.hidden = false;
       body.innerHTML = `
-        <h2 class="prompt">${esc(current.prompt)}</h2>
-        ${ecg}
+        ${head}
+        ${visual}
         <div class="choices ${current.type === 'tf' ? 'tf' : ''}">
           ${current.choices.map((c, i) => `<button class="choice" data-c="${i}"><kbd>${i + 1}</kbd>${esc(c.label)}</button>`).join('')}
         </div>`;
@@ -88,6 +99,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   function showFeedback(ok, correctLabel) {
     phase = 'feedback';
+    recordAnswer(current.src.key, ok);
     if (ok) done++;
     else {
       mistakes++;
@@ -113,6 +125,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   function check() {
     if (phase === 'feedback') return next();
     if (selected === null) return;
+    if (current.type === 'tap') return checkTap();
     const ok = current.choices[selected].correct;
     body.querySelectorAll('.choice').forEach((b, i) => {
       b.disabled = true;
@@ -120,6 +133,39 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
       else if (i === selected) b.classList.add('wrong');
     });
     showFeedback(ok, current.choices.find((c) => c.correct).label);
+  }
+
+  // --- Preguntas "toca la onda" ---
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const svgX = (svg, t) => (t / Number(svg.dataset.seconds)) * svg.viewBox.baseVal.width;
+
+  function pickTap(e, svg) {
+    const r = svg.getBoundingClientRect();
+    selected = ((e.clientX - r.left) / r.width) * Number(svg.dataset.seconds);
+    let mark = svg.querySelector('.tap-mark');
+    if (!mark) {
+      mark = document.createElementNS(SVGNS, 'line');
+      mark.setAttribute('class', 'tap-mark');
+      svg.appendChild(mark);
+    }
+    const x = svgX(svg, selected);
+    Object.entries({ x1: x, x2: x, y1: 0, y2: svg.viewBox.baseVal.height }).forEach(([k, v]) => mark.setAttribute(k, v));
+    checkBtn.disabled = false;
+  }
+
+  function checkTap() {
+    const svg = body.querySelector('svg.ecg');
+    const tol = WAVE_TOLERANCE[current.wave];
+    const ok = current.targets.some((t) => Math.abs(t - selected) <= tol);
+    for (const t of current.targets) {
+      const zone = document.createElementNS(SVGNS, 'rect');
+      zone.setAttribute('class', 'tap-zone');
+      Object.entries({ x: svgX(svg, t - tol), y: 0, width: svgX(svg, 2 * tol), height: svg.viewBox.baseVal.height }).forEach(([k, v]) => zone.setAttribute(k, v));
+      svg.insertBefore(zone, svg.querySelector('.trace'));
+    }
+    svg.querySelector('.tap-mark')?.classList.add(ok ? 'right' : 'wrong');
+    body.querySelector('.tappable').classList.add('locked');
+    showFeedback(ok, ok ? null : 'mira las zonas resaltadas');
   }
 
   function pickMatch(btn) {
@@ -149,12 +195,14 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   function finish() {
     const stars = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
     const xp = 10 + (mistakes === 0 ? 5 : 0);
-    completeLesson(lesson.id, { xp, stars });
+    completeLesson(lesson.id, { xp, stars, review: !!lesson.review });
     cleanup();
     onFinish({ xp, stars, mistakes, total });
   }
 
   function onClick(e) {
+    const tapSvg = phase === 'answer' && current?.type === 'tap' && e.target.closest('.tappable svg');
+    if (tapSvg) return pickTap(e, tapSvg);
     const btn = e.target.closest('button');
     if (!btn) return;
     if (btn.dataset.act === 'exit') { cleanup(); return onExit('salir'); }
