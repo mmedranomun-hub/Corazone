@@ -1,5 +1,8 @@
 // Progreso del usuario en localStorage.
+// Sin perfil activo el estado vive en 'corazone:v1' (invitado); con perfil local, en 'corazone:v1:<perfilId>'.
+// El perfil activo se recuerda en 'corazone:profile' (los perfiles los gestiona js/auth.js).
 const KEY = 'corazone:v1';
+const ACTIVE_KEY = 'corazone:profile';
 export const MAX_HEARTS = 5;
 const HEART_REGEN_MS = 30 * 60 * 1000;
 const DAY = 864e5;
@@ -43,11 +46,19 @@ export const LEGENDARY_XP = 40;
 export const CHEST_MIN = 5;
 export const CHEST_MAX = 20;
 
+const ls = () => (typeof localStorage === 'undefined' ? null : localStorage);
+function readActive() {
+  try { return ls()?.getItem(ACTIVE_KEY) || null; } catch { return null; }
+}
+let profile = readActive();
+// Clave de localStorage del estado de un perfil (null = invitado).
+export const stateKey = (id = profile) => (id ? `${KEY}:${id}` : KEY);
+export const activeProfileId = () => profile;
 let state = load();
 
-function load() {
+function load(id = profile) {
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    const saved = JSON.parse(ls()?.getItem(stateKey(id)) || '{}');
     // Usuarios anteriores al onboarding no deben verlo
     if (saved.completed && Object.keys(saved.completed).length && saved.onboarded === undefined) saved.onboarded = true;
     return { ...defaults(), ...saved };
@@ -59,7 +70,7 @@ function load() {
 export function save() {
   state.updatedAt = Date.now();
   try {
-    localStorage.setItem(KEY, JSON.stringify(state));
+    ls()?.setItem(stateKey(), JSON.stringify(state));
   } catch {
     /* almacenamiento no disponible: el progreso dura sólo la sesión */
   }
@@ -282,6 +293,45 @@ export function markStory(id) {
   save();
 }
 
+// Cambia el perfil activo (null = invitado) y carga su estado.
+// migrate: el estado actual (p. ej. el del invitado) pasa al perfil y se borra de su clave anterior.
+export function useProfile(id = null, { migrate = false, init = null } = {}) {
+  const prevKey = stateKey();
+  const carried = migrate ? state : null;
+  profile = id || null;
+  try {
+    if (profile) ls()?.setItem(ACTIVE_KEY, profile);
+    else ls()?.removeItem(ACTIVE_KEY);
+  } catch { /* sin almacenamiento */ }
+  if (carried) {
+    state = carried;
+    save();
+    if (prevKey !== stateKey()) try { ls()?.removeItem(prevKey); } catch { /* */ }
+  } else {
+    state = load();
+    if (init && !ls()?.getItem(stateKey())) { state = { ...defaults(), ...init }; save(); }
+  }
+  profileListeners.forEach((fn) => { try { fn(profile); } catch { /* */ } });
+  return state;
+}
+
+const profileListeners = new Set();
+export function onProfile(fn) {
+  profileListeners.add(fn);
+  return () => profileListeners.delete(fn);
+}
+
+// Lee (sin activarlo) el estado guardado de un perfil, p. ej. para mostrar su XP en el selector.
+export function peekState(id) {
+  return load(id);
+}
+
+// Borra el estado guardado de un perfil (al eliminar el perfil).
+export function dropState(id) {
+  try { ls()?.removeItem(stateKey(id)); } catch { /* */ }
+}
+
+// Reinicia sólo el progreso del perfil activo.
 export function resetProgress() {
   state = defaults();
   save();
