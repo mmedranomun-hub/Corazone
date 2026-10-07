@@ -598,5 +598,160 @@ export default {
         },
       ],
     },
+    {
+      id: 'ecg-u10',
+      title: 'Lectura avanzada de trazados',
+      guide: {
+        intro: 'Trazados que separan a quien "lee" el ECG de quien lo interpreta: crecimientos auriculares y bloqueos fasciculares, QRS ancho complejo, bradiarritmias y disfunción de marcapasos, y las trampas técnicas e iónicas más frecuentes (ESC arritmias ventriculares 2022, estimulación 2021, TSV 2019).',
+        sections: [
+          {
+            title: 'Aurículas y fascículos',
+            points: [
+              'Crecimiento AI (P mitral): P ≥ 120 ms y bífida en II; componente terminal negativo en V1 ≥ 1 mm × 40 ms (índice de Morris).',
+              'Crecimiento AD (P pulmonar): P ≥ 2,5 mm en II, III y aVF con duración normal.',
+              'HBAI: eje −45° a −90°, qR en I y aVL, rS en II, III y aVF, QRS < 120 ms.',
+              'Bloqueo bifascicular (BRD + HBAI): solo conduce el fascículo posterior. Síncope sin explicación → estudio electrofisiológico (HV ≥ 70 ms → marcapasos) o Holter implantable.',
+            ],
+          },
+          {
+            title: 'QRS ancho avanzado',
+            points: [
+              'Disociación AV, latidos de captura (QRS estrecho prematuro) y de fusión (morfología intermedia): diagnósticos de TV.',
+              'Concordancia negativa en precordiales y eje extremo (positivo en aVR) apoyan TV. Ante la duda, trata como TV.',
+              'TV bidireccional (el eje alterna latido a latido): intoxicación digitálica, TVPC o Andersen-Tawil.',
+              'WPW: la onda delta negativa en inferiores simula Q de necrosis (pseudoinfarto).',
+            ],
+            tip: 'La buena tolerancia hemodinámica no descarta una TV.',
+          },
+          {
+            title: 'Bradiarritmias y marcapasos',
+            points: [
+              'BAV 2:1: no permite distinguir Mobitz I de II; QRS ancho sugiere bloqueo infrahisiano.',
+              'Paro sinusal: pausa sin P que no es múltiplo del PP (en el bloqueo sinoauricular sí lo es).',
+              'Escape de la unión: QRS estrecho a 40–60 lpm sin P previa (o P retrógrada).',
+              'Fallo de captura: espiga sin QRS. Fallo de detección: espigas a destiempo, sobre el ST o la T, ignorando los QRS propios.',
+            ],
+          },
+          {
+            title: 'Trampas del trazado',
+            points: [
+              'Electrodos de brazos invertidos: I negativo con aVR positivo y precordiales normales (en la dextrocardia la R decrece de V1 a V6).',
+              'Bajo voltaje (< 5 mm en miembros, < 10 mm en precordiales) + alternancia eléctrica: derrame con taponamiento.',
+              'Digoxina: ST "en cubeta" y QT corto = efecto, no intoxicación.',
+              'Hiperpotasemia: T picudas → P aplanada → QRS ancho. Hipopotasemia: T planas, ondas U (QU largo).',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'ecg-u10-l1',
+          title: 'Aurículas y fascículos en 12 derivaciones',
+          questions: [
+            { type: 'mc', prompt: 'Observa la onda P en II y V1. ¿Qué alteración muestra este ECG?', ecg12: 'lae', options: ['Crecimiento auricular izquierdo', 'Crecimiento auricular derecho', 'Hipertrofia ventricular izquierda', 'Hemibloqueo anterior izquierdo'], answer: 0, explain: 'P ancha (≥ 120 ms) y bífida en II con componente terminal negativo amplio en V1 (índice de Morris). Causa clásica: estenosis mitral, también HTA y miocardiopatías.' },
+            { type: 'tf', prompt: 'En este ECG, la P alta y picuda en derivaciones inferiores con duración normal sugiere crecimiento auricular derecho.', ecg12: 'rae', answer: true, explain: 'P pulmonar: ≥ 2,5 mm en II, III y aVF, < 120 ms. Piensa en EPOC, hipertensión pulmonar o valvulopatía tricúspide.' },
+            { type: 'mc', prompt: 'Observa el ECG (QRS < 120 ms). ¿Qué diagnóstico explica el eje?', ecg12: 'lafb', options: ['Hemibloqueo anterior izquierdo', 'Hemibloqueo posterior izquierdo', 'Bloqueo de rama izquierda', 'Necrosis inferior antigua'], answer: 0, explain: 'Eje izquierdo extremo (−45° a −90°) con qR en I y aVL y rS en II, III y aVF (S III > S II). Una necrosis inferior daría Q, no rS, en inferiores.' },
+            { type: 'match', prompt: 'Relaciona el hallazgo con su diagnóstico', pairs: [['P ancha y mellada en II', 'Crecimiento auricular izquierdo'], ['P de 3 mm y estrecha en II', 'Crecimiento auricular derecho'], ['Eje −60° con qR en aVL', 'Hemibloqueo anterior izquierdo'], ['Eje +120° con qR en III', 'Hemibloqueo posterior izquierdo']], explain: 'El HBPI exige descartar antes otras causas de eje derecho (HVD, EPOC, IAM lateral, constitución delgada).' },
+            { type: 'mc', prompt: 'Observa este ECG con BRD y eje izquierdo extremo. ¿Por dónde se conduce el impulso a los ventrículos?', ecg12: 'rbbb-lafb', options: ['Fascículo posterior izquierdo', 'Fascículo anterior izquierdo', 'Rama derecha del haz de His', 'Vía accesoria auriculoventricular'], answer: 0, explain: 'BRD + HBAI = bloqueo bifascicular: solo queda el fascículo posterior. Si este falla, aparece un BAV completo paroxístico.' },
+            { type: 'mc', prompt: 'Mujer de 74 años con BRD + HBAI y síncope brusco sin pródromos. Eco y ECG de control sin otros hallazgos. ¿Siguiente paso según la ESC 2021?', options: ['Estudio electrofisiológico con medida del HV', 'Alta: el bloqueo bifascicular es benigno', 'Ergometría para valorar isquemia', 'Iniciar betabloqueante y revisar en 6 meses'], answer: 0, explain: 'En bloqueo bifascicular con síncope inexplicado, un HV ≥ 70 ms o BAV inducido indica marcapasos; si el estudio es negativo, Holter implantable.' }, // Fuente: ESC 2021 estimulación
+          ],
+        },
+        {
+          id: 'ecg-u10-l2',
+          title: 'QRS ancho: más allá de lo básico',
+          questions: [
+            { type: 'mc', prompt: 'Taquicardia regular de QRS ancho. Observa el ECG: ¿qué hallazgo apoya más el diagnóstico de TV?', ecg12: 'vt12', options: ['Concordancia negativa de V1 a V6', 'Buena tolerancia hemodinámica', 'Morfología rSR′ típica en V1', 'Eje normal entre 0° y +90°'], answer: 0, explain: 'La concordancia precordial negativa y el eje extremo (positivo en aVR) son muy sugestivos de TV. Una TV puede tolerarse bien: eso no la descarta.' },
+            { type: 'tap', prompt: 'En esta TV, toca el latido de captura (QRS estrecho y prematuro).', ecg: 'vt-capture', wave: 'capture', explain: 'Una P sinusal llega cuando el sistema de conducción está libre y despolariza el ventrículo por la vía normal: prueba que las aurículas van disociadas, es decir, TV.' },
+            { type: 'tap', prompt: 'Ahora toca el latido de fusión (morfología intermedia entre el QRS de la TV y el normal).', ecg: 'vt-capture', wave: 'fusion', explain: 'El ventrículo se activa a la vez desde el foco de la TV y desde la conducción normal: sale un QRS híbrido. Igual que la captura, es diagnóstico de TV.' },
+            { type: 'tf', prompt: 'En un paciente anciano tratado con digoxina, esta taquicardia debe hacer sospechar intoxicación digitálica.', ecg: 'vt-bidir', answer: true, explain: 'La TV bidireccional (el eje del QRS alterna latido a latido) es muy específica de intoxicación digitálica y de TVPC. Tratamiento: anticuerpos antidigoxina y corregir el potasio.' },
+            { type: 'mc', prompt: 'Varón de 20 años asintomático. ¿Qué explica las ondas Q en III y aVF de este ECG?', ecg12: 'wpw12', options: ['Onda delta negativa por vía accesoria', 'Necrosis inferior antigua', 'Hemibloqueo anterior izquierdo', 'Crecimiento auricular derecho'], answer: 0, explain: 'PR corto y empastamiento inicial del QRS: preexcitación. Una vía posteroseptal da delta negativa en inferiores que simula un infarto (pseudoinfarto).' },
+            { type: 'match', prompt: 'Relaciona el hallazgo en una taquicardia de QRS ancho con su implicación', pairs: [['Latido de captura o fusión', 'Disociación AV: TV'], ['Eje que alterna latido a latido', 'Digoxina o TVPC'], ['Concordancia negativa V1–V6', 'Muy sugestiva de TV'], ['QRS ancho, irregular y cambiante', 'FA preexcitada']], explain: 'En la FA preexcitada evita frenadores del nodo AV (incluida amiodarona IV): cardioversión eléctrica si hay inestabilidad; si no, procainamida o ibutilida (ESC 2019).' },
+          ],
+        },
+        {
+          id: 'ecg-u10-l3',
+          title: 'Bradiarritmias y marcapasos',
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira: una de cada dos P no conduce. ¿Qué puedes afirmar?', ecg: '2to1-avb', options: ['No permite distinguir Mobitz I de Mobitz II', 'Es siempre un Mobitz II infrahisiano', 'Es un BAV de 1.er grado avanzado', 'Es un BAV completo con escape'], answer: 0, explain: 'Sin dos PR consecutivos no se ve si el PR se alarga. Orientan el QRS (ancho → infrahisiano) y buscar tiras 3:2; el BAV 2:1 infrahisiano es indicación de marcapasos.' },
+            { type: 'tap', prompt: 'Toca una onda P que no conduce.', ecg: '2to1-avb', wave: 'pBlocked', explain: 'La P bloqueada llega puntual a su ritmo (PP constante) pero no la sigue ningún QRS; a menudo queda medio escondida al final de la T.' },
+            { type: 'mc', prompt: 'Observa la tira. La pausa no es múltiplo del PP previo. ¿Diagnóstico?', ecg: 'sinus-arrest', options: ['Paro sinusal', 'Bloqueo sinoauricular de 2.º grado', 'BAV de 2.º grado Mobitz II', 'Extrasístole auricular bloqueada'], answer: 0, explain: 'En el bloqueo sinoauricular la pausa es múltiplo exacto del PP; en el paro sinusal no. En el Mobitz II se vería una P sin QRS. Pausas sintomáticas: marcapasos.' },
+            { type: 'tf', prompt: 'Este ritmo regular de QRS estrecho sin P previas se origina en el ventrículo.', ecg: 'junctional', answer: false, explain: 'Un QRS estrecho indica activación por el His: es un escape de la unión (40–60 lpm), a veces con P retrógrada tras el QRS. El escape ventricular es de QRS ancho y 20–40 lpm.' },
+            { type: 'tap', prompt: 'Portador de marcapasos. Toca una espiga de estimulación.', ecg: 'pacer-undersense', wave: 'spike', explain: 'Fíjate en las espigas que caen sobre el ST o la T sin capturar: el marcapasos no detecta los QRS propios (infradetección). Una espiga sobre la T puede inducir arritmias.' },
+            { type: 'mc', prompt: 'Mujer de 81 años con marcapasos por BAV completo consulta por mareos. ¿Qué muestra la tira?', ecg: 'pacer-fail', options: ['Fallo de captura', 'Fallo de detección (infradetección)', 'Sobredetección con inhibición', 'Funcionamiento normal a demanda'], answer: 0, explain: 'Hay espigas a la frecuencia programada no seguidas de QRS. Causas: dislocación del electrodo, aumento del umbral (hiperK, isquemia, fármacos) o batería agotada. Interroga el dispositivo y haz Rx de tórax.' },
+          ],
+        },
+        {
+          id: 'ecg-u10-l4',
+          title: 'Trampas del trazado',
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG: I es negativo (P, QRS y T) y aVR positivo. ¿Qué ocurre?', ecg12: 'limb-reversal', options: ['Electrodos de los brazos invertidos', 'Dextrocardia', 'IAM lateral extenso', 'Hemibloqueo posterior izquierdo'], answer: 0, explain: 'La progresión de R normal en precordiales descarta la dextrocardia (en ella la R decrece de V1 a V6). Repite el ECG colocando bien los electrodos.' },
+            { type: 'tf', prompt: 'Este ECG cumple el criterio de bajo voltaje: QRS < 5 mm en todas las derivaciones de miembros.', ecg12: 'lowvoltage', answer: true, explain: 'Causas: derrame pericárdico, obesidad, EPOC, hipotiroidismo y amiloidosis. Bajo voltaje con pared del VI gruesa en el eco sugiere amiloidosis.' },
+            { type: 'mc', prompt: 'Mujer de 58 años con cáncer de pulmón, disnea, hipotensión e ingurgitación yugular. Observa la tira. ¿Diagnóstico más probable?', ecg: 'alternans', options: ['Taponamiento cardiaco', 'Tromboembolismo pulmonar', 'IAMCEST anterior', 'Neumotórax a tensión'], answer: 0, explain: 'Taquicardia, bajo voltaje y alternancia eléctrica (el corazón oscila en el derrame). Confirma con eco y prepara pericardiocentesis.' },
+            { type: 'mc', prompt: 'Observa la morfología del descenso del ST. ¿Qué es lo más probable?', ecg12: 'digoxin', options: ['Efecto digitálico', 'Isquemia subendocárdica', 'Hipopotasemia', 'Sobrecarga por HVI'], answer: 0, explain: 'ST "en cubeta" que cae despacio y sube bruscamente, con QT corto. Indica que el paciente toma digoxina, no que esté intoxicado: eso lo sugieren las arritmias.' },
+            { type: 'tf', prompt: 'En este ECG, el QT parece largo porque la onda U se funde con la T: en realidad se mide un intervalo QU.', ecg12: 'hypok', answer: true, explain: 'Hipopotasemia: T aplanadas, U prominentes en V2–V3 y discreto descenso del ST. Aumenta el riesgo de arritmias ventriculares, sobre todo con digoxina o fármacos que alargan el QT.' },
+            { type: 'mc', prompt: 'Varón de 67 años con enfermedad renal crónica, debilidad y este ECG. ¿Qué fármaco administras primero?', ecg12: 'hyperk12', options: ['Gluconato cálcico IV', 'Bicarbonato sódico IV', 'Furosemida IV', 'Resinas de intercambio orales'], answer: 0, explain: 'T picudas y P aplanadas: hiperpotasemia con repercusión en el ECG. El calcio estabiliza la membrana en minutos (no baja el K⁺); después, insulina con glucosa y salbutamol.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'ecg-u11',
+      title: 'Canalopatías en el trazado',
+      guide: {
+        intro: 'Practica con trazados de 12 derivaciones lo que distingue a cada canalopatía: el patrón de Brugada, la morfología de la T en cada tipo de QT largo y la onda épsilon. Cierra con el diferencial de las taquicardias auriculares (ESC arritmias ventriculares 2022, TSV 2019).',
+        sections: [
+          {
+            title: 'Brugada tipo 1 frente a tipo 2',
+            points: [
+              'Tipo 1: J ≥ 2 mm, ST "en cúpula" descendente y T negativa en V1–V2. Es el único diagnóstico.',
+              'Tipo 2: "silla de montar", ST ≥ 0,5 mm cóncavo y T positiva. Se confirma solo si un bloqueador del sodio lo convierte en tipo 1.',
+              'Registra V1–V2 también en el 2.º y 3.er espacio intercostal; trata la fiebre de forma precoz.',
+            ],
+          },
+          {
+            title: 'QT largo: T y tratamiento según el tipo',
+            points: [
+              'LQT1: T de base ancha; ejercicio y natación; responde muy bien al betabloqueante (nadolol, propranolol).',
+              'LQT2: T de bajo voltaje y bífida; ruidos bruscos y posparto; betabloqueante y mantener K⁺ normal.',
+              'LQT3: ST largo isoeléctrico con T tardía; eventos en reposo y sueño; mexiletina añadida al tratamiento.',
+            ],
+          },
+          {
+            title: 'Miocardiopatía arritmogénica y taquicardias auriculares',
+            points: [
+              'MAVD: T negativas en V1–V3 y onda épsilon (muescas tras el QRS en V1–V2).',
+              'TAM: ≥ 3 morfologías de P con línea isoeléctrica entre ellas; típica de la EPOC. Trata la causa; la cardioversión no sirve.',
+              'Flutter 4:1: ondas F a ~300/min en dientes de sierra con FC regular ~75 lpm. Anticoagula como la FA; ablación del istmo cavotricuspídeo.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'ecg-u11-l1',
+          title: 'Brugada y QT largo por tipos',
+          questions: [
+            { type: 'mc', prompt: 'Varón de 38 años con síncope durante un cuadro febril. Observa V1–V2. ¿Qué patrón muestra?', ecg12: 'brugada1', options: ['Brugada tipo 1 ("en cúpula")', 'Brugada tipo 2 ("silla de montar")', 'Bloqueo de rama derecha completo', 'IAMCEST anteroseptal'], answer: 0, explain: 'J ≥ 2 mm con ST convexo descendente que termina en T negativa: tipo 1, diagnóstico. La fiebre lo desenmascara y precipita arritmias.' },
+            { type: 'tf', prompt: 'Este patrón "en silla de montar" en V2 basta por sí solo para diagnosticar síndrome de Brugada.', ecg12: 'brugada2', answer: false, explain: 'El tipo 2 solo es sugestivo: se confirma si un test con ajmalina, flecainida o procainamida lo convierte en tipo 1. Prueba también V1–V2 en espacios intercostales altos.' },
+            { type: 'match', prompt: 'Relaciona el patrón con su rasgo en el ECG', pairs: [['LQT1', 'T de base ancha'], ['LQT2', 'T bífida de bajo voltaje'], ['LQT3', 'ST largo con T tardía'], ['Brugada tipo 1', 'ST en cúpula y T negativa']], explain: 'La morfología de la T orienta el genotipo del QT largo antes del estudio genético y ayuda a elegir tratamiento y consejos.' },
+            { type: 'mc', prompt: 'Chico de 14 años con síncope mientras nadaba y este ECG. ¿Tratamiento de primera línea?', ecg12: 'lqt1', options: ['Nadolol', 'Mexiletina en monoterapia', 'Quinidina', 'Isoproterenol'], answer: 0, explain: 'LQT1 (IKs): los eventos dependen del tono adrenérgico y el betabloqueante no selectivo es muy eficaz. Evita la natación de competición y los fármacos que alargan el QT.' },
+            { type: 'mc', prompt: 'Mujer de 31 años, síncope en el posparto al sonar el teléfono. Observa la T. ¿Subtipo más probable?', ecg12: 'lqt2', options: ['LQT2', 'LQT1', 'LQT3', 'QT largo adquirido por fármacos'], answer: 0, explain: 'T bífida de bajo voltaje y desencadenante auditivo: LQT2 (KCNH2). Betabloqueante, mantener el K⁺ normal y evitar despertadores y timbres bruscos.' },
+            { type: 'tf', prompt: 'En este subtipo, con eventos en reposo y durante el sueño, se recomienda la mexiletina si el QT está prolongado.', ecg12: 'lqt3', answer: true, explain: 'LQT3 (SCN5A, ganancia de función del sodio): la mexiletina bloquea la corriente tardía y acorta el QT. Si hay parada recuperada, DAI.' }, // Fuente: ESC 2022 arritmias ventriculares
+          ],
+        },
+        {
+          id: 'ecg-u11-l2',
+          title: 'Épsilon y taquicardias auriculares',
+          questions: [
+            { type: 'mc', prompt: 'Varón de 22 años, futbolista, con palpitaciones al esfuerzo. ¿Qué hallazgos ves en V1–V3?', ecg12: 'arvc', options: ['T negativas y onda épsilon', 'ST en cúpula con T negativa', 'PR corto con onda delta', 'Ondas U prominentes'], answer: 0, explain: 'T negativas en V1–V3 sin BRD en > 14 años y muescas tras el QRS (épsilon): sugiere miocardiopatía arritmogénica. Pide RM cardiaca y Holter, y suspende el deporte intenso.' },
+            { type: 'tf', prompt: 'La onda épsilon se busca al inicio del QRS en V1–V3, como la onda delta.', ecg12: 'arvc', answer: false, explain: 'Aparece al final del QRS, entre este y la T: refleja la activación tardía del VD enfermo. Mejora su detección aumentar la ganancia o usar derivaciones de Fontaine.' },
+            { type: 'mc', prompt: 'Varón de 76 años con EPOC agudizada, SatO₂ 86 %. Observa la tira. ¿Diagnóstico?', ecg: 'mat', options: ['Taquicardia auricular multifocal', 'Fibrilación auricular', 'Flutter con conducción variable', 'Taquicardia sinusal'], answer: 0, explain: 'Ritmo irregular > 100 lpm con P de ≥ 3 morfologías y línea isoeléctrica entre ellas (en la FA no hay P). Trata la hipoxemia y corrige K⁺ y Mg²⁺.' },
+            { type: 'tf', prompt: 'La cardioversión eléctrica es un tratamiento eficaz de la taquicardia auricular multifocal.', ecg: 'mat', answer: false, explain: 'No hay un circuito único que interrumpir: recurre al instante. Si persiste tras tratar la causa, verapamilo, diltiazem o un betabloqueante selectivo (ESC 2019).' },
+            { type: 'mc', prompt: 'Observa la tira: ritmo regular a ~75 lpm. ¿Cuál es el diagnóstico?', ecg: 'afl-4to1', options: ['Flutter auricular con conducción 4:1', 'Taquicardia auricular multifocal', 'FA con respuesta ventricular lenta', 'Ritmo sinusal con BAV 2:1'], answer: 0, explain: 'Ondas F en dientes de sierra a ~300/min, de las que conduce una de cada cuatro. Anticoagula según el riesgo como en la FA; la ablación del istmo cavotricuspídeo es muy eficaz.' },
+            { type: 'match', prompt: 'Relaciona la actividad auricular con la arritmia', pairs: [['Ondas F a ~300/min', 'Flutter auricular típico'], ['P de ≥ 3 morfologías', 'Taquicardia auricular multifocal'], ['Sin P, línea basal ondulante', 'Fibrilación auricular'], ['P iguales con PR constante', 'Taquicardia sinusal']], explain: 'Mira siempre la línea entre los QRS: isoeléctrica con P cambiantes (TAM), en sierra (flutter) o caótica sin P (FA).' },
+          ],
+        },
+      ],
+    },
   ],
 };

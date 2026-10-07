@@ -76,7 +76,7 @@ Niveles:
 | Taquicardias de QRS estrecho: algoritmo | ⬜ | Clasificar por regularidad y relación P-QRS (RP corto vs largo); diferenciar TRIN, TRAV ortodrómica, taquicardia auricular y flutter; predecir la respuesta a adenosina. | `ecg: svt, flutter, tachy` |
 | Fibrilación y flutter auricular | 🟡 | Distinguir flutter típico (F negativas en inferiores) de atípico; aplicar CHA₂DS₂-VA (ESC 2024) y estrategia de control de frecuencia/ritmo. | `ecg: afib, flutter` |
 | Preexcitación y WPW | 🟡 | Reconocer PR corto + onda delta; localizar aproximadamente la vía; manejar FA preexcitada (evitar frenadores del nodo AV). | `ecg: wpw`, `ecg12` WPW |
-| Taquicardia auricular multifocal y otras | ⬜ | Reconocer ≥ 3 morfologías de P y asociarla a EPOC; diferenciar de FA. | `ecg` (pendiente) |
+| Taquicardia auricular multifocal y otras (`ecg-u11-l2`) | ✅ | Reconocer ≥ 3 morfologías de P y asociarla a EPOC; diferenciar de FA. | `ecg` (pendiente) |
 
 ### Unidad 8. Arritmias ventriculares ✅ (`ecg-u8`)
 | Lección | Estado | Objetivos | Visual |
@@ -90,8 +90,8 @@ Niveles:
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
 | Patrones que no debes olvidar (`ecg-u3-l2`) | ✅ | Reconocer hiperpotasemia, WPW, BRI, QT largo, pericarditis, S1Q3T3. | `ecg: hyperk, wpw, lbbb, longqt` |
-| Potasio y calcio | ⬜ | Ordenar la progresión de la hiperpotasemia (T picudas → P aplanada → QRS ancho → onda sinusoidal); reconocer hipopotasemia (U, descenso ST), hipo/hipercalcemia (QT largo/corto). | `ecg: hyperk`, `ecg12` |
-| Fármacos | ⬜ | Reconocer efecto digitálico ("cubeta") vs intoxicación (TA con bloqueo, bidireccional); efecto de antiarrítmicos IC (QRS ancho) y III (QT largo); intoxicación por tricíclicos (R en aVR, QRS ancho). | `ecg12` |
+| Potasio y calcio (`ecg-u10-l4`; calcio pendiente) | 🟡 | Ordenar la progresión de la hiperpotasemia (T picudas → P aplanada → QRS ancho → onda sinusoidal); reconocer hipopotasemia (U, descenso ST), hipo/hipercalcemia (QT largo/corto). | `ecg: hyperk`, `ecg12` |
+| Fármacos (`ecg-u10-l4`, `ecg-u10-l2`: digoxina; IC/III/tricíclicos pendientes) | 🟡 | Reconocer efecto digitálico ("cubeta") vs intoxicación (TA con bloqueo, bidireccional); efecto de antiarrítmicos IC (QRS ancho) y III (QT largo); intoxicación por tricíclicos (R en aVR, QRS ancho). | `ecg12` |
 | Otras situaciones | ⬜ | Reconocer patrón del TEP (taquicardia, BRD, S1Q3T3, T negativas V1–V4), hipotermia (onda J de Osborn), HSA (T gigantes negativas), dextrocardia. | `ecg12` |
 
 ---
@@ -111,7 +111,7 @@ Niveles:
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
 | Fundamentos y código NBG | ⬜ | Interpretar el código de 3–5 letras (VVI, DDD, AAI, DDDR); identificar espículas auriculares y ventriculares; asociar estimulación de VD a morfología de BRI. | `ecg` marcapasos (pendiente) |
-| Disfunción de marcapasos | ⬜ | Diferenciar fallo de captura, fallo de detección (infra/sobredetección) y taquicardia mediada por marcapasos. | `ecg` (pendiente) |
+| Disfunción de marcapasos (`ecg-u10-l3`; sobredetección y TMM pendientes) | 🟡 | Diferenciar fallo de captura, fallo de detección (infra/sobredetección) y taquicardia mediada por marcapasos. | `ecg` (pendiente) |
 | Estimulación biventricular y de sistema de conducción | ⬜ | Reconocer QRS estimulado estrecho en estimulación hisiana/rama izquierda; valorar respuesta a TRC (R en V1, QS en I). | `ecg12` |
 | DAI y terapias | ⬜ | Distinguir terapia apropiada vs inapropiada (FA rápida, sobredetección de T). | `ecg` |
 
@@ -131,6 +131,16 @@ Niveles:
 | ECG para el MIR | ⬜ | Resolver preguntas tipo examen que mezclan todo el temario. | mixto |
 
 ---
+
+### Unidades de trazados avanzados ✅ (`ecg-u10`, `ecg-u11`)
+| Lección | Estado | Objetivos | Visual |
+|---|---|---|---|
+| Aurículas y fascículos en 12 derivaciones (`ecg-u10-l1`) | ✅ | Reconocer crecimiento AI/AD, HBAI y bloqueo bifascicular; manejo del síncope con BRD + HBAI (ESC 2021). | `ecg12: lae, rae, lafb, rbbb-lafb` |
+| QRS ancho: más allá de lo básico (`ecg-u10-l2`) | ✅ | Identificar captura/fusión, concordancia, TV bidireccional y pseudoinfarto por WPW. | `ecg12: vt12, wpw12`; `tap: vt-capture`; `ecg: vt-bidir` |
+| Bradiarritmias y marcapasos (`ecg-u10-l3`) | ✅ | BAV 2:1, paro sinusal, escape de la unión, fallo de captura y de detección. | `ecg: 2to1-avb, sinus-arrest, junctional, pacer-fail`; `tap: pacer-undersense` |
+| Trampas del trazado (`ecg-u10-l4`) | ✅ | Inversión de electrodos, bajo voltaje, alternancia eléctrica, digoxina, hiper/hipopotasemia. | `ecg12: limb-reversal, lowvoltage, digoxin, hypok, hyperk12`; `ecg: alternans` |
+| Brugada y QT largo por tipos (`ecg-u11-l1`) | ✅ | Brugada 1 vs 2; LQT1–3 por morfología, desencadenante y tratamiento (ESC 2022). | `ecg12: brugada1, brugada2, lqt1, lqt2, lqt3` |
+| Épsilon y taquicardias auriculares (`ecg-u11-l2`) | ✅ | Onda épsilon y T negativas en MAVD; TAM y flutter 4:1 frente a FA (ESC 2019). | `ecg12: arvc`; `ecg: mat, afl-4to1` |
 
 ## Resumen de cobertura
 - ✅ 8 lecciones existentes (≈ 45 preguntas) + 10 lecciones nuevas (60 preguntas) en `ecg-u5` (crecimientos), `ecg-u6` (bloqueos de rama/fasciculares) y `ecg-u7` (infarto: criterios, localización, OMI y diferencial).
