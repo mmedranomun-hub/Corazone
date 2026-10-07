@@ -59,10 +59,12 @@ function beatWaveRaw(t, b) {
       if (b.ventT) v += b.ventT * 0.4 * sigmoid((t - 0.1) / 0.015) * sigmoid((0.24 - t) / 0.03);
       v += gauss(t, b.ventT ?? -0.4, 0.26, 0.05);
       break;
-    case 'vtw': // TV: QRS muy ancho (~200 ms) y monofásico, con inicio lento y ST-T opuesto
-      v += gauss(t, 0.35 * r, -0.045, 0.03) + gauss(t, r, 0.01, 0.03) + gauss(t, 0.55 * r, 0.075, 0.03);
-      v += gauss(t, -0.3 * r, 0.24, 0.045);
+    case 'vtw': { // TV: QRS muy ancho (~200 ms; `qrsW` lo escala) y monofásico, con inicio lento y ST-T opuesto
+      const k = b.qrsW ?? 1;
+      v += gauss(t, 0.35 * r, -0.045 * k, 0.03 * k) + gauss(t, r, 0.01 * k, 0.03 * k) + gauss(t, 0.55 * r, 0.075 * k, 0.03 * k);
+      v += gauss(t, -0.3 * r, 0.24 * k, 0.045 * k);
       break;
+    }
     case 'fusion': // latido de fusión: mitad conducido, mitad ventricular
       v += 0.5 * beatWaveRaw(t, { ...b, morph: 'vent', p: false, aSpike: 0, vSpikeOnly: 0 }) + 0.5 * beatWaveRaw(t, { ...b, morph: undefined, p: false, aSpike: 0, vSpikeOnly: 0 });
       break;
@@ -346,8 +348,8 @@ export const RHYTHMS = {
     name: 'Taquicardia ventricular bidireccional',
     desc: 'TV regular de QRS ancho en la que el eje del QRS alterna 180° latido a latido (un QRS positivo, el siguiente negativo). Muy específica: intoxicación digitálica, taquicardia ventricular polimórfica catecolaminérgica (TVPC) y síndrome de Andersen-Tawil.',
     build: (s) => {
-      const beats = sinusBeats(165, s, { p: false, morph: 'vent' });
-      beats.forEach((b, i) => Object.assign(b, i % 2 ? { rAmp: -0.75, ventT: 0.3 } : { rAmp: 0.95, ventT: -0.35 }));
+      const beats = sinusBeats(150, s, { p: false, morph: 'vtw', qrsW: 0.75 });
+      beats.forEach((b, i) => Object.assign(b, { rAmp: i % 2 ? -0.95 : 1.05 }));
       return { beats };
     },
   },
@@ -362,14 +364,14 @@ export const RHYTHMS = {
       for (let k = 0, tp = p0; tp < s + 1; k++, tp = p0 + k * pp) {
         const sp = special[k];
         if (sp) beats.push({ t: tp - 0.02 + sp.pr, ...sp, qt: 0.3 });
-        else beats.push({ t: tp + 0.14, qrs: false, pAmp: 0.13 });
+        else beats.push({ t: tp + 0.14, qrs: false, pAmp: 0.2 });
       }
       // TV a 150 lpm que se reinicia tras la captura (la fusión llega en su momento)
       const cap = beats.find((b) => b.capture).t;
-      for (let t = 0.3; t < s + 1; t += 0.4) {
-        if (t > cap - 0.15 && t < cap + 0.4) { t = cap + 0.05; continue; } // siguiente TV a 0,45 s de la captura
-        if (beats.some((b) => b.morph === 'fusion' && Math.abs(b.t - t) < 0.15)) continue;
-        beats.push({ t, p: false, morph: 'vent' });
+      for (let t = 0.3; t < s + 1; ) {
+        if (t > cap - 0.15 && t < cap + 0.45) { t = cap + 0.45; continue; } // la TV se reinicia 0,45 s tras la captura (t siempre avanza)
+        if (!beats.some((b) => b.morph === 'fusion' && Math.abs(b.t - t) < 0.15)) beats.push({ t, p: false, morph: 'vent' });
+        t += 0.4;
       }
       return { beats: beats.sort((a, b) => a.t - b.t) };
     },
@@ -408,13 +410,14 @@ export const RHYTHMS = {
     name: 'Marcapasos: fallo de detección (infradetección)',
     desc: 'El marcapasos no "ve" los QRS propios y estimula a su frecuencia fija sin tenerlos en cuenta: aparecen espigas en mitad del ciclo (sobre el ST o la T) que no capturan por caer en periodo refractario, y otras que capturan si caen fuera de él. Una espiga sobre la T puede desencadenar arritmias ventriculares (R sobre T). Causas: sensibilidad mal programada, electrodo dislocado o QRS propios de baja amplitud.',
     build: (s) => {
-      // Ritmo sinusal a 70 lpm y marcapasos VVI a 60 lpm que no lo detecta.
+      // Ritmo sinusal a 75 lpm y marcapasos VVI a 70 lpm que no lo detecta: las espigas
+      // caen cada vez más tarde en el ciclo (ST, T…) hasta que una sale del periodo refractario y captura.
       const sinus = [];
-      for (let t = 0.35; t < s + 1; t += 0.85) sinus.push(t);
+      for (let t = 0.35; t < s + 1; t += 0.8) sinus.push(t);
       const beats = [];
       const qrs = []; // QRS reales (para el periodo refractario)
       const spikes = [];
-      for (let t = 0.6; t < s + 1; t += 1) spikes.push(t);
+      for (let t = 0.5; t < s + 1; t += 60 / 70) spikes.push(t);
       const events = [...sinus.map((t) => ({ t, kind: 's' })), ...spikes.map((t) => ({ t: t - V_SPIKE, kind: 'v' }))].sort((a, b) => a.t - b.t);
       for (const e of events) {
         const lastQ = qrs.length ? qrs.at(-1) : -9;
