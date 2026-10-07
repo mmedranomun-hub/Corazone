@@ -4,6 +4,7 @@ import { getState, update, dueReviews, LEGENDARY_PRICE } from '../storage.js';
 import { legendaryFree } from '../game.js';
 import { shell, esc, currentCourse, go } from '../ui.js';
 import { cora } from '../fx.js';
+import { buyLegendary } from './lessonFlow.js';
 
 export function lessonStatus(course) {
   const { completed, legendary = {} } = getState();
@@ -46,11 +47,11 @@ export function viewLearn(courseId) {
         <div class="unit-head">
           <div><small>UNIDAD ${ui + 1}</small><h2>${esc(u.title)}</h2></div>
           <a class="guide-btn" href="#/guia/${u.id}" title="Guía de la unidad">📖<span>GUÍA</span></a>
-          ${unitLocked ? `<a class="jump-btn" href="#/practicar/prueba-${u.id}">⏩ ¿Ya lo sabes? <b>Haz la prueba</b></a>` : ''}
+          ${unitLocked ? `<a class="jump-btn" href="#/prueba/${u.id}">⏩ ¿Ya lo sabes? <b>Haz la prueba</b></a>` : ''}
         </div>
         <div class="path">${nodes}
           <div class="node-row" style="--x:0px">${unitDone
-            ? `<a class="trophy won" href="#/practicar/repaso-${u.id}" title="Repaso de unidad">🏆</a><small class="trophy-label">REPASO DE UNIDAD</small>`
+            ? `<a class="trophy won" href="#/repaso-unidad/${u.id}" title="Repaso de unidad">🏆</a><small class="trophy-label">REPASO DE UNIDAD</small>`
             : '<div class="trophy">🏆</div>'}</div>
         </div>
       </section>`;
@@ -75,13 +76,17 @@ function openPopover(node, l, status, course) {
   // Nivel legendario: sólo en lecciones ya completadas (doradas)
   const legend = l.state !== 'done' ? '' : l.legendary
     ? '<p class="legend-note">👑 ¡Nivel legendario conseguido!</p>'
-    : `<a class="btn legend ${canPay ? '' : 'off'}" ${canPay ? `href="#/practicar/legendario-${l.id}"` : 'aria-disabled="true"'}>👑 LEGENDARIO · ${free ? 'GRATIS' : `${LEGENDARY_PRICE} 💎`}</a>
+    : `<a class="btn legend ${canPay ? '' : 'off'}" ${canPay ? `href="#/legendario/${l.id}"` : 'aria-disabled="true"'}>👑 LEGENDARIO · ${free ? 'GRATIS' : `${LEGENDARY_PRICE} 💎`}</a>
        <small class="legend-hint">${free ? '¡Gratis por completar misiones hoy! ' : ''}Todas las preguntas, sin fallos · +40 XP</small>`;
   pop.innerHTML = l.state === 'locked'
     ? `<b>${esc(l.title)}</b><p>Completa los niveles anteriores para desbloquear este</p><button class="btn" disabled>BLOQUEADO</button>`
     : `<b>${esc(l.title)}</b><p>Lección ${n} de ${inUnit.length}${l.case ? ' · Caso clínico' : ''}</p>
        <a class="btn ${l.state === 'done' ? 'gold' : 'white'}" href="#/leccion/${l.id}">${l.state === 'done' ? 'PRACTICAR +5 XP' : 'EMPEZAR +10 XP'}</a>${legend}`;
   node.parentElement.appendChild(pop);
+  // Se cobra aquí, al pulsar; la ruta sólo consume el ticket emitido.
+  pop.querySelector('.btn.legend:not(.off)')?.addEventListener('click', (e) => {
+    if (!buyLegendary(l.id)) { e.preventDefault(); pop.remove(); }
+  });
   const close = (e) => { if (!pop.contains(e.target) && e.target !== node) { pop.remove(); document.removeEventListener('click', close, true); } };
   setTimeout(() => document.addEventListener('click', close, true));
 }

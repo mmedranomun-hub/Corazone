@@ -74,13 +74,31 @@ export function startUnitReview(unitId) {
   startLesson({ course: f.course, lesson: { id: `repaso-${unitId}`, title: `Repaso · ${f.unit.title}`, review: true, practice: true, questions } }, `#/curso/${f.course.id}`);
 }
 
-// Nivel legendario: todas las preguntas de la lección, 1 vida. Se cobra al empezar.
+// Tickets de un solo uso (en memoria): se emiten al pagar desde el popover y la ruta los
+// consume. Abrir o recargar el enlace sin ticket no vuelve a cobrar. Puro → testeable.
+export function makeTickets() {
+  const set = new Set();
+  return {
+    issue: (id) => { set.add(id); },
+    consume: (id) => set.delete(id),
+  };
+}
+const legendTickets = makeTickets();
+
+// Nivel legendario: se cobra al pulsar el botón (no al cargar la ruta) y se emite un ticket.
+export function buyLegendary(lessonId) {
+  if (!findLesson(lessonId) || !getState().completed[lessonId]) return false;
+  if (!payLegendary(legendaryFree())) return false;
+  legendTickets.issue(lessonId);
+  return true;
+}
+
+// Nivel legendario: todas las preguntas de la lección, 1 vida. Necesita ticket (ya pagado).
 export function startLegendary(lessonId) {
   const found = findLesson(lessonId);
-  const back = found ? `#/curso/${found.course.id}` : '#/';
-  if (!found || !getState().completed[lessonId]) return go(back);
-  if (!payLegendary(legendaryFree())) return go(back);
-  startLesson({ course: found.course, lesson: { ...found.lesson, mode: 'legendary', lives: 1, xp: LEGENDARY_XP } }, back);
+  if (!found) return go('#/');
+  if (!legendTickets.consume(lessonId)) return go(`#/leccion/${lessonId}`);
+  startLesson({ course: found.course, lesson: { ...found.lesson, mode: 'legendary', lives: 1, xp: LEGENDARY_XP } }, `#/curso/${found.course.id}`);
 }
 export { LEGENDARY_PRICE };
 

@@ -3,7 +3,7 @@ import { getState } from './storage.js';
 import { applyTheme } from './ui.js';
 import { loadFx } from './fx.js';
 import { viewLearn, viewCourses, viewGuide } from './views/learn.js';
-import { viewLesson, stopLesson } from './views/lessonFlow.js';
+import { viewLesson, stopLesson, startLegendary, startUnitTest, startUnitReview } from './views/lessonFlow.js';
 import { viewPractice, viewAtlas } from './views/practice.js';
 import { viewLeagues, viewQuests, viewShop } from './views/social.js';
 import { viewProfile, viewAchievements, viewStreak, viewSettings, viewOnboarding } from './views/me.js';
@@ -15,6 +15,9 @@ const ROUTES = {
   guia: viewGuide,
   leccion: viewLesson,
   practicar: viewPractice,
+  legendario: startLegendary,
+  prueba: startUnitTest,
+  'repaso-unidad': startUnitReview,
   repaso: () => viewPractice('errores'),
   atlas: viewAtlas,
   ligas: viewLeagues,

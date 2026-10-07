@@ -20,7 +20,8 @@ const SESSIONS = {
   imagen: { title: 'Lectura de imagen', get: () => sample(doneQuestions().filter((q) => q.ecg || q.ecg12 || q.pressure || q.diagram), 8) },
 };
 
-// Sesiones especiales lanzadas desde la ruta (sin rutas nuevas en el router):
+// Rutas antiguas de sesiones especiales (compatibilidad; las nuevas son #/legendario/<id>,
+// #/prueba/<unidad> y #/repaso-unidad/<unidad> en app.js):
 // #/practicar/prueba-<unidad>, #/practicar/repaso-<unidad>, #/practicar/legendario-<lección>
 const SPECIAL = [['prueba-', startUnitTest], ['repaso-', startUnitReview], ['legendario-', startLegendary]];
 
