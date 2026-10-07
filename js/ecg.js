@@ -18,15 +18,24 @@ function rng(seed) {
   };
 }
 
+// Espiga de marcapasos: triángulo de 12 ms (visible aunque se muestree cada 4 ms)
+const spike = (t, a, c) => a * Math.max(0, 1 - Math.abs(t - c) / 0.006) - 0.08 * a * Math.max(0, 1 - Math.abs(t - c - 0.012) / 0.008);
+// Posición (s, relativa a R) de las espigas de marcapasos
+const A_SPIKE = (b) => 0.02 - (b.pr ?? 0.16) - 0.055;
+const V_SPIKE = -0.085;
+
 // Morfología de un latido. t relativo al pico R (s).
 function beatWave(t, b) {
   let v = 0;
+  if (b.aSpike) v += spike(t, b.aSpike, A_SPIKE(b));
   if (b.p !== false) {
     const pc = 0.02 - (b.pr ?? 0.16);
     v += gauss(t, b.pAmp ?? 0.15, pc + (b.pOffset ?? 0), 0.025);
     if (b.prDep) v += b.prDep * sigmoid((t - pc - 0.04) / 0.01) * sigmoid((-0.03 - t) / 0.006);
   }
   if (b.qrs === false) return v;
+  if (b.vSpike) v += spike(t, b.vSpike, V_SPIKE);
+  if (b.retroP) v += gauss(t, b.retroP, 0.13, 0.018); // P retrógrada en el ST
   const r = b.rAmp ?? 1.1;
   switch (b.morph) {
     case 'wide': // BRI: QRS ancho y mellado, T discordante
@@ -34,6 +43,7 @@ function beatWave(t, b) {
       v += gauss(t, -0.35, 0.3, 0.06);
       break;
     case 'vent': // QRS ventricular ancho y bizarro
+    case 'paced': // QRS estimulado por marcapasos (misma morfología, distinto origen)
       v += gauss(t, r * 1.2, 0, 0.035) + gauss(t, -0.6, 0.08, 0.035);
       // ST-T discordante: opuesto a la deflexión principal del QRS
       if (b.ventT) v += b.ventT * 0.4 * sigmoid((t - 0.1) / 0.015) * sigmoid((0.24 - t) / 0.03);
@@ -44,12 +54,19 @@ function beatWave(t, b) {
       v += gauss(t, -0.2, 0.3, 0.05);
       break;
     default: {
-      if (b.delta) v += gauss(t, 0.35, -0.035, 0.016);
-      v += gauss(t, -(b.qAmp ?? 0.1), -0.022, b.qWidth ?? 0.007) + gauss(t, r, 0, 0.009) + gauss(t, -(b.sAmp ?? 0.25), 0.022, 0.008);
+      if (b.delta) v += gauss(t, b.delta === true ? 0.35 : b.delta, -0.035, b.deltaW ?? 0.016);
+      v += gauss(t, -(b.qAmp ?? 0.1), -0.022, b.qWidth ?? 0.007) + gauss(t, r, 0, b.rWidth ?? 0.009) + gauss(t, -(b.sAmp ?? 0.25), 0.022, b.sWidth ?? 0.008);
       if (b.slurS) v += gauss(t, -b.slurS, 0.055, 0.02); // S empastada (BRD en I/V6)
       const st = b.st ?? 0;
       if (st) v += st * sigmoid((t - 0.04) / 0.008) * sigmoid(((b.qt ?? 0.36) - 0.1 - t) / 0.03);
-      v += gauss(t, b.tAmp ?? 0.3, (b.qt ?? 0.36) - 0.1, b.tWidth ?? 0.045);
+      const tc = (b.qt ?? 0.36) - 0.1;
+      v += gauss(t, b.tAmp ?? 0.3, tc, b.tWidth ?? 0.045);
+      // Extras opcionales (sólo los usan los trazados que los declaran)
+      if (b.tBiph) v += gauss(t, b.tBiph, tc - 0.05, 0.03) + gauss(t, -1.3 * b.tBiph, tc + 0.04, 0.035); // T bifásica +/−
+      if (b.u) v += gauss(t, b.u, tc + 0.17, 0.04); // onda U
+      if (b.jNotch) v += gauss(t, b.jNotch, 0.034, 0.007); // muesca J
+      if (b.jDep) v += b.jDep * sigmoid((t - 0.03) / 0.005) * sigmoid((0.11 - t) / 0.025); // ST descendido ascendente
+      if (b.coved) v += b.coved * sigmoid((t - 0.028) / 0.004) * sigmoid((0.15 - t) / 0.03); // ST en cúpula (Brugada)
     }
   }
   return v;
@@ -213,6 +230,97 @@ export const RHYTHMS = {
     desc: 'QTc > 450 ms (varones) / > 460 ms (mujeres). Riesgo de torsades de pointes.',
     build: (s) => ({ beats: sinusBeats(65, s, { qt: 0.56, tWidth: 0.06 }) }),
   },
+  torsade: {
+    name: 'Torsade de pointes',
+    desc: 'TV polimorfa con QRS anchos cuya amplitud crece y decrece "girando" alrededor de la línea de base. Suele iniciarse con un latido sinusal con QT largo y un extrasístole sobre la T. Tratamiento: sulfato de magnesio; si es sostenida, desfibrilación.',
+    build: (s) => {
+      const t0 = 1.0;
+      const beats = [{ t: 0.3, qt: 0.56, tWidth: 0.06 }];
+      return {
+        beats,
+        baseline: (t) => {
+          if (t < t0) return 0;
+          const x = t - t0;
+          const onset = Math.min(1, x / 0.25);
+          const env = Math.cos((2 * Math.PI * x) / 2.6 + 0.35); // la envolvente cruza cero → "giro" de la polaridad
+          const ph = 2 * Math.PI * 4.2 * x;
+          return onset * (0.15 + 1.05 * Math.abs(env)) * Math.sign(env) * (Math.sin(ph) + 0.25 * Math.sin(2 * ph));
+        },
+      };
+    },
+  },
+  'afib-wpw': {
+    name: 'FA preexcitada (FA + WPW)',
+    desc: 'Taquicardia muy rápida (> 200 lpm) e irregular, con QRS anchos de morfología cambiante latido a latido (grado variable de preexcitación). Riesgo de FV: evitar frenadores del nodo AV; cardioversión o procainamida.',
+    build: (s, r) => {
+      const beats = [];
+      for (let t = 0.2; t < s + 1; t += 0.2 + r() * 0.2) {
+        const k = r();
+        beats.push({ t, p: false, delta: 0.25 + 0.5 * k, deltaW: 0.018 + 0.016 * k, rAmp: 0.6 + 0.9 * r(), rWidth: 0.012 + 0.012 * k, qAmp: 0, sAmp: 0.2 + 0.3 * r(), sWidth: 0.014, qt: 0.27, tAmp: -0.15 - 0.2 * k, tWidth: 0.035 });
+      }
+      return { beats };
+    },
+  },
+  'pacer-vvi': {
+    name: 'Marcapasos ventricular (VVI)',
+    desc: 'Espiga de marcapasos seguida de inmediato de un QRS ancho (morfología de BRI, captura ventricular). Sin relación con la actividad auricular. FC fija a la frecuencia programada (aquí 60 lpm).',
+    build: (s) => ({ beats: sinusBeats(60, s, { p: false, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 }) }),
+  },
+  'pacer-ddd': {
+    name: 'Marcapasos bicameral (DDD)',
+    desc: 'Dos espigas por ciclo: la auricular, seguida de onda P, y tras el intervalo AV programado la ventricular, seguida de QRS ancho. Estimulación secuencial AV.',
+    build: (s) => ({ beats: sinusBeats(70, s, { aSpike: 1.1, pAmp: 0.12, pr: 0.2, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 }) }),
+  },
+  junctional: {
+    name: 'Ritmo de escape nodal (de la unión)',
+    desc: 'Ritmo regular de QRS estrecho a 40–60 lpm sin onda P previa (puede verse una P retrógrada, negativa en II, tras el QRS). Aparece cuando falla el nódulo sinusal.',
+    build: (s) => ({ beats: sinusBeats(45, s, { p: false, retroP: -0.1 }) }),
+  },
+  'sinus-arrest': {
+    name: 'Paro (pausa) sinusal',
+    desc: 'Ritmo sinusal que se interrumpe con una pausa sin ondas P ni QRS; la pausa NO es múltiplo del PP previo (a diferencia del bloqueo sinoauricular). Pausas > 3 s sintomáticas: marcapasos.',
+    build: (s) => {
+      const beats = [];
+      for (let t = 0.35; t < s + 1; t += t > 1.5 && t < 2 ? 2.85 : 0.8) beats.push({ t });
+      return { beats };
+    },
+  },
+  alternans: {
+    name: 'Alternancia eléctrica',
+    desc: 'Taquicardia sinusal con bajo voltaje y QRS que alternan de amplitud latido a latido (el corazón "bambolea" dentro de un derrame pericárdico). Sugiere taponamiento.',
+    build: (s) => {
+      const beats = sinusBeats(110, s, { qt: 0.32, pAmp: 0.07, tAmp: 0.1, qAmp: 0.03 });
+      beats.forEach((b, i) => Object.assign(b, i % 2 ? { rAmp: 0.22, sAmp: 0.08 } : { rAmp: 0.5, sAmp: 0.15 }));
+      return { beats };
+    },
+  },
+  ivr: {
+    name: 'Ritmo idioventricular acelerado (RIVA)',
+    desc: 'Ritmo regular de QRS anchos sin P previas a 50–110 lpm (aquí ~70). Típico de la reperfusión tras un IAM; suele ser benigno y autolimitado.',
+    build: (s) => ({ beats: sinusBeats(70, s, { p: false, morph: 'vent', rAmp: 0.9 }) }),
+  },
+  bigeminy: {
+    name: 'Bigeminismo ventricular',
+    desc: 'Cada latido sinusal va seguido de una extrasístole ventricular (QRS ancho, prematuro, sin P) con acoplamiento fijo y pausa compensadora.',
+    build: (s) => {
+      const beats = [];
+      for (let t = 0.35; t < s + 1; t += 1.7) beats.push({ t }, { t: t + 0.52, p: false, morph: 'vent' });
+      return { beats };
+    },
+  },
+  'afib-slow': {
+    name: 'FA con respuesta ventricular lenta',
+    desc: 'Fibrilación auricular (sin P, ondas f, RR irregular) con FC < 60 lpm: exceso de frenadores, enfermedad del nodo AV o del sistema de conducción.',
+    build: (s, r) => {
+      const beats = [];
+      for (let t = 0.4; t < s + 1; t += 1.05 + r() * 0.75) beats.push({ t, p: false });
+      const ph = [r() * 6, r() * 6, r() * 6];
+      return {
+        beats,
+        baseline: (t) => 0.04 * Math.sin(2 * Math.PI * 6.3 * t + ph[0]) + 0.03 * Math.sin(2 * Math.PI * 8.1 * t + ph[1]) + 0.02 * Math.sin(2 * Math.PI * 4.7 * t + ph[2]),
+      };
+    },
+  },
 };
 
 function sampleBeats(beats, baseline, seconds) {
@@ -241,24 +349,25 @@ export function sampleEcg(id, { seconds = 6, seed = 7 } = {}) {
 }
 
 // Centros temporales (s) de un tipo de onda en la tira, para preguntas de "toca la onda".
-// wave: 'p' | 'pBlocked' | 'qrs' | 'vent' | 't'
+// wave: 'p' | 'pBlocked' | 'qrs' | 'vent' | 't' | 'spike' (espigas de marcapasos)
 export function waveTimes(id, wave, { seconds = 6, seed = 7 } = {}) {
   const { beats } = buildRhythm(id, seconds, seed);
   const pCenter = (b) => b.t + 0.02 - (b.pr ?? 0.16);
-  const tCenter = (b) => b.t + (b.morph === 'wide' ? 0.3 : b.morph === 'vent' ? 0.26 : (b.qt ?? 0.36) - 0.1);
+  const tCenter = (b) => b.t + (b.morph === 'wide' ? 0.3 : b.morph === 'vent' || b.morph === 'paced' ? 0.26 : (b.qt ?? 0.36) - 0.1);
   const pick = {
     p: () => beats.filter((b) => b.p !== false).map(pCenter),
     pBlocked: () => beats.filter((b) => b.qrs === false && b.p !== false).map(pCenter),
     qrs: () => beats.filter((b) => b.qrs !== false).map((b) => b.t),
     vent: () => beats.filter((b) => b.morph === 'vent').map((b) => b.t),
     t: () => beats.filter((b) => b.qrs !== false).map(tCenter),
+    spike: () => beats.flatMap((b) => [b.aSpike && b.t + A_SPIKE(b), b.vSpike && b.qrs !== false && b.t + V_SPIKE].filter(Boolean)).sort((x, y) => x - y),
   }[wave];
   if (!pick) throw new Error(`Onda desconocida: ${wave}`);
   return pick().filter((t) => t > 0.05 && t < seconds - 0.05);
 }
 
 // Tolerancia (s) al tocar cada onda
-export const WAVE_TOLERANCE = { p: 0.07, pBlocked: 0.07, qrs: 0.06, vent: 0.08, t: 0.09 };
+export const WAVE_TOLERANCE = { p: 0.07, pBlocked: 0.07, qrs: 0.06, vent: 0.08, t: 0.09, spike: 0.05 };
 
 const toPoints = (samples, x0, base, h) =>
   samples
@@ -345,6 +454,90 @@ export const TWELVE_LEAD = {
     desc: 'QRS ≥ 120 ms, QS o rS en V1, R ancha y mellada en I, aVL, V5–V6 sin q septal; ST-T discordante.',
     lbbb: true,
   },
+  wellens: {
+    name: 'Síndrome de Wellens (tipo B)',
+    desc: 'Ondas T negativas, profundas y simétricas en V2–V3 (a veces V1–V4) sin elevación significativa del ST ni ondas Q, en un paciente ya sin dolor. Indica estenosis crítica proximal de la DA: coronariografía precoz, no ergometría. (El tipo A muestra T bifásicas.)',
+    st: { V2: 0.04, V3: 0.04 },
+    t: { V1: -0.15, V2: -0.55, V3: -0.6, V4: -0.35, V5: -0.1 },
+    extra: { V2: { tWidth: 0.05 }, V3: { tWidth: 0.05 }, V4: { tWidth: 0.05 } },
+  },
+  'wellens-a': {
+    name: 'Síndrome de Wellens (tipo A)',
+    desc: 'Ondas T bifásicas (positiva-negativa) en V2–V3 sin elevación significativa del ST, en un paciente sin dolor. Mismo significado que el tipo B: estenosis crítica proximal de la DA.',
+    st: { V2: 0.04, V3: 0.04 },
+    t: { V2: 0, V3: 0, V4: 0.1 },
+    extra: { V2: { tBiph: 0.3 }, V3: { tBiph: 0.32 }, V4: { tBiph: 0.15 } },
+  },
+  dewinter: {
+    name: 'Patrón de de Winter',
+    desc: 'Descenso del ST ascendente de 1–3 mm en el punto J en V1–V6 que se continúa con ondas T altas, picudas y simétricas, con elevación del ST en aVR. Equivalente de IAMCEST por oclusión proximal de la DA.',
+    st: { aVR: 0.1, I: -0.03, II: -0.04, aVF: -0.03 },
+    extra: {
+      V1: { jDep: -0.08, tAmp: 0.3 }, V2: { jDep: -0.22, tAmp: 0.95, tWidth: 0.04 }, V3: { jDep: -0.26, tAmp: 1.05, tWidth: 0.04 },
+      V4: { jDep: -0.24, tAmp: 0.95, tWidth: 0.04 }, V5: { jDep: -0.16, tAmp: 0.65, tWidth: 0.04 }, V6: { jDep: -0.1, tAmp: 0.45 },
+    },
+  },
+  brugada1: {
+    name: 'Patrón de Brugada tipo 1',
+    desc: 'En V1–V2: elevación del punto J ≥ 2 mm con ST "en cúpula" (coved), convexo y descendente, que termina en una T negativa. Es el único patrón diagnóstico de Brugada (canalopatía con riesgo de muerte súbita).',
+    extra: {
+      V1: { rAmp: 0.25, sAmp: 0.35, coved: 0.32, tAmp: -0.22, tWidth: 0.05 },
+      V2: { rAmp: 0.35, sAmp: 0.55, coved: 0.3, tAmp: -0.18, tWidth: 0.05 },
+    },
+  },
+  posterior: {
+    name: 'IAMCEST posterior',
+    desc: 'Imagen especular en V1–V3: descenso horizontal del ST con R alta y ancha (R/S > 1 en V2) y T positiva. Confirmar con V7–V9 (elevación ≥ 0,5 mm). Suele asociarse a IAM inferior o lateral (CD o Cx).',
+    scale: { V1: { r: 2.5, s: 0.5 }, V2: { r: 3.5, s: 0.45 }, V3: { r: 1.6, s: 0.6 } },
+    st: { V1: -0.12, V2: -0.22, V3: -0.18, V4: -0.08 },
+    t: { V1: 0.25, V2: 0.4, V3: 0.4 },
+  },
+  'stemi-inf-rv': {
+    name: 'IAMCEST inferior con afectación de VD',
+    desc: 'Elevación del ST en II, III y aVF (III > II, CD proximal) con descenso especular en I y aVL y elevación del ST en V1. Para confirmar la afectación del VD se requiere V4R (elevación ≥ 1 mm), que no se registra en el ECG estándar. Evitar nitratos y asegurar precarga.',
+    st: { II: 0.3, III: 0.48, aVF: 0.4, I: -0.14, aVL: -0.24, V1: 0.15, V2: 0.03 },
+  },
+  hypok: {
+    name: 'Hipopotasemia',
+    desc: 'Ondas T aplanadas, ondas U prominentes (más visibles en V2–V3, pueden superar a la T) y discreto descenso del ST; el QT aparente se alarga (en realidad es QU). Riesgo de arritmias ventriculares.',
+    tScale: 0.3,
+    all: { st: -0.05 },
+    extra: {
+      I: { u: 0.08 }, II: { u: 0.12 }, III: { u: 0.06 }, aVF: { u: 0.1 }, aVL: { u: 0.05 }, aVR: { u: -0.08 },
+      V1: { u: 0.1 }, V2: { u: 0.25 }, V3: { u: 0.28 }, V4: { u: 0.22 }, V5: { u: 0.15 }, V6: { u: 0.12 },
+    },
+  },
+  rvh: {
+    name: 'Hipertrofia ventricular derecha',
+    desc: 'R alta en V1 (R/S > 1), S profundas en V5–V6, desviación derecha del eje (> +90°) y T negativas con ST descendido en V1–V3 (patrón de sobrecarga). Puede acompañarse de P pulmonale.',
+    axis: 110,
+    scale: { V1: { r: 5, s: 0.2 }, V2: { r: 2.5, s: 0.6 }, V5: { r: 0.5, s: 3 }, V6: { r: 0.5, s: 5 } },
+    st: { V1: -0.05, V2: -0.06, V3: -0.04 },
+    t: { V1: -0.25, V2: -0.3, V3: -0.2 },
+    extra: { II: { pAmp: 0.27 }, III: { pAmp: 0.22 }, aVF: { pAmp: 0.25 } },
+  },
+  lowvoltage: {
+    name: 'Bajo voltaje',
+    desc: 'Amplitud del QRS < 5 mm en todas las derivaciones de miembros y < 10 mm en las precordiales. Causas: derrame pericárdico, obesidad, EPOC, amiloidosis, hipotiroidismo.',
+    gain: 0.35,
+    rate: 95,
+  },
+  'early-repol': {
+    name: 'Repolarización precoz',
+    desc: 'Elevación cóncava del ST en V2–V5 (y a veces inferior) con muesca o empastamiento en el punto J y T altas, sin descenso especular del ST ni del PR. Variante habitual en jóvenes, deportistas y bradicardia.',
+    rate: 58,
+    extra: {
+      II: { st: 0.06, jNotch: 0.08 }, aVF: { st: 0.05, jNotch: 0.07 },
+      V2: { st: 0.15, jNotch: 0.12, tAmp: 0.6 }, V3: { st: 0.2, jNotch: 0.16, tAmp: 0.7 },
+      V4: { st: 0.18, jNotch: 0.16, tAmp: 0.65 }, V5: { st: 0.1, jNotch: 0.1, tAmp: 0.5 },
+    },
+  },
+  pacer12: {
+    name: 'Ritmo de marcapasos ventricular',
+    desc: 'Espiga antes de cada QRS. Estimulación desde el ápex del VD: QRS ancho con morfología de BRI, eje superior (negativo en II, III y aVF) y QS en precordiales; ST-T discordante con el QRS (no valorable para isquemia sin criterios específicos).',
+    paced: true,
+    rate: 70,
+  },
 };
 
 // Morfología del latido para una derivación concreta
@@ -374,6 +567,17 @@ function leadBeat(lead, spec) {
     const pos = { I: 1.1, aVL: 1.0, V5: 1.2, V6: 1.1, V4: 0.8, II: 0.6, aVF: 0.4 };
     if (pos[lead]) Object.assign(b, { morph: 'wide', rAmp: pos[lead] });
     else Object.assign(b, { morph: 'vent', rAmp: -0.7, ventT: 0.35 });
+  }
+  // Opciones de los trazados más recientes (no afectan a los anteriores)
+  if (spec.gain) for (const k of ['rAmp', 'sAmp', 'qAmp', 'tAmp', 'pAmp']) b[k] *= spec.gain;
+  if (spec.tScale) b.tAmp *= spec.tScale;
+  if (spec.all) Object.assign(b, spec.all);
+  if (spec.extra?.[lead]) Object.assign(b, spec.extra[lead]);
+  if (spec.paced) {
+    // Estimulación desde el ápex del VD: patrón BRI con eje superior
+    const pos = { I: 0.7, aVL: 0.9, aVR: 0.35 };
+    const neg = { II: -0.6, III: -1.0, aVF: -0.85, V1: -1.0, V2: -1.3, V3: -1.2, V4: -1.0, V5: -0.75, V6: -0.55 };
+    Object.assign(b, { p: false, vSpike: 1.2 }, pos[lead] ? { morph: 'wide', rAmp: pos[lead] } : { morph: 'paced', rAmp: neg[lead], ventT: 0.35 });
   }
   return b;
 }
