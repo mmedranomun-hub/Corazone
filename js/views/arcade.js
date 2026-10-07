@@ -4,7 +4,7 @@ import { COURSES, lessonsOf } from '../data/courses.js';
 import { GUARDIAS, CHARACTERS, guardiaById } from '../data/guardias.js';
 import { getState, completeLesson, recordAnswer, saveTimedRecord, markStory, boostActive } from '../storage.js';
 import { TIMED_SECONDS, TIMED_BONUS_SECONDS, timedMultiplier, timedPoints, timedXp, buildTimedPool, storyXp } from '../game.js';
-import { app, esc, go, screen, shell } from '../ui.js';
+import { app, esc, go, screen, shell, scrollBehavior } from '../ui.js';
 import { cora, sfx, party, countUp, bump } from '../fx.js';
 import { visualFor } from '../visuals.js';
 
@@ -33,6 +33,8 @@ function timedPool() {
     const first = buildTimedPool([...done, ...lessonsOf(COURSES[0]).flatMap((l) => l.questions)]);
     pool = first;
   }
+  // Aún faltan parejas: se usan también las cortas, con su enunciado como cabecera.
+  if (pool.pairs.length < 12) pool = { ...pool, pairs: [...pool.pairs, ...pool.shortPairs] };
   return pool;
 }
 
@@ -71,10 +73,10 @@ function runTimed() {
       <header class="arc-top">
         <a class="arc-x" href="#/practicar" aria-label="Salir">✕</a>
         <div class="bar arc-time"><div class="bar-fill"></div></div>
-        <b class="arc-secs">${TIMED_SECONDS}</b>
+        <b class="arc-secs" aria-label="Segundos restantes">${TIMED_SECONDS}</b>
       </header>
       <div class="arc-hud">
-        <div class="arc-score">⚡ <span>0</span></div>
+        <div class="arc-score"><span aria-hidden="true">⚡</span> <span class="arc-pts">0</span></div>
         <div class="arc-mult m1">×1</div>
         <div class="arc-combo"></div>
       </div>
@@ -100,7 +102,7 @@ function runTimed() {
 
   const drawBoard = () => {
     const btn = (p, side, slot) => (p
-      ? `<button class="choice arc-tile" data-side="${side}" data-slot="${slot}">${esc(side === 'l' ? p.l : p.r)}</button>`
+      ? `<button class="choice arc-tile" data-side="${side}" data-slot="${slot}">${side === 'l' && p.ctx ? `<small class="arc-ctx">${esc(p.ctx)}</small>` : ''}<span>${esc(side === 'l' ? p.l : p.r)}</span></button>`
       : '<span class="arc-tile empty"></span>');
     board.innerHTML = `<div class="match arc-match"><div class="col">${left.map((p, i) => btn(p, 'l', i)).join('')}</div><div class="col">${right.map((p, i) => btn(p, 'r', i)).join('')}</div></div>`;
   };
@@ -110,7 +112,7 @@ function runTimed() {
     const m = $('.arc-mult');
     if (m.textContent !== `×${mult}`) { m.className = `arc-mult m${mult}`; m.textContent = `×${mult}`; bump(m); }
     $('.arc-combo').textContent = combo >= 2 ? `🔥 ${combo}` : '';
-    $('.arc-score span').textContent = score;
+    $('.arc-pts').textContent = score;
     if (gain) {
       const f = document.createElement('span');
       f.className = 'arc-float';
@@ -305,7 +307,7 @@ export function viewGuardia(id) {
   const chat = $('.chat');
   const nextBtn = $('[data-act=next]');
 
-  const scrollEnd = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  const scrollEnd = () => window.scrollTo({ top: document.body.scrollHeight, behavior: scrollBehavior() });
 
   const bubble = (s) => {
     const c = charOf(story, s.who);
@@ -355,7 +357,7 @@ export function viewGuardia(id) {
     }
     if (i >= total) nextBtn.textContent = 'Terminar';
     // La pregunta se muestra desde su enunciado; el resto, pegado al final del chat
-    if (waiting) chat.lastElementChild.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+    if (waiting) chat.lastElementChild.scrollIntoView?.({ behavior: scrollBehavior(), block: 'start' });
     else scrollEnd();
   }
 

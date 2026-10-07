@@ -151,26 +151,69 @@ export const timedMultiplier = (combo) => (combo >= 10 ? 4 : combo >= 6 ? 3 : co
 export const timedPoints = (combo, kind = 'match') => (kind === 'mc' ? 20 : 10) * timedMultiplier(combo);
 export const timedXp = (score) => (score > 0 ? Math.min(30, 5 + Math.floor(score / 50)) : 0);
 
+// ¿Se entiende la etiqueta izquierda fuera de su pregunta? Exige ≥ 2 palabras o ≥ 8 caracteres
+// y al menos una palabra de verdad (no sólo números, símbolos o unidades: "≥ 2,5 mm" no vale).
+const UNIT_RE = /^(mm|ms|s|seg|cm|mmhg|lpm|mv|ml|l|m\/s|cm\/s|ml\/m2|ml\/m²|m²|cm²|%|x|kg|g|mg|h|min|años?)$/i;
+export function meaningfulLabel(label) {
+  const t = String(label ?? '').trim();
+  const words = t.split(/\s+/).filter((w) => /\p{L}/u.test(w) && !UNIT_RE.test(w.replace(/[.,;:()¿?¡!]/g, '')));
+  if (!words.length) return false;
+  return words.length >= 2 || t.length >= 8;
+}
+
 // Reúne pares (de preguntas match) y preguntas mc cortas sin imagen, sin duplicados.
+// `pairs`: autoexplicativos. `shortPairs`: los demás (no demasiado largos), con el enunciado
+// de su pregunta en `ctx` para mostrarlo como cabecera si hacen falta para rellenar el tablero.
 export function buildTimedPool(questions) {
   const pairs = [];
+  const shortPairs = [];
   const seen = new Set();
   const mcs = [];
   for (const q of questions) {
     if (q.type === 'match') {
       for (const [l, r] of q.pairs) {
         const k = `${l}|${r}`;
-        // Pares muy cortos ("1" ↔ "300 lpm") no se entienden fuera de su pregunta
-        if (seen.has(k) || String(l).length < 3 || String(r).length < 3 || l.length > 42 || r.length > 42) continue;
+        if (seen.has(k) || l.length > 42 || r.length > 42 || !String(l).trim() || !String(r).trim()) continue;
         seen.add(k);
-        pairs.push({ l, r, key: q.key });
+        if (meaningfulLabel(l) && String(r).length >= 3) pairs.push({ l, r, key: q.key });
+        else shortPairs.push({ l, r, key: q.key, ctx: q.prompt });
       }
     } else if (q.type === 'mc' && !q.ecg && !q.ecg12 && !q.pressure && !q.diagram && !q.context
       && q.prompt.length <= 120 && q.options.length <= 4 && q.options.every((o) => o.length <= 48)) {
       mcs.push(q);
     }
   }
-  return { pairs, mcs };
+  return { pairs, shortPairs, mcs };
+}
+
+// ---------- Búsqueda de lecciones y casos ----------
+// Minúsculas y sin tildes: "electro" encuentra "Electrocardiograma", "via" encuentra "Vía".
+export const fold = (s) => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+// Busca por título de lección, de caso y de unidad (y curso). Todas las palabras deben aparecer.
+// Devuelve el estado de cada resultado ('done' | 'current' | 'locked') con el mismo criterio de
+// desbloqueo secuencial que la ruta, y para las bloqueadas la lección que hay que hacer antes.
+export function searchLessons(courses, query, completed = {}, limit = 40) {
+  const terms = fold(query).split(/\s+/).filter((t) => t.length > 0);
+  if (!terms.length) return [];
+  const out = [];
+  for (const c of courses) {
+    const flat = c.units.flatMap((u, ui) => u.lessons.map((l, li) => ({ l, u, ui, li })));
+    const firstOpen = flat.findIndex(({ l }) => !completed[l.id]);
+    flat.forEach(({ l, u, ui, li }, i) => {
+      const f = { lesson: fold(l.title), case: fold(l.case?.title), unit: fold(u.title), course: fold(`${c.title} ${c.subtitle || ''}`) };
+      const hay = `${f.lesson} ${f.case} ${f.unit} ${f.course}`;
+      if (!terms.every((t) => hay.includes(t))) return;
+      const score = terms.reduce((a, t) => a + (f.lesson.includes(t) ? 4 : f.case.includes(t) ? 3 : f.unit.includes(t) ? 1 : 0), 0)
+        + (f.lesson.startsWith(terms[0]) ? 2 : 0);
+      const state = completed[l.id] ? 'done' : i === firstOpen ? 'current' : 'locked';
+      const unitStart = flat.findIndex((x) => x.u === u);
+      const unitLocked = state === 'locked' && firstOpen >= 0 && unitStart > firstOpen && u.lessons.every((x) => !completed[x.id]);
+      out.push({ course: c, unit: u, lesson: l, unitIndex: ui, lessonIndex: li, state, score, unitLocked,
+        blocker: state === 'locked' && firstOpen >= 0 ? flat[firstOpen].l : null });
+    });
+  }
+  return out.sort((a, b) => b.score - a.score).slice(0, limit);
 }
 
 // Puntuación de una guardia: XP base + 2 por pregunta acertada.

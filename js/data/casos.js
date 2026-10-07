@@ -1503,5 +1503,249 @@ export default {
         },
       ],
     },
+    {
+      id: 'casos-u15',
+      title: 'Casos de ECG: patrones que no puedes pasar por alto',
+      guide: {
+        intro: 'Algunos ECG anuncian una oclusión coronaria o una muerte súbita sin cumplir los criterios clásicos de elevación del ST. Reconocerlos (Wellens, de Winter, IAM posterior, Brugada) y distinguirlos de variantes normales (repolarización precoz) cambia la decisión.',
+        sections: [
+          {
+            title: 'Equivalentes de oclusión coronaria',
+            points: [
+              'Wellens: T bifásicas (tipo A) o negativas profundas y simétricas (tipo B) en V2–V3, sin Q ni elevación relevante del ST, en un paciente ya sin dolor. Estenosis crítica proximal de la DA.',
+              'Wellens contraindica la ergometría: coronariografía precoz (< 24 h si hay elevación de troponina, inmediata si reaparece el dolor).',
+              'De Winter: descenso del ST ascendente en el punto J de V1–V6 con T altas y simétricas, y ST ↑ en aVR. Oclusión proximal de la DA: ICP primaria como en un IAMCEST.',
+              'IAM posterior: descenso horizontal del ST en V1–V3 con R alta y T positiva. Confirma con V7–V9 (elevación ≥ 0,5 mm) y trátalo como IAMCEST.',
+              'Tras la reperfusión puede aparecer un RIVA (QRS ancho regular a 50–110 lpm): es benigno y no requiere antiarrítmicos.',
+            ],
+            tip: 'Ante dolor torácico con ECG dudoso, repite el ECG cada 15–30 min: los patrones evolucionan.',
+          },
+          {
+            title: 'Síndrome de Brugada',
+            points: [
+              'Solo el patrón tipo 1 (ST "en cúpula" ≥ 2 mm con T negativa en V1–V2) es diagnóstico; el tipo 2 ("en silla de montar") no lo es.',
+              'Registrar V1–V2 en el 2.º y 3.º espacio intercostal aumenta la sensibilidad.',
+              'La fiebre y los bloqueantes de los canales de sodio (flecainida, tricíclicos, algunos anestésicos), la cocaína y el exceso de alcohol lo desenmascaran: antitérmicos precoces y evitar fármacos.',
+              'DAI (ESC 2022): recomendado tras parada cardiaca o TV sostenida; a considerar con tipo 1 espontáneo y síncope arrítmico. No en el asintomático sin otros datos de riesgo.',
+              'Cribado ECG de los familiares de primer grado.',
+            ],
+          },
+          {
+            title: 'Repolarización precoz y ECG del deportista',
+            points: [
+              'Repolarización precoz: muesca o empastamiento del punto J ≥ 1 mm en ≥ 2 derivaciones inferiores o laterales, ST cóncavo y T altas, sin imagen especular ni descenso del PR.',
+              'Frente a la pericarditis: en esta, ST ↑ difuso con descenso del PR; un cociente ST/T en V6 > 0,25 orienta a pericarditis.',
+              'Cambios normales del entrenamiento: bradicardia sinusal, BAV de 1.er grado, BRD incompleto, criterio aislado de voltaje de HVI y repolarización precoz.',
+              'Requieren estudio: T negativas laterales o inferolaterales, descenso del ST, Q patológicas, BRI, preexcitación, QTc ≥ 470 ms (varón), Brugada tipo 1 o ≥ 2 EV.',
+            ],
+            tip: 'Compara siempre con ECG previos: la repolarización precoz es estable en el tiempo; el IAM evoluciona.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u15-l1',
+          title: 'Patrón de Wellens: la DA en peligro',
+          case: {
+            title: 'Varón de 54 años que ya no tiene dolor',
+            text: 'Varón de 54 años, fumador y dislipémico. Hace 36 horas tuvo un dolor opresivo retroesternal en reposo de 25 minutos que cedió solo; ayer tuvo otro episodio más corto. Acude a urgencias asintomático. TA 142/86 mmHg, FC 74 lpm, exploración normal.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'ECG en urgencias, sin dolor. ¿Qué patrón muestran V2–V3?', ecg12: 'wellens-a', options: ['Wellens tipo A: T bifásicas', 'Brugada tipo 1', 'IAMCEST anterior evolucionado', 'Repolarización precoz'], answer: 0, explain: 'T bifásicas (positiva-negativa) en V2–V3 sin elevación del ST ni Q, en un paciente sin dolor tras un episodio anginoso: Wellens tipo A (≈ 25 % de los casos).' },
+            { type: 'mc', context: 'A las 6 h, sin dolor, se repite el ECG.', prompt: '¿Qué ha cambiado y qué significa?', ecg12: 'wellens', options: ['T negativas profundas: Wellens tipo B, misma lesión', 'Normalización: se descarta isquemia', 'Elevación del ST: IAMCEST anterior', 'Q en V1–V3: necrosis transmural'], answer: 0, explain: 'El tipo A suele evolucionar al tipo B (T negativas profundas y simétricas). Ambos traducen reperfusión espontánea de una DA proximal críticamente estenosada.' },
+            { type: 'mc', prompt: '¿Qué arteria tiene con más probabilidad una estenosis crítica?', diagram: { id: 'coronary', highlight: 'lad' }, options: ['Descendente anterior proximal', 'Circunfleja distal', 'Coronaria derecha media', 'Rama marginal obtusa'], answer: 0, explain: 'Las alteraciones de la T en V2–V3 reflejan la cara anterior. Sin revascularización, buena parte de estos pacientes desarrolla un IAM anterior extenso en semanas.' },
+            { type: 'tf', prompt: 'Como el paciente está asintomático y el ST no está elevado, una ergometría es la prueba adecuada para estratificarlo.', answer: false, explain: 'La prueba de esfuerzo está contraindicada en el patrón de Wellens: puede precipitar la oclusión de la DA. El camino es la coronariografía.' },
+            { type: 'mc', context: 'Troponina T ultrasensible: 38 ng/L a la llegada y 61 ng/L a la hora.', prompt: '¿Cuál es la estrategia adecuada según la ESC 2023?', options: ['Coronariografía en < 24 h (alto riesgo)', 'Coronariografía inmediata (< 2 h)', 'Alta y TC coronaria ambulatoria', 'Ergometría si la troponina se normaliza'], answer: 0, explain: 'Un IAMSEST con cambios dinámicos de la T es de alto riesgo: estrategia invasiva precoz (< 24 h). Sería inmediata si reaparece el dolor o hay inestabilidad.' },
+            { type: 'tf', prompt: 'Debe pretratarse de rutina con un inhibidor P2Y12 antes de la coronariografía, aunque se desconozca la anatomía.', answer: false, explain: 'La ESC 2023 no recomienda el pretratamiento rutinario en el SCASEST si se prevé coronariografía precoz: AAS y anticoagulación parenteral, y el P2Y12 tras conocer la anatomía.' }, // Fuente: ESC SCA 2023 (clase III)
+          ],
+        },
+        {
+          id: 'casos-u15-l2',
+          title: 'Patrón de de Winter: un IAMCEST sin elevación del ST',
+          case: {
+            title: 'Varón de 57 años con dolor opresivo en curso',
+            text: 'Varón de 57 años, hipertenso y fumador, que llama al 112 por dolor opresivo retroesternal irradiado al brazo izquierdo desde hace 45 minutos, con sudoración fría. TA 150/90 mmHg, FC 88 lpm, SatO₂ 96 %. El hospital más cercano tiene sala de hemodinámica 24 h a 25 minutos.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'ECG prehospitalario. ¿Cuál es la interpretación correcta?', ecg12: 'dewinter', options: ['Patrón de de Winter: oclusión proximal de la DA', 'Descenso del ST por isquemia subendocárdica', 'Hiperpotasemia con T picudas', 'Variante normal: T altas de vagotonía'], answer: 0, explain: 'Descenso del ST ascendente en el punto J de V1–V6 que se continúa con T altas y simétricas, con ST ↑ en aVR. Aparece en ≈ 2 % de las oclusiones agudas de la DA proximal.' },
+            { type: 'tf', prompt: 'Al no haber elevación del ST en precordiales, debe manejarse como un SCASEST con coronariografía en las primeras 24 h.', answer: false, explain: 'El patrón de de Winter es un equivalente de IAMCEST: se activa el código infarto para ICP primaria, igual que con un BRI y clínica isquémica.' },
+            { type: 'match', prompt: 'Relaciona cada objetivo de tiempo (ESC 2023) con su valor', pairs: [['Diagnóstico → guía en centro con ICP', '≤ 60 min'], ['Diagnóstico → guía si hay traslado', '≤ 90 min'], ['Retraso máximo para preferir la ICP', '≤ 120 min'], ['Diagnóstico → bolo de fibrinolítico', '≤ 10 min']], explain: 'Si no puede hacerse la ICP primaria en ≤ 120 min desde el diagnóstico, se recomienda fibrinólisis en ≤ 10 min (sin contraindicaciones).' }, // Fuente: ESC SCA 2023
+            { type: 'mc', context: 'Coronariografía: oclusión trombótica de la DA proximal. Se implanta un stent con flujo TIMI 3.', prompt: 'A los 20 min aparece este ritmo en el monitor, con TA 128/78 mmHg y sin síntomas. ¿Qué es?', ecg: 'ivr', options: ['Ritmo idioventricular acelerado', 'Taquicardia ventricular monomorfa', 'Bloqueo AV completo con escape', 'Fibrilación auricular preexcitada'], answer: 0, explain: 'QRS anchos regulares sin P previas a ≈ 70 lpm: RIVA. Es la arritmia típica de la reperfusión y suele autolimitarse.' },
+            { type: 'tap', prompt: 'Toca uno de los QRS anchos del ritmo idioventricular', ecg: 'ivr', wave: 'vent', explain: 'Un foco ventricular "acelerado" (50–110 lpm) toma el mando al superar la frecuencia sinusal; por eso no hay ondas P delante de los QRS.' },
+            { type: 'mc', prompt: '¿Cuál es el manejo adecuado de este ritmo?', options: ['Observación con monitorización', 'Amiodarona IV en bolo', 'Cardioversión eléctrica sincronizada', 'Lidocaína IV en perfusión'], answer: 0, explain: 'El RIVA es benigno y hemodinámicamente bien tolerado; suprimirlo puede dejar al paciente sin ritmo de escape. Solo se trata si hay compromiso hemodinámico.' },
+          ],
+        },
+        {
+          id: 'casos-u15-l3',
+          title: 'IAM posterior: mira la espalda',
+          case: {
+            title: 'Mujer de 66 años con dolor torácico y un ECG "sin ST elevado"',
+            text: 'Mujer de 66 años, diabética e hipertensa, con dolor opresivo interescapular y retroesternal desde hace 70 minutos y náuseas. TA 118/72 mmHg, FC 64 lpm. El primer ECG se informa como "descenso del ST en V1–V3, sin elevación del ST".',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Qué sugiere la combinación de hallazgos en V1–V3?', ecg12: 'posterior', options: ['IAM posterior (imagen especular)', 'Isquemia subendocárdica anterior', 'Bloqueo de rama derecha', 'Hipertrofia del ventrículo derecho'], answer: 0, explain: 'Descenso horizontal del ST con R alta y ancha (R/S > 1 en V2) y T positiva: es la imagen en espejo de la elevación del ST y de la onda Q de la pared posterior.' },
+            { type: 'mc', prompt: '¿Qué harías a continuación para confirmar el diagnóstico?', options: ['Registrar V7–V9', 'Registrar V3R y V4R', 'Esperar la segunda troponina', 'Hacer una ergometría precoz'], answer: 0, explain: 'Las derivaciones posteriores (V7 línea axilar posterior, V8 punta de la escápula, V9 paravertebral, en el 5.º espacio) miran directamente la pared posterolateral.' },
+            { type: 'mc', context: 'V7–V9: elevación del ST de 1 mm en V8 y V9.', prompt: '¿Cuál es el umbral de elevación del ST en V7–V9 para el diagnóstico de IAMCEST?', options: ['≥ 0,5 mm', '≥ 2 mm', '≥ 1,5 mm en mujeres', '≥ 2,5 mm en < 40 años'], answer: 0, explain: 'En las derivaciones posteriores los voltajes son menores: basta una elevación ≥ 0,5 mm (≥ 1 mm en varones < 40 años). Esta paciente tiene un IAMCEST posterior: ICP primaria.' }, // Fuente: ESC SCA 2023 / 4.ª definición universal de IAM
+            { type: 'mc', prompt: '¿Cuál es la arteria culpable más probable de un IAM posterior aislado?', diagram: { id: 'coronary', highlight: 'cx' }, options: ['Circunfleja', 'Descendente anterior', 'Primera diagonal', 'Tronco común izquierdo'], answer: 0, explain: 'La pared posterolateral depende de la Cx (o de la CD si es muy dominante). La Cx es la arteria "eléctricamente silente": su oclusión a menudo no eleva el ST en el ECG estándar.' },
+            { type: 'tf', prompt: 'Un ECG de 12 derivaciones sin elevación del ST excluye una oclusión coronaria aguda en un paciente con dolor persistente.', answer: false, explain: 'Hasta un cuarto de las oclusiones de la Cx no elevan el ST. El dolor refractario o la inestabilidad indican coronariografía inmediata (< 2 h) aunque el ECG no sea diagnóstico.' },
+            { type: 'match', prompt: 'Relaciona cada derivación con la cara que explora', pairs: [['II, III, aVF', 'Inferior'], ['V1–V4', 'Anterior y septal'], ['I, aVL, V5–V6', 'Lateral'], ['V7–V9', 'Posterior']], explain: 'En el ECG estándar la pared posterior solo se ve en espejo (V1–V3); V7–V9 la exploran directamente.' },
+          ],
+        },
+        {
+          id: 'casos-u15-l4',
+          title: 'Brugada desenmascarado por la fiebre',
+          case: {
+            title: 'Varón de 36 años con gripe y palpitaciones',
+            text: 'Varón de 36 años, sin antecedentes personales, que consulta por fiebre de 39,4 °C, mialgias y tos de 2 días, con palpitaciones aisladas. No ha tenido síncopes. Su padre falleció de forma súbita mientras dormía a los 42 años, con autopsia sin hallazgos. TA 126/74 mmHg, FC 104 lpm.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa V1–V2. ¿Qué patrón muestran?', ecg12: 'brugada1', options: ['Brugada tipo 1 ("en cúpula")', 'Brugada tipo 2 ("en silla de montar")', 'Bloqueo de rama derecha completo', 'IAMCEST anteroseptal'], answer: 0, explain: 'Elevación del punto J ≥ 2 mm con ST convexo y descendente que termina en T negativa en V1–V2: patrón tipo 1, el único diagnóstico. No hay S ancha en I ni V6 como en el BRD.' },
+            { type: 'tf', prompt: 'Registrar V1 y V2 en el 2.º y 3.º espacio intercostal aumenta la sensibilidad para detectar el patrón tipo 1.', answer: true, explain: 'El TSVD, donde asienta el sustrato, queda a menudo por encima de la posición estándar. El tipo 1 cuenta como diagnóstico en V1–V2 registradas del 2.º al 4.º espacio.' },
+            { type: 'mc', prompt: '¿Cuál es la primera medida en urgencias?', options: ['Antitérmicos y monitorización del ritmo', 'Flecainida IV para controlar las palpitaciones', 'Implante urgente de un DAI', 'Ajmalina para confirmar el diagnóstico'], answer: 0, explain: 'La fiebre aumenta el riesgo de FV en el Brugada: se trata de inmediato con antitérmicos y se monitoriza hasta que el patrón se resuelva. Los bloqueantes del sodio lo empeoran.' },
+            { type: 'match', prompt: 'Relaciona cada situación con su efecto sobre el patrón de Brugada', pairs: [['Fiebre', 'Lo desenmascara'], ['Flecainida o ajmalina', 'Lo induce (test diagnóstico)'], ['Isoproterenol', 'Trata la tormenta eléctrica'], ['Quinidina', 'Reduce arritmias recurrentes']], explain: 'El isoproterenol aumenta la corriente de calcio y estabiliza la tormenta arrítmica; la quinidina bloquea Ito y se usa si hay choques recurrentes o no se acepta el DAI.' },
+            { type: 'tf', context: 'Con paracetamol y desaparición de la fiebre, el ECG vuelve a un patrón no diagnóstico. ETT normal.', prompt: 'Al tener un familiar con muerte súbita, está indicado implantarle un DAI aunque nunca haya tenido síncope.', answer: false, explain: 'La historia familiar apoya el diagnóstico, pero no indica DAI por sí sola. El DAI se recomienda tras parada o TV sostenida y se considera con tipo 1 espontáneo y síncope arrítmico (ESC 2022).' }, // Fuente: ESC arritmias ventriculares/MS 2022
+            { type: 'mc', prompt: '¿Qué recomendación le das al alta?', options: ['Tratar pronto la fiebre y evitar fármacos que bloquean el sodio', 'Evitar todo ejercicio físico de por vida', 'Tomar betabloqueantes de forma indefinida', 'Ninguna: el patrón ha desaparecido'], answer: 0, explain: 'Medidas generales: antitérmicos precoces, evitar la lista de fármacos de riesgo (brugadadrugs.org), la cocaína, el exceso de alcohol y las comidas copiosas. Además, ECG a familiares de primer grado.' },
+          ],
+        },
+        {
+          id: 'casos-u15-l5',
+          title: 'Repolarización precoz en un deportista',
+          case: {
+            title: 'Futbolista de 21 años en el reconocimiento previo a la temporada',
+            text: 'Varón de 21 años, futbolista semiprofesional que entrena 12 horas a la semana. Asintomático: sin dolor torácico, palpitaciones ni síncope. Sin antecedentes familiares de muerte súbita ni cardiopatía. FC 56 lpm, TA 118/68 mmHg, exploración normal. El médico del club pide tu opinión sobre su ECG.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Cuál es la interpretación más adecuada?', ecg12: 'early-repol', options: ['Repolarización precoz: variante normal', 'Pericarditis aguda', 'IAMCEST inferolateral', 'Patrón de Brugada tipo 1'], answer: 0, explain: 'Muesca del punto J con ST cóncavo y T altas en derivaciones inferiores y V4–V6, sin descenso especular del ST ni del PR, en un joven entrenado con bradicardia.' },
+            { type: 'match', prompt: 'Clasifica cada hallazgo en un deportista según los criterios internacionales', pairs: [['Bradicardia sinusal de 45 lpm', 'Normal (entrenamiento)'], ['T negativas en V5–V6', 'Anormal: estudiar'], ['BRD incompleto', 'Normal (adaptación)'], ['Onda delta', 'Anormal: preexcitación']], explain: 'Las T negativas laterales pueden ser la primera manifestación de una miocardiopatía y obligan a hacer ETT (y a menudo RM), aunque el deportista esté asintomático.' },
+            { type: 'mc', prompt: 'Este ECG es de otro paciente con dolor torácico pleurítico. ¿Qué dato lo distingue de la repolarización precoz?', ecg12: 'pericarditis', options: ['Descenso del PR y ST elevado difuso', 'Muesca del punto J en V4', 'Ondas T altas en V2–V3', 'Bradicardia sinusal'], answer: 0, explain: 'En la pericarditis la elevación del ST es difusa, con descenso del PR (y PR elevado en aVR). Un cociente ST/T en V6 > 0,25 también orienta a pericarditis.' },
+            { type: 'tf', prompt: 'La repolarización precoz se diferencia de un IAMCEST porque no tiene imagen especular y es estable en ECG seriados.', answer: true, explain: 'El IAMCEST evoluciona en minutos u horas y suele tener descenso especular del ST. Comparar con un ECG previo es la herramienta más útil.' },
+            { type: 'mc', prompt: '¿Qué hallazgo convertiría el patrón en "síndrome de repolarización precoz"?', options: ['Haber sobrevivido a una FV sin otra causa', 'Que la muesca J mida 1,5 mm', 'Que aparezca en V4–V6', 'Que desaparezca con el esfuerzo'], answer: 0, explain: 'Según la ESC 2022, el síndrome se diagnostica cuando el patrón se asocia a una FV o TV polimórfica inexplicada recuperada. Un ST horizontal o descendente tras el punto J se asocia a más riesgo.' }, // Fuente: ESC arritmias ventriculares/MS 2022
+            { type: 'mc', prompt: '¿Qué decides sobre este futbolista?', options: ['Apto: no precisa más pruebas', 'Ecocardiograma y RM antes de competir', 'Holter y ergometría obligatorios', 'Suspender la competición 6 meses'], answer: 0, explain: 'La repolarización precoz asintomática, sin historia familiar ni otros hallazgos, es un cambio benigno del entrenamiento: no requiere estudio adicional ni restringir el deporte.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u16',
+      title: 'Casos de ECG: iones, fármacos, marcapasos y síncope',
+      guide: {
+        intro: 'Muchas arritmias tienen una causa externa que se corrige: un ion, un fármaco o un dispositivo. Otras, como el síncope con bloqueo bifascicular o el TEP, exigen leer el ECG dentro del contexto clínico para estratificar el riesgo.',
+        sections: [
+          {
+            title: 'Iones y digoxina',
+            points: [
+              'Hipopotasemia: T aplanadas, ondas U prominentes (V2–V3), descenso del ST y QU largo. Favorece EV, torsade de pointes y la toxicidad digitálica.',
+              'Repón K⁺ IV sin glucosa (la insulina lo mete en la célula), ≤ 10 mEq/h por vía periférica, y corrige siempre el magnesio: sin Mg el K⁺ no se recupera.',
+              'Torsade: sulfato de magnesio 2 g IV aunque el Mg sea normal; si es sostenida, desfibrilación.',
+              'Digoxina: el ST "en cubeta" es efecto, no toxicidad. Toxicidad: EV y bigeminismo, taquicardia auricular con bloqueo, FA "regularizada", TV bidireccional, bradicardia y BAV.',
+              'Precipitantes: insuficiencia renal, hipopotasemia, edad avanzada, amiodarona, verapamilo. Arritmia grave, hiperpotasemia o daño orgánico: anticuerpos antidigoxina (Fab).',
+            ],
+            tip: 'Hiperpotasemia en una intoxicación digitálica aguda = intoxicación grave (bloqueo de la Na⁺/K⁺-ATPasa).',
+          },
+          {
+            title: 'Marcapasos',
+            points: [
+              'Código: 1.ª letra cámara estimulada, 2.ª cámara detectada, 3.ª respuesta (I inhibe, T dispara, D ambas); R = respuesta en frecuencia.',
+              'Estimulación desde el ápex del VD: espiga + QRS ancho tipo BRI con eje superior.',
+              'Síndrome de marcapasos: en VVI con ritmo sinusal, la pérdida de sincronía AV (y la conducción VA) causa mareo, hipotensión y ondas a en cañón. Solución: DDD.',
+              'Fallo de captura: espiga sin QRS. Infradetección: espigas que ignoran el ritmo propio. Sobredetección: pausas sin espiga por inhibición inapropiada.',
+            ],
+          },
+          {
+            title: 'Síncope de riesgo y TEP',
+            points: [
+              'Síncope sin pródromos, de esfuerzo o en decúbito, con cardiopatía o ECG anormal = alto riesgo: ingreso y monitorización (ESC 2018).',
+              'BRD + HBAI (bifascicular) con síncope inexplicado: EEF; marcapasos si HV ≥ 70 ms o bloqueo infrahisiano inducido. Si es negativo, Holter implantable (ESC 2021).',
+              'Mobitz II, BAV avanzado o completo documentados: marcapasos definitivo sin más estudios.',
+              'TEP: taquicardia sinusal (lo más frecuente), BRD nuevo, T negativas V1–V4, S1Q3T3 (poco sensible). El ECG no diagnostica el TEP: estratifica junto a sPESI, troponina y función del VD.',
+              'TEP de riesgo intermedio-alto: anticoagulación y monitorización; trombólisis solo de rescate si hay deterioro hemodinámico (ESC 2019).',
+            ],
+            tip: 'En el bifascicular con síncope, la pregunta no es si hay bloqueo, sino si progresa a BAV completo.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u16-l1',
+          title: 'Hipopotasemia: ondas U y torsade',
+          case: {
+            title: 'Mujer de 72 años con diarrea y debilidad',
+            text: 'Mujer de 72 años, hipertensa en tratamiento con hidroclorotiazida. Desde hace 5 días tiene diarrea acuosa abundante. Consulta por debilidad muscular generalizada y palpitaciones. TA 104/62 mmHg, FC 82 lpm. Analítica: K⁺ 2,3 mEq/L, Mg²⁺ 1,2 mg/dL (bajo), creatinina 1,3 mg/dL.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Qué hallazgo es más característico de su alteración iónica?', ecg12: 'hypok', options: ['Ondas U prominentes en V2–V3', 'T picudas y simétricas', 'QT corto con ST ausente', 'Ondas J de Osborn'], answer: 0, explain: 'La hipopotasemia aplana la T y realza la onda U, sobre todo en V2–V3, con discreto descenso del ST. Las T picudas son de hiperpotasemia.' },
+            { type: 'tf', prompt: 'El "QT largo" que se mide en este ECG corresponde en realidad a un intervalo QU, porque la T aplanada se funde con la U.', answer: true, explain: 'Al medirlo hasta el final de la U se sobrestima el QT, pero el riesgo de torsade es real: la hipopotasemia prolonga la repolarización.' },
+            { type: 'mc', context: 'En el box de urgencias la monitorización muestra este ritmo.', prompt: '¿Qué ritmo es?', ecg: 'bigeminy', options: ['Bigeminismo ventricular', 'Bloqueo AV de 2.º grado 2:1', 'Fibrilación auricular', 'Extrasístoles auriculares bloqueadas'], answer: 0, explain: 'Cada latido sinusal va seguido de un QRS ancho y prematuro sin P, con acoplamiento fijo. La hipopotasemia aumenta la automaticidad ventricular.' },
+            { type: 'mc', context: 'Minutos después presenta un mareo intenso y el monitor registra esto, que cede espontáneamente.', prompt: '¿Cuál es el tratamiento inmediato más adecuado?', ecg: 'torsade', options: ['Sulfato de magnesio 2 g IV y reponer K⁺', 'Amiodarona IV en bolo', 'Procainamida IV', 'Verapamilo IV'], answer: 0, explain: 'Torsade de pointes por QT(U) largo. El magnesio es el tratamiento de elección aunque la magnesemia sea normal; la amiodarona y la procainamida prolongan el QT.' },
+            { type: 'mc', prompt: '¿Cómo repones el potasio por una vía periférica?', options: ['KCl en suero salino, ≤ 10 mEq/h y con monitor', 'KCl en suero glucosado al 5 %, en bolo', 'KCl IV directo a 40 mEq/h', 'Solo por vía oral, sin monitor'], answer: 0, explain: 'El suero glucosado estimula la insulina y baja aún más el K⁺. El ritmo máximo habitual por vía periférica es 10 mEq/h; por vía central y con monitor, hasta 20 mEq/h.' },
+            { type: 'match', prompt: 'Relaciona cada alteración con su hallazgo ECG', pairs: [['Hipopotasemia', 'Ondas U'], ['Hiperpotasemia', 'T picudas'], ['Hipocalcemia', 'QT largo por ST alargado'], ['Hipercalcemia', 'QT corto']], explain: 'El calcio modifica sobre todo la duración del ST (fase 2); el potasio, la forma de la T y la U.' },
+          ],
+        },
+        {
+          id: 'casos-u16-l2',
+          title: 'Intoxicación digitálica',
+          case: {
+            title: 'Mujer de 83 años con náuseas y visión amarilla',
+            text: 'Mujer de 83 años con FA permanente e insuficiencia cardiaca, tratada con digoxina 0,25 mg/día, furosemida y apixabán. Hace 3 semanas se añadió amiodarona. Desde hace 4 días tiene náuseas, vómitos, confusión y ve los objetos "amarillentos". TA 106/60 mmHg. Creatinina 2,1 mg/dL (basal 1,1), K⁺ 5,8 mEq/L, digoxinemia 3,4 ng/mL.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira de ritmo. ¿Qué muestra?', ecg: 'afib-slow', options: ['FA con respuesta ventricular lenta', 'Bloqueo AV completo con escape nodal', 'Ritmo sinusal con bradicardia', 'Flutter auricular con bloqueo 4:1'], answer: 0, explain: 'RR irregular sin ondas P y con ondas f, a < 60 lpm. En una paciente con digoxina obliga a pensar en exceso de frenado del nodo AV.' },
+            { type: 'match', prompt: 'Clasifica cada hallazgo como efecto o toxicidad de la digoxina', pairs: [['ST "en cubeta"', 'Efecto digitálico'], ['TV bidireccional', 'Toxicidad grave'], ['Taquicardia auricular con bloqueo', 'Toxicidad típica'], ['QT acortado', 'Efecto: repolarización rápida']], explain: 'La digoxina aumenta la automaticidad y frena la conducción AV: la combinación "taquiarritmia + bloqueo" es muy sugestiva de toxicidad.' },
+            { type: 'tap', context: 'Durante la observación aparece este ritmo en el monitor.', prompt: 'Toca una extrasístole ventricular', ecg: 'bigeminy', wave: 'vent', explain: 'El bigeminismo ventricular es una de las arritmias más frecuentes de la intoxicación digitálica, por posdespolarizaciones tardías dependientes del calcio intracelular.' },
+            { type: 'mc', prompt: '¿Qué factores han precipitado la intoxicación?', options: ['Insuficiencia renal aguda y amiodarona', 'Apixabán y furosemida', 'Hiperpotasemia y apixabán', 'Edad y FA permanente sin más'], answer: 0, explain: 'La digoxina se elimina por vía renal y la amiodarona eleva su concentración (hay que reducir la dosis ≈ 50 %). La hipopotasemia por diuréticos también la potencia.' },
+            { type: 'mc', prompt: '¿Qué tratamiento está indicado?', options: ['Anticuerpos antidigoxina (fragmentos Fab)', 'Hemodiálisis para eliminar la digoxina', 'Cardioversión eléctrica', 'Bicarbonato y glucosa hipertónica'], answer: 0, explain: 'Arritmia ventricular, hiperpotasemia y daño orgánico con niveles altos indican Fab antidigoxina. La digoxina no se dializa (gran volumen de distribución).' },
+            { type: 'tf', prompt: 'En la insuficiencia cardiaca, la concentración de digoxina recomendada es < 1,2 ng/mL.', answer: true, explain: 'La ESC recomienda niveles < 1,2 ng/mL (idealmente 0,5–0,9): por encima aumentan la toxicidad y la mortalidad sin más beneficio. En ancianos y con ERC, dosis bajas.' }, // Fuente: ESC IC 2021
+          ],
+        },
+        {
+          id: 'casos-u16-l3',
+          title: 'Ritmo de marcapasos y síndrome de marcapasos',
+          case: {
+            title: 'Varón de 78 años con mareo tras un marcapasos',
+            text: 'Varón de 78 años en ritmo sinusal al que hace 3 meses se implantó un marcapasos monocameral VVI a 60 lpm por BAV paroxístico. Desde entonces refiere cansancio, mareo al levantarse y "latidos en el cuello". En consulta: TA 102/64 mmHg en los latidos estimulados, con ondas a en cañón en el pulso yugular.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Tira de ritmo en la consulta. ¿Qué muestra?', ecg: 'pacer-vvi', options: ['Estimulación ventricular a 60 lpm', 'Taquicardia ventricular lenta', 'Ritmo idioventricular acelerado', 'Bloqueo de rama izquierda en ritmo sinusal'], answer: 0, explain: 'Cada QRS ancho va precedido de una espiga y la frecuencia coincide con la programada (60 lpm): el marcapasos captura correctamente.' },
+            { type: 'tap', prompt: 'Toca una espiga de marcapasos', ecg: 'pacer-vvi', wave: 'spike', explain: 'La espiga es una deflexión vertical muy estrecha justo antes del QRS. Si una espiga no va seguida de QRS, hay fallo de captura.' },
+            { type: 'mc', prompt: 'ECG de 12 derivaciones. ¿Por qué el QRS tiene morfología de BRI con eje superior?', ecg12: 'pacer12', options: ['Se estimula desde el ápex del VD', 'Se estimula desde el seno coronario', 'Hay un IAM inferior asociado', 'El cable está en la aurícula derecha'], answer: 0, explain: 'Desde el ápex del VD el VI se activa tarde (patrón BRI) y de abajo arriba (eje superior, negativo en II, III y aVF).' },
+            { type: 'match', prompt: 'Relaciona cada letra del código VVI con su significado', pairs: [['1.ª V', 'Estimula el ventrículo'], ['2.ª V', 'Detecta el ventrículo'], ['I', 'Se inhibe si hay latido propio'], ['R (en VVIR)', 'Responde a la actividad física']], explain: 'Un VVI no "ve" la aurícula: estimula el ventrículo sin sincronía con las ondas P.' },
+            { type: 'mc', context: 'Las ondas a en cañón coinciden con los latidos estimulados; el ETT es normal.', prompt: '¿Cuál es la causa más probable de los síntomas y qué propones?', options: ['Síndrome de marcapasos: cambiar a DDD', 'Fallo de captura: subir el voltaje', 'Infradetección: aumentar la sensibilidad', 'Ansiedad: tranquilizar y revisar en 1 año'], answer: 0, explain: 'La pérdida de sincronía AV y la conducción ventriculoauricular hacen que la aurícula se contraiga con la tricúspide cerrada. En ritmo sinusal con BAV, la ESC 2021 prefiere la estimulación bicameral.' }, // Fuente: ESC marcapasos y TRC 2021
+            { type: 'tap', context: 'Tras implantar un cable auricular y programar DDD, se registra esta tira.', prompt: 'Toca una de las espigas de marcapasos', ecg: 'pacer-ddd', wave: 'spike', explain: 'En DDD hay dos espigas por ciclo: la auricular (seguida de P) y, tras el intervalo AV programado, la ventricular (seguida de QRS ancho).' },
+          ],
+        },
+        {
+          id: 'casos-u16-l4',
+          title: 'Síncope con bloqueo bifascicular',
+          case: {
+            title: 'Varón de 76 años que se ha caído sin aviso',
+            text: 'Varón de 76 años, hipertenso, que estando sentado viendo la televisión pierde el conocimiento sin pródromos y se golpea la cara. Recupera en menos de un minuto, sin confusión posterior. No toma fármacos bradicardizantes. TA 138/80 mmHg sin ortostatismo, FC 70 lpm, K⁺ normal.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa las precordiales del ECG. ¿Qué trastorno de conducción presenta?', ecg12: 'rbbb', options: ['Bloqueo de rama derecha', 'Bloqueo de rama izquierda', 'Preexcitación ventricular', 'Patrón de Brugada tipo 1'], answer: 0, explain: 'QRS ≥ 120 ms con rSR′ en V1–V2 y S ancha y empastada en I y V6: bloqueo completo de rama derecha.' },
+            { type: 'mc', context: 'En el plano frontal su QRS es positivo en I y negativo en II y aVF, como en este trazado.', prompt: '¿Qué indica este eje?', ecg12: 'lad', options: ['Hemibloqueo anterior izquierdo', 'Hemibloqueo posterior izquierdo', 'Eje normal', 'Hipertrofia del ventrículo derecho'], answer: 0, explain: 'Eje ≈ −45° (entre −45° y −90°): hemibloqueo anterior izquierdo. BRD + HBAI = bloqueo bifascicular; solo queda el fascículo posterior.' },
+            { type: 'tf', prompt: 'Por sus características, el síncope de este paciente es de alto riesgo y requiere ingreso con monitorización.', answer: true, explain: 'Síncope sin pródromos, con traumatismo y con ECG anormal (bloqueo bifascicular): criterios de alto riesgo de la ESC 2018 que sugieren causa arrítmica.' },
+            { type: 'tap', context: 'Durante el ingreso tiene un mareo y la telemetría registra esta tira.', prompt: 'Toca una onda P que no se conduce', ecg: 'mobitz2', wave: 'pBlocked', explain: 'P bloqueada sin alargamiento previo del PR: Mobitz II, con bloqueo infrahisiano en un paciente con enfermedad de ambas ramas.' },
+            { type: 'mc', prompt: '¿Qué decisión tomas ahora?', options: ['Marcapasos definitivo', 'Estudio electrofisiológico antes de decidir', 'Holter implantable y revisión', 'Atropina y alta si se resuelve'], answer: 0, explain: 'Un Mobitz II documentado es indicación de marcapasos (clase I, ESC 2021) sin necesidad de más pruebas; la atropina no mejora el bloqueo infrahisiano.' },
+            { type: 'match', prompt: 'Si la telemetría hubiera sido normal, relaciona cada resultado con la conducta (ESC 2021)', pairs: [['HV ≥ 70 ms en el EEF', 'Marcapasos'], ['EEF normal', 'Holter implantable'], ['FEVI ≤ 35 % con síncope', 'Valorar DAI o TRC-D'], ['Anciano frágil sin EEF', 'Marcapasos empírico (IIb)']], explain: 'En el bloqueo bifascicular con síncope inexplicado el EEF busca un sistema His-Purkinje enfermo; si es normal, el Holter implantable documenta el ritmo durante el siguiente episodio.' }, // Fuente: ESC marcapasos y TRC 2021
+          ],
+        },
+        {
+          id: 'casos-u16-l5',
+          title: 'TEP: lo que el ECG dice y lo que no',
+          case: {
+            title: 'Mujer de 67 años con disnea súbita tras una prótesis de cadera',
+            text: 'Mujer de 67 años, operada hace 6 días de una prótesis total de cadera, que presenta disnea brusca y dolor pleurítico derecho. FC 116 lpm, TA 112/70 mmHg, FR 26 rpm, SatO₂ 88 % con aire ambiente. Sin antecedentes cardiopulmonares ni cáncer.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Tira de ritmo a su llegada. ¿Cuál es el hallazgo ECG más frecuente en el TEP?', ecg: 'tachy', options: ['Taquicardia sinusal', 'Patrón S1Q3T3', 'Fibrilación auricular', 'Bloqueo de rama derecha'], answer: 0, explain: 'La taquicardia sinusal es el hallazgo más común. El S1Q3T3 es clásico pero poco sensible y poco específico.' },
+            { type: 'mc', context: 'En el ECG de 12 derivaciones aparece un trastorno de conducción nuevo respecto a un ECG preoperatorio normal.', prompt: '¿Qué muestra y qué sugiere?', ecg12: 'rbbb', options: ['BRD nuevo: sobrecarga aguda del VD', 'BRI nuevo: IAM anterior', 'Hemibloqueo anterior: degenerativo', 'Preexcitación intermitente'], answer: 0, explain: 'El BRD nuevo, las T negativas en V1–V4 y la desviación derecha del eje reflejan dilatación aguda del VD y se asocian a peor pronóstico.' },
+            { type: 'tf', prompt: 'Con alta probabilidad clínica, se debe pedir un dímero D antes de solicitar la angio-TC.', answer: false, explain: 'Con alta probabilidad clínica se va directamente a la angio-TC (y se anticoagula mientras); el dímero D solo es útil para descartar con probabilidad baja o intermedia.' },
+            { type: 'mc', context: 'Angio-TC: TEP bilateral, cociente VD/VI 1,3. Troponina T ultrasensible elevada. TA estable.', prompt: '¿Cuál es su sPESI y su categoría de riesgo?', options: ['sPESI 2: riesgo intermedio-alto', 'sPESI 0: riesgo bajo', 'sPESI 1: riesgo intermedio-bajo', 'sPESI 2: riesgo alto'], answer: 0, explain: 'FC ≥ 110 (1) + SatO₂ < 90 % (1) = 2. Sin hipotensión no es de alto riesgo; con disfunción del VD y troponina elevada es intermedio-alto.' }, // Fuente: ESC TEP 2019
+            { type: 'mc', prompt: '¿Qué tratamiento indicas?', options: ['Anticoagulación con HBPM y monitorización', 'Trombólisis sistémica inmediata', 'Filtro de vena cava inferior', 'ACOD y alta a domicilio'], answer: 0, explain: 'En el riesgo intermedio-alto se anticoagula (HBPM los primeros días) y se monitoriza; la trombólisis sistémica rutinaria no se recomienda y se reserva como rescate si hay deterioro.' },
+            { type: 'match', prompt: 'Relaciona cada hallazgo con lo que indica en el TEP', pairs: [['Hipotensión mantenida', 'Riesgo alto: reperfusión'], ['Cociente VD/VI > 1', 'Disfunción del VD'], ['T negativas en V1–V4', 'Sobrecarga del VD en el ECG'], ['Dímero D normal con probabilidad baja', 'Descarta el TEP']], explain: 'La estratificación combina hemodinámica, escalas clínicas (sPESI), imagen del VD y biomarcadores; el ECG aporta datos pronósticos, no diagnósticos.' },
+          ],
+        },
+      ],
+    },
   ],
 };

@@ -21,6 +21,7 @@ const shuffle = (arr) => {
   }
   return a;
 };
+const matchKey = (k) => (k === 9 ? 0 : k + 1);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 // Normaliza a { prompt, ecg, choices: [{label, correct}] } o match.
@@ -56,12 +57,12 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     <div class="lesson" style="--accent:${course.color}">
       <header class="lesson-top">
         <button class="icon-btn" data-act="exit" aria-label="Salir">✕</button>
-        <div class="bar"><div class="bar-fill"></div></div>
-        <div class="hearts ${lesson.mode || ''}">${usesHearts || ownLives ? `${lesson.mode === 'legendary' ? '👑' : '❤️'} <span></span>` : '♾️'}</div>
+        <div class="bar" role="progressbar" aria-label="Progreso de la lección" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div>
+        <div class="hearts ${lesson.mode || ''}" aria-label="${usesHearts || ownLives ? 'Vidas' : 'Vidas ilimitadas'}">${usesHearts || ownLives ? `${lesson.mode === 'legendary' ? '👑' : '❤️'} <span></span>` : '♾️'}</div>
       </header>
       <main class="lesson-body"></main>
       <footer class="lesson-foot">
-        <div class="feedback"></div>
+        <div class="feedback" aria-live="polite"></div>
         <button class="btn primary" data-act="check" disabled>Comprobar</button>
       </footer>
     </div>`;
@@ -72,8 +73,12 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   const updateTop = () => {
     $('.bar-fill').style.width = `${(done / total) * 100}%`;
+    $('.lesson-top .bar').setAttribute('aria-valuenow', Math.round((done / total) * 100));
     const h = $('.hearts span');
-    if (h) h.textContent = ownLives ? lives : getState().hearts;
+    if (h) {
+      h.textContent = ownLives ? lives : getState().hearts;
+      $('.hearts').setAttribute('aria-label', `${lesson.mode === 'legendary' ? 'Intentos' : 'Vidas'}: ${h.textContent}`);
+    }
   };
 
   function next() {
@@ -95,15 +100,16 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
       ? `<details class="case" ${done === 0 ? 'open' : ''}><summary>📋 ${esc(lesson.case.title || 'Caso clínico')}</summary><p>${esc(lesson.case.text)}</p></details>`
       : '';
     const context = current.context ? `<p class="context">${esc(current.context)}</p>` : '';
-    const head = `${caseCard}${context}<h2 class="prompt">${esc(current.prompt)}</h2>`;
+    const head = `${caseCard}${context}<h2 class="prompt" tabindex="-1">${esc(current.prompt)}</h2>`;
     if (current.type === 'match') {
       matchState = { left: null, matched: new Set(), erred: false };
       body.innerHTML = `
         ${head}
         <div class="match">
-          <div class="col">${current.left.map((o) => `<button class="choice" data-side="l" data-i="${o.i}">${esc(o.label)}</button>`).join('')}</div>
-          <div class="col">${current.right.map((o) => `<button class="choice" data-side="r" data-i="${o.i}">${esc(o.label)}</button>`).join('')}</div>
-        </div>`;
+          <div class="col" role="group" aria-label="Columna izquierda">${current.left.map((o, k) => `<button class="choice" data-side="l" data-i="${o.i}" data-k="${k}" aria-pressed="false"><kbd>${matchKey(k)}</kbd><span>${esc(o.label)}</span></button>`).join('')}</div>
+          <div class="col" role="group" aria-label="Columna derecha">${current.right.map((o, k) => `<button class="choice" data-side="r" data-i="${o.i}" data-k="${current.left.length + k}" aria-pressed="false"><kbd>${matchKey(current.left.length + k)}</kbd><span>${esc(o.label)}</span></button>`).join('')}</div>
+        </div>
+        <p class="muted hint kb-hint">Toca una pareja de cada columna (o pulsa sus números).</p>`;
       checkBtn.hidden = true;
     } else if (current.type === 'tap') {
       checkBtn.hidden = false;
@@ -114,9 +120,11 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
         ${head}
         ${visual}
         <div class="choices ${current.type === 'tf' ? 'tf' : ''}">
-          ${current.choices.map((c, i) => `<button class="choice" data-c="${i}"><kbd>${i + 1}</kbd>${esc(c.label)}</button>`).join('')}
+          ${current.choices.map((c, i) => `<button class="choice" data-c="${i}" aria-pressed="false"><kbd>${i + 1}</kbd>${esc(c.label)}</button>`).join('')}
         </div>`;
     }
+    // Lectores de pantalla: el foco va al enunciado de cada pregunta nueva.
+    body.querySelector('.prompt')?.focus({ preventScroll: true });
   }
 
   function showFeedback(ok, correctLabel) {
@@ -210,8 +218,10 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     const i = Number(btn.dataset.i);
     if (matchState.matched.has(i)) return;
     if (side === 'l') {
-      body.querySelectorAll('[data-side=l]').forEach((b) => b.classList.remove('selected'));
+      body.querySelectorAll('[data-side=l]').forEach((b) => { b.classList.remove('selected'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('selected');
+      btn.setAttribute('aria-pressed', 'true');
+      sfx('Tap');
       matchState.left = i;
       return;
     }
@@ -227,6 +237,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     }
     matchState.left = null;
     leftBtn.classList.remove('selected');
+    leftBtn.setAttribute('aria-pressed', 'false');
   }
 
   function finish() {
@@ -254,7 +265,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     if (btn.dataset.c !== undefined) {
       selected = Number(btn.dataset.c);
       sfx('Tap');
-      body.querySelectorAll('.choice').forEach((b) => b.classList.toggle('selected', b === btn));
+      body.querySelectorAll('.choice').forEach((b) => { b.classList.toggle('selected', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
       checkBtn.disabled = false;
     }
   }
@@ -273,7 +284,14 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   function onKey(e) {
     if (e.key === 'Enter' && !checkBtn.disabled && !checkBtn.hidden) { e.preventDefault(); check(); }
+    if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
     if (phase === 'answer' && current?.choices && /^[1-9]$/.test(e.key)) body.querySelector(`[data-c="${Number(e.key) - 1}"]`)?.click();
+    // Emparejar con teclado: 1…n columna izquierda, n+1… columna derecha (0 = 10).
+    if (phase === 'answer' && current?.type === 'match' && /^[0-9]$/.test(e.key)) {
+      const k = e.key === '0' ? 9 : Number(e.key) - 1;
+      const b = body.querySelector(`[data-k="${k}"]`);
+      if (b && !b.disabled) { b.focus(); b.click(); }
+    }
   }
 
   function cleanup() {

@@ -523,3 +523,35 @@ a.trophy.won:active { transform: translateY(6px); box-shadow: none; }
 .chat-q { scroll-margin-top: 72px; }
 .msg:has(.ecg-wrap, .visual-wrap) { max-width: 100%; }
 .msg:has(.ecg-wrap, .visual-wrap) .bub { flex: 1; }
+
+/* ---------- Cuenta: perfiles locales y "Pasar mi progreso" ---------- */
+.acc-screen { gap: 10px; }
+.acc-tabs { width: 100%; }
+.acc-tabs a { flex: 1 1 0; padding: 9px 6px; font-size: .82rem; white-space: normal; line-height: 1.15; display: flex; align-items: center; justify-content: center; }
+.acc-avatar.local { background: color-mix(in srgb, var(--green) 18%, transparent); color: var(--text); font-weight: 900; font-size: 1.4rem; }
+.acc-note { width: 100%; margin: 4px 0; padding: 10px 12px; border-radius: 12px; background: var(--surface); color: var(--muted); font-size: .85rem; text-align: left; }
+.acc-stats { width: 100%; grid-template-columns: repeat(3, 1fr); }
+.acc-stats > * { align-items: center; padding: 10px 6px; }
+.acc-stats small { color: var(--muted); }
+.profile-list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+.profile-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-bottom-width: 4px; border-radius: 14px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.profile-item .acc-avatar { width: 44px; height: 44px; font-size: 1.2rem; }
+.profile-item .pi-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.profile-item .pi-text small { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-item .pi-xp { flex: none; font-weight: 800; color: var(--muted); font-size: .9rem; }
+.profile-item.active, .profile-item.sel { border-color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, transparent); }
+.profile-item.active .pi-xp { color: var(--blue); }
+.acc-section { width: 100%; text-align: left; border: 2px solid var(--border); border-radius: 16px; padding: 12px 14px 14px; }
+.acc-section .sec-title { margin: 0 0 4px; }
+.acc-section p { margin: 4px 0; }
+.code-box { width: 100%; font: .78rem/1.35 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 10px 12px; border: 2px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); resize: vertical; word-break: break-all; }
+.code-box:focus { outline: none; border-color: var(--blue); }
+.acc-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.acc-btns .btn { margin: 0; padding: 12px 8px; font-size: .82rem; max-width: none; }
+.file-btn { display: flex; align-items: center; justify-content: center; }
+.backup-preview { margin-top: 10px; padding: 12px; border: 2px solid var(--blue); border-radius: 14px; display: flex; flex-direction: column; gap: 4px; }
+.backup-preview.ok { border-color: var(--ok); align-items: center; text-align: center; }
+.backup-preview .btn { max-width: none; }
+.profile-chip { display: inline-block; margin-top: 4px; padding: 3px 10px; border: 2px solid var(--border); border-radius: 999px; font-size: .8rem; font-weight: 800; color: var(--blue); }
+.ob-have { margin-top: 6px; }
+.ob-account .btn + .btn { margin-top: 10px; }

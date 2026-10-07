@@ -7,7 +7,7 @@ import { shell, screen, esc, go, app, applyTheme, notifySupported, requestNotify
 import { cora, sfx } from '../fx.js';
 import { weekRow } from './lessonFlow.js';
 import { accountCard, bindAccountCard } from './account.js';
-import { isConfigured as accountsOn } from '../auth.js';
+import { isConfigured as cloudOn, hasAccount, localProfile } from '../auth.js';
 
 const LEVELS = [
   { id: 'pre', icon: '📗', label: 'Estudiante preclínico', desc: 'Empiezo desde cero' },
@@ -24,7 +24,7 @@ export function viewProfile() {
   shell(`
     <div class="profile-head">
       <div class="avatar">${esc((s.name || 'T')[0].toUpperCase())}</div>
-      <div><h1>${esc(s.name || 'Tú')}</h1><p class="muted">${esc(LEVELS.find((l) => l.id === s.level)?.label || 'Estudiante')} · Se unió en ${joined}</p></div>
+      <div><h1>${esc(s.name || localProfile()?.name || 'Tú')}</h1><p class="muted">${esc(LEVELS.find((l) => l.id === s.level)?.label || 'Estudiante')} · Se unió en ${joined}</p>${profileChip()}</div>
       <a class="icon-btn" href="#/ajustes" title="Ajustes">⚙️</a>
     </div>
     <h2 class="sec-title">Estadísticas</h2>
@@ -42,6 +42,12 @@ export function viewProfile() {
     <h2 class="sec-title">Cuenta</h2>
     ${accountCard()}`, 'profile');
   bindAccountCard();
+}
+
+// Perfil activo (local o nube) con acceso a la cuenta.
+function profileChip() {
+  const lp = localProfile();
+  return `<a class="profile-chip" href="#/cuenta/${lp ? 'cambiar' : 'perfil'}">${lp ? `👤 ${esc(lp.name)} · Cambiar` : '👤 Sin perfil · Crear'}</a>`;
 }
 
 const badge = (a, off = false) => `<div class="badge ${off ? 'off' : ''}" title="${esc(a.desc)}"><span>${a.icon}</span><b>${esc(a.name)}</b><small>${esc(a.desc)}</small></div>`;
@@ -115,16 +121,23 @@ export function viewSettings(note = '') {
 export function viewOnboarding(step = 0, animate = true) {
   const s = getState();
   const steps = [
-    { say: '¡Hola! Soy Cora 🫀', sub: 'Te ayudaré a dominar el ECG, la eco y el cateterismo en sesiones de pocos minutos.', body: '', next: true },
+    { say: '¡Hola! Soy Cora 🫀', sub: 'Te ayudaré a dominar el ECG, la eco y el cateterismo en sesiones de pocos minutos.', body: '<a class="link-btn ob-have" href="#/entrar">Ya tengo un perfil o un código de progreso</a>', next: true },
     { say: '¿Qué quieres aprender?', body: `<div class="opts">${COURSES.map((c) => `<button class="opt ${s.course === c.id ? 'sel' : ''}" data-v="${c.id}"><span class="oi">${c.icon}</span><b>${esc(c.subtitle)}</b></button>`).join('')}</div>`, key: 'course' },
     { say: '¿Cuál es tu nivel?', body: `<div class="opts">${LEVELS.map((l) => `<button class="opt ${s.level === l.id ? 'sel' : ''}" data-v="${l.id}"><span class="oi">${l.icon}</span><b>${l.label}</b><small>${l.desc}</small></button>`).join('')}</div>`, key: 'level' },
     { say: '¿Cuál será tu meta diaria?', body: `<div class="opts">${GOALS.map((g) => `<button class="opt ${s.dailyGoal === g.xp ? 'sel' : ''}" data-v="${g.xp}"><b>${g.label}</b><small>${g.xp} XP · ${g.desc}</small></button>`).join('')}</div>`, key: 'dailyGoal' },
     { say: '¿Cómo te llamas?', body: `<input class="big-input" id="ob-name" maxlength="20" placeholder="Tu nombre" value="${esc(s.name)}"/>`, key: 'name', next: true },
     { say: '¡Genial! Ya está todo listo', sub: 'Tu primera lección te espera. ¡Vamos a por ello!', body: '', next: true, last: true },
   ];
-  if (accountsOn()) {
+  // Paso de cuenta: siempre (perfil local o en la nube), salvo que ya haya alguien identificado.
+  if (!hasAccount()) {
     steps[steps.length - 1].last = false;
-    steps.push({ say: '¿Quieres crear un perfil para guardar tu progreso?', sub: 'Así podrás seguir en cualquier dispositivo justo donde lo dejaste.', body: '<div class="ob-account"><button class="btn primary" data-acc="#/registro" style="--accent:#58cc02">Crear perfil</button><button class="btn ghost" data-acc="#/entrar">Ya tengo cuenta</button></div>', next: true, last: true, account: true });
+    const local = !cloudOn();
+    steps.push({
+      say: '¿Quieres crear un perfil para guardar tu progreso?',
+      sub: local ? 'Tu perfil se guarda en este dispositivo. Con un código podrás pasar tu progreso a otro.' : 'Así podrás seguir en cualquier dispositivo justo donde lo dejaste.',
+      body: `<div class="ob-account"><button class="btn primary" data-acc="#/registro" style="--accent:#58cc02">Crear perfil</button><button class="btn ghost" data-acc="#/entrar">Ya tengo perfil</button><button class="btn ghost" data-acc="#/cuenta/pasar">Importar progreso</button></div>`,
+      next: true, last: true, account: true,
+    });
   }
   const st = steps[step];
   screen(`

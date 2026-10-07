@@ -195,3 +195,117 @@ export async function initSync() {
     return false; // sin red al arrancar: auth.init() se reintenta al entrar o registrarse
   }
 }
+
+// ---------- Pasar el progreso a otro dispositivo (sin servidor) ----------
+// Copia de seguridad = { app: 'corazone', kind: 'progress', v: 1, exportedAt, name, state }.
+// Se comparte como archivo .corazone.json o como código de texto:
+//   CZ1.<z|j>.<base64url>.<checksum>   z = JSON comprimido con deflate-raw, j = JSON sin comprimir;
+//   checksum = FNV-1a de 32 bits (hex) del base64url.
+export const CODE_PREFIX = 'CZ1';
+const MAX_CODE = 3_000_000;
+const codeErr = (msg) => Object.assign(new Error(msg), { code: 'backup/invalid' });
+
+export function makeBackup(state = exportState(), name = '') {
+  return { app: 'corazone', kind: 'progress', v: 1, exportedAt: Date.now(), name: String(name || state?.name || ''), state };
+}
+
+export function checksum(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, '0');
+}
+
+const toB64url = (bytes) => {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+const fromB64url = (s) => {
+  const b = s.replace(/-/g, '+').replace(/_/g, '/');
+  return Uint8Array.from(atob(b + '='.repeat((4 - (b.length % 4)) % 4)), (c) => c.charCodeAt(0));
+};
+
+async function pipe(bytes, Stream) {
+  const out = new Blob([bytes]).stream().pipeThrough(new Stream('deflate-raw'));
+  return new Uint8Array(await new Response(out).arrayBuffer());
+}
+
+// Código de texto compacto para copiar/pegar.
+export async function encodeBackup(backup, { compress = typeof CompressionStream === 'function' } = {}) {
+  let bytes = new TextEncoder().encode(JSON.stringify(backup));
+  let flag = 'j';
+  if (compress) {
+    try { bytes = await pipe(bytes, CompressionStream); flag = 'z'; } catch { /* sin compresión */ }
+  }
+  const body = toB64url(bytes);
+  return `${CODE_PREFIX}.${flag}.${body}.${checksum(body)}`;
+}
+
+// Valida que sea una copia de Corazone con un estado razonable. Devuelve la copia normalizada.
+export function validateBackup(b) {
+  if (!b || typeof b !== 'object' || Array.isArray(b)) throw codeErr('El contenido no es una copia de progreso de Corazone.');
+  // También se acepta un estado "pelado" (p. ej. copiado de localStorage)
+  if (b.app !== 'corazone' && 'xp' in b && 'completed' in b) b = makeBackup(b);
+  if (b.app !== 'corazone' || b.kind !== 'progress') throw codeErr('El contenido no es una copia de progreso de Corazone.');
+  if (!(b.v >= 1)) throw codeErr('Versión de copia desconocida.');
+  if (b.v > 1) throw codeErr('Esta copia es de una versión más nueva de Corazone. Actualiza la app e inténtalo de nuevo.');
+  const s = b.state;
+  if (!s || typeof s !== 'object' || Array.isArray(s)) throw codeErr('La copia no contiene progreso.');
+  if (!Number.isFinite(s.xp) || s.xp < 0) throw codeErr('La copia está dañada (XP no válida).');
+  if (s.completed != null && (typeof s.completed !== 'object' || Array.isArray(s.completed))) throw codeErr('La copia está dañada (lecciones no válidas).');
+  for (const k of ['xpByDay', 'review', 'legendary', 'stories', 'claimed', 'daily', 'records']) {
+    if (s[k] != null && typeof s[k] !== 'object') throw codeErr('La copia está dañada.');
+  }
+  return { ...b, name: String(b.name ?? s.name ?? '').slice(0, 40), state: { ...s, completed: s.completed || {} } };
+}
+
+// Lee un código pegado o el texto de un archivo .corazone.json. Lanza un error con mensaje en español.
+export async function readBackup(text) {
+  const raw = String(text ?? '').trim();
+  if (!raw) throw codeErr('Pega tu código o elige un archivo.');
+  if (raw.length > MAX_CODE) throw codeErr('El contenido es demasiado grande para ser una copia de Corazone.');
+  if (raw.startsWith('{')) {
+    let obj;
+    try { obj = JSON.parse(raw); } catch { throw codeErr('El archivo está dañado: no es un JSON válido.'); }
+    return validateBackup(obj);
+  }
+  const code = raw.replace(/\s+/g, '');
+  const parts = code.split('.');
+  if (parts[0] !== CODE_PREFIX) throw codeErr(/^CZ\d+$/.test(parts[0]) ? 'Este código es de otra versión de Corazone. Actualiza la app.' : 'Eso no parece un código de Corazone (debe empezar por CZ1.).');
+  if (parts.length !== 4 || !['z', 'j'].includes(parts[1]) || !/^[A-Za-z0-9_-]+$/.test(parts[2])) throw codeErr('El código está incompleto o mal copiado. Cópialo entero e inténtalo de nuevo.');
+  if (checksum(parts[2]) !== parts[3].toLowerCase()) throw codeErr('El código está incompleto o mal copiado (no coincide la comprobación). Cópialo entero e inténtalo de nuevo.');
+  let bytes;
+  try { bytes = fromB64url(parts[2]); } catch { throw codeErr('El código está dañado.'); }
+  if (parts[1] === 'z') {
+    if (typeof DecompressionStream !== 'function') throw codeErr('Este navegador no puede leer códigos comprimidos. Usa el archivo .corazone.json.');
+    try { bytes = await pipe(bytes, DecompressionStream); } catch { throw codeErr('El código está dañado y no se puede descomprimir.'); }
+  }
+  let obj;
+  try { obj = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); } catch { throw codeErr('El código está dañado.'); }
+  return validateBackup(obj);
+}
+
+// Resumen para la previsualización.
+export function backupSummary(b) {
+  const s = b?.state || {};
+  return {
+    name: b?.name || s.name || '',
+    xp: Number.isFinite(s.xp) ? s.xp : 0,
+    lessons: Object.keys(s.completed || {}).length,
+    streak: Number.isFinite(s.streak) ? s.streak : 0,
+    exportedAt: Number.isFinite(b?.exportedAt) ? b.exportedAt : null,
+  };
+}
+
+// Aplica la copia al perfil activo: 'merge' (fusiona con mergeStates) o 'replace'.
+export function applyBackup(b, mode = 'merge') {
+  const incoming = { ...b.state, onboarded: true };
+  const next = mode === 'replace' ? incoming : mergeStates(exportState(), incoming);
+  next.onboarded = true;
+  return importState(next);
+}
+
+export const backupFileName = (name = '') => `${(name || 'progreso').normalize('NFD').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'progreso'}-${new Date().toISOString().slice(0, 10)}.corazone.json`;
