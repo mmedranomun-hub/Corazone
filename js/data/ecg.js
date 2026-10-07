@@ -71,7 +71,7 @@ export default {
             { type: 'tf', prompt: 'Una taquicardia regular a exactamente 150 lpm debe hacerte pensar en flutter 2:1.', answer: true, explain: 'Es un clásico: 300/2 = 150. Busca las ondas F en II, III, aVF y V1.' },
             { type: 'mc', prompt: '¿Qué ritmo muestra esta tira?', ecg: 'svt', options: ['Taquicardia supraventricular', 'Taquicardia ventricular', 'Fibrilación ventricular', 'Flutter 4:1'], answer: 0, explain: 'Taquicardia regular, QRS estrecho, sin P visibles: típico de TRIN.' },
             { type: 'mc', prompt: 'Primera medida en una TSV estable:', options: ['Maniobras vagales', 'Cardioversión eléctrica', 'Amiodarona IV', 'Desfibrilación'], answer: 0, explain: 'Vagales (Valsalva modificada) y, si fallan, adenosina IV.' },
-            { type: 'mc', prompt: 'La escala CHA₂DS₂-VASc en la FA estima…', options: ['Riesgo de ictus', 'Riesgo de sangrado', 'Probabilidad de cardioversión exitosa', 'Riesgo de muerte súbita'], answer: 0, explain: 'Guía la anticoagulación. El riesgo hemorrágico se valora con HAS-BLED.' },
+            { type: 'mc', prompt: 'La escala CHA₂DS₂-VA en la FA estima…', options: ['Riesgo de ictus', 'Riesgo de sangrado', 'Probabilidad de cardioversión exitosa', 'Riesgo de muerte súbita'], answer: 0, explain: 'Guía la anticoagulación; la ESC 2024 retira el sexo de la antigua CHA₂DS₂-VASc. El riesgo hemorrágico se valora con HAS-BLED.' },
           ],
         },
         {
@@ -113,7 +113,7 @@ export default {
             { type: 'mc', prompt: 'Elevación del ST en V1–V4 sugiere oclusión de…', options: ['Descendente anterior', 'Coronaria derecha', 'Circunfleja', 'Marginal obtusa'], answer: 0, explain: 'Cara anterior/anteroseptal → DA.' },
             { type: 'mc', prompt: '¿Qué alteración muestra esta tira?', ecg: 'stdep', options: ['Descenso del ST', 'Elevación del ST', 'Onda delta', 'Bloqueo de rama izquierda'], answer: 0, explain: 'Infradesnivel del ST: isquemia subendocárdica o imagen especular.' },
             { type: 'tf', prompt: 'En un IAM inferior conviene registrar derivaciones derechas (V3R–V4R).', answer: true, explain: 'La elevación del ST en V4R indica afectación del VD: evitar nitratos y asegurar precarga.' },
-            { type: 'mc', prompt: 'Objetivo de tiempo diagnóstico-reperfusión con angioplastia primaria en IAMCEST:', options: ['≤ 120 min (idealmente ≤ 90)', '≤ 6 horas', '≤ 24 horas', '≤ 30 min'], answer: 0, explain: 'Si no se puede ICP primaria en ≤ 120 min, fibrinolisis.' },
+            { type: 'mc', prompt: 'Tiempo máximo desde el diagnóstico de IAMCEST hasta el paso de la guía para preferir la ICP primaria a la fibrinólisis:', options: ['120 min', '6 horas', '24 horas', '30 min'], answer: 0, explain: 'Si se prevé que la ICP primaria supere los 120 min, se indica fibrinólisis (en < 10 min desde el diagnóstico).' },
           ],
         },
         {

@@ -41,7 +41,7 @@ export default {
           id: 'eco-u2-l1',
           title: 'Ventrículo izquierdo',
           questions: [
-            { type: 'mc', prompt: 'FEVI normal (según guías actuales):', options: ['≥ 50–55 %', '≥ 35 %', '≥ 70 %', '≥ 40 %'], answer: 0, explain: 'IC con FE reducida ≤ 40 %, levemente reducida 41–49 %, preservada ≥ 50 %.' },
+            { type: 'mc', prompt: 'FEVI normal (según guías actuales):', options: ['≥ 50–55 %', '≥ 35 %', '≥ 70 %', '≥ 40 %'], answer: 0, explain: 'IC con FE reducida ≤ 40 %, ligeramente reducida 41–49 %, preservada ≥ 50 %.' },
             { type: 'mc', prompt: 'El método recomendado para calcular la FEVI en eco 2D es…', options: ['Simpson biplano', 'Teichholz', 'Visual exclusivamente', 'Ecuación de continuidad'], answer: 0, explain: 'Simpson biplano (discos) en apical 4C y 2C; Teichholz asume geometría y falla con alteraciones segmentarias.' },
             { type: 'match', prompt: 'Relaciona la clasificación de IC por FEVI', pairs: [['≤ 40 %', 'IC-FEr'], ['41–49 %', 'IC-FElr'], ['≥ 50 %', 'IC-FEp']] },
             { type: 'tf', prompt: 'El strain longitudinal global (GLS) puede detectar disfunción subclínica con FEVI aún normal.', answer: true, explain: 'Muy usado en cardio-oncología: caída relativa del GLS > 15 % sugiere cardiotoxicidad.' },
@@ -126,7 +126,7 @@ export default {
           id: 'eco-u5-l1',
           title: 'Función diastólica',
           questions: [
-            { type: 'match', prompt: 'Relaciona cada criterio de disfunción diastólica (con FEVI normal, ASE/EACVI 2016) con su punto de corte', pairs: [['e\' septal', '< 7 cm/s'], ['e\' lateral', '< 10 cm/s'], ['E/e\' medio', '> 14'], ['Volumen AI indexado', '> 34 ml/m²']], explain: 'El cuarto criterio es la velocidad de IT > 2,8 m/s. Más de la mitad positivos = disfunción diastólica.' },
+            { type: 'match', prompt: 'Relaciona cada criterio de disfunción diastólica (con FEVI normal, ASE/EACVI 2016) con su punto de corte', pairs: [['e\' septal', '< 7 cm/s'], ['e\' lateral', '< 10 cm/s'], ['E/e\' medio', '> 14'], ['Volumen AI indexado', '> 34 ml/m²']], explain: 'El cuarto criterio es la velocidad de IT > 2,8 m/s. Más de la mitad positivos = disfunción diastólica. La actualización ASE 2025 simplifica el algoritmo y ajusta los cortes de e′ por edad.' },
             { type: 'mc', prompt: 'Paciente con FEVI normal: e\' septal 6 cm/s, E/e\' medio 16, volumen AI 40 ml/m² y velocidad de IT 2,5 m/s. Según el algoritmo ASE/EACVI 2016…', options: ['Hay disfunción diastólica', 'La función diastólica es normal', 'El resultado es indeterminado', 'No se puede valorar sin cateterismo'], answer: 0, explain: 'Tres de cuatro criterios positivos (> 50 %) definen disfunción diastólica.' },
             { type: 'mc', prompt: 'Un flujo mitral con E/A ≥ 2 y tiempo de deceleración corto en un paciente con FEVI reducida indica…', options: ['Presiones de llenado elevadas (patrón restrictivo, grado III)', 'Relajación alterada con presiones normales (grado I)', 'Función diastólica normal', 'Estenosis mitral'], answer: 0, explain: 'Con disfunción miocárdica conocida, E/A ≥ 2 equivale a presión auricular izquierda elevada y peor pronóstico.' },
             { type: 'tf', prompt: 'Un patrón de llenado mitral con E/A ≤ 0,8 y E ≤ 50 cm/s sugiere presión de AI normal o baja.', answer: true, explain: 'Es el patrón de relajación alterada (grado I): el llenado depende más de la contracción auricular.' },
