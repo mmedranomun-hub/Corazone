@@ -170,7 +170,7 @@ export default {
             points: [
               'Carpentier: I movilidad normal (dilatación anular, perforación); II excesiva (prolapso, flail); IIIa restricción sisto-diastólica (reumática); IIIb restricción sistólica (isquémica/funcional).',
               'PISA: EROA = 2πr² × Va / Vmax IM; volumen regurgitante = EROA × ITV de la IM.',
-              'IM grave: EROA ≥ 40 mm², VR ≥ 60 ml, vena contracta ≥ 7 mm, fracción regurgitante ≥ 50 %.',
+              'IM grave: EROA ≥ 40 mm², VR ≥ 60 ml, vena contracta ≥ 7 mm, fracción regurgitante ≥ 50 %. En la secundaria, EROA ≥ 30 mm² (orificio elíptico) o VR ≥ 45 ml (bajo flujo) pueden ya indicar IM grave.',
               'Primaria asintomática: cirugía (reparación) si FEVI ≤ 60 % o DTSVI ≥ 40 mm; la FA o la PSAP > 50 mmHg también la favorecen.',
               'Secundaria grave sintomática pese a tratamiento óptimo: TEER (borde a borde) clase I en ESC/EACTS 2025 si cumple criterios tipo COAPT.',
             ],
@@ -202,7 +202,7 @@ export default {
           questions: [
             { type: 'mc', prompt: 'TSVI de 2,0 cm, ITV en TSVI 20 cm e ITV aórtica 80 cm. ¿Área valvular aórtica por ecuación de continuidad?', options: ['0,79 cm²', '0,25 cm²', '3,14 cm²', '0,50 cm²'], answer: 0, explain: 'Área TSVI = π × 1,0² = 3,14 cm²; VS = 3,14 × 20 ≈ 63 ml; 63/80 ≈ 0,79 cm². El cociente 20/80 = 0,25 es el índice adimensional (< 0,25 apoya EA grave).' },
             { type: 'mc', prompt: 'Mujer de 78 años: FEVI 62 %, área aórtica 0,79 cm², gradiente medio 32 mmHg y VS indexado 30 ml/m². ¿Cómo se clasifica?', options: ['Posible EA grave de bajo flujo-bajo gradiente paradójica', 'EA moderada: el gradiente medio es el que manda', 'EA grave clásica de bajo flujo con FE reducida', 'EA grave de alto gradiente'], answer: 0, explain: 'FEVI conservada con VSi ≤ 35 ml/m² define el bajo flujo paradójico. Tras descartar errores de medida, el calcio por TC (≥ 1600 UA en mujer) apoya que sea grave.' },
-            { type: 'tf', prompt: 'Observa la curva simultánea VI-aorta: el pulso aórtico de ascenso lento y pico tardío (parvus et tardus) apoya una EA significativa.', pressure: 'as-lv-ao', answer: true, explain: 'El gradiente medio ≥ 40 mmHg define la EA grave. El gradiente pico instantáneo del Doppler es mayor que el pico a pico del cateterismo, que no es simultáneo.' },
+            { type: 'tf', prompt: 'Observa la curva simultánea VI-aorta: el pulso aórtico de ascenso lento y pico tardío (parvus et tardus) apoya una EA significativa.', pressure: 'as-lv-ao', answer: true, explain: 'La obstrucción retrasa y amortigua la eyección: pulso parvus et tardus. Grave si gradiente medio ≥ 40 mmHg; el pico instantáneo del Doppler supera al pico a pico del cateterismo.' },
             { type: 'match', prompt: 'EA bajo flujo con FEVI reducida: relaciona el hallazgo con su interpretación', pairs: [['Con dobutamina: GM ≥ 40 y área ≤ 1 cm²', 'EA verdaderamente grave'], ['Con dobutamina: área > 1 cm²', 'EA pseudograve'], ['Con dobutamina: VS sube < 20 %', 'Sin reserva de flujo'], ['Calcio por TC ≥ 3000 UA (varón)', 'EA grave muy probable']], explain: 'Sin reserva de flujo el eco de estrés no es concluyente y se recurre al calcio por TC; la ausencia de reserva empeora el pronóstico pero no contraindica la intervención.' },
             { type: 'tf', prompt: 'Según ESC/EACTS 2025, en la EA grave sintomática con anatomía y acceso transfemoral favorables se recomienda TAVI a partir de los 70 años.', answer: true, explain: 'Las guías de 2021 fijaban el corte en 75 años. Por debajo de 70 y con bajo riesgo quirúrgico, la cirugía sigue siendo de elección; decide el Heart Team.' }, // Fuente: ESC/EACTS 2025 valvulopatías
             { type: 'tf', prompt: 'Un error de 1 mm al medir un TSVI de 20 mm cambia el área valvular calculada en torno a un 1 %.', answer: false, explain: 'El diámetro se eleva al cuadrado: (21/20)² ≈ 1,10, es decir, ≈ 10 % de error. Mide el TSVI en mesosístole, con zoom, a 0,5–1 cm del anillo o en él.' },
@@ -278,7 +278,7 @@ export default {
               'VTD indexado (2D) ≤ 74 ml/m² en varones y ≤ 61 ml/m² en mujeres.',
               'Masa VI indexada (lineal) ≤ 115 g/m² en varones y ≤ 95 g/m² en mujeres; GPR = 2 × PP / DTDVI, anormal > 0,42.',
               'Geometría: masa normal + GPR > 0,42 = remodelado concéntrico; masa alta + GPR > 0,42 = HVI concéntrica; masa alta + GPR ≤ 0,42 = HVI excéntrica.',
-              'Volumen AI indexado normal ≤ 34 ml/m²; volumen AD indexado ≈ 25 ml/m² (varones) y 21 ml/m² (mujeres).',
+              'Volumen AI indexado normal ≤ 34 ml/m²; volumen AD indexado medio ≈ 25 ml/m² (varones) y 21 ml/m² (mujeres), con límite superior ≈ 39 y 33 ml/m².',
             ],
           },
           {

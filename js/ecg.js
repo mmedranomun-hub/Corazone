@@ -494,7 +494,7 @@ export const TWELVE_LEAD = {
   },
   'stemi-inf-rv': {
     name: 'IAMCEST inferior con afectación de VD',
-    desc: 'Elevación del ST en II, III y aVF (III > II, CD proximal) con descenso especular en I y aVL y elevación del ST en V1. Para confirmar la afectación del VD se requiere V4R (elevación ≥ 1 mm), que no se registra en el ECG estándar. Evitar nitratos y asegurar precarga.',
+    desc: 'Elevación del ST en II, III y aVF (III > II, CD proximal) con descenso especular en I y aVL y elevación del ST en V1. Para confirmar la afectación del VD se requiere V4R (elevación ≥ 0,5 mm; ≥ 1 mm en varones < 40 años), que no se registra en el ECG estándar. Evitar nitratos y asegurar precarga.',
     st: { II: 0.3, III: 0.48, aVF: 0.4, I: -0.14, aVL: -0.24, V1: 0.15, V2: 0.03 },
   },
   hypok: {
