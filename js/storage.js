@@ -57,11 +57,30 @@ function load() {
 }
 
 export function save() {
+  state.updatedAt = Date.now();
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
   } catch {
     /* almacenamiento no disponible: el progreso dura sólo la sesión */
   }
+  saveListeners.forEach((fn) => { try { fn(state); } catch { /* suscriptor roto */ } });
+}
+
+// Suscripción a cada guardado (la usa js/sync.js). Devuelve la función para desuscribirse.
+const saveListeners = new Set();
+export function onSave(fn) {
+  saveListeners.add(fn);
+  return () => saveListeners.delete(fn);
+}
+
+// Copia serializable del estado completo (para la nube).
+export const exportState = () => JSON.parse(JSON.stringify(state));
+
+// Sustituye el estado por uno importado (p. ej. fusionado con la nube) y lo guarda.
+export function importState(s) {
+  state = { ...defaults(), ...(s || {}) };
+  save();
+  return state;
 }
 
 function regenHearts() {

@@ -5,6 +5,7 @@ import { PRESSURES, renderPressure } from '../pressure.js';
 import { getState, dueReviews } from '../storage.js';
 import { shell, esc, go } from '../ui.js';
 import { cora } from '../fx.js';
+import { GUARDIAS } from '../data/guardias.js';
 import { startLesson, startUnitTest, startUnitReview, startLegendary } from './lessonFlow.js';
 
 const sample = (arr, n) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
@@ -42,6 +43,9 @@ export function viewPractice(kind) {
     ${card('#/practicar/rapida', '⚡', 'Práctica rápida', '8 preguntas de lo que ya has aprendido · +1 ❤️')}
     ${card('#/practicar/ondas', '👆', 'Toca la onda', 'Señala P, QRS, T y extrasístoles en la tira')}
     ${card('#/practicar/imagen', '🖼️', 'Lectura de imagen', img ? 'ECG, curvas y esquemas de lecciones completadas' : 'Completa lecciones con imágenes para desbloquear', '', !img)}
+    <h2 class="sec-title">Arcade</h2>
+    ${card('#/contrarreloj', '⏱️', 'Contrarreloj', `Empareja contra el reloj · Récord: ${getState().records?.timed || 0}`, '<span class="pill arc-pill">NUEVO</span>')}
+    ${card('#/guardias', '🌙', 'Guardias', `Historias de guardia · ${GUARDIAS.filter((g) => getState().stories?.[g.id]).length}/${GUARDIAS.length} completadas`)}
     <h2 class="sec-title">Atlas</h2>
     ${card('#/atlas/ritmos', '📈', 'Ritmos', `${Object.keys(RHYTHMS).length} tiras de ECG`)}
     ${card('#/atlas/12d', '🫀', '12 derivaciones', `${Object.keys(TWELVE_LEAD).length} ECG completos`)}

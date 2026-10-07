@@ -6,6 +6,8 @@ import { LEAGUES } from '../game.js';
 import { shell, screen, esc, go, app, applyTheme, notifySupported, requestNotify, scheduleReminder } from '../ui.js';
 import { cora, sfx } from '../fx.js';
 import { weekRow } from './lessonFlow.js';
+import { accountCard, bindAccountCard } from './account.js';
+import { isConfigured as accountsOn } from '../auth.js';
 
 const LEVELS = [
   { id: 'pre', icon: '📗', label: 'Estudiante preclínico', desc: 'Empiezo desde cero' },
@@ -36,7 +38,10 @@ export function viewProfile() {
     <div class="week">${days.map(({ d, xp }) => `<div class="day"><div class="col-bar ${xp >= s.dailyGoal ? 'goal' : ''}" style="height:${(xp / max) * 100}%" title="${xp} XP"></div><small>${'DLMXJVS'[new Date(`${d}T12:00`).getDay()]}</small></div>`).join('')}</div>
     <h2 class="sec-title">Logros <a class="see" href="#/logros">VER TODO</a></h2>
     <div class="badges">${ACHIEVEMENTS.filter((a) => got.has(a.id)).slice(0, 6).map(badge).join('') || '<p class="muted">Completa lecciones para conseguir logros.</p>'}</div>
-    <a class="practice-card" href="#/tienda"><span class="pi">💎</span><div><b>Tienda</b><small>${s.gems} gemas disponibles</small></div></a>`, 'profile');
+    <a class="practice-card" href="#/tienda"><span class="pi">💎</span><div><b>Tienda</b><small>${s.gems} gemas disponibles</small></div></a>
+    <h2 class="sec-title">Cuenta</h2>
+    ${accountCard()}`, 'profile');
+  bindAccountCard();
 }
 
 const badge = (a, off = false) => `<div class="badge ${off ? 'off' : ''}" title="${esc(a.desc)}"><span>${a.icon}</span><b>${esc(a.name)}</b><small>${esc(a.desc)}</small></div>`;
@@ -117,14 +122,19 @@ export function viewOnboarding(step = 0, animate = true) {
     { say: '¿Cómo te llamas?', body: `<input class="big-input" id="ob-name" maxlength="20" placeholder="Tu nombre" value="${esc(s.name)}"/>`, key: 'name', next: true },
     { say: '¡Genial! Ya está todo listo', sub: 'Tu primera lección te espera. ¡Vamos a por ello!', body: '', next: true, last: true },
   ];
+  if (accountsOn()) {
+    steps[steps.length - 1].last = false;
+    steps.push({ say: '¿Quieres crear un perfil para guardar tu progreso?', sub: 'Así podrás seguir en cualquier dispositivo justo donde lo dejaste.', body: '<div class="ob-account"><button class="btn primary" data-acc="#/registro" style="--accent:#58cc02">Crear perfil</button><button class="btn ghost" data-acc="#/entrar">Ya tengo cuenta</button></div>', next: true, last: true, account: true });
+  }
   const st = steps[step];
   screen(`
     <div class="ob-top">${step ? `<button class="icon-btn" data-back>←</button>` : '<span></span>'}<div class="bar"><div class="bar-fill" style="width:${(step / (steps.length - 1)) * 100}%;--accent:#58cc02"></div></div></div>
     <div class="cora-row">${cora(st.last ? 'cheer' : step ? 'think' : 'happy', 110)}<div class="speech ${animate ? 'pop-in' : ''}">${st.say}</div></div>
     ${st.sub ? `<p class="muted">${st.sub}</p>` : ''}
     ${st.body}
-    <button class="btn primary" data-next style="--accent:#58cc02" ${st.key && !st.next && s[st.key] == null ? 'disabled' : ''}>${st.last ? 'Empezar' : 'Continuar'}</button>`, 'onboarding');
-  const finish = () => { update((x) => { x.onboarded = true; x.course = x.course || 'ecg'; }); go(`#/curso/${getState().course}`); };
+    <button class="btn ${st.account ? 'ghost' : 'primary'}" data-next style="--accent:#58cc02" ${st.key && !st.next && s[st.key] == null ? 'disabled' : ''}>${st.account ? 'Ahora no' : st.last ? 'Empezar' : 'Continuar'}</button>`, 'onboarding');
+  const finish = (to) => { update((x) => { x.onboarded = true; x.course = x.course || 'ecg'; }); go(to || `#/curso/${getState().course}`); };
+  app.querySelectorAll('[data-acc]').forEach((b) => (b.onclick = () => { sfx('Tap'); finish(b.dataset.acc); }));
   app.querySelectorAll('[data-v]').forEach((b) => (b.onclick = () => {
     sfx('Tap');
     update((x) => { x[st.key] = st.key === 'dailyGoal' ? Number(b.dataset.v) : b.dataset.v; });
