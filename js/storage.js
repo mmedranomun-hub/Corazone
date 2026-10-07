@@ -31,6 +31,8 @@ const defaults = () => ({
   daily: {}, claimed: {}, league: { tier: 0, week: null }, lastLeagueResult: null,
   // Recompensas: niveles legendarios, cofre diario y recordatorio
   legendary: {}, chestDay: null, reminder: { on: false, time: '20:00' },
+  // Arcade: récords de Contrarreloj e historias de guardia completadas
+  records: { timed: 0 }, stories: {},
 });
 
 // Hitos de racha (días → gemas de recompensa)
@@ -244,6 +246,21 @@ export function openDailyChest(rand = Math.random) {
   state.gems += gems;
   save();
   return gems;
+}
+
+// Contrarreloj: guarda el récord personal. Devuelve { best, isNew }.
+export function saveTimedRecord(score) {
+  const prev = state.records?.timed || 0;
+  const isNew = score > prev;
+  state.records = { ...state.records, timed: Math.max(prev, score) };
+  save();
+  return { best: state.records.timed, prev, isNew };
+}
+
+// Guardias: marca una historia como completada.
+export function markStory(id) {
+  state.stories = { ...state.stories, [id]: true };
+  save();
 }
 
 export function resetProgress() {

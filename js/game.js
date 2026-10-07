@@ -142,3 +142,36 @@ export function nextReminderDelay(time, now = new Date(), practicedToday = false
   if (practicedToday || at <= now) at.setDate(at.getDate() + 1);
   return at - now;
 }
+
+// ---------- Arcade: Contrarreloj ----------
+export const TIMED_SECONDS = 75;
+export const TIMED_BONUS_SECONDS = 2; // por cada pregunta relámpago acertada
+// Multiplicador según aciertos seguidos (combo, contando el actual).
+export const timedMultiplier = (combo) => (combo >= 10 ? 4 : combo >= 6 ? 3 : combo >= 3 ? 2 : 1);
+export const timedPoints = (combo, kind = 'match') => (kind === 'mc' ? 20 : 10) * timedMultiplier(combo);
+export const timedXp = (score) => (score > 0 ? Math.min(30, 5 + Math.floor(score / 50)) : 0);
+
+// Reúne pares (de preguntas match) y preguntas mc cortas sin imagen, sin duplicados.
+export function buildTimedPool(questions) {
+  const pairs = [];
+  const seen = new Set();
+  const mcs = [];
+  for (const q of questions) {
+    if (q.type === 'match') {
+      for (const [l, r] of q.pairs) {
+        const k = `${l}|${r}`;
+        // Pares muy cortos ("1" ↔ "300 lpm") no se entienden fuera de su pregunta
+        if (seen.has(k) || String(l).length < 3 || String(r).length < 3 || l.length > 42 || r.length > 42) continue;
+        seen.add(k);
+        pairs.push({ l, r, key: q.key });
+      }
+    } else if (q.type === 'mc' && !q.ecg && !q.ecg12 && !q.pressure && !q.diagram && !q.context
+      && q.prompt.length <= 120 && q.options.length <= 4 && q.options.every((o) => o.length <= 48)) {
+      mcs.push(q);
+    }
+  }
+  return { pairs, mcs };
+}
+
+// Puntuación de una guardia: XP base + 2 por pregunta acertada.
+export const storyXp = (correct) => 10 + 2 * correct;
