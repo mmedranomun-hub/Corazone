@@ -46,29 +46,29 @@ Niveles:
 
 ## Nivel 2 — Estudiante clínico / MIR
 
-### Unidad 4. Crecimientos de cavidades ⬜
+### Unidad 4. Crecimientos de cavidades ✅ (`ecg-u5`)
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
-| Crecimientos auriculares | ⬜ | Reconocer P pulmonale (> 2,5 mm en II) y P mitrale (≥ 120 ms, bimodal; componente negativo terminal en V1 ≥ 1 mm × 40 ms). | `ecg12` (crecimiento AI/AD) |
-| Hipertrofia ventricular izquierda | ⬜ | Aplicar Sokolow-Lyon (SV1 + RV5/V6 ≥ 35 mm) y Cornell (RaVL + SV3 > 28 ♂ / > 20 ♀ mm); reconocer patrón de sobrecarga ("strain"); conocer su baja sensibilidad. | `ecg12` HVI con strain |
-| Hipertrofia ventricular derecha | ⬜ | Reconocer R dominante en V1 (R/S > 1), eje derecho, S profundas en V5–V6; diferencial de R alta en V1 (BRD, IAM posterior, WPW, DMD). | `ecg12` HVD |
+| Crecimientos auriculares (`ecg-u5-l1`) | ✅ | Reconocer P pulmonale (> 2,5 mm en II) y P mitrale (≥ 120 ms, bimodal; componente negativo terminal en V1 ≥ 1 mm × 40 ms). | `ecg12` (crecimiento AI/AD) |
+| Hipertrofia ventricular izquierda (`ecg-u5-l2`) | ✅ | Aplicar Sokolow-Lyon (SV1 + RV5/V6 ≥ 35 mm) y Cornell (RaVL + SV3 > 28 ♂ / > 20 ♀ mm); reconocer patrón de sobrecarga ("strain"); conocer su baja sensibilidad. | `ecg12` HVI con strain |
+| Hipertrofia ventricular derecha (`ecg-u5-l3`) | ✅ | Reconocer R dominante en V1 (R/S > 1), eje derecho, S profundas en V5–V6; diferencial de R alta en V1 (BRD, IAM posterior, WPW, DMD). | `ecg12` HVD |
 
-### Unidad 5. Trastornos de conducción intraventricular ⬜ (BRI en `ecg-u3-l2`)
+### Unidad 5. Trastornos de conducción intraventricular ✅🟡 (`ecg-u6`; BRI también en `ecg-u3-l2`)
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
-| Bloqueo de rama derecha | ⬜ | Aplicar criterios (QRS ≥ 120 ms, rSR' en V1–V2, S ancha en I y V6); diferenciar BRD incompleto; reconocer T discordante normal. | `ecg12` BRD |
-| Bloqueo de rama izquierda | 🟡 | Aplicar criterios (QRS ≥ 120 ms, R ancha mellada en I, aVL, V5–V6, ausencia de q septal); saber que oculta isquemia; criterios de Sgarbossa (y Smith) para IAM con BRI. | `ecg: lbbb`, `ecg12` BRI |
-| Hemibloqueos y bloqueo bifascicular/trifascicular | ⬜ | Diagnosticar HBAI (eje < −45°, qR en aVL, rS en II-III-aVF) y HBPI (eje > +90° tras excluir HVD); reconocer BRD + HBAI; desmentir el "bloqueo trifascicular" como término ambiguo. | `ecg12` BRD+HBAI |
+| Bloqueo de rama derecha (`ecg-u6-l1`) | ✅ | Aplicar criterios (QRS ≥ 120 ms, rSR' en V1–V2, S ancha en I y V6); diferenciar BRD incompleto; reconocer T discordante normal. | `ecg12` BRD |
+| Bloqueo de rama izquierda (`ecg-u6-l2`) | ✅ | Aplicar criterios (QRS ≥ 120 ms, R ancha mellada en I, aVL, V5–V6, ausencia de q septal); saber que oculta isquemia; criterios de Sgarbossa (y Smith) para IAM con BRI. | `ecg: lbbb`, `ecg12` BRI |
+| Hemibloqueos y bloqueo bifascicular/trifascicular (`ecg-u6-l3`) | ✅ | Diagnosticar HBAI (eje < −45°, qR en aVL, rS en II-III-aVF) y HBPI (eje > +90° tras excluir HVD); reconocer BRD + HBAI; desmentir el "bloqueo trifascicular" como término ambiguo. | `ecg12` BRD+HBAI |
 | Trastorno inespecífico y aberrancia | ⬜ | Reconocer conducción aberrante (fenómeno de Ashman) frente a EV. | `ecg` |
 
-### Unidad 6. Isquemia e infarto ✅🟡 (`ecg-u3-l1`)
+### Unidad 6. Isquemia e infarto ✅ (`ecg-u3-l1`, `ecg-u4-l1`, `ecg-u7`)
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
 | Síndrome coronario agudo (`ecg-u3-l1`) | ✅ | Reconocer elevación y descenso del ST; aplicar tiempos de reperfusión. | `ecg: stemi, stdep` |
-| Criterios de IAMCEST y evolución | ⬜ | Aplicar umbrales de elevación del ST por derivación, sexo y edad (V2–V3: ≥ 2 mm ♂ ≥ 40 a, ≥ 2,5 mm ♂ < 40 a, ≥ 1,5 mm ♀; resto ≥ 1 mm) (4.ª Definición Universal 2018); describir la secuencia hiperaguda → ST → Q → T negativa. | `ecg12` IAM evolutivo |
-| Localización y arteria culpable | ⬜ | Localizar IAM anterior, inferior, lateral, posterior y de VD; distinguir CD vs Cx en IAM inferior (ST III > II, descenso en I y aVL → CD); reconocer oclusión proximal de DA. | `ecg12` inferior, anterior, posterior; `diagram` árbol coronario |
-| Equivalentes de oclusión (OMI) | ⬜ | Reconocer patrón de Wellens (A y B), de Winter, elevación de aVR con descenso difuso, IAM posterior (descenso V1–V3 → V7–V9), T hiperagudas. | `ecg12` Wellens, de Winter |
-| Diagnóstico diferencial del ST elevado | ⬜ | Diferenciar IAM de pericarditis, repolarización precoz, aneurisma ventricular, BRI, HVI, Brugada y tako-tsubo. | `ecg12` pericarditis, repolarización precoz |
+| Criterios de IAMCEST y evolución (`ecg-u7-l1`) | ✅ | Aplicar umbrales de elevación del ST por derivación, sexo y edad (V2–V3: ≥ 2 mm ♂ ≥ 40 a, ≥ 2,5 mm ♂ < 40 a, ≥ 1,5 mm ♀; resto ≥ 1 mm) (4.ª Definición Universal 2018); describir la secuencia hiperaguda → ST → Q → T negativa. | `ecg12` IAM evolutivo |
+| Localización y arteria culpable (`ecg-u7-l2`) | ✅ | Localizar IAM anterior, inferior, lateral, posterior y de VD; distinguir CD vs Cx en IAM inferior (ST III > II, descenso en I y aVL → CD); reconocer oclusión proximal de DA. | `ecg12` inferior, anterior, posterior; `diagram` árbol coronario |
+| Equivalentes de oclusión (OMI) (`ecg-u7-l3`) | ✅ | Reconocer patrón de Wellens (A y B), de Winter, elevación de aVR con descenso difuso, IAM posterior (descenso V1–V3 → V7–V9), T hiperagudas. | `ecg12` Wellens, de Winter |
+| Diagnóstico diferencial del ST elevado (`ecg-u7-l4`) | ✅ | Diferenciar IAM de pericarditis, repolarización precoz, aneurisma ventricular, BRI, HVI, Brugada y tako-tsubo. | `ecg12` pericarditis, repolarización precoz |
 
 ### Unidad 7. Arritmias supraventriculares avanzadas ⬜
 | Lección | Estado | Objetivos | Visual |
@@ -132,5 +132,5 @@ Niveles:
 ---
 
 ## Resumen de cobertura
-- ✅ 8 lecciones existentes (≈ 45 preguntas).
-- Prioridad alta para siguientes órdenes: Unidad 4 + 5 (hipertrofias y bloqueos), Unidad 6 (localización/OMI), Unidad 8 (QRS ancho), Unidad 10 (canalopatías), Unidad 13 (casos).
+- ✅ 8 lecciones existentes (≈ 45 preguntas) + 10 lecciones nuevas (60 preguntas) en `ecg-u5` (crecimientos), `ecg-u6` (bloqueos de rama/fasciculares) y `ecg-u7` (infarto: criterios, localización, OMI y diferencial).
+- Prioridad alta para siguientes órdenes: Unidad 8 (QRS ancho), Unidad 10 (canalopatías), Unidad 13 (casos).
