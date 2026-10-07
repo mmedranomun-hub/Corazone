@@ -767,5 +767,248 @@ export default {
         },
       ],
     },
+    {
+      id: 'casos-u9',
+      title: 'Casos de ECG: arritmias',
+      guide: {
+        intro: 'Palpitaciones, mareo o síncope: el ECG durante los síntomas da el diagnóstico y decide el tratamiento. Primero valora la estabilidad; después, QRS estrecho o ancho, regular o irregular.',
+        sections: [
+          {
+            title: 'Taquicardias de QRS estrecho',
+            points: [
+              'FA: RR irregularmente irregular sin ondas P. Calcula la FC contando los QRS de una tira de 6 s × 10.',
+              'Anticoagula según CHA₂DS₂-VA (ESC 2024): recomendada con ≥ 2 puntos y a considerar con 1; prefiere ACOD salvo prótesis mecánica o estenosis mitral moderada-grave.',
+              'Cardioversión precoz solo si la FA dura < 24 h; si no, ≥ 3 semanas de anticoagulación o ETE previo.',
+              'TRIN: regular, 150–250 lpm, P ocultas o pseudo-r′ en V1. Vagales (Valsalva modificada) → adenosina 6 mg → 12 mg → 18 mg; inestable: CVE sincronizada.',
+              'Ablación con catéter de primera línea en la TRIN recurrente sintomática (ESC 2019).',
+            ],
+            tip: 'FC por cuadros en ritmo regular: 300 / cuadros grandes o 1500 / cuadritos entre dos R.',
+          },
+          {
+            title: 'Preexcitación y QRS ancho',
+            points: [
+              'FA preexcitada: taquicardia irregular de QRS ancho y variable, a veces > 250 lpm. Nunca frenadores del NAV (adenosina, verapamilo, diltiazem, betabloqueantes, digoxina) ni amiodarona IV.',
+              'Estable: ibutilida o procainamida IV (o CVE); inestable: CVE sincronizada. Después, ablación de la vía accesoria.',
+              'RR preexcitado más corto ≤ 250 ms durante FA = vía de alto riesgo de FV.',
+              'QRS ancho regular en un paciente con infarto previo es una TV hasta que se demuestre lo contrario: disociación AV, capturas y fusiones la confirman.',
+              'TV estable (ESC 2022): CVE sincronizada de primera elección; procainamida como alternativa. Verapamilo contraindicado.',
+            ],
+          },
+          {
+            title: 'QT largo y bradiarritmias',
+            points: [
+              'QTc (Bazett) = QT / √RR (RR en segundos). QTc > 500 ms o aumento > 60 ms con un fármaco: alto riesgo de torsade de pointes.',
+              'Torsade: sulfato de magnesio 2 g IV, retirar fármacos, K⁺ en rango alto-normal y, si recurre tras pausas, subir la FC (isoproterenol o marcapasos).',
+              'BAV completo: P y QRS disociados; escape ancho y lento = infrahisiano, con mala respuesta a atropina.',
+              'Puente: isoproterenol o estimulación transcutánea/transvenosa; descarta causas reversibles (fármacos, hiperpotasemia, isquemia) antes del marcapasos definitivo (ESC 2021).',
+            ],
+            tip: 'Ante QRS ancho e inestabilidad no pierdas tiempo con el diagnóstico diferencial: cardioversión eléctrica.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u9-l1',
+          title: 'Fibrilación auricular de reciente diagnóstico',
+          case: {
+            title: 'Mujer de 71 años con palpitaciones desde hace dos días',
+            text: 'Mujer de 71 años, hipertensa y diabética tipo 2, sin cardiopatía conocida. Acude a urgencias por palpitaciones irregulares y cansancio que comenzaron hace unos dos días. TA 138/84 mmHg, SatO₂ 97 %, sin signos de insuficiencia cardiaca. Creatinina normal.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira de ritmo. ¿Cuál es el diagnóstico?', ecg: 'afib', options: ['Fibrilación auricular', 'Flutter auricular 2:1', 'Taquicardia sinusal con extrasístoles', 'Taquicardia por reentrada intranodal'], answer: 0, explain: 'RR irregularmente irregular, sin ondas P y con línea de base ondulada (ondas f). El flutter suele dar un RR regular con ondas F en dientes de sierra.' },
+            { type: 'mc', prompt: 'La tira dura 6 s y contiene 9 complejos QRS. ¿Cuál es la FC ventricular media aproximada?', ecg: 'afib', options: ['≈ 90 lpm', '≈ 54 lpm', '≈ 150 lpm', '≈ 120 lpm'], answer: 0, explain: 'En ritmos irregulares la regla de 300 no sirve: cuenta los QRS en 6 s y multiplica por 10 (9 × 10 = 90 lpm).' },
+            { type: 'mc', context: 'Ecocardiograma: FEVI 60 %, AI levemente dilatada, sin valvulopatía significativa.', prompt: '¿Cuál es su puntuación CHA₂DS₂-VA?', options: ['3', '2', '4', '1'], answer: 0, explain: 'HTA (1) + diabetes (1) + edad 65–74 años (1) = 3. La escala de la ESC 2024 ya no suma puntos por el sexo femenino (con CHA₂DS₂-VASc saldrían 4).' },
+            { type: 'tf', prompt: 'Con esta puntuación está indicada la anticoagulación oral, de preferencia con un anticoagulante oral directo.', answer: true, explain: 'CHA₂DS₂-VA ≥ 2 es indicación de clase I (ESC 2024). Se prefieren los ACOD a los antagonistas de la vitamina K salvo prótesis mecánica o estenosis mitral moderada-grave.' },
+            { type: 'mc', prompt: 'Sigue sintomática. ¿Es adecuada una cardioversión eléctrica inmediata?', options: ['No: dura > 24 h; anticoagular 3 semanas o hacer ETE antes', 'Sí: la FA de < 48 h se cardiovierte sin más', 'Sí, siempre que se use amiodarona previa', 'No: la cardioversión está contraindicada en mayores de 70 años'], answer: 0, explain: 'La ESC 2024 rebajó el umbral a 24 h: si la FA dura más, se anticoagula ≥ 3 semanas o se descarta trombo con ETE. Tras cardiovertir, la anticoagulación sigue según el CHA₂DS₂-VA.' }, // REVISAR: umbral de 24 h (ESC FA 2024, clase III cardioversión precoz sin anticoagulación/ETE)
+            { type: 'match', prompt: 'Relaciona cada componente de AF-CARE (ESC 2024) con un ejemplo en esta paciente', pairs: [['C: comorbilidades', 'Control de HTA y diabetes'], ['A: evitar ictus', 'Anticoagulante oral directo'], ['R: reducir síntomas', 'Control de frecuencia o ritmo'], ['E: evaluación dinámica', 'Revisar el riesgo periódicamente']], explain: 'El abordaje AF-CARE integra factores de riesgo, prevención del ictus, control de síntomas y reevaluación, porque el riesgo cambia con el tiempo.' },
+          ],
+        },
+        {
+          id: 'casos-u9-l2',
+          title: 'Taquicardia por reentrada intranodal',
+          case: {
+            title: 'Mujer de 29 años con palpitaciones de inicio brusco',
+            text: 'Mujer de 29 años, sin antecedentes, que nota palpitaciones rápidas y regulares de inicio y fin bruscos desde la adolescencia. Hoy no ceden tras 40 minutos. Refiere "golpes" en el cuello. TA 112/70 mmHg, consciente, sin dolor torácico ni disnea.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira. ¿Qué arritmia es más probable?', ecg: 'svt', options: ['Taquicardia por reentrada intranodal', 'Fibrilación auricular rápida', 'Taquicardia ventricular', 'Taquicardia sinusal'], answer: 0, explain: 'Taquicardia regular de QRS estrecho sin ondas P visibles: la P retrógrada queda oculta en el QRS o justo detrás (pseudo-r′ en V1). La TRIN es la TSV regular más frecuente.' },
+            { type: 'mc', prompt: 'Entre dos R consecutivas hay unos 8 cuadritos (a 25 mm/s). ¿Cuál es la FC?', ecg: 'svt', options: ['≈ 185 lpm', '≈ 150 lpm', '≈ 240 lpm', '≈ 125 lpm'], answer: 0, explain: '1500 / 8 ≈ 188 lpm (cada cuadrito son 40 ms; RR ≈ 320 ms). Un flutter 2:1 suele dar ≈ 150 lpm, un dato útil para sospecharlo.' },
+            { type: 'tf', prompt: 'La primera medida en esta paciente estable es la maniobra de Valsalva modificada.', answer: true, explain: 'Las maniobras vagales son de clase I como primer paso (ESC 2019). La Valsalva modificada (soplar 15 s y elevar las piernas en decúbito) duplica la tasa de éxito frente a la clásica.' },
+            { type: 'mc', context: 'La Valsalva no la revierte. Se decide administrar adenosina con monitorización y registro continuo del ECG.', prompt: '¿Cuál es la pauta correcta?', options: ['6 mg en bolo rápido con lavado de suero; si no cede, 12 mg', '6 mg en perfusión lenta durante 10 minutos', '0,5 mg en bolo, repetible cada 5 minutos', '12 mg intramusculares en dosis única'], answer: 0, explain: 'La adenosina tiene una semivida de segundos: se da en bolo rápido por vía proximal seguido de suero. Avisa a la paciente del rubor y la opresión torácica transitorios.' },
+            { type: 'mc', prompt: '¿En cuál de estos pacientes deberías evitar la adenosina?', options: ['Asma grave con broncoespasmo activo', 'Embarazo en el segundo trimestre', 'Hipertensión arterial controlada', 'Diabetes tipo 2'], answer: 0, explain: 'La adenosina puede provocar broncoespasmo. En el asma grave se prefiere verapamilo o diltiazem IV si la FEVI es normal. En el embarazo la adenosina se considera segura.' },
+            { type: 'mc', context: 'Revierte a ritmo sinusal con 12 mg. ECG basal normal, sin preexcitación. Ha tenido varios episodios al año que alteran su vida.', prompt: '¿Qué tratamiento a largo plazo le ofreces?', options: ['Ablación con catéter de la vía lenta', 'Amiodarona indefinida', 'Ninguno: es una arritmia benigna', 'Implante de un DAI'], answer: 0, explain: 'La ablación de la vía lenta es de clase I en la TRIN recurrente sintomática: éxito > 95 % y riesgo de BAV que requiera marcapasos < 1 %.' },
+          ],
+        },
+        {
+          id: 'casos-u9-l3',
+          title: 'FA preexcitada: no frenes el nodo AV',
+          case: {
+            title: 'Varón de 24 años con palpitaciones muy rápidas',
+            text: 'Varón de 24 años, jugador de baloncesto amateur, que acude por palpitaciones muy rápidas y mareo tras un partido. TA 110/70 mmHg, consciente. El monitor muestra una taquicardia irregular de QRS ancho con morfología cambiante latido a latido y FC de hasta 260 lpm.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Cuál es el diagnóstico más probable?', options: ['FA preexcitada por una vía accesoria', 'Taquicardia ventricular monomorfa', 'FA con bloqueo de rama izquierda', 'Taquicardia sinusal con aberrancia'], answer: 0, explain: 'La tríada irregular + QRS ancho y variable + FC muy alta sugiere FA conducida por una vía accesoria. Con bloqueo de rama la morfología sería constante y la FC rara vez supera 200 lpm.' },
+            { type: 'tf', prompt: 'Para controlar la FC en esta arritmia se puede administrar verapamilo o adenosina IV.', answer: false, explain: 'Bloquear el NAV deja la vía accesoria como única ruta y puede acelerar la respuesta ventricular hasta FV. Están contraindicados adenosina, calcioantagonistas, betabloqueantes, digoxina y amiodarona IV.' },
+            { type: 'mc', prompt: 'Sigue estable. ¿Qué tratamiento agudo es adecuado según la ESC 2019?', options: ['Ibutilida o procainamida IV, o cardioversión eléctrica', 'Amiodarona IV en perfusión', 'Digoxina IV y betabloqueante oral', 'Adenosina 6 mg en bolo rápido'], answer: 0, explain: 'En la FA preexcitada estable se consideran ibutilida o procainamida (enlentecen la conducción por la vía). Si fallan o hay inestabilidad, CVE sincronizada.' }, // REVISAR: clase de recomendación ibutilida/procainamida (IIa) en ESC TSV 2019
+            { type: 'mc', context: 'En el registro de la arritmia, el intervalo RR preexcitado más corto mide 220 ms.', prompt: '¿Qué implica este dato?', options: ['Vía de alto riesgo: equivale a ≈ 270 lpm', 'Vía de bajo riesgo: el umbral es < 150 ms', 'No tiene valor fuera del estudio electrofisiológico', 'Indica que la vía es solo de conducción retrógrada'], answer: 0, explain: 'Un RR preexcitado más corto ≤ 250 ms durante FA (60 000 / 220 ≈ 273 lpm) identifica una vía con riesgo de degenerar en FV y muerte súbita.' },
+            { type: 'tap', context: 'Se realiza cardioversión eléctrica sincronizada y pasa a ritmo sinusal. Este es su ECG basal.', prompt: 'Toca una onda P y observa lo corto que es el PR antes del QRS empastado', ecg: 'wpw', wave: 'p', explain: 'PR < 120 ms y onda delta (empastamiento inicial del QRS): el impulso llega antes al ventrículo por la vía accesoria. Patrón WPW con síntomas = síndrome de WPW.' },
+            { type: 'mc', prompt: '¿Cuál es el tratamiento definitivo?', options: ['Ablación con catéter de la vía accesoria', 'Flecainida indefinida', 'Betabloqueante y restricción deportiva', 'Implante de un DAI'], answer: 0, explain: 'Tras una FA preexcitada la ablación es de clase I: cura la vía con éxito > 90 % y elimina el riesgo de muerte súbita, lo que permite volver a competir.' },
+          ],
+        },
+        {
+          id: 'casos-u9-l4',
+          title: 'Taquicardia ventricular en cardiopatía isquémica',
+          case: {
+            title: 'Varón de 67 años con infarto antiguo y palpitaciones',
+            text: 'Varón de 67 años con IAM anterior hace 6 años y FEVI del 32 %, en tratamiento con sacubitrilo-valsartán, bisoprolol, espironolactona y dapagliflozina. Acude por palpitaciones y mareo de 1 hora. Consciente, TA 104/68 mmHg, sin dolor torácico ni edema agudo de pulmón.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira. ¿Cuál es el diagnóstico de trabajo?', ecg: 'vt', options: ['Taquicardia ventricular monomorfa', 'TSV con bloqueo de rama', 'Flutter auricular 2:1', 'Fibrilación ventricular'], answer: 0, explain: 'Taquicardia regular de QRS ancho (~175 lpm). Con cardiopatía estructural e infarto previo, más del 90 % son TV: trátala como tal.' },
+            { type: 'tap', prompt: 'Toca un complejo QRS ancho de la taquicardia', ecg: 'vt', wave: 'vent', explain: 'QRS > 120 ms, bizarro y sin onda P previa. Un QRS > 160 ms con morfología de BRI o > 140 ms con morfología de BRD apoya el origen ventricular.' },
+            { type: 'match', prompt: 'Relaciona cada hallazgo con su significado', pairs: [['Disociación AV', 'Aurículas y ventrículos independientes'], ['Latido de captura', 'QRS estrecho conducido normalmente'], ['Latido de fusión', 'QRS intermedio entre ambos'], ['Concordancia precordial', 'Todos los QRS de V1–V6 iguales']], explain: 'Los cuatro favorecen la TV frente a la TSV aberrada; la disociación AV con capturas o fusiones es prácticamente diagnóstica.' },
+            { type: 'mc', prompt: 'Está estable. ¿Cuál es la primera opción de tratamiento según la ESC 2022?', options: ['Cardioversión eléctrica sincronizada con sedación', 'Verapamilo IV', 'Adenosina en bolo rápido', 'Digoxina IV'], answer: 0, explain: 'La CVE sincronizada es de primera elección en la TV monomórfica bien tolerada si el riesgo anestésico es aceptable; la procainamida es la alternativa farmacológica. El verapamilo puede causar colapso hemodinámico.' }, // Fuente: ESC 2022 arritmias ventriculares
+            { type: 'tf', context: 'Tras la CVE recupera ritmo sinusal. Troponina con elevación leve sin curva; ECG sin cambios agudos.', prompt: 'Una elevación leve de troponina tras una TV sostenida obliga a interpretarla como un IAM agudo que ha causado la arritmia.', answer: false, explain: 'La TV monomórfica en un infarto antiguo suele deberse a reentrada en la cicatriz, no a isquemia aguda. La troponina puede subir por la propia taquicardia y la CVE; se valora la anatomía coronaria según el contexto clínico.' },
+            { type: 'mc', prompt: '¿Qué indicación tiene a largo plazo?', options: ['DAI y considerar ablación de la TV', 'Solo amiodarona oral', 'Marcapasos bicameral', 'Ningún tratamiento añadido'], answer: 0, explain: 'TV sostenida con cardiopatía isquémica y FEVI ≤ 35 % es indicación de DAI. La ablación del sustrato reduce recurrencias y descargas, y puede plantearse como alternativa a escalar antiarrítmicos.' }, // REVISAR: clase de la ablación en TV recurrente (ESC 2022)
+          ],
+        },
+        {
+          id: 'casos-u9-l5',
+          title: 'Torsade de pointes por QT largo adquirido',
+          case: {
+            title: 'Mujer de 78 años con síncopes en planta',
+            text: 'Mujer de 78 años ingresada por neumonía, tratada con levofloxacino y furosemida; además toma citalopram. Al tercer día presenta dos episodios de pérdida de conciencia breve. Analítica: K⁺ 3,0 mmol/L y Mg²⁺ 0,55 mmol/L. En el monitor, entre los episodios, ritmo sinusal a 65 lpm.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira entre los episodios. ¿Qué alteración destaca?', ecg: 'longqt', options: ['QT prolongado', 'PR prolongado', 'QRS ancho', 'Ondas P picudas'], answer: 0, explain: 'La repolarización se alarga: la onda T termina muy lejos del QRS, más allá de la mitad del RR. Regla rápida: un QT mayor que la mitad del RR sugiere QT largo con FC normal.' },
+            { type: 'tap', prompt: 'Toca el final de la repolarización: la onda T', ecg: 'longqt', wave: 't', explain: 'El QT se mide desde el inicio del QRS hasta el final de la T (método de la tangente), preferiblemente en II o V5.' },
+            { type: 'mc', context: 'Mides un QT de 540 ms. FC 65 lpm (RR ≈ 0,92 s; √0,92 ≈ 0,96).', prompt: 'Calcula el QTc con la fórmula de Bazett.', options: ['≈ 563 ms', '≈ 540 ms', '≈ 587 ms', '≈ 518 ms'], answer: 0, explain: 'QTc = QT / √RR = 540 / 0,96 ≈ 563 ms. Dividir por el RR sin raíz da ≈ 587 ms. Un QTc > 500 ms multiplica el riesgo de torsade de pointes.' },
+            { type: 'mc', context: 'En el monitor aparece una taquicardia de QRS ancho cuyos complejos cambian de amplitud girando alrededor de la línea de base; se inicia tras una secuencia corto-largo-corto y cede sola en 15 s.', prompt: '¿Cuál es el tratamiento inmediato de elección?', options: ['Sulfato de magnesio 2 g IV', 'Amiodarona 300 mg IV', 'Procainamida IV', 'Adenosina 6 mg IV'], answer: 0, explain: 'El magnesio IV es de primera línea aunque el Mg sérico sea normal. La amiodarona y la procainamida alargan el QT y están contraindicadas. Si degenera a FV sostenida: desfibrilación.' },
+            { type: 'match', prompt: 'Relaciona cada medida con su objetivo', pairs: [['Suspender levofloxacino y citalopram', 'Retirar fármacos que alargan el QT'], ['Potasio IV', 'K⁺ en rango alto-normal'], ['Isoproterenol o marcapasos', 'Subir la FC y evitar pausas'], ['Monitorización continua', 'Detectar recurrencias']], explain: 'La torsade es pausa-dependiente: acelerar la FC acorta el QT. Corregir K⁺ y Mg²⁺ y retirar los fármacos implicados elimina el sustrato.' },
+            { type: 'tf', prompt: 'El sexo femenino, la edad avanzada, la bradicardia y la hipopotasemia aumentan el riesgo de torsade de pointes inducida por fármacos.', answer: true, explain: 'Son factores clásicos de riesgo. Por eso se recomienda un ECG basal y de control al iniciar fármacos que alargan el QT en pacientes de riesgo.' },
+          ],
+        },
+        {
+          id: 'casos-u9-l6',
+          title: 'Bloqueo AV completo con escape ancho',
+          case: {
+            title: 'Mujer de 82 años con síncope y bradicardia',
+            text: 'Mujer de 82 años, hipertensa, en tratamiento con amlodipino. Lleva una semana con mareos y hoy ha tenido un síncope sin pródromos con traumatismo facial. FC 40 lpm, TA 102/58 mmHg, consciente y bien perfundida. Glucemia y potasio normales.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira. ¿Cuál es el diagnóstico?', ecg: 'avb3', options: ['Bloqueo AV completo (3.er grado)', 'BAV de 2.º grado Mobitz I', 'Bradicardia sinusal', 'BAV de 1.er grado'], answer: 0, explain: 'Las P marchan a su ritmo y los QRS al suyo, sin relación entre ellos (disociación AV), con más P que QRS. En el Mobitz I el PR se alarga antes de cada P bloqueada.' },
+            { type: 'tap', prompt: 'Toca una onda P que no conduce a los ventrículos', ecg: 'avb3', wave: 'pBlocked', explain: 'Las P aparecen a intervalos regulares, incluso dentro de la T o del QRS, sin que ninguna genere el QRS siguiente.' },
+            { type: 'mc', prompt: 'El PP mide ≈ 3,3 cuadros grandes y el RR ≈ 7,5. ¿Cuáles son las frecuencias auricular y ventricular?', ecg: 'avb3', options: ['≈ 90 y ≈ 40 lpm', '≈ 40 y ≈ 90 lpm', '≈ 75 y ≈ 40 lpm', '≈ 90 y ≈ 60 lpm'], answer: 0, explain: '300 / 3,3 ≈ 90 lpm (aurículas) y 300 / 7,5 = 40 lpm (ventrículos). Un escape ancho a ≈ 40 lpm es infrahisiano e inestable.' },
+            { type: 'tf', prompt: 'Con un escape de QRS ancho, la atropina suele ser muy eficaz para aumentar la FC.', answer: false, explain: 'La atropina actúa sobre el nodo AV; en el bloqueo infrahisiano rara vez sirve e incluso puede empeorar la relación de conducción. Mejor isoproterenol o estimulación transcutánea/transvenosa.' },
+            { type: 'mc', prompt: 'Antes de indicar un marcapasos definitivo, ¿qué debes descartar?', options: ['Causas reversibles: fármacos, hiperpotasemia o isquemia', 'Una miocardiopatía hipertrófica por ecocardiograma', 'Una embolia pulmonar con angio-TC', 'Un hipotiroidismo subclínico como única causa'], answer: 0, explain: 'La ESC 2021 exige excluir causas reversibles (betabloqueantes, verapamilo, diltiazem, digoxina, hiperpotasemia, IAM, enfermedad de Lyme). El amlodipino, una dihidropiridina, no bloquea el nodo AV.' },
+            { type: 'mc', context: 'Persiste el BAV completo a las 48 h sin causa reversible. Ecocardiograma: FEVI 60 %. Ritmo auricular sinusal.', prompt: '¿Qué tratamiento definitivo indicas?', options: ['Marcapasos bicameral (DDD)', 'Marcapasos unicameral auricular (AAI)', 'DAI monocameral', 'Resincronización (TRC-D)'], answer: 0, explain: 'El BAV completo adquirido es indicación de clase I de marcapasos. En ritmo sinusal se prefiere el bicameral para mantener la sincronía AV; el AAI no sirve porque el bloqueo es por debajo de la aurícula.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u10',
+      title: 'Casos de ECG: dolor torácico e iones',
+      guide: {
+        intro: 'Ante un dolor torácico, el ECG debe leerse en menos de 10 minutos. Distingue lo que exige reperfusión inmediata de sus imitadores, y no olvides que los iones también cambian el ST y la T.',
+        sections: [
+          {
+            title: 'IAMCEST y sus localizaciones',
+            points: [
+              'ST ↑ ≥ 1 mm en ≥ 2 derivaciones contiguas (en V2–V3 umbrales mayores según sexo y edad) con clínica compatible → ICP primaria (ESC 2023).',
+              'Inferior (II, III, aVF): ST ↑ en III > II y descenso en I/aVL apuntan a la coronaria derecha.',
+              'Si el IAM es inferior registra V4R: ST ↑ ≥ 1 mm indica afectación del VD → evita nitratos y diuréticos; aporta volumen con prudencia.',
+              'La CD irriga el nodo AV en la mayoría: vigila bradicardia y BAV (suelen ser transitorios).',
+            ],
+            tip: 'Hipotensión + ingurgitación yugular + pulmones limpios en un IAM inferior = infarto de VD.',
+          },
+          {
+            title: 'BRI y pericarditis',
+            points: [
+              'En el BRI la repolarización es discordante: el ST va en sentido contrario al QRS.',
+              'Sgarbossa: ST ↑ concordante ≥ 1 mm (5 puntos), ST ↓ concordante ≥ 1 mm en V1–V3 (3 puntos), ST ↑ discordante ≥ 5 mm (2 puntos); ≥ 3 puntos es muy específico.',
+              'Smith: sustituye el tercer criterio por el cociente ST/S ≤ −0,25 en alguna derivación con ST discordante.',
+              'Con BRI (o ritmo de marcapasos) y clínica de isquemia persistente se trata como IAMCEST, sea o no nuevo (ESC 2023).',
+              'Pericarditis: ST ↑ cóncavo y difuso sin imagen especular, descenso del PR y ST ↓ con PR ↑ en aVR. Tratamiento: AINE/ácido acetilsalicílico + colchicina.',
+            ],
+          },
+          {
+            title: 'Hiperpotasemia',
+            points: [
+              'Secuencia: T picudas → P aplanada y PR largo → QRS ancho → onda sinusoidal → FV o asistolia. El ECG no siempre se correlaciona con la cifra.',
+              'Estabiliza la membrana con calcio IV (gluconato cálcico 10 %); actúa en minutos y no baja el potasio.',
+              'Desplaza K⁺ al interior celular: insulina con glucosa y salbutamol nebulizado.',
+              'Elimina K⁺: diálisis (de elección en ERC avanzada o refractaria), quelantes y diuréticos si hay diuresis. Revisa IECA/ARA-II, ARM y AINE.',
+            ],
+            tip: 'Repite el calcio si el ECG no mejora a los 5–10 minutos.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u10-l1',
+          title: 'Hiperpotasemia en enfermedad renal crónica',
+          case: {
+            title: 'Varón de 66 años con debilidad y enfermedad renal',
+            text: 'Varón de 66 años con enfermedad renal crónica estadio 4 por nefropatía diabética, en tratamiento con enalapril y espironolactona por insuficiencia cardiaca. Consulta por debilidad generalizada de dos días tras un cuadro de gastroenteritis. TA 128/74 mmHg, FC 70 lpm. Potasio 7,4 mmol/L (muestra no hemolizada).',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira. ¿Qué alteración es la más llamativa?', ecg: 'hyperk', options: ['Ondas T altas, estrechas y picudas', 'Ondas U prominentes', 'Descenso difuso del ST', 'Intervalo QT prolongado'], answer: 0, explain: 'Las T picudas, simétricas y de base estrecha son el signo más precoz de hiperpotasemia. Las ondas U y el QT(U) largo son propios de la hipopotasemia.' },
+            { type: 'tap', prompt: 'Toca una de las ondas T picudas', ecg: 'hyperk', wave: 't', explain: 'Fíjate en su base estrecha y su vértice afilado: a diferencia de la T hiperaguda isquémica, que suele ser ancha y voluminosa.' },
+            { type: 'mc', prompt: 'Ordena la progresión típica del ECG al subir el potasio. ¿Qué cambio aparece justo después de las T picudas?', options: ['Aplanamiento de la P y alargamiento del PR', 'Onda sinusoidal', 'Fibrilación ventricular', 'Ondas U'], answer: 0, explain: 'Secuencia clásica: T picudas → P aplanada y PR largo → QRS ancho → patrón sinusoidal → FV o asistolia. Puede saltarse pasos: un ECG casi normal no descarta riesgo.' },
+            { type: 'mc', prompt: 'Con K⁺ 7,4 mmol/L y cambios en el ECG, ¿cuál es el primer fármaco que debes administrar?', options: ['Gluconato cálcico al 10 % IV', 'Bicarbonato sódico 1 M IV', 'Resina de intercambio oral', 'Furosemida IV en bolo'], answer: 0, explain: 'El calcio estabiliza la membrana miocárdica en 1–3 minutos, aunque no baja el potasio. El bicarbonato solo aporta si hay acidosis metabólica.' },
+            { type: 'match', prompt: 'Relaciona cada tratamiento con su mecanismo', pairs: [['Gluconato cálcico', 'Estabiliza la membrana'], ['Insulina con glucosa', 'Mete K⁺ en la célula (bomba Na-K)'], ['Salbutamol nebulizado', 'Desplaza K⁺ vía receptor β₂'], ['Hemodiálisis', 'Elimina K⁺ del organismo']], explain: 'Primero se protege el corazón, luego se redistribuye el K⁺ y finalmente se elimina. Vigila la hipoglucemia tras la insulina, sobre todo en la ERC.' },
+            { type: 'tf', context: 'Tras el tratamiento, K⁺ 5,6 mmol/L y ECG normalizado.', prompt: 'Conviene suspender temporalmente la espironolactona y reevaluar el enalapril antes del alta.', answer: true, explain: 'El ARM y el IECA, sumados a ERC y deshidratación, explican el cuadro. Pueden reintroducirse con control estrecho y quelantes de potasio (patirómero, ciclosilicato de sodio y zirconio) para no perder su beneficio.' },
+          ],
+        },
+        {
+          id: 'casos-u10-l2',
+          title: 'Pericarditis aguda frente a IAMCEST',
+          case: {
+            title: 'Varón de 31 años con dolor torácico tras un catarro',
+            text: 'Varón de 31 años, sin factores de riesgo, con dolor torácico agudo de 12 horas que empeora al respirar hondo y al tumbarse y mejora sentado e inclinado hacia delante. Hace 10 días tuvo un cuadro catarral. Temperatura 37,6 °C, TA 124/76 mmHg. En la auscultación se oye un roce rasposo en el borde esternal izquierdo.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG de 12 derivaciones. ¿Cuál es el diagnóstico más probable?', ecg12: 'pericarditis', options: ['Pericarditis aguda', 'IAMCEST inferior', 'IAMCEST anterior', 'Repolarización precoz benigna'], answer: 0, explain: 'Elevación del ST difusa y cóncava, que no respeta un territorio coronario, con descenso del PR. En aVR el patrón se invierte: ST descendido y PR elevado.' },
+            { type: 'match', prompt: 'Relaciona cada hallazgo con el diagnóstico que sugiere', pairs: [['ST ↑ cóncavo en casi todas las derivaciones', 'Pericarditis'], ['Descenso especular del ST', 'IAMCEST'], ['Descenso del PR', 'Inflamación auricular (pericarditis)'], ['Ondas Q patológicas', 'Necrosis miocárdica']], explain: 'La imagen especular es el dato más útil para pensar en un IAMCEST; en la pericarditis solo aVR (y a veces V1) muestran ST descendido.' },
+            { type: 'tf', prompt: 'Para diagnosticar una pericarditis aguda basta con cumplir 2 de 4 criterios: dolor típico, roce, cambios en el ECG y derrame pericárdico nuevo o creciente.', answer: true, explain: 'Son los criterios clásicos de la ESC. La PCR elevada y la inflamación pericárdica en imagen (TC o RM) apoyan el diagnóstico.' }, // REVISAR: confirmar formulación en ESC pericardio 2025
+            { type: 'mc', context: 'ETT: derrame pericárdico leve sin compromiso hemodinámico; FEVI normal. PCR elevada. Troponina normal.', prompt: '¿Cuál es el tratamiento de primera línea?', options: ['AINE (o ácido acetilsalicílico) más colchicina', 'Corticoides orales a dosis altas', 'Anticoagulación con heparina', 'Pericardiocentesis diagnóstica'], answer: 0, explain: 'AINE o ácido acetilsalicílico a dosis antiinflamatorias con protección gástrica, más colchicina (≈ 3 meses), que reduce las recurrencias a la mitad. Los corticoides no son de primera línea porque favorecen las recidivas.' },
+            { type: 'mc', prompt: '¿Cuál de estos datos aconsejaría ingresarlo?', options: ['Fiebre > 38 °C o derrame grave', 'Edad < 40 años', 'Roce pericárdico audible', 'Antecedente de catarro reciente'], answer: 0, explain: 'Son predictores de mal pronóstico: fiebre > 38 °C, inicio subagudo, derrame grave o taponamiento y falta de respuesta a AINE en 1 semana; también la miopericarditis y la inmunosupresión.' },
+            { type: 'tf', context: 'A las 24 h la troponina T ultrasensible se eleva claramente, sin alteraciones segmentarias de la contractilidad.', prompt: 'La elevación de troponina obliga a cambiar el diagnóstico a IAMCEST y a realizar una ICP primaria.', answer: false, explain: 'Con FEVI normal y sin alteraciones segmentarias sugiere miopericarditis. Se recomienda ingreso, reposo deportivo más prolongado y valorar RM cardiaca; la coronariografía se reserva si persisten dudas de SCA.' },
+          ],
+        },
+        {
+          id: 'casos-u10-l3',
+          title: 'IAMCEST inferior con afectación del VD',
+          case: {
+            title: 'Varón de 58 años con dolor torácico e hipotensión',
+            text: 'Varón de 58 años, fumador y dislipémico, con dolor torácico opresivo de 1 hora de evolución y sudoración. TA 96/60 mmHg, FC 58 lpm, ingurgitación yugular y pulmones limpios. Lo trae una ambulancia medicalizada a un hospital con sala de hemodinámica disponible.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Cuál es el diagnóstico?', ecg12: 'stemi-inf', options: ['IAMCEST inferior', 'IAMCEST lateral', 'Pericarditis aguda', 'IAMCEST anterior'], answer: 0, explain: 'Elevación del ST en II, III y aVF con descenso especular en I y aVL. La imagen especular apoya el origen isquémico frente a la pericarditis.' },
+            { type: 'mc', prompt: 'En este ECG el ST se eleva más en III que en II y desciende en I y aVL. ¿Qué arteria es la culpable más probable?', ecg12: 'stemi-inf', options: ['Coronaria derecha', 'Circunfleja', 'Descendente anterior', 'Tronco común'], answer: 0, explain: 'La CD se dirige hacia la derecha (III, a +120°), de ahí ST ↑ III > II y descenso en aVL. En la circunfleja el ST suele ser mayor en II y puede elevarse en I, aVL o V5–V6.' },
+            { type: 'mc', prompt: 'Por la hipotensión con yugulares ingurgitadas y pulmones limpios, ¿qué registro adicional pides?', options: ['Derivaciones derechas (V3R–V4R)', 'Derivaciones posteriores (V7–V9) únicamente', 'Repetir el ECG en 6 horas', 'Holter de 24 horas'], answer: 0, explain: 'Una elevación del ST ≥ 1 mm en V4R indica afectación del VD y oclusión proximal de la CD. Es un hallazgo precoz y transitorio: regístralo cuanto antes.' },
+            { type: 'tf', context: 'V4R: elevación del ST de 1,5 mm.', prompt: 'Está indicada la nitroglicerina sublingual para aliviar el dolor.', answer: false, explain: 'El VD infartado depende de la precarga: los nitratos y los diuréticos pueden provocar hipotensión grave. Si hay hipotensión sin congestión, aporta volumen con prudencia.' },
+            { type: 'mc', prompt: '¿Cuál es la estrategia de reperfusión recomendada (ESC 2023)?', options: ['ICP primaria lo antes posible', 'Fibrinólisis y coronariografía en 24 h', 'Tratamiento médico y coronariografía diferida', 'Fibrinólisis solo si persiste el dolor'], answer: 0, explain: 'Con hemodinámica disponible, la ICP primaria es de elección si el tiempo desde el diagnóstico hasta el paso de la guía es ≤ 120 min. La fibrinólisis queda para cuando no se puede cumplir ese plazo.' },
+            { type: 'mc', context: 'En la sala aparece un BAV completo con escape de QRS estrecho a 40 lpm, que cede tras abrir la CD.', prompt: '¿Por qué es frecuente esta complicación en este infarto?', options: ['La CD suele irrigar el nodo AV', 'La CD irriga la rama izquierda del haz', 'Es un efecto adverso del contraste', 'Indica rotura del tabique interventricular'], answer: 0, explain: 'La arteria del nodo AV nace de la CD en la mayoría de las personas. El bloqueo suele ser nodal (QRS estrecho) y transitorio tras la reperfusión; rara vez precisa marcapasos definitivo.' },
+          ],
+        },
+        {
+          id: 'casos-u10-l4',
+          title: 'Infarto con bloqueo de rama izquierda: Sgarbossa',
+          case: {
+            title: 'Mujer de 74 años con dolor torácico y BRI',
+            text: 'Mujer de 74 años, diabética e hipertensa, con BRI conocido. Consulta por dolor torácico opresivo de 2 horas, con náuseas y sudoración, que no cede con reposo. TA 142/86 mmHg, FC 88 lpm, sin signos de insuficiencia cardiaca. Se dispone de un ECG de hace un año.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Este es su ECG de hace un año, sin síntomas. ¿Qué patrón de repolarización es el esperado en el BRI?', ecg12: 'lbbb12', options: ['ST-T discordante, opuesto al QRS', 'ST-T concordante con el QRS', 'ST isoeléctrico en todas las derivaciones', 'T negativas en todas las precordiales'], answer: 0, explain: 'En el BRI la despolarización anómala arrastra una repolarización secundaria en sentido contrario: ST ↑ en V1–V3 (QS) y ST ↓ con T negativa en I, aVL y V5–V6. Eso no es isquemia.' },
+            { type: 'tf', prompt: 'Como el BRI es conocido, el ECG no puede aportar nada para diagnosticar un infarto agudo.', answer: false, explain: 'Los criterios de Sgarbossa (y su modificación por Smith) detectan cambios del ST desproporcionados o concordantes que indican oclusión coronaria aguda con buena especificidad.' },
+            { type: 'match', prompt: 'Relaciona cada criterio de Sgarbossa con su puntuación', pairs: [['ST ↑ concordante ≥ 1 mm', '5 puntos'], ['ST ↓ concordante ≥ 1 mm en V1–V3', '3 puntos'], ['ST ↑ discordante ≥ 5 mm', '2 puntos']], explain: 'Una puntuación ≥ 3 es muy específica de IAM, aunque poco sensible. El criterio discordante es el más débil y por eso Smith lo sustituyó por un cociente.' },
+            { type: 'mc', context: 'ECG actual: en V3 el QRS tiene una S de 15 mm de profundidad y el ST se eleva 4,5 mm (discordante). No hay cambios concordantes.', prompt: 'Calcula el cociente ST/S de Smith. ¿Qué indica?', options: ['−0,30: positivo (≤ −0,25)', '−0,30: negativo (umbral ≤ −0,50)', '−0,15: negativo', '−3,3: positivo'], answer: 0, explain: 'ST/S = +4,5 / −15 = −0,30, que cumple el umbral ≤ −0,25. Con Sgarbossa original (≥ 5 mm) no puntuaría: el cociente gana sensibilidad al ajustar el ST a la amplitud del QRS.' },
+            { type: 'mc', prompt: '¿Qué actitud recomienda la guía ESC 2023?', options: ['Activar el código infarto para ICP primaria', 'Esperar a la segunda troponina', 'Prueba de esfuerzo antes del alta', 'Fibrinólisis en todos los casos de BRI'], answer: 0, explain: 'Con BRI (nuevo o conocido) y síntomas isquémicos persistentes se maneja como un IAMCEST: ICP primaria. Los criterios de Smith positivos refuerzan la sospecha de oclusión.' },
+            { type: 'tf', prompt: 'Los criterios de Sgarbossa también pueden aplicarse, con cautela, en pacientes con ritmo de marcapasos ventricular.', answer: true, explain: 'La estimulación del VD genera un patrón similar al BRI con repolarización discordante. La ESC 2023 trata igual el ritmo de marcapasos con síntomas isquémicos persistentes.' }, // REVISAR: validez de Sgarbossa/Smith en ritmo de marcapasos
+          ],
+        },
+      ],
+    },
   ],
 };

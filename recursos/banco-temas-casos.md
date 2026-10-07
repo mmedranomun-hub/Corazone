@@ -8,7 +8,7 @@ Lista maestra de temas para lecciones-caso de `js/data/casos.js` (agente `redact
 - **Estado**: ✅ ya existe como lección con `case:` en `js/data/casos.js` (comprobado con `grep -n` el 7-oct-2026, incluidas las unidades `casos-u6`–`u8` añadidas en paralelo; `js/data/cateterismo.js` no tiene lecciones `case:`) · ⬜ pendiente.
 - **Guías** (ver `bibliografia.md`): ESC IC 2021 + act. 2023; ESC SCA 2023; ESC SCC 2024; ESC FA 2024; ESC valvulopatías 2025 (antes 2021); ESC endocarditis 2023; ESC miocardiopatías 2023; ESC miocarditis y pericarditis 2025; ESC HP 2022; ESC TEP 2019; ESC aorta y arterias periféricas 2024; ESC arritmias ventriculares/MS 2022; ESC TSV 2019; ESC marcapasos y TRC 2021; ESC síncope 2018; ESC cardiopatías congénitas del adulto 2020; ESC embarazo 2025; ESC cardio-oncología 2022; ERC RCP 2025; SCAI shock 2019/2022. Cifras con cambios recientes (edad TAVI, umbrales IAo/IM) → comprobar en la guía antes de usar y marcar `// REVISAR:`.
 
-Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Integrados 13 — **38 ✅ / 106 ⬜**.
+Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Integrados 13 — **48 ✅ / 96 ⬜**.
 
 ---
 
@@ -126,27 +126,27 @@ Recuento: **144 temas** — ETT 41 · ETE 19 · Cateterismo 35 · ECG 36 · Inte
 
 | ID | Tema | Nivel | Hallazgos clave | Cálculos | Decisión · guía | Visual | Estado |
 |---|---|---|---|---|---|---|---|
-| ECG-01 | FA de reciente diagnóstico | N2 ★ | Ritmo irregularmente irregular sin ondas P | CHA₂DS₂-VA; FC | Anticoagulación, control de frecuencia/ritmo (AF-CARE) · ESC FA 2024 | ecg: afib | ⬜ |
+| ECG-01 | FA de reciente diagnóstico | N2 ★ | Ritmo irregularmente irregular sin ondas P | CHA₂DS₂-VA; FC | Anticoagulación, control de frecuencia/ritmo (AF-CARE) · ESC FA 2024 | ecg: afib | ✅ casos-u9-l1 |
 | ECG-02 | Flutter auricular típico 2:1 | N2 ★ | FC ≈ 150, ondas F en dientes de sierra en II, III, aVF | Frecuencia auricular/2 | Anticoagular como FA; ablación del istmo cavotricuspídeo | ecg: flutter | ⬜ |
-| ECG-03 | TSV por reentrada intranodal | N1–N2 ★ | QRS estrecho regular 180 lpm, sin P visibles | — | Vagales → adenosina → (BB/calcioantagonista); ablación · ESC TSV 2019 | ecg: svt | ⬜ |
-| ECG-04 | FA preexcitada (WPW) | N3 ★ | Taquicardia irregular de QRS ancho y variable, FC muy alta | RR preexcitado más corto | Evitar frenadores del NAV; cardioversión/procainamida o ibutilida; ablación · ESC TSV 2019 | ecg: wpw · nuevo: FA preexcitada | ⬜ |
+| ECG-03 | TSV por reentrada intranodal | N1–N2 ★ | QRS estrecho regular 180 lpm, sin P visibles | — | Vagales → adenosina → (BB/calcioantagonista); ablación · ESC TSV 2019 | ecg: svt | ✅ casos-u9-l2 |
+| ECG-04 | FA preexcitada (WPW) | N3 ★ | Taquicardia irregular de QRS ancho y variable, FC muy alta | RR preexcitado más corto | Evitar frenadores del NAV; cardioversión/procainamida o ibutilida; ablación · ESC TSV 2019 | ecg: wpw · nuevo: FA preexcitada | ✅ casos-u9-l3 |
 | ECG-05 | Preexcitación asintomática | N2 | PR corto, onda delta, QRS ancho | PR | Estratificación (EEF) en ocupaciones de riesgo/deportistas · ESC TSV 2019 | ecg: wpw | ⬜ |
-| ECG-06 | TV monomórfica en cardiopatía isquémica | N2 ★ | QRS ancho regular, disociación AV, capturas/fusiones | Criterios de Brugada/Vereckei | Inestable: CVE; estable: CVE/amiodarona; DAI · ESC MS 2022 | ecg: vt | ⬜ |
-| ECG-07 | Torsade de pointes por QT largo adquirido | N2 ★ | QTc > 500 ms, TdP tras pausa, hipoK/hipoMg, fármacos | QTc (Bazett) = QT/√RR | Mg IV, retirar fármacos, corregir K, marcapasos/isoproterenol · ESC MS 2022 | ecg: longqt · nuevo: torsade | ⬜ |
+| ECG-06 | TV monomórfica en cardiopatía isquémica | N2 ★ | QRS ancho regular, disociación AV, capturas/fusiones | Criterios de Brugada/Vereckei | Inestable: CVE; estable: CVE/amiodarona; DAI · ESC MS 2022 | ecg: vt | ✅ casos-u9-l4 |
+| ECG-07 | Torsade de pointes por QT largo adquirido | N2 ★ | QTc > 500 ms, TdP tras pausa, hipoK/hipoMg, fármacos | QTc (Bazett) = QT/√RR | Mg IV, retirar fármacos, corregir K, marcapasos/isoproterenol · ESC MS 2022 | ecg: longqt · nuevo: torsade | ✅ casos-u9-l5 |
 | ECG-08 | QT largo congénito (LQT1) | N3 | Síncope nadando, QTc prolongado, T de base ancha | Puntuación de Schwartz | BB (nadolol/propranolol), evitar fármacos, DAI si recurrencia · ESC MS 2022 | ecg: longqt | ⬜ |
 | ECG-09 | Brugada tipo 1 desenmascarado por fiebre | N3 | ST "en cúpula" ≥ 2 mm en V1–V2 con T negativa | — | Antitérmicos, evitar fármacos; DAI si síncope arrítmico · ESC MS 2022 | nuevo: ecg12 Brugada | ⬜ |
-| ECG-10 | BAV completo con escape ancho | N2 ★ | Disociación AV, escape ventricular lento | FC auricular vs ventricular | Atropina (poco útil infrahisiano), isoproterenol, MP transcutáneo → definitivo · ESC marcapasos 2021 | ecg: avb3 | ⬜ |
+| ECG-10 | BAV completo con escape ancho | N2 ★ | Disociación AV, escape ventricular lento | FC auricular vs ventricular | Atropina (poco útil infrahisiano), isoproterenol, MP transcutáneo → definitivo · ESC marcapasos 2021 | ecg: avb3 | ✅ casos-u9-l6 |
 | ECG-11 | Mobitz II en síncope | N2 ★ | P bloqueadas sin alargamiento previo del PR, QRS ancho | — | Marcapasos definitivo · ESC marcapasos 2021 | ecg: mobitz2 | ⬜ |
 | ECG-12 | Wenckebach en IAM inferior o deportista | N1–N2 | Alargamiento progresivo del PR hasta P bloqueada | — | Habitualmente benigno (suprahisiano); observación | ecg: mobitz1 | ⬜ |
 | ECG-13 | Enfermedad del nódulo sinusal (bradi-taqui) | N2 | Pausas tras FA paroxística, bradicardia sinusal | Duración de pausa | Marcapasos + anticoagulación según CHA₂DS₂-VA · ESC marcapasos 2021 | ecg: brady · nuevo: sinusPause | ⬜ |
-| ECG-14 | Hiperpotasemia en ERC | N2 ★ | T picudas, P aplanada, QRS ancho → sinusoidal | — | Gluconato cálcico, insulina-glucosa, salbutamol, diálisis | ecg: hyperk | ⬜ |
+| ECG-14 | Hiperpotasemia en ERC | N2 ★ | T picudas, P aplanada, QRS ancho → sinusoidal | — | Gluconato cálcico, insulina-glucosa, salbutamol, diálisis | ecg: hyperk | ✅ casos-u10-l1 |
 | ECG-15 | Hipopotasemia | N2 | Ondas U, ST descendido, QT(U) largo | — | Reposición de K y Mg | nuevo: ondas U | ⬜ |
-| ECG-16 | Pericarditis aguda vs IAMCEST | N2 ★ | ST cóncavo difuso, PR descendido, aVR inverso, sin imagen especular | — | AINE + colchicina; descartar SCA · ESC peric. 2025 | ecg12: pericarditis | ⬜ |
-| ECG-17 | IAMCEST inferior con afectación de VD | N2 ★ | ST↑ III > II, descenso en I/aVL, ST↑ en V4R | — | ICP primaria; evitar nitratos · ESC SCA 2023 | ecg12: stemi-inf | ⬜ |
+| ECG-16 | Pericarditis aguda vs IAMCEST | N2 ★ | ST cóncavo difuso, PR descendido, aVR inverso, sin imagen especular | — | AINE + colchicina; descartar SCA · ESC peric. 2025 | ecg12: pericarditis | ✅ casos-u10-l2 |
+| ECG-17 | IAMCEST inferior con afectación de VD | N2 ★ | ST↑ III > II, descenso en I/aVL, ST↑ en V4R | — | ICP primaria; evitar nitratos · ESC SCA 2023 | ecg12: stemi-inf | ✅ casos-u10-l3 |
 | ECG-18 | IAMCEST anterior extenso | N2 ★ | ST↑ V1–V6, I, aVL | — | ICP primaria · ESC SCA 2023 | ecg12: stemi-ant | ⬜ |
 | ECG-19 | Patrón de Wellens | N3 ★ | T bifásicas o profundas en V2–V3 sin dolor, sin Q | — | Coronariografía precoz (estenosis crítica DA); evitar prueba de esfuerzo | nuevo: ecg12 Wellens | ⬜ |
 | ECG-20 | Patrón de De Winter | N3 | Descenso ST ascendente en precordiales con T altas | — | Equivalente de IAMCEST → ICP primaria · ESC SCA 2023 | nuevo: ecg12 De Winter | ⬜ |
-| ECG-21 | IAM con BRI: criterios de Sgarbossa | N3 ★ | ST concordante ≥ 1 mm; ST discordante desproporcionado | Smith: ST/S ≤ −0,25 | BRI + sospecha clínica de SCA → ICP primaria · ESC SCA 2023 | ecg12: lbbb12 | ⬜ |
+| ECG-21 | IAM con BRI: criterios de Sgarbossa | N3 ★ | ST concordante ≥ 1 mm; ST discordante desproporcionado | Smith: ST/S ≤ −0,25 | BRI + sospecha clínica de SCA → ICP primaria · ESC SCA 2023 | ecg12: lbbb12 | ✅ casos-u10-l4 |
 | ECG-22 | Elevación de aVR con descenso difuso del ST | N3 | aVR↑ + descenso ST en ≥ 6 derivaciones | — | Isquemia subendocárdica difusa (TCI/3 vasos o causa no coronaria) | nuevo: ecg12 aVR | ⬜ |
 | ECG-23 | Repolarización precoz vs IAMCEST | N2 | Muesca J, ST cóncavo, T altas proporcionadas, estable en el tiempo | — | Comparar con ECG previos; troponina | ecg12: normal | ⬜ |
 | ECG-24 | TEP en el ECG | N2 ★ | Taquicardia sinusal, S1Q3T3, BRD, T negativas V1–V4 | — | Estratificación del TEP · ESC TEP 2019 | ecg: tachy · ecg12: rbbb | ⬜ |
