@@ -144,3 +144,91 @@
   .cora.beat .cora-figure, .cora-fire .cora-flame, .cora-sleep .cora-zz,
   .pop-in, .shake, .slide-up { animation: none; }
 }
+
+/* ================================================================
+   Lección tipo Duolingo: barra con brillo + combo, panel de feedback
+   que sube desde abajo y tarjetas de resultados que se reparten.
+   ================================================================ */
+:root {
+  --bar-shine: rgba(255, 255, 255, .38);
+  --fb-ok-text: #58a700;
+  --fb-ko-text: #ea2b2b;
+  --fb-icon-bg: #ffffff;
+  --combo-text: #ff9600;
+  --combo-fire: #ff9600;
+  --combo-fire-2: #ffc800;
+  --ribbon-text: #b88700;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bar-shine: rgba(255, 255, 255, .22); --fb-ok-text: #79d634; --fb-ko-text: #ff7b7b;
+    --fb-icon-bg: #131f24; --combo-text: #ffb340; --ribbon-text: #ffd84d;
+  }
+}
+:root[data-theme='dark'] {
+  --bar-shine: rgba(255, 255, 255, .22); --fb-ok-text: #79d634; --fb-ko-text: #ff7b7b;
+  --fb-icon-bg: #131f24; --combo-text: #ffb340; --ribbon-text: #ffd84d;
+}
+
+/* ---- Barra de progreso gruesa con brillo ---- */
+.lesson-top { padding-top: 22px; }
+.bar-wrap { position: relative; flex: 1; min-width: 0; }
+.bar.bar-lesson { height: 18px; }
+.bar.bar-lesson .bar-fill {
+  position: relative; min-width: 18px;
+  transition: width .45s cubic-bezier(.34, 1.4, .64, 1), background-color .3s;
+}
+.bar.bar-lesson .bar-fill::after {
+  content: ''; position: absolute; left: 8px; right: 8px; top: 4px; height: 5px;
+  border-radius: 99px; background: var(--bar-shine);
+}
+.bar.bar-lesson.on-fire .bar-fill {
+  background: linear-gradient(90deg, var(--combo-fire-2), var(--combo-fire));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--combo-fire) 55%, transparent);
+}
+.combo-pill {
+  position: absolute; left: 50%; top: -19px; transform: translateX(-50%);
+  white-space: nowrap; font-weight: 900; font-size: .78rem; letter-spacing: .3px;
+  color: var(--combo-text); text-transform: uppercase; pointer-events: none;
+}
+.combo-pill[hidden] { display: none; }
+
+/* ---- Panel de feedback inferior ---- */
+.lesson-foot.fb-in { animation: fb-rise .32s cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes fb-rise { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.lesson-foot .btn { max-width: 640px; min-height: 52px; font-size: 1.02rem; }
+.fb-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.fb-icon {
+  flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--fb-icon-bg); font-weight: 900; font-size: 1.15rem; line-height: 1;
+}
+.lesson-foot.ok .fb-icon, .lesson-foot.ok .feedback strong { color: var(--fb-ok-text); }
+.lesson-foot.ko .fb-icon, .lesson-foot.ko .feedback strong,
+.lesson-foot.ko .fb-answer { color: var(--fb-ko-text); }
+.lesson-foot .feedback strong { font-size: 1.3rem; font-weight: 900; }
+.fb-answer { font-weight: 800; }
+.fb-answer b { font-weight: 700; }
+.lesson-foot .feedback .coach { margin-top: 10px; }
+
+/* ---- Resultados: tarjetas que se reparten y cinta de lección perfecta ---- */
+.stat-boxes.deal .sb { animation: fx-deal .5s cubic-bezier(.34, 1.56, .64, 1) both; }
+.stat-boxes.deal .sb:nth-child(1) { animation-delay: .15s; }
+.stat-boxes.deal .sb:nth-child(2) { animation-delay: .4s; }
+.stat-boxes.deal .sb:nth-child(3) { animation-delay: .65s; }
+@keyframes fx-deal {
+  0% { transform: translateY(40px) scale(.7) rotate(-6deg); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+.stat-boxes .sb b { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.perfect-ribbon {
+  margin: 4px 0 0; padding: 6px 14px; border-radius: 99px; font-weight: 900; font-size: .9rem;
+  color: var(--ribbon-text); border: 2px solid var(--gold);
+  background: color-mix(in srgb, var(--gold) 14%, transparent);
+}
+.center-screen.result.perfect h1 { text-shadow: 0 3px 0 color-mix(in srgb, var(--gold) 35%, transparent); }
+.big-cta { min-height: 54px; font-size: 1.05rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lesson-foot.fb-in, .stat-boxes.deal .sb { animation: none; }
+  .bar.bar-lesson .bar-fill { transition: none; }
+}

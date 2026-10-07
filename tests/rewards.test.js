@@ -81,3 +81,18 @@ test('recordatorio: programa para hoy si no ha pasado la hora, si no para mañan
   assert.equal(nextReminderDelay('17:30', now), 23.5 * 36e5);
   assert.equal(nextReminderDelay('20:00', now, true), 26 * 36e5); // ya practicó hoy
 });
+
+test('cofre de la ruta: a mitad de unidad, se abre una sola vez', async () => {
+  const { openPathChest, pathChestSlot } = await import('../js/storage.js');
+  assert.equal(pathChestSlot(2), -1);
+  assert.equal(pathChestSlot(4), 1);
+  assert.equal(pathChestSlot(5), 1);
+  _setState({ gems: 0 });
+  assert.equal(getState().pathChests && Object.keys(getState().pathChests).length, 0);
+  const g = openPathChest('u1', () => 0);
+  assert.equal(g, CHEST_MIN);
+  assert.equal(getState().gems, CHEST_MIN);
+  assert.equal(openPathChest('u1', () => 0.99), 0);
+  assert.equal(getState().gems, CHEST_MIN);
+  assert.equal(openPathChest(''), 0);
+});

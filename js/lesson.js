@@ -2,9 +2,8 @@
 import { waveTimes, WAVE_TOLERANCE } from './ecg.js';
 import { visualFor } from './visuals.js';
 import { getState, loseHeart, completeLesson, recordAnswer, boostActive } from './storage.js';
-import { sfx, cora } from './fx.js';
+import { sfx, cora, buzz, bump, comboLabel, feedbackTitle, COMBO_MIN } from './fx.js';
 
-const PRAISE = ['¡Correcto!', '¡Genial!', '¡Excelente!', '¡Bien hecho!', '¡Perfecto!', '¡Así se hace!'];
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
 // Mensajes breves de Cora durante la lección (como el búho de Duolingo).
 const CORA_SAYS = {
@@ -44,6 +43,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   let matchState = null;
   let combo = 0;
   let answered = 0;
+  let correct = 0;
   let bestCombo = 0;
   let missRun = 0;
   const started = Date.now();
@@ -57,7 +57,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     <div class="lesson" style="--accent:${course.color}">
       <header class="lesson-top">
         <button class="icon-btn" data-act="exit" aria-label="Salir">✕</button>
-        <div class="bar" role="progressbar" aria-label="Progreso de la lección" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div>
+        <div class="bar-wrap"><span class="combo-pill" aria-live="polite" hidden></span><div class="bar bar-lesson" role="progressbar" aria-label="Progreso de la lección" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
         <div class="hearts ${lesson.mode || ''}" aria-label="${usesHearts || ownLives ? 'Vidas' : 'Vidas ilimitadas'}">${usesHearts || ownLives ? `${lesson.mode === 'legendary' ? '👑' : '❤️'} <span></span>` : '♾️'}</div>
       </header>
       <main class="lesson-body"></main>
@@ -74,6 +74,17 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   const updateTop = () => {
     $('.bar-fill').style.width = `${(done / total) * 100}%`;
     $('.lesson-top .bar').setAttribute('aria-valuenow', Math.round((done / total) * 100));
+    // Combo tipo Duolingo: "🔥 ¡X seguidas!" sobre la barra y la barra se enciende.
+    const pill = $('.combo-pill');
+    const hot = combo >= COMBO_MIN;
+    $('.lesson-top .bar').classList.toggle('on-fire', hot);
+    if (hot) {
+      const changed = pill.hidden || pill.dataset.n !== String(combo);
+      pill.hidden = false;
+      pill.dataset.n = combo;
+      pill.textContent = `🔥 ${comboLabel(combo)}`;
+      if (changed) bump(pill);
+    } else pill.hidden = true;
     const h = $('.hearts span');
     if (h) {
       h.textContent = ownLives ? lives : getState().hearts;
@@ -135,7 +146,8 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     bestCombo = Math.max(bestCombo, combo);
     recordAnswer(current.src.key, ok, { type: current.type, combo });
     sfx(ok ? 'Correct' : 'Wrong');
-    if (ok) done++;
+    buzz(ok ? 25 : [60, 50, 60]);
+    if (ok) { done++; correct++; }
     else {
       mistakes++;
       if (usesHearts) loseHeart();
@@ -147,11 +159,11 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
       } else done++;
     }
     updateTop();
-    foot.className = `lesson-foot ${ok ? 'ok' : 'ko'}`;
+    foot.className = `lesson-foot ${ok ? 'ok' : 'ko'} fb-in`;
+    // Panel inferior tipo Duolingo: icono redondo + titular variado; sube desde abajo.
     $('.feedback').innerHTML = `
-      <strong>${ok ? pick(PRAISE) : 'Incorrecto'}</strong>
-      ${ok && combo >= 3 ? `<span class="combo pop-in">🔥 ${combo} seguidas</span>` : ''}
-      ${!ok && correctLabel ? `<p>Respuesta: <b>${esc(correctLabel)}</b></p>` : ''}
+      <div class="fb-head"><span class="fb-icon" aria-hidden="true">${ok ? '✓' : '✕'}</span><strong>${feedbackTitle(ok)}</strong></div>
+      ${!ok && correctLabel ? `<p class="fb-answer">Respuesta correcta:<br><b>${esc(correctLabel)}</b></p>` : ''}
       ${current.explain ? `<p>${esc(current.explain)}</p>` : ''}
       ${coach(ok)}`;
     checkBtn.hidden = false;
@@ -210,7 +222,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     }
     svg.querySelector('.tap-mark')?.classList.add(ok ? 'right' : 'wrong');
     body.querySelector('.tappable').classList.add('locked');
-    showFeedback(ok, ok ? null : 'mira las zonas resaltadas');
+    showFeedback(ok, ok ? null : 'la zona resaltada en la tira');
   }
 
   function pickMatch(btn) {
@@ -248,7 +260,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     const seconds = Math.round((Date.now() - started) / 1000);
     const { streakExtended, milestone } = completeLesson(lesson.id, { xp, stars, review: !!lesson.review, minutes: seconds / 60 });
     cleanup();
-    onFinish({ xp, stars, mistakes, total, seconds, bestCombo, streakExtended, milestone, boosted: boostActive() });
+    onFinish({ xp, stars, mistakes, total, answered, correct, seconds, bestCombo, streakExtended, milestone, boosted: boostActive() });
   }
 
   function onClick(e) {

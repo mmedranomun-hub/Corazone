@@ -1,9 +1,9 @@
 // Pestaña Aprender: ruta de lecciones, selector de cursos y guía de unidad.
 import { COURSES, courseById, lessonsOf } from '../data/courses.js';
-import { getState, update, dueReviews, LEGENDARY_PRICE } from '../storage.js';
+import { getState, update, dueReviews, LEGENDARY_PRICE, openPathChest, pathChestSlot } from '../storage.js';
 import { legendaryFree, searchLessons, fold } from '../game.js';
-import { shell, esc, currentCourse, go, modal, emptyState, skeleton } from '../ui.js';
-import { cora } from '../fx.js';
+import { shell, esc, currentCourse, go, modal, emptyState, skeleton, scrollBehavior } from '../ui.js';
+import { cora, sfx, flyGems, countUp } from '../fx.js';
 import { buyLegendary } from './lessonFlow.js';
 
 export function lessonStatus(course) {
@@ -19,6 +19,9 @@ export const progressOf = (course) => {
 };
 
 const OFFSETS = [0, 55, 85, 55, 0, -55, -85, -55];
+const UNITS_PER_SECTION = 4;
+// Mascota decorando la ruta en las unidades sin nodo actual (de vez en cuando, como en Duolingo).
+const DECO_MOODS = ['think', 'happy', 'think'];
 
 export function viewLearn(courseId) {
   const course = (courseId && courseById(courseId)) || currentCourse();
@@ -30,6 +33,11 @@ export function viewLearn(courseId) {
     const unitLessons = status.filter((l) => l.unit.id === u.id);
     const unitDone = unitLessons.every((l) => l.state === 'done');
     const unitLocked = unitLessons.every((l) => l.state === 'locked');
+    const hasCur = unitLessons.some((l) => l.state === 'current');
+    const doneN = unitLessons.filter((l) => l.state === 'done').length;
+    const slot = pathChestSlot(unitLessons.length);
+    const chestId = `${u.id}#mid`;
+    const decoAt = !hasCur && ui % 2 === 1 && unitLessons.length >= 3 ? 1 : -1;
     const nodes = unitLessons.map((l, li) => {
       const off = OFFSETS[idx++ % 8];
       const inner = l.state === 'locked' ? '🔒' : l.legendary ? '👑' : l.state === 'done' ? '✓' : l.unit.lessons.length - 1 === li ? '📋' : '★';
@@ -37,15 +45,16 @@ export function viewLearn(courseId) {
       return `
         <div class="node-row" style="--x:${off}px">
           ${isCur ? '<div class="bubble">EMPEZAR</div>' : ''}
-          <button class="node ${l.state} ${l.legendary ? 'legendary' : ''}" data-lesson="${l.id}" aria-haspopup="dialog" aria-label="${esc(l.title)}: ${l.state === 'locked' ? 'bloqueada' : l.state === 'done' ? `completada, ${l.stars} de 3 estrellas${l.legendary ? ', legendaria' : ''}` : 'siguiente lección'}"><span aria-hidden="true">${inner}</span></button>
+          ${isCur ? `<span class="node-ring" style="--p:${Math.round((doneN / unitLessons.length) * 100)}" aria-hidden="true"></span>` : ''}<button class="node ${l.state} ${l.legendary ? 'legendary' : ''}" data-lesson="${l.id}" aria-haspopup="dialog" aria-label="${esc(l.title)}: ${l.state === 'locked' ? 'bloqueada' : l.state === 'done' ? `completada, ${l.stars} de 3 estrellas${l.legendary ? ', legendaria' : ''}` : 'siguiente lección'}"><span aria-hidden="true">${inner}</span></button>
           ${l.state === 'done' ? `<div class="stars" aria-hidden="true">${'★'.repeat(l.stars)}${'☆'.repeat(3 - l.stars)}</div>` : ''}
           ${isCur ? `<div class="path-mascot" style="--side:${off >= 0 ? -1 : 1}">${cora('happy', 80)}</div>` : ''}
-        </div>`;
+          ${li === decoAt ? `<div class="path-mascot deco" aria-hidden="true" style="--side:${off >= 0 ? -1 : 1}">${cora(DECO_MOODS[ui % 3], 72)}</div>` : ''}
+        </div>${li === slot ? chestRow(chestId, l.state === 'done', (off + OFFSETS[idx % 8]) / 2) : ''}`;
     }).join('');
     return `
-      <section class="unit">
+      <section class="unit ${hasCur ? 'is-current' : ''}">
         <div class="unit-head">
-          <div><small>UNIDAD ${ui + 1}</small><h2>${esc(u.title)}</h2></div>
+          <div><small>SECCIÓN ${Math.floor(ui / UNITS_PER_SECTION) + 1}, UNIDAD ${ui + 1}</small><h2>${esc(u.title)}</h2></div>
           <a class="guide-btn" href="#/guia/${u.id}" title="Guía de la unidad" aria-label="Guía de la unidad ${ui + 1}: ${esc(u.title)}"><span aria-hidden="true">📖</span><span>GUÍA</span></a>
           ${unitLocked ? `<a class="jump-btn" href="#/prueba/${u.id}">⏩ ¿Ya lo sabes? <b>Haz la prueba</b></a>` : ''}
         </div>
@@ -59,10 +68,66 @@ export function viewLearn(courseId) {
   shell(`
     <a class="search-chip" href="#/buscar" aria-label="Buscar lecciones y casos"><span aria-hidden="true">🔍</span> Busca una lección o un caso…</a>
     ${reviews ? `<a class="review-chip" href="#/practicar/errores">🔁 Tienes ${reviews} pregunta${reviews > 1 ? 's' : ''} para repasar</a>` : ''}
-    <div class="course" style="--accent:${course.color}">${units}</div>`, 'learn');
+    <div class="course" style="--accent:${course.color}">${units}</div>
+    <button class="jump-current" type="button" hidden aria-label="Volver a la lección actual"><span aria-hidden="true">↑</span></button>`, 'learn');
 
   document.querySelectorAll('.node').forEach((n) => n.addEventListener('click', () => openPopover(n, status.find((l) => l.id === n.dataset.lesson), status, course)));
-  document.querySelector('.node.current')?.scrollIntoView({ block: 'center' });
+  document.querySelectorAll('.path-chest.ready').forEach((c) => c.addEventListener('click', () => claimChest(c)));
+  const cur = document.querySelector('.node.current');
+  cur?.scrollIntoView({ block: 'center' });
+  stickyOffset();
+  jumpToCurrent(cur);
+}
+
+// Cofre entre nodos: bloqueado hasta completar la lección anterior; se abre una vez y da gemas.
+function chestRow(id, unlocked, x) {
+  const opened = !!getState().pathChests?.[id];
+  const st = opened ? 'opened' : unlocked ? 'ready' : 'locked';
+  const label = opened ? 'Cofre abierto' : unlocked ? 'Abrir cofre de gemas' : 'Cofre bloqueado: completa la lección anterior';
+  return `<div class="node-row chest-row" style="--x:${x}px">${st === 'ready'
+    ? `<button class="path-chest ready" type="button" data-chest="${esc(id)}" aria-label="${label}"><span aria-hidden="true">🎁</span></button>`
+    : `<div class="path-chest ${st}" role="img" aria-label="${label}"><span aria-hidden="true">${opened ? '📦' : '🎁'}</span></div>`}</div>`;
+}
+
+function claimChest(btn) {
+  const gems = openPathChest(btn.dataset.chest);
+  btn.classList.remove('ready');
+  btn.classList.add('opened');
+  btn.disabled = true;
+  btn.setAttribute('aria-label', 'Cofre abierto');
+  btn.firstElementChild.textContent = '📦';
+  if (!gems) return;
+  sfx('Complete');
+  const tag = document.createElement('span');
+  tag.className = 'chest-gain';
+  tag.setAttribute('role', 'status');
+  tag.textContent = `+${gems} 💎`;
+  btn.parentElement.appendChild(tag);
+  const target = document.querySelector('[data-tb="gems"]');
+  flyGems(btn, target, 6);
+  if (target) countUp(target, getState().gems, { from: getState().gems - gems, dur: 800 });
+}
+
+// La cabecera de unidad se pega justo debajo de la barra superior (si ésta está encima de la ruta).
+function stickyOffset() {
+  const tb = document.querySelector('.app-shell > .topbar');
+  const course = document.querySelector('.course');
+  if (!tb || !course) return;
+  const above = tb.getBoundingClientRect().right > course.getBoundingClientRect().left && getComputedStyle(tb).position === 'sticky';
+  course.style.setProperty('--sticky-top', `${above ? tb.offsetHeight : 0}px`);
+}
+
+// Botón flotante para volver a la lección actual cuando sale de la pantalla.
+function jumpToCurrent(cur) {
+  const btn = document.querySelector('.jump-current');
+  if (!btn || !cur || typeof IntersectionObserver !== 'function') return;
+  const io = new IntersectionObserver(([e]) => {
+    if (!document.body.contains(cur)) return io.disconnect();
+    btn.hidden = e.isIntersecting;
+    btn.classList.toggle('down', e.boundingClientRect.top > 0);
+  });
+  io.observe(cur);
+  btn.addEventListener('click', () => { cur.scrollIntoView({ block: 'center', behavior: scrollBehavior() }); cur.focus({ preventScroll: true }); });
 }
 
 // Tarjeta emergente al tocar un nodo (como en Duolingo)

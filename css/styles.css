@@ -701,3 +701,34 @@ mark { background: color-mix(in srgb, var(--gold) 45%, transparent); color: inhe
 .profile-chip { display: inline-block; margin-top: 4px; padding: 3px 10px; border: 2px solid var(--border); border-radius: 999px; font-size: .8rem; font-weight: 800; color: var(--blue); }
 .ob-have { margin-top: 6px; }
 .ob-account .btn + .btn { margin-top: 10px; }
+
+/* ---------- Ruta tipo Duolingo: cabecera fija, anillo, cofres y botón de volver ---------- */
+.unit-head { position: sticky; top: calc(var(--sticky-top, 0px) + 8px); z-index: 3; }
+.unit-head small { letter-spacing: .6px; text-transform: uppercase; }
+.guide-btn { background: rgba(255,255,255,.12); box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+.guide-btn:active { transform: translateY(3px); box-shadow: none; }
+.node-ring { position: absolute; top: -10px; left: 50%; width: 92px; height: 92px; margin-left: -46px; border-radius: 50%; pointer-events: none;
+  background: conic-gradient(var(--accent) calc(var(--p, 0) * 1%), var(--locked) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px)); }
+.node-ring + .node.current:not(:focus-visible) { animation: none; outline: none; }
+.node-row:has(.node-ring) { margin-top: 26px; }
+.bubble { top: -52px; z-index: 1; text-transform: uppercase; letter-spacing: .5px; padding: 8px 14px; border-radius: 12px; box-shadow: 0 3px 0 var(--border); }
+.bubble::after { content: ''; position: absolute; left: 50%; bottom: -8px; margin-left: -7px; width: 12px; height: 12px; background: var(--bg); border: solid var(--border); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.chest-row { margin: -6px 0; }
+.path-chest { width: 76px; height: 64px; display: grid; place-items: center; font-size: 2.8rem; line-height: 1; background: none; border: 0; padding: 0; font-family: inherit; color: inherit; }
+.path-chest.ready { cursor: pointer; filter: drop-shadow(0 4px 0 color-mix(in srgb, var(--gold) 55%, transparent)); animation: wiggle 2.6s ease-in-out infinite; }
+.path-chest.ready:active { transform: translateY(3px); }
+.path-chest.ready:focus-visible { outline: 4px solid var(--focus); outline-offset: 4px; border-radius: 16px; }
+.path-chest.locked { filter: grayscale(1); opacity: .45; }
+.path-chest.opened { opacity: .7; }
+.chest-gain { position: absolute; top: -14px; white-space: nowrap; font-weight: 900; color: var(--blue-ink); background: var(--bg); border: 2px solid var(--border); border-radius: 10px; padding: 2px 8px; animation: chest-gain .5s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes chest-gain { from { transform: translateY(10px) scale(.6); opacity: 0; } }
+.path-mascot.deco { top: -4px; }
+.jump-current { position: sticky; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 4; display: grid; place-items: center; width: 52px; height: 52px; margin: 8px 0 0 auto; border-radius: 50%; background: var(--bg); color: var(--blue-ink); border: 2px solid var(--border); border-bottom-width: 5px; font-family: inherit; font-weight: 900; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.jump-current[hidden] { display: none; }
+.jump-current.down span { display: inline-block; transform: rotate(180deg); }
+.jump-current:active { border-bottom-width: 2px; transform: translateY(3px); }
+.jump-current:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+@media (min-width: 900px) { .jump-current { bottom: 24px; } }
+@media (prefers-reduced-motion: reduce) { .path-chest.ready, .chest-gain, .bubble { animation: none; } }

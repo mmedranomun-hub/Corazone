@@ -63,3 +63,43 @@ export function flyGems(fromEl, toEl, n = 6) {
   }
   return new Promise((r) => setTimeout(r, 700 + n * 60));
 }
+
+// Vibración breve (móviles). Silenciosa si no hay API, con sonido apagado o movimiento reducido.
+export function buzz(pattern = 30) {
+  try {
+    if (getState().sound === false || reduced()) return;
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(pattern);
+  } catch { /* sin vibración */ }
+}
+
+// --- Lógica pura de la lección (testeable) ---
+// Precisión: aciertos sobre respuestas dadas (los reintentos cuentan), redondeada y en 0…100.
+export function accuracy(correct, answered) {
+  if (!answered || answered < 0) return 100;
+  return Math.max(0, Math.min(100, Math.round((correct / answered) * 100)));
+}
+
+// Segundos → "m:ss" (o "h:mm:ss" si pasa de una hora).
+export function fmtClock(s) {
+  const t = Math.max(0, Math.round(Number(s) || 0));
+  const h = Math.floor(t / 3600);
+  const m = Math.floor((t % 3600) / 60);
+  const ss = String(t % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`;
+}
+
+// Combo visible a partir de 3 aciertos seguidos.
+export const COMBO_MIN = 3;
+export const comboLabel = (n) => (n >= COMBO_MIN ? `¡${n} seguidas!` : '');
+
+// Titular del panel de feedback: elogio variado al acertar, frase de ánimo al fallar.
+export const PRAISE = ['¡Genial!', '¡Así se hace!', '¡Excelente!', '¡Bien hecho!', '¡Perfecto!', '¡Correcto!', '¡Impresionante!'];
+export const ENCOURAGE = ['¡Casi!', 'No pasa nada', '¡Uy! Casi lo tienes', 'Sigue intentándolo'];
+export function feedbackTitle(ok, rnd = Math.random) {
+  const list = ok ? PRAISE : ENCOURAGE;
+  return list[Math.floor(rnd() * list.length) % list.length];
+}
+
+// Etiqueta de la tarjeta de tiempo/precisión en resultados (como Duolingo).
+export const timeTag = (s) => (s < 60 ? 'VELOZ' : s < 120 ? 'RÁPIDO' : 'TIEMPO');
+export const accTag = (a) => (a === 100 ? 'IMPRESIONANTE' : a >= 80 ? 'MUY BIEN' : 'PRECISIÓN');

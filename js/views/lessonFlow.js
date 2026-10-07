@@ -5,7 +5,7 @@ import { runLesson } from '../lesson.js';
 import { ACHIEVEMENTS, unlocked } from '../achievements.js';
 import { todaysQuests, claimQuest, legendaryFree } from '../game.js';
 import { app, esc, go, screen, fmtTime } from '../ui.js';
-import { cora, sfx, party, countUp, flyGems } from '../fx.js';
+import { cora, sfx, party, countUp, flyGems, buzz, accuracy, fmtClock, timeTag, accTag } from '../fx.js';
 import { lessonStatus } from './learn.js';
 
 let stop = null;
@@ -112,12 +112,14 @@ function runSteps(steps, back) {
   next();
 }
 
-const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
 function resultScreen({ course, lesson }, r, badges) {
   sfx('Complete');
   party();
-  const acc = Math.round(((r.total - Math.min(r.mistakes, r.total)) / r.total) * 100);
+  buzz([40, 60, 40]);
+  // Precisión real: aciertos / respuestas (los reintentos de preguntas falladas cuentan).
+  const acc = r.answered ? accuracy(r.correct, r.answered) : accuracy(r.total - Math.min(r.mistakes, r.total), r.total);
+  const perfect = r.mistakes === 0 && !lesson.practice;
   const title = lesson.mode === 'legendary' ? '¡Nivel legendario!' : lesson.mode === 'unitTest' ? '¡Prueba superada!' : lesson.practice ? '¡Práctica completada!' : r.mistakes === 0 ? '¡Lección perfecta!' : '¡Lección completada!';
   const color = lesson.mode === 'legendary' ? 'var(--purple)' : 'var(--gold)';
   screen(`
@@ -126,19 +128,20 @@ function resultScreen({ course, lesson }, r, badges) {
     ${lesson.mode === 'legendary' ? '<p class="legend-tag pop-in">👑 Lección dominada al nivel legendario</p>' : ''}
     ${lesson.mode === 'unitTest' ? `<p class="muted">Has saltado ${r.unlockedLessons || 0} lecci${r.unlockedLessons === 1 ? 'ón' : 'ones'}. ¡Bien hecho!</p>` : ''}
     ${lesson.practice && r.mistakes < r.total ? '<p class="muted">+1 ❤️ recuperada por practicar</p>' : ''}
-    <div class="stat-boxes">
+    ${perfect && lesson.mode !== 'legendary' ? '<p class="perfect-ribbon pop-in">✨ ¡Sin un solo fallo!</p>' : ''}
+    <div class="stat-boxes deal">
       <div class="sb y"><small>XP TOTAL</small><b>⚡ <span data-count="xp">0</span>${r.boosted ? ' ×2' : ''}</b></div>
-      <div class="sb b"><small>${r.seconds < 120 ? 'RÁPIDO' : 'TIEMPO'}</small><b>⏱ <span data-count="time">0:00</span></b></div>
-      <div class="sb g"><small>${acc === 100 ? 'IMPRESIONANTE' : 'PRECISIÓN'}</small><b>🎯 <span data-count="acc">0</span>%</b></div>
+      <div class="sb b"><small>${timeTag(r.seconds)}</small><b>⏱ <span data-count="time">0:00</span></b></div>
+      <div class="sb g"><small>${accTag(acc)}</small><b>🎯 <span data-count="acc">0</span>%</b></div>
     </div>
     ${r.bestCombo >= 5 ? `<p class="combo">🔥 Mejor combo: ${r.bestCombo} seguidas</p>` : ''}
     ${badges.map((a) => `<div class="badge-new pop-in">${a.icon} <b>¡Logro desbloqueado!</b> ${esc(a.name)}</div>`).join('')}
-    <button class="btn primary" data-act="next" style="--accent:#58cc02">Continuar</button>`, 'result');
+    <button class="btn primary big-cta" data-act="next" style="--accent:var(--green)">Continuar</button>`, `result${perfect ? ' perfect' : ''}`);
   const el = (k) => app.querySelector(`[data-count=${k}]`);
-  // Los números suben uno tras otro, como en Duolingo
-  countUp(el('xp'), r.xp, { dur: 800 });
-  setTimeout(() => countUp(el('time'), r.seconds, { dur: 700, fmt: mmss }), 250);
-  setTimeout(() => countUp(el('acc'), acc, { dur: 800 }), 500);
+  // Las tarjetas entran repartidas y los números suben uno tras otro, como en Duolingo
+  setTimeout(() => countUp(el('xp'), r.xp, { dur: 800 }), 350);
+  setTimeout(() => countUp(el('time'), r.seconds, { dur: 700, fmt: fmtClock }), 600);
+  setTimeout(() => countUp(el('acc'), acc, { dur: 800 }), 850);
 }
 
 // La prueba de unidad o el nivel legendario se han quedado sin vidas.

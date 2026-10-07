@@ -33,7 +33,7 @@ const defaults = () => ({
   gems: 500, freezes: 0, frozenDays: [], boostUntil: 0, sound: true, theme: 'auto',
   daily: {}, claimed: {}, league: { tier: 0, week: null }, lastLeagueResult: null,
   // Recompensas: niveles legendarios, cofre diario y recordatorio
-  legendary: {}, chestDay: null, reminder: { on: false, time: '20:00' },
+  legendary: {}, chestDay: null, pathChests: {}, reminder: { on: false, time: '20:00' },
   // Arcade: récords de Contrarreloj e historias de guardia completadas
   records: { timed: 0 }, stories: {},
 });
@@ -273,6 +273,19 @@ export function openDailyChest(rand = Math.random) {
   if (state.chestDay === d || (state.xpByDay[d] || 0) < state.dailyGoal) return 0;
   const gems = CHEST_MIN + Math.floor(rand() * (CHEST_MAX - CHEST_MIN + 1));
   state.chestDay = d;
+  state.gems += gems;
+  save();
+  return gems;
+}
+
+// Posición del cofre en una unidad de n lecciones: índice de la lección tras la que aparece (-1 = sin cofre).
+export const pathChestSlot = (n) => (n >= 3 ? Math.floor(n / 2) - 1 : -1);
+
+// Cofre de la ruta (a mitad de unidad): se abre una sola vez. Devuelve las gemas (0 si ya estaba abierto).
+export function openPathChest(id, rand = Math.random) {
+  if (!id || state.pathChests?.[id]) return 0;
+  const gems = CHEST_MIN + Math.floor(rand() * (CHEST_MAX - CHEST_MIN + 1));
+  state.pathChests = { ...state.pathChests, [id]: true };
   state.gems += gems;
   save();
   return gems;

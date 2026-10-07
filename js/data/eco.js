@@ -344,5 +344,85 @@ export default {
         },
       ],
     },
+    {
+      id: 'eco-u8',
+      title: 'Pericardio ampliado',
+      // Fuente: ESC 2015 enfermedades del pericardio; ESC 2025 miocarditis y pericarditis; ASE/EACVI 2013 (imagen multimodal del pericardio); criterios Mayo (Welch, Circ Cardiovasc Imaging 2014).
+      guide: {
+        intro: 'Derrame, taponamiento, constricción y diagnóstico diferencial del pericardio con eco 2D, Doppler y Doppler tisular.',
+        sections: [
+          {
+            title: 'Derrame y taponamiento',
+            points: [
+              'Tamaño (espacio libre en telediástole): pequeño < 10 mm, moderado 10–20 mm, grande > 20 mm.',
+              'Colapso de la AD > 1/3 del ciclo: sensible; colapso diastólico del VD: más específico.',
+              'VCI pletórica (> 21 mm y colapso inspiratorio < 50 %): muy sensible; si la VCI colapsa, el taponamiento es poco probable.',
+              'Variación respiratoria exagerada: E mitral > 25–30 % (cae en inspiración) y E tricuspídea > 40 % (aumenta en inspiración).',
+              'El taponamiento es un diagnóstico clínico-ecográfico: importa la velocidad de acumulación más que el volumen.',
+            ],
+            tip: 'Derrame pericárdico en PEL: por delante de la aorta descendente; derrame pleural: por detrás de ella.',
+          },
+          {
+            title: 'Pericarditis constrictiva',
+            points: [
+              'Interdependencia ventricular: rebote septal (septal bounce) y desplazamiento respiratorio del septo.',
+              'Variación respiratoria de la E mitral ≥ 25 %, VCI pletórica e inversión diastólica espiratoria en venas hepáticas.',
+              'e′ medial conservada o alta (annulus paradoxus) y e′ lateral menor que la medial (annulus reversus).',
+              'Criterios Mayo: desplazamiento septal + e′ medial ≥ 9 cm/s + cociente de inversión espiratoria en venas hepáticas ≥ 0,79.',
+              'Cateterismo: dip-plateau, igualación de presiones diastólicas y discordancia de las presiones sistólicas VI/VD con la respiración.',
+            ],
+          },
+          {
+            title: 'Diagnóstico diferencial y pericarditis aguda',
+            points: [
+              'Restricción: e′ baja (< 7 cm/s), E/e′ alto, sin interdependencia respiratoria, PSAP a menudo > 50 mmHg y dilatación biauricular.',
+              'Pericarditis aguda: ≥ 2 de 4 (dolor típico, roce, cambios ECG, derrame nuevo o que empeora); la eco puede ser normal.',
+              'Grasa epicárdica: hipoecogénica-granular, anterior y móvil con el corazón; no suele verse aislada en la cara posterior.',
+              'Pericardiocentesis guiada por eco: se elige el punto de mayor colección más cercano a la piel; el suero agitado confirma la posición de la aguja.',
+              'Hemopericardio por disección tipo A o rotura de pared: la pericardiocentesis no es el tratamiento definitivo, sino la cirugía.',
+            ],
+            tip: 'Constrictiva-efusiva: si tras drenar el derrame la PAD sigue > 10 mmHg o no baja > 50 %, piensa en constricción del pericardio visceral.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'eco-u8-l1',
+          title: 'Derrame y taponamiento',
+          questions: [
+            { type: 'match', prompt: 'Relaciona el espacio libre telediastólico con el tamaño del derrame pericárdico', pairs: [['< 10 mm', 'Pequeño'], ['10–20 mm', 'Moderado'], ['> 20 mm', 'Grande']], explain: 'Se mide en telediástole el espacio libre de ecos; la clasificación orienta pronóstico y abordaje, pero no define taponamiento.' },
+            { type: 'mc', prompt: 'De estos signos ecográficos de taponamiento, ¿cuál es el más específico?', options: ['Colapso diastólico de la pared libre del VD', 'Colapso sistólico breve de la AD', 'Derrame > 20 mm', 'Corazón "bailarín" (swinging heart)'], answer: 0, diagram: { id: 'a4c', highlight: 'rv' }, explain: 'El colapso de la AD es precoz y sensible (específico si dura > 1/3 del ciclo); el colapso diastólico del VD indica que la presión pericárdica supera la del VD y es más específico.' },
+            { type: 'tf', prompt: 'Una VCI de 12 mm que colapsa > 50 % con la inspiración hace muy improbable el taponamiento.', answer: true, explain: 'La VCI pletórica (> 21 mm, colapso < 50 %) aparece en > 90 % de los taponamientos; su ausencia tiene alto valor predictivo negativo (salvo hipovolemia: taponamiento de baja presión).' },
+            { type: 'mc', prompt: 'Doppler pulsado mitral: E en inspiración 60 cm/s y en espiración 90 cm/s. Variación respiratoria [(máx − mín)/máx] y su interpretación:', options: ['33 %: exagerada, compatible con fisiología de taponamiento', '50 %: normal', '15 %: normal', '33 %: normal, el límite es 50 %'], answer: 0, explain: '(90 − 60)/90 = 0,33. Una caída inspiratoria de la E mitral > 25–30 % (o aumento de la tricuspídea > 40 %) traduce interdependencia ventricular.' },
+            { type: 'mc', prompt: 'En paraesternal eje largo se ve una colección anecoica posterior. ¿Qué la identifica como derrame pericárdico y no pleural?', options: ['Se sitúa por delante de la aorta descendente', 'Se sitúa por detrás de la aorta descendente', 'Se extiende por detrás de la AI más allá del surco AV', 'Cambia de tamaño con la respiración'], answer: 0, diagram: { id: 'plax', highlight: 'la' }, explain: 'El derrame pericárdico se insinúa entre la aorta descendente y la AI; el pleural queda posterior y lateral a la aorta. El pericárdico apenas se extiende tras la AI por la reflexión de las venas pulmonares.' },
+            { type: 'tf', prompt: 'En un paciente hipovolémico (p. ej. hemodiálisis) puede haber taponamiento con VCI no dilatada y presiones de llenado bajas.', answer: true, explain: 'Es el taponamiento de "baja presión": la presión intrapericárdica es baja pero supera la de unas cavidades poco llenas; mejora con volumen y drenaje.' },
+          ],
+        },
+        {
+          id: 'eco-u8-l2',
+          title: 'Pericarditis constrictiva',
+          questions: [
+            { type: 'mc', prompt: 'Curva de presión del VD en un paciente con edemas, ascitis y VCI pletórica. El patrón que muestra se llama…', options: ['Dip-plateau o "raíz cuadrada"', 'Onda v gigante', 'Ondas a en cañón', 'Pulso parvus et tardus'], answer: 0, pressure: 'rv-dip', explain: 'El llenado protodiastólico rápido se detiene bruscamente contra un pericardio rígido. Aparece en constricción y en restricción: no basta para distinguirlas.' },
+            { type: 'match', prompt: 'Relaciona cada signo ecográfico de constricción con su mecanismo', pairs: [['Rebote septal', 'Interdependencia ventricular'], ['e′ medial ≥ 9 cm/s', 'Relajación miocárdica conservada'], ['e′ lateral < e′ medial', 'Anclaje de la pared lateral al pericardio'], ['Inversión diastólica espiratoria en venas hepáticas', 'Menor llenado del corazón derecho en espiración']], explain: 'El miocardio es sano y el pericardio rígido impone un volumen total fijo: lo que entra en un ventrículo lo pierde el otro.' },
+            { type: 'tf', prompt: 'En la pericarditis constrictiva la e′ medial suele estar reducida (< 7 cm/s) porque el miocardio está dañado.', answer: false, explain: 'Al contrario: la e′ medial suele estar conservada o aumentada (annulus paradoxus), porque el movimiento longitudinal compensa la limitación lateral. La e′ baja apunta a restricción.' },
+            { type: 'mc', prompt: '¿Qué combinación forma los criterios ecográficos de Mayo para constricción?', options: ['Desplazamiento septal + e′ medial ≥ 9 cm/s + inversión espiratoria en venas hepáticas ≥ 0,79', 'Derrame > 20 mm + VCI pletórica + colapso de AD', 'Dilatación biauricular + e′ < 7 cm/s + PSAP > 50 mmHg', 'Engrosamiento pericárdico > 4 mm + calcificación + FA'], answer: 0, explain: 'Desplazamiento septal con e′ medial ≥ 9 cm/s o cociente hepático ≥ 0,79 tiene sensibilidad ≈ 87 % y especificidad ≈ 91 % (Welch 2014).' }, // REVISAR: cifras exactas de sensibilidad/especificidad del estudio Mayo
+            { type: 'mc', prompt: 'En el cateterismo simultáneo VI-VD, ¿qué hallazgo es el más específico de constricción frente a restricción?', options: ['Discordancia de las presiones sistólicas VI/VD con la respiración', 'Dip-plateau en ambos ventrículos', 'Presión telediastólica del VI elevada', 'Presión de AD > 15 mmHg'], answer: 0, explain: 'En inspiración sube la sistólica del VD y baja la del VI (índice de área sistólica > 1,1). Dip-plateau y presiones altas aparecen también en restricción.' },
+            { type: 'tf', prompt: 'Un pericardio de grosor normal en TC o RM excluye la pericarditis constrictiva.', answer: false, explain: 'Hasta un 18–20 % de las constricciones confirmadas tienen grosor pericárdico normal; el diagnóstico es fisiológico (interdependencia).' }, // REVISAR: porcentaje (Talreja 2003, ~18 %)
+          ],
+        },
+        {
+          id: 'eco-u8-l3',
+          title: 'Pericarditis aguda, drenaje y diagnóstico diferencial',
+          questions: [
+            { type: 'match', prompt: 'Relaciona el hallazgo ecográfico con la entidad que sugiere', pairs: [['Variación de la E mitral ≥ 25 % con e′ medial 12 cm/s', 'Constricción'], ['e′ septal 4 cm/s, E/e′ 20 y PSAP 65 mmHg', 'Restricción'], ['Derrame con colapso diastólico del VD', 'Taponamiento'], ['Banda anterior aislada y granular', 'Grasa epicárdica']], explain: 'La restricción es una enfermedad del miocardio (e′ baja, presiones izquierdas y pulmonares altas); la constricción, del pericardio (miocardio sano con interdependencia).' },
+            { type: 'mc', prompt: 'Criterios diagnósticos de pericarditis aguda (ESC): se requieren al menos…', options: ['2 de 4: dolor pericárdico, roce, elevación difusa del ST o descenso del PR, derrame nuevo o que empeora', 'Derrame pericárdico en la eco en todos los casos', '3 de 4 criterios con troponina elevada', 'Engrosamiento pericárdico en la eco'], answer: 0, explain: 'La eco puede ser normal en la pericarditis aguda; los marcadores inflamatorios y la RM apoyan. Si sube la troponina, hablamos de miopericarditis.' }, // REVISAR: la guía ESC 2025 introduce el "síndrome inflamatorio miopericárdico"; criterios clásicos de ESC 2015
+            { type: 'tf', prompt: 'Una banda anecoica anterior aislada, sin componente posterior, sugiere más grasa epicárdica que derrame.', answer: true, explain: 'La grasa epicárdica es anterior, algo granular y se mueve con el corazón; el derrame libre se acumula primero en la zona posterior declive.' },
+            { type: 'mc', prompt: 'Durante una pericardiocentesis guiada por eco no se está seguro de la posición de la aguja. ¿Qué maniobra lo confirma?', options: ['Inyectar suero salino agitado y verlo en el espacio pericárdico', 'Medir la PAD a través de la aguja', 'Aspirar sangre que no coagula', 'Pedir una radiografía de tórax'], answer: 0, explain: 'Las microburbujas en el saco (y no dentro del VD) confirman la posición; el aspecto de la sangre no permite distinguir con seguridad hemopericardio de cavidad.' },
+            { type: 'mc', prompt: 'Derrame con taponamiento y flap intimal en la raíz aórtica dilatada. La actitud correcta es…', options: ['Cirugía urgente; evitar la pericardiocentesis como tratamiento definitivo', 'Pericardiocentesis completa inmediata y después TC', 'Fibrinolisis', 'Antiinflamatorios y colchicina'], answer: 0, explain: 'En el hemopericardio por disección tipo A el drenaje completo puede reactivar el sangrado; si el paciente está en parada inminente, solo drenaje controlado de pequeños volúmenes como puente a cirugía.' },
+            { type: 'tf', prompt: 'Si tras drenar el derrame la presión de AD sigue elevada, debe sospecharse pericarditis constrictiva-efusiva.', answer: true, explain: 'El pericardio visceral rígido mantiene la constricción aunque se haya retirado el líquido (persistencia de PAD > 10 mmHg o caída < 50 %).' },
+          ],
+        },
+      ],
+    },
   ],
 };

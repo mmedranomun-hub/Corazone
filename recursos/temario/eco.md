@@ -62,7 +62,7 @@ Referencias troncales: cuantificación de cavidades ASE/EACVI 2015; función dia
 | Válvulas derechas (`eco-u6-l4`) | ✅ | Graduar IT (hasta "masiva" y "torrencial"); estimar presiones; reconocer IT secundaria por dilatación anular. | `pressure` (AD con onda v) |
 | Prótesis y endocarditis (`eco-u6-l4`) | ✅ | Diferenciar estenosis protésica de mismatch (EOAi); reconocer criterios ecográficos de endocarditis (vegetación, absceso, dehiscencia) y criterios de Duke-ISCVID 2023 / ESC 2023. | `—` |
 
-### Unidad 7. Pericardio ampliado ⬜
+### Unidad 7. Pericardio ampliado ✅
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
 | Derrame y taponamiento | 🟡 | Cuantificar el derrame (< 10, 10–20, > 20 mm); reconocer signos Doppler de taponamiento (variación mitral > 25 %, tricuspídea > 40 %). | `pressure` (pulso paradójico) |
