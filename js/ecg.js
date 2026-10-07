@@ -25,12 +25,22 @@ const A_SPIKE = (b) => 0.02 - (b.pr ?? 0.16) - 0.055;
 const V_SPIKE = -0.085;
 
 // Morfología de un latido. t relativo al pico R (s).
+// `invert` (opcional) invierte todo el latido (p. ej. derivación I con los electrodos de brazos invertidos).
 function beatWave(t, b) {
+  const v = beatWaveRaw(t, b);
+  return b.invert ? -v : v;
+}
+
+function beatWaveRaw(t, b) {
   let v = 0;
   if (b.aSpike) v += spike(t, b.aSpike, A_SPIKE(b));
+  if (b.vSpikeOnly) v += spike(t, b.vSpikeOnly, V_SPIKE); // espiga sin captura (fallo de captura / de detección)
   if (b.p !== false) {
     const pc = 0.02 - (b.pr ?? 0.16);
-    v += gauss(t, b.pAmp ?? 0.15, pc + (b.pOffset ?? 0), 0.025);
+    const pa = b.pAmp ?? 0.15;
+    if (b.pShape === 'notched') v += gauss(t, 0.85 * pa, pc - 0.032, 0.02) + gauss(t, pa, pc + 0.032, 0.021); // P mitral (bífida, ancha)
+    else if (b.pShape === 'biphasic') v += gauss(t, pa, pc - 0.03, 0.018) + gauss(t, -(b.pNeg ?? 0.1), pc + 0.032, 0.026); // P bifásica en V1
+    else v += gauss(t, pa, pc + (b.pOffset ?? 0), b.pWidth ?? 0.025);
     if (b.prDep) v += b.prDep * sigmoid((t - pc - 0.04) / 0.01) * sigmoid((-0.03 - t) / 0.006);
   }
   if (b.qrs === false) return v;
@@ -48,6 +58,13 @@ function beatWave(t, b) {
       // ST-T discordante: opuesto a la deflexión principal del QRS
       if (b.ventT) v += b.ventT * 0.4 * sigmoid((t - 0.1) / 0.015) * sigmoid((0.24 - t) / 0.03);
       v += gauss(t, b.ventT ?? -0.4, 0.26, 0.05);
+      break;
+    case 'vtw': // TV: QRS muy ancho (~200 ms) y monofásico, con inicio lento y ST-T opuesto
+      v += gauss(t, 0.35 * r, -0.045, 0.03) + gauss(t, r, 0.01, 0.03) + gauss(t, 0.55 * r, 0.075, 0.03);
+      v += gauss(t, -0.3 * r, 0.24, 0.045);
+      break;
+    case 'fusion': // latido de fusión: mitad conducido, mitad ventricular
+      v += 0.5 * beatWaveRaw(t, { ...b, morph: 'vent', p: false, aSpike: 0, vSpikeOnly: 0 }) + 0.5 * beatWaveRaw(t, { ...b, morph: undefined, p: false, aSpike: 0, vSpikeOnly: 0 });
       break;
     case 'rsr': // BRD en V1: rSR'
       v += gauss(t, 0.3, -0.025, 0.009) + gauss(t, -0.35, 0.012, 0.01) + gauss(t, r, 0.06, 0.016);
@@ -67,6 +84,10 @@ function beatWave(t, b) {
       if (b.jNotch) v += gauss(t, b.jNotch, 0.04, 0.008); // muesca J
       if (b.jDep) v += b.jDep * sigmoid((t - 0.03) / 0.005) * sigmoid((0.11 - t) / 0.025); // ST descendido ascendente
       if (b.coved) v += b.coved * sigmoid((t - 0.028) / 0.004) * sigmoid((0.16 - t) / 0.038); // ST en cúpula (Brugada)
+      if (b.rPrime) v += gauss(t, b.rPrime, 0.042, 0.013); // r' de despegue alto (Brugada tipo 2)
+      if (b.epsilon) for (const [k, d] of [[1, 0.062], [-0.8, 0.076], [0.9, 0.09], [-0.5, 0.103]]) v += gauss(t, k * b.epsilon, d, 0.0055); // onda épsilon (DAVD)
+      if (b.tBifid) v += gauss(t, b.tBifid, tc + (b.tBifidDt ?? 0.1), 0.035); // segunda joroba de la T (T bífida, LQT2)
+      if (b.scoop) { const x = (t - 0.035) / (b.scoopLen ?? 0.17); if (x > 0 && x < 1) v -= b.scoop * 2.6 * x * Math.sqrt(1 - x); } // ST en cubeta (digoxina)
     }
   }
   return v;
@@ -321,6 +342,110 @@ export const RHYTHMS = {
       };
     },
   },
+  'vt-bidir': {
+    name: 'Taquicardia ventricular bidireccional',
+    desc: 'TV regular de QRS ancho en la que el eje del QRS alterna 180° latido a latido (un QRS positivo, el siguiente negativo). Muy específica: intoxicación digitálica, taquicardia ventricular polimórfica catecolaminérgica (TVPC) y síndrome de Andersen-Tawil.',
+    build: (s) => {
+      const beats = sinusBeats(165, s, { p: false, morph: 'vent' });
+      beats.forEach((b, i) => Object.assign(b, i % 2 ? { rAmp: -0.75, ventT: 0.3 } : { rAmp: 0.95, ventT: -0.35 }));
+      return { beats };
+    },
+  },
+  'vt-capture': {
+    name: 'TV con latidos de captura y de fusión',
+    desc: 'TV de QRS ancho con disociación AV: las ondas P van a su ritmo, más lento (algunas asoman entre los QRS). Si una P llega en el momento oportuno conduce y produce un latido de captura (QRS estrecho y prematuro) o de fusión (morfología intermedia entre el QRS sinusal y el de la TV). Ambos son criterios de TV frente a TSV con aberrancia.',
+    build: (s) => {
+      // P disociadas (PP 0,7 s); la 4.ª captura el ventrículo y la 7.ª lo fusiona
+      const beats = [];
+      const pp = 0.7, p0 = 0.34;
+      const special = { 3: { capture: true, pr: 0.16 }, 6: { morph: 'fusion', pr: 0.11, rAmp: 0.95 } };
+      for (let k = 0, tp = p0; tp < s + 1; k++, tp = p0 + k * pp) {
+        const sp = special[k];
+        if (sp) beats.push({ t: tp - 0.02 + sp.pr, ...sp, qt: 0.3 });
+        else beats.push({ t: tp + 0.14, qrs: false, pAmp: 0.13 });
+      }
+      // TV a 150 lpm que se reinicia tras la captura (la fusión llega en su momento)
+      const cap = beats.find((b) => b.capture).t;
+      for (let t = 0.3; t < s + 1; t += 0.4) {
+        if (t > cap - 0.15 && t < cap + 0.45) { t = cap + 0.05; continue; } // siguiente TV a 0,45 s de la captura
+        if (beats.some((b) => b.morph === 'fusion' && Math.abs(b.t - t) < 0.15)) continue;
+        beats.push({ t, p: false, morph: 'vent' });
+      }
+      return { beats: beats.sort((a, b) => a.t - b.t) };
+    },
+  },
+  mat: {
+    name: 'Taquicardia auricular multifocal',
+    desc: 'Taquicardia irregular (> 100 lpm) con ondas P de al menos 3 morfologías distintas, intervalos PP, PR y RR variables y línea de base isoeléctrica entre P (a diferencia de la FA). Típica de la EPOC descompensada; tratar la causa (hipoxemia, hipopotasemia, hipomagnesemia).',
+    build: (s, r) => {
+      const foci = [{ pAmp: 0.17 }, { pAmp: -0.1 }, { pShape: 'notched', pAmp: 0.11 }, { pAmp: 0.27, pWidth: 0.015 }];
+      const beats = [];
+      let last = -1;
+      for (let t = 0.4; t < s + 1; t += 0.48 + r() * 0.16) {
+        let k = Math.floor(r() * foci.length);
+        if (k === last) k = (k + 1 + Math.floor(r() * 3)) % foci.length;
+        last = k;
+        beats.push({ t, qt: 0.3, tAmp: 0.22, pr: 0.12 + r() * 0.07, ...foci[k] });
+      }
+      return { beats };
+    },
+  },
+  'pacer-fail': {
+    name: 'Marcapasos: fallo de captura',
+    desc: 'Espigas de marcapasos a la frecuencia programada, pero algunas NO van seguidas de QRS (el estímulo no despolariza el ventrículo) → pausas. En un paciente dependiente (aquí BAV completo de base: las P propias no conducen) puede causar síncope. Causas: dislocación del electrodo, aumento del umbral (fibrosis, isquemia, hiperpotasemia, fármacos), batería agotada.',
+    build: (s) => {
+      const beats = [];
+      let i = 0;
+      for (let t = 0.45; t < s + 1; t += 1, i++) {
+        if (i % 4 === 2) beats.push({ t, p: false, qrs: false, vSpikeOnly: 1.4 });
+        else beats.push({ t, p: false, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 });
+      }
+      for (let t = 0.32; t < s + 1; t += 0.72) beats.push({ t: t + 0.14, qrs: false, pAmp: 0.13 }); // P disociadas
+      return { beats: beats.sort((a, b) => a.t - b.t) };
+    },
+  },
+  'pacer-undersense': {
+    name: 'Marcapasos: fallo de detección (infradetección)',
+    desc: 'El marcapasos no "ve" los QRS propios y estimula a su frecuencia fija sin tenerlos en cuenta: aparecen espigas en mitad del ciclo (sobre el ST o la T) que no capturan por caer en periodo refractario, y otras que capturan si caen fuera de él. Una espiga sobre la T puede desencadenar arritmias ventriculares (R sobre T). Causas: sensibilidad mal programada, electrodo dislocado o QRS propios de baja amplitud.',
+    build: (s) => {
+      // Ritmo sinusal a 70 lpm y marcapasos VVI a 60 lpm que no lo detecta.
+      const sinus = [];
+      for (let t = 0.35; t < s + 1; t += 0.85) sinus.push(t);
+      const beats = [];
+      const qrs = []; // QRS reales (para el periodo refractario)
+      const spikes = [];
+      for (let t = 0.6; t < s + 1; t += 1) spikes.push(t);
+      const events = [...sinus.map((t) => ({ t, kind: 's' })), ...spikes.map((t) => ({ t: t - V_SPIKE, kind: 'v' }))].sort((a, b) => a.t - b.t);
+      for (const e of events) {
+        const lastQ = qrs.length ? qrs.at(-1) : -9;
+        if (e.kind === 's') {
+          if (e.t - lastQ < 0.4) beats.push({ t: e.t, qrs: false }); // ventrículo refractario: sólo P
+          else { beats.push({ t: e.t, qt: 0.36 }); qrs.push(e.t); }
+        } else if (e.t - lastQ < 0.45) beats.push({ t: e.t, p: false, qrs: false, vSpikeOnly: 1.4 });
+        else { beats.push({ t: e.t, p: false, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 }); qrs.push(e.t); }
+      }
+      return { beats };
+    },
+  },
+  'afl-4to1': {
+    name: 'Flutter auricular 4:1',
+    desc: 'Ondas F en "dientes de sierra" a ~300/min (negativas en II, III y aVF en el flutter típico) con una de cada cuatro conducida: FC ventricular regular ~75 lpm. Las ondas F se ven mejor que en el 2:1, donde quedan ocultas en el QRS y la T.',
+    build: (s) => {
+      const beats = [];
+      for (let t = 0.3; t < s + 1; t += 0.8) beats.push({ t, p: false, tAmp: 0.15 });
+      return { beats, baseline: (t) => { const x = ((t + 0.05) / 0.2) % 1; return -0.2 * (x < 0.7 ? x / 0.7 : (1 - x) / 0.3) + 0.1; } };
+    },
+  },
+  '2to1-avb': {
+    name: 'Bloqueo AV 2:1',
+    desc: 'Ritmo sinusal regular en el que una de cada dos P no conduce (FC ventricular = mitad de la auricular). No permite distinguir Mobitz I de Mobitz II (no hay dos PR consecutivos que comparar): QRS ancho sugiere bloqueo infrahisiano; QRS estrecho con PR largo, nodal. Buscar tiras con conducción 3:2.',
+    build: (s) => {
+      const beats = [];
+      let i = 0;
+      for (let t = 0.35; t < s + 1; t += 0.72, i++) beats.push(i % 2 ? { t, qrs: false } : { t, pr: 0.2 });
+      return { beats };
+    },
+  },
 };
 
 function sampleBeats(beats, baseline, seconds) {
@@ -349,7 +474,7 @@ export function sampleEcg(id, { seconds = 6, seed = 7 } = {}) {
 }
 
 // Centros temporales (s) de un tipo de onda en la tira, para preguntas de "toca la onda".
-// wave: 'p' | 'pBlocked' | 'qrs' | 'vent' | 't' | 'spike' (espigas de marcapasos)
+// wave: 'p' | 'pBlocked' | 'qrs' | 'vent' | 't' | 'spike' (espigas de marcapasos) | 'capture' | 'fusion' (latidos de captura/fusión en TV)
 export function waveTimes(id, wave, { seconds = 6, seed = 7 } = {}) {
   const { beats } = buildRhythm(id, seconds, seed);
   const pCenter = (b) => b.t + 0.02 - (b.pr ?? 0.16);
@@ -360,14 +485,16 @@ export function waveTimes(id, wave, { seconds = 6, seed = 7 } = {}) {
     qrs: () => beats.filter((b) => b.qrs !== false).map((b) => b.t),
     vent: () => beats.filter((b) => b.morph === 'vent').map((b) => b.t),
     t: () => beats.filter((b) => b.qrs !== false).map(tCenter),
-    spike: () => beats.flatMap((b) => [b.aSpike && b.t + A_SPIKE(b), b.vSpike && b.qrs !== false && b.t + V_SPIKE].filter(Boolean)).sort((x, y) => x - y),
+    spike: () => beats.flatMap((b) => [b.aSpike && b.t + A_SPIKE(b), b.vSpike && b.qrs !== false && b.t + V_SPIKE, b.vSpikeOnly && b.t + V_SPIKE].filter(Boolean)).sort((x, y) => x - y),
+    capture: () => beats.filter((b) => b.capture).map((b) => b.t),
+    fusion: () => beats.filter((b) => b.morph === 'fusion').map((b) => b.t),
   }[wave];
   if (!pick) throw new Error(`Onda desconocida: ${wave}`);
   return pick().filter((t) => t > 0.05 && t < seconds - 0.05);
 }
 
 // Tolerancia (s) al tocar cada onda
-export const WAVE_TOLERANCE = { p: 0.07, pBlocked: 0.07, qrs: 0.06, vent: 0.08, t: 0.09, spike: 0.05 };
+export const WAVE_TOLERANCE = { p: 0.07, pBlocked: 0.07, qrs: 0.06, vent: 0.08, t: 0.09, spike: 0.05, capture: 0.08, fusion: 0.08 };
 
 const toPoints = (samples, x0, base, h) =>
   samples
@@ -494,7 +621,7 @@ export const TWELVE_LEAD = {
   },
   'stemi-inf-rv': {
     name: 'IAMCEST inferior con afectación de VD',
-    desc: 'Elevación del ST en II, III y aVF (III > II, CD proximal) con descenso especular en I y aVL y elevación del ST en V1. Para confirmar la afectación del VD se requiere V4R (elevación ≥ 0,5 mm; ≥ 1 mm en varones < 40 años), que no se registra en el ECG estándar. Evitar nitratos y asegurar precarga.',
+    desc: 'Elevación del ST en II, III y aVF (III > II, CD proximal) con descenso especular en I y aVL y elevación del ST en V1. Para confirmar la afectación del VD se requiere V4R (elevación ≥ 0,5 mm; ≥ 1 mm en varones < 30 años), que no se registra en el ECG estándar. Evitar nitratos y asegurar precarga.',
     st: { II: 0.3, III: 0.48, aVF: 0.4, I: -0.14, aVL: -0.24, V1: 0.15, V2: 0.03 },
   },
   hypok: {
@@ -538,10 +665,116 @@ export const TWELVE_LEAD = {
     paced: true,
     rate: 70,
   },
+  vt12: {
+    name: 'Taquicardia ventricular monomorfa (12 derivaciones)',
+    desc: 'Taquicardia regular de QRS muy ancho (~200 ms) sin P visibles, eje superior (QRS negativo en II, III y aVF, positivo en aVR) y concordancia negativa en precordiales (QS de V1 a V6). La concordancia precordial y el eje extremo apoyan TV frente a TSV con aberrancia; ante la duda, tratar como TV.',
+    rate: 170,
+    vt: { axis: -100, prec: { V1: -0.9, V2: -1.4, V3: -1.6, V4: -1.5, V5: -1.2, V6: -0.9 } },
+  },
+  brugada2: {
+    name: 'Patrón de Brugada tipo 2 (en silla de montar)',
+    desc: 'En V2 (y V1): r\' de despegue alto (≥ 2 mm) seguida de un ST elevado ≥ 0,5 mm y cóncavo hacia arriba ("silla de montar") con T positiva. No es diagnóstico por sí mismo: se confirma si un test con bloqueador de sodio (ajmalina, flecainida, procainamida) lo convierte en tipo 1.',
+    extra: {
+      V1: { rAmp: 0.25, sAmp: 0.6, rPrime: 0.18, st: 0.06, tAmp: 0.1 },
+      V2: { rAmp: 0.3, sAmp: 0.9, rPrime: 0.3, st: 0.12, tAmp: 0.42, tWidth: 0.05 },
+      V3: { st: 0.06, rPrime: 0.08 },
+    },
+  },
+  arvc: {
+    name: 'Displasia/miocardiopatía arritmogénica del VD',
+    desc: 'T negativas en V1–V3 (criterio mayor en > 14 años sin BRD) y onda épsilon en V1–V2: pequeñas muescas de bajo voltaje justo tras el QRS, por activación tardía del VD. La S de V1–V3 se empasta (activación terminal ≥ 55 ms). Puede dar TV con morfología de BRI. Riesgo de muerte súbita en jóvenes y deportistas.',
+    extra: {
+      V1: { tAmp: -0.25, sWidth: 0.013, epsilon: 0.07 },
+      V2: { tAmp: -0.35, sWidth: 0.013, epsilon: 0.06, tWidth: 0.055 },
+      V3: { tAmp: -0.28, sWidth: 0.012, tWidth: 0.055 },
+    },
+  },
+  lqt1: {
+    name: 'QT largo congénito tipo 1 (LQT1)',
+    desc: 'QT largo con ondas T de base ancha, amplias y de inicio precoz (el ST apenas se distingue). Canal IKs (KCNQ1). Los eventos se desencadenan con el ejercicio, sobre todo la natación. Tratamiento: betabloqueantes (nadolol, propranolol).',
+    rate: 60,
+    mod: (b) => Object.assign(b, { qt: 0.46, tWidth: 0.07, tAmp: b.tAmp * 1.25 }),
+  },
+  lqt2: {
+    name: 'QT largo congénito tipo 2 (LQT2)',
+    desc: 'QT largo con ondas T de baja amplitud y bífidas o melladas (dos jorobas). Canal IKr (KCNH2/hERG). Eventos con estímulos auditivos bruscos (despertador, teléfono) o en el posparto.',
+    rate: 60,
+    mod: (b) => Object.assign(b, { qt: 0.46, tWidth: 0.034, tAmp: b.tAmp * 0.55, tBifid: b.tAmp * 0.5 }),
+  },
+  lqt3: {
+    name: 'QT largo congénito tipo 3 (LQT3)',
+    desc: 'QT largo a expensas de un ST largo e isoeléctrico, con una T de aparición tardía, estrecha y de amplitud normal o picuda. Canal de sodio (SCN5A, ganancia de función). Eventos en reposo o durante el sueño (bradicardia).',
+    rate: 60,
+    mod: (b) => Object.assign(b, { qt: 0.6, tWidth: 0.03, tAmp: b.tAmp * 1.15 }),
+  },
+  lae: {
+    name: 'Crecimiento auricular izquierdo',
+    desc: 'P "mitral": ancha (≥ 120 ms) y mellada (bífida, con jorobas separadas ≥ 40 ms) en II, y bifásica en V1 con componente terminal negativo ancho y profundo (≥ 1 mm × 40 ms, índice de Morris). Causas: estenosis mitral, HTA, miocardiopatías.',
+    mod: (b, lead) => Object.assign(b, { pr: 0.2 }, lead === 'V1' ? { pShape: 'biphasic', pAmp: 0.06, pNeg: 0.14 } : lead === 'V2' ? { pShape: 'biphasic', pAmp: 0.06, pNeg: 0.06 } : { pShape: 'notched', pAmp: b.pAmp * 0.95 }),
+  },
+  rae: {
+    name: 'Crecimiento auricular derecho',
+    desc: 'P "pulmonar": alta y picuda (≥ 2,5 mm) en II, III y aVF, de duración normal (< 120 ms), con componente inicial positivo prominente en V1 (≥ 1,5 mm). Causas: EPOC, hipertensión pulmonar, valvulopatía tricúspide, cardiopatías congénitas.',
+    mod: (b, lead) => Object.assign(b, { pWidth: 0.019, pAmp: lead === 'V1' || lead === 'V2' ? 0.18 : lead.startsWith('V') ? b.pAmp : 0.31 * cosd(75 - LIMB_ANGLE[lead]) }),
+  },
+  lafb: {
+    name: 'Hemibloqueo anterior izquierdo',
+    desc: 'Eje izquierdo extremo (≈ −45° a −90°; aquí −60°) con qR en I y aVL y rS en II, III y aVF (S III > S II), QRS < 120 ms. El más frecuente de los bloqueos fasciculares.',
+    axis: -60,
+    extra: { aVL: { qAmp: 0.14, qWidth: 0.008 }, I: { qAmp: 0.1 }, V5: { sAmp: 0.4 }, V6: { sAmp: 0.3 } },
+  },
+  'rbbb-lafb': {
+    name: 'Bloqueo bifascicular (BRD + HBAI)',
+    desc: 'Bloqueo de rama derecha (QRS ≥ 120 ms, rSR\' en V1–V2, S ancha en I y V6) con eje izquierdo extremo (≈ −60°: qR en aVL, rS en II, III y aVF). Sólo conduce el fascículo posterior izquierdo: si aparece síncope, descartar bloqueo AV paroxístico.',
+    axis: -60,
+    rbbb: true,
+    extra: { aVL: { qAmp: 0.14, qWidth: 0.008 }, I: { qAmp: 0.1 } },
+  },
+  hyperk12: {
+    name: 'Hiperpotasemia (12 derivaciones)',
+    desc: 'Ondas T altas, estrechas, picudas y simétricas ("en tienda de campaña"), más visibles en V2–V4, con P aplanadas. Si progresa: PR largo, pérdida de la P, QRS ancho y patrón sinusoidal. Urgencia: gluconato cálcico, insulina con glucosa, salbutamol.',
+    mod: (b, lead) => Object.assign(b, { tWidth: 0.026, pAmp: b.pAmp * 0.45, tAmp: { V1: 0.45, V2: 1.2, V3: 1.3, V4: 1.2, V5: 0.9, V6: 0.7 }[lead] ?? b.tAmp * 2.6 }),
+  },
+  digoxin: {
+    name: 'Efecto digitálico (cubeta digitálica)',
+    desc: 'Descenso del ST "en cubeta" (en bigote de Dalí): cae despacio desde el punto J y vuelve bruscamente, con T aplanada o bifásica y QT corto; más visible en derivaciones con R altas. Es efecto del fármaco, no intoxicación (ésta se sospecha por las arritmias: extrasístoles, taquicardia auricular con bloqueo, TV bidireccional).',
+    rate: 66,
+    mod: (b, lead) => Object.assign(b, { qt: 0.32, tAmp: b.tAmp * 0.3, scoop: { I: 0.12, II: 0.16, III: 0.06, aVR: -0.12, aVL: 0.06, aVF: 0.12, V1: 0.02, V2: 0.06, V3: 0.12, V4: 0.18, V5: 0.2, V6: 0.17 }[lead] }),
+  },
+  wpw12: {
+    name: 'Wolff-Parkinson-White (12 derivaciones)',
+    desc: 'PR corto (< 120 ms), onda delta (empastamiento inicial del QRS) y QRS ancho con alteraciones secundarias de la repolarización. Aquí la delta es negativa en III y aVF (vía accesoria posteroseptal): produce falsas ondas Q que simulan una necrosis inferior (pseudoinfarto).',
+    mod: (b, lead) => {
+      const d = { I: 0.22, II: -0.06, III: -0.32, aVR: -0.15, aVL: 0.25, aVF: -0.24, V1: 0.05, V2: 0.3, V3: 0.32, V4: 0.32, V5: 0.3, V6: 0.25 }[lead];
+      Object.assign(b, { pr: 0.1, delta: d, deltaW: 0.02, qAmp: 0 });
+      if (lead === 'III' || lead === 'aVF') b.tAmp = -0.15;
+      if (lead === 'V1') Object.assign(b, { rAmp: 0.4, sAmp: 0.7 });
+      if (lead === 'V2') Object.assign(b, { rAmp: 0.9, sAmp: 0.5 });
+      return b;
+    },
+  },
+  'limb-reversal': {
+    name: 'Inversión de electrodos de brazos',
+    desc: 'Electrodos de brazo derecho e izquierdo intercambiados: I totalmente negativo (P, QRS y T invertidas), aVR positivo, II y III intercambiadas, aVR y aVL intercambiadas, y precordiales NORMALES (lo que la distingue de la dextrocardia, en la que la R decrece de V1 a V6). Repetir el ECG colocando bien los electrodos.',
+    axis: 40,
+    armSwap: true,
+  },
 };
 
 // Morfología del latido para una derivación concreta
 function leadBeat(lead, spec) {
+  // Electrodos de brazos invertidos: I se invierte, II↔III y aVR↔aVL (aVF y precordiales no cambian)
+  const SWAP = { I: 'I', II: 'III', III: 'II', aVR: 'aVL', aVL: 'aVR' };
+  if (spec.armSwap && SWAP[lead]) {
+    const b = leadBeat(SWAP[lead], { ...spec, armSwap: false });
+    if (lead === 'I') b.invert = true;
+    return b;
+  }
+  // TV (12D): QRS muy ancho; en miembros la polaridad sale del eje, en precordiales de `prec`
+  if (spec.vt) {
+    const a = LIMB_ANGLE[lead] !== undefined ? 1.3 * cosd(spec.vt.axis - LIMB_ANGLE[lead]) : spec.vt.prec[lead];
+    return { p: false, morph: 'vtw', rAmp: a };
+  }
   const axis = spec.axis ?? 60;
   let b;
   if (LIMB_ANGLE[lead] !== undefined) {
@@ -573,6 +806,7 @@ function leadBeat(lead, spec) {
   if (spec.tScale) b.tAmp *= spec.tScale;
   if (spec.all) Object.assign(b, spec.all);
   if (spec.extra?.[lead]) Object.assign(b, spec.extra[lead]);
+  if (spec.mod) spec.mod(b, lead);
   if (spec.paced) {
     // Estimulación desde el ápex del VD: patrón BRI con eje superior
     const pos = { I: 0.7, aVL: 0.9, aVR: 0.35 };

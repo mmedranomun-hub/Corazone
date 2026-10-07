@@ -325,7 +325,7 @@ export default {
             points: [
               'Elevación nueva del ST en el punto J en ≥ 2 derivaciones contiguas: ≥ 1 mm en todas salvo V2–V3.',
               'En V2–V3: ≥ 2 mm en varones ≥ 40 años, ≥ 2,5 mm en varones < 40 y ≥ 1,5 mm en mujeres (cualquier edad).',
-              'Posteriores (V7–V9) y derechas (V3R–V4R): ≥ 0,5 mm (≥ 1 mm en varones < 40 años).',
+              'Posteriores (V7–V9): ≥ 0,5 mm (≥ 1 mm en varones < 40 años). Derechas (V3R–V4R): ≥ 0,5 mm (≥ 1 mm en varones < 30 años).',
               'Evolución: T hiperagudas → elevación del ST → ondas Q → T negativas. Q patológica: cualquier Q > 20 ms en V2–V3; ≥ 30 ms y ≥ 1 mm en el resto.',
             ],
             tip: 'ECG en < 10 min desde el primer contacto y repetir si el primero no es diagnóstico y persiste el dolor.',
