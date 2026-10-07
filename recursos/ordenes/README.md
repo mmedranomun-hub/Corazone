@@ -1,6 +1,6 @@
 # Órdenes de trabajo
 
-Cada archivo es una orden lista para entregar a un agente (`redactor-contenido` o `dev-frontend`). Formato: objetivo · archivos a tocar · alcance · criterios de aceptación · prompt sugerido.
+Cada archivo es una orden lista para entregar a un agente (`redactor-contenido`, `redactor-casos` o `dev-frontend`). Las órdenes 11–13 salen del banco de temas `../banco-temas-casos.md` (fuentes de inspiración en `../fuentes-casos.md`); 11, 12 y 13 editan el mismo archivo (`js/data/casos.js`): ejecutarlas en serie o coordinar ids de unidad. Formato: objetivo · archivos a tocar · alcance · criterios de aceptación · prompt sugerido.
 
 ## Índice por prioridad
 | Prioridad | Orden | Agente | Curso | Nivel | Depende de |
@@ -15,6 +15,9 @@ Cada archivo es una orden lista para entregar a un agente (`redactor-contenido` 
 | 7 | [07 — HP y hemodinámica avanzada](07-cate-hp-y-hemodinamica-avanzada.md) | redactor-contenido | Cate | N2–N3 | — |
 | 8 | [09 — Eco: física, segmentos y cuantificación](09-eco-fisica-segmentacion-y-cuantificacion.md) | redactor-contenido | Eco | N1/N3 | 08 (ojo de buey) |
 | 9 | [10 — Material, ICP avanzada y radioprotección](10-cate-material-icp-y-radioproteccion.md) | redactor-contenido | Cate | N1–N3 | — |
+| 9 | [13 — Casos de ECG, lote 1](13-casos-ecg-lote-1.md) | redactor-casos | Casos (ECG) | N1–N3 | — (ids visuales existentes) |
+| 10 | [11 — Casos de eco, lote 2](11-casos-eco-lote-2.md) | redactor-casos | Casos (ETT/ETE) | N2–N3 | — |
+| 11 | [12 — Casos de cateterismo, lote 2](12-casos-cateterismo-lote-2.md) | redactor-casos | Casos (cate) | N2–N3 | — |
 
 ## Hecho
 - `eco-u4` Miocardiopatías y `eco-u5` Función diastólica y POCUS (24 preguntas), creadas junto con esta carpeta.

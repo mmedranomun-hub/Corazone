@@ -348,6 +348,8 @@ h1, h2, h3 { font-weight: 900; margin: 0 0 .5rem; }
 .onboarding .btn[data-next] { margin-top: auto; }
 
 /* ===== Recompensas, prueba de unidad y legendario (v0.4) ===== */
+[hidden] { display: none !important; }
+.node-row:has(.popover) { z-index: 5; }
 :root { --purple: #ce82ff; --purple-dark: #a568cc; }
 .tb-stat.xp { color: var(--gold); }
 .tb-stat { display: inline-block; }
@@ -374,7 +376,7 @@ a.trophy.won:active { transform: translateY(6px); box-shadow: none; }
 .node.legendary { background: var(--purple); box-shadow: 0 6px 0 var(--purple-dark); }
 .popover.done.legendary { background: var(--purple); color: #fff; }
 .popover.done.legendary::before { border-bottom-color: var(--purple); }
-.btn.legend { margin-top: 8px; background: var(--purple); color: #fff; box-shadow: 0 4px 0 var(--purple-dark); }
+.btn.legend { white-space: nowrap; font-size: .9rem; letter-spacing: .2px; padding: 12px 6px !important; margin-top: 8px; background: var(--purple); color: #fff; box-shadow: 0 4px 0 var(--purple-dark); }
 .btn.legend.off { background: rgba(255,255,255,.55); color: #8a7a52; box-shadow: none; cursor: not-allowed; }
 .legend-hint { display: block; margin-top: 6px; font-size: .72rem; font-weight: 800; opacity: .85; }
 .legend-note { font-weight: 900; margin: 10px 0 0 !important; }

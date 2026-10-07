@@ -180,7 +180,7 @@ function chestScreen(gems) {
     <p class="muted">Has ganado un cofre. ¡Ábrelo!</p>
     <button class="chest-big wiggle" data-act="open" aria-label="Abrir cofre">🎁</button>
     <div class="reward-pill" hidden>💎 <b>+<span data-count="gems">0</span></b> gemas</div>
-    <button class="btn primary" data-act="next" style="--accent:var(--blue)" hidden>Continuar</button>`, 'chest');
+    <button class="btn primary" data-act="next" style="--accent:var(--blue)" hidden>Continuar</button>`, 'chest-screen');
   const open = () => {
     const c = app.querySelector('[data-act=open]');
     if (c.classList.contains('opened')) return;
@@ -205,7 +205,7 @@ function questScreen(quests) {
     <div class="quest-list">${quests.map((q) => `<div class="quest done"><span class="qi">${q.icon}</span><div><b>${esc(q.text)}</b><div class="bar small"><div class="bar-fill" style="width:100%"></div></div></div><span class="chest">🎁</span></div>`).join('')}</div>
     <div class="gem-total">💎 <span>${getState().gems}</span></div>
     <button class="btn primary" data-act="claim" style="--accent:#1cb0f6">Reclamar ${quests.reduce((a, q) => a + q.reward, 0)} 💎</button>
-    <button class="btn primary" data-act="next" hidden>Continuar</button>`, 'quests-done');
+    <button class="btn primary" data-act="next" style="--accent:#58cc02" hidden>Continuar</button>`, 'quests-done');
   app.querySelector('[data-act=claim]').onclick = async (e) => {
     const from = getState().gems;
     quests.forEach((q) => claimQuest(q.key));
