@@ -38,7 +38,7 @@ function beatWaveRaw(t, b) {
   if (b.p !== false) {
     const pc = 0.02 - (b.pr ?? 0.16);
     const pa = b.pAmp ?? 0.15;
-    if (b.pShape === 'notched') v += gauss(t, 0.85 * pa, pc - 0.032, 0.02) + gauss(t, pa, pc + 0.032, 0.021); // P mitral (bífida, ancha)
+    if (b.pShape === 'notched') v += gauss(t, 0.85 * pa, pc - 0.036, 0.019) + gauss(t, pa, pc + 0.036, 0.02); // P mitral (bífida, ancha)
     else if (b.pShape === 'biphasic') v += gauss(t, pa, pc - 0.03, 0.018) + gauss(t, -(b.pNeg ?? 0.1), pc + 0.032, 0.026); // P bifásica en V1
     else v += gauss(t, pa, pc + (b.pOffset ?? 0), b.pWidth ?? 0.025);
     if (b.prDep) v += b.prDep * sigmoid((t - pc - 0.04) / 0.01) * sigmoid((-0.03 - t) / 0.006);
@@ -62,7 +62,7 @@ function beatWaveRaw(t, b) {
     case 'vtw': { // TV: QRS muy ancho (~200 ms; `qrsW` lo escala) y monofásico, con inicio lento y ST-T opuesto
       const k = b.qrsW ?? 1;
       v += gauss(t, 0.35 * r, -0.045 * k, 0.03 * k) + gauss(t, r, 0.01 * k, 0.03 * k) + gauss(t, 0.55 * r, 0.075 * k, 0.03 * k);
-      v += gauss(t, -0.3 * r, 0.24 * k, 0.045 * k);
+      v += gauss(t, -(b.vtT ?? 0.3) * r, 0.24 * k, 0.045 * k);
       break;
     }
     case 'fusion': // latido de fusión: mitad conducido, mitad ventricular
@@ -671,15 +671,15 @@ export const TWELVE_LEAD = {
   vt12: {
     name: 'Taquicardia ventricular monomorfa (12 derivaciones)',
     desc: 'Taquicardia regular de QRS muy ancho (~200 ms) sin P visibles, eje superior (QRS negativo en II, III y aVF, positivo en aVR) y concordancia negativa en precordiales (QS de V1 a V6). La concordancia precordial y el eje extremo apoyan TV frente a TSV con aberrancia; ante la duda, tratar como TV.',
-    rate: 170,
-    vt: { axis: -100, prec: { V1: -0.9, V2: -1.4, V3: -1.6, V4: -1.5, V5: -1.2, V6: -0.9 } },
+    rate: 155,
+    vt: { axis: -100, prec: { V1: -0.6, V2: -0.85, V3: -0.95, V4: -0.9, V5: -0.75, V6: -0.6 } },
   },
   brugada2: {
     name: 'Patrón de Brugada tipo 2 (en silla de montar)',
     desc: 'En V2 (y V1): r\' de despegue alto (≥ 2 mm) seguida de un ST elevado ≥ 0,5 mm y cóncavo hacia arriba ("silla de montar") con T positiva. No es diagnóstico por sí mismo: se confirma si un test con bloqueador de sodio (ajmalina, flecainida, procainamida) lo convierte en tipo 1.',
     extra: {
-      V1: { rAmp: 0.25, sAmp: 0.6, rPrime: 0.18, st: 0.06, tAmp: 0.1 },
-      V2: { rAmp: 0.3, sAmp: 0.9, rPrime: 0.3, st: 0.12, tAmp: 0.42, tWidth: 0.05 },
+      V1: { rAmp: 0.25, sAmp: 0.6, rPrime: 0.22, st: 0.1, qt: 0.34, tAmp: 0.12 },
+      V2: { rAmp: 0.3, sAmp: 0.9, rPrime: 0.4, st: 0.2, qt: 0.34, tAmp: 0.4, tWidth: 0.05 },
       V3: { st: 0.06, rPrime: 0.08 },
     },
   },
@@ -713,7 +713,7 @@ export const TWELVE_LEAD = {
   lae: {
     name: 'Crecimiento auricular izquierdo',
     desc: 'P "mitral": ancha (≥ 120 ms) y mellada (bífida, con jorobas separadas ≥ 40 ms) en II, y bifásica en V1 con componente terminal negativo ancho y profundo (≥ 1 mm × 40 ms, índice de Morris). Causas: estenosis mitral, HTA, miocardiopatías.',
-    mod: (b, lead) => Object.assign(b, { pr: 0.2 }, lead === 'V1' ? { pShape: 'biphasic', pAmp: 0.06, pNeg: 0.14 } : lead === 'V2' ? { pShape: 'biphasic', pAmp: 0.06, pNeg: 0.06 } : { pShape: 'notched', pAmp: b.pAmp * 0.95 }),
+    mod: (b, lead) => Object.assign(b, { pr: 0.2 }, lead === 'V1' ? { pShape: 'biphasic', pAmp: 0.06, pNeg: 0.14 } : lead === 'V2' ? { pShape: 'biphasic', pAmp: 0.06, pNeg: 0.06 } : { pShape: 'notched', pAmp: b.pAmp * 1.25 }),
   },
   rae: {
     name: 'Crecimiento auricular derecho',
@@ -742,7 +742,7 @@ export const TWELVE_LEAD = {
     name: 'Efecto digitálico (cubeta digitálica)',
     desc: 'Descenso del ST "en cubeta" (en bigote de Dalí): cae despacio desde el punto J y vuelve bruscamente, con T aplanada o bifásica y QT corto; más visible en derivaciones con R altas. Es efecto del fármaco, no intoxicación (ésta se sospecha por las arritmias: extrasístoles, taquicardia auricular con bloqueo, TV bidireccional).',
     rate: 66,
-    mod: (b, lead) => Object.assign(b, { qt: 0.32, tAmp: b.tAmp * 0.3, scoop: { I: 0.12, II: 0.16, III: 0.06, aVR: -0.12, aVL: 0.06, aVF: 0.12, V1: 0.02, V2: 0.06, V3: 0.12, V4: 0.18, V5: 0.2, V6: 0.17 }[lead] }),
+    mod: (b, lead) => Object.assign(b, { qt: 0.33, tAmp: b.tAmp * 0.3, scoopLen: 0.19, scoop: { I: 0.17, II: 0.22, III: 0.08, aVR: -0.17, aVL: 0.08, aVF: 0.17, V1: 0.03, V2: 0.08, V3: 0.16, V4: 0.24, V5: 0.27, V6: 0.22 }[lead] }),
   },
   wpw12: {
     name: 'Wolff-Parkinson-White (12 derivaciones)',
@@ -775,8 +775,8 @@ function leadBeat(lead, spec) {
   }
   // TV (12D): QRS muy ancho; en miembros la polaridad sale del eje, en precordiales de `prec`
   if (spec.vt) {
-    const a = LIMB_ANGLE[lead] !== undefined ? 1.3 * cosd(spec.vt.axis - LIMB_ANGLE[lead]) : spec.vt.prec[lead];
-    return { p: false, morph: 'vtw', rAmp: a };
+    const a = LIMB_ANGLE[lead] !== undefined ? 0.8 * cosd(spec.vt.axis - LIMB_ANGLE[lead]) : spec.vt.prec[lead];
+    return { p: false, morph: 'vtw', rAmp: a, vtT: 0.15, qrsW: 0.85 };
   }
   const axis = spec.axis ?? 60;
   let b;

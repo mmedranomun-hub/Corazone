@@ -18,10 +18,12 @@ Generar los trazados y esquemas que el temario necesita y que aún no existen, p
 
 ## Estado (2026-10-07, dev-frontend)
 - [x] **Tiras hechas** (ids reales en `RHYTHMS`): `torsade`, `afib-wpw` (FA preexcitada), `pacer-vvi` (= `paced`), `pacer-ddd`, `junctional`, `sinus-arrest` (= `sinusPause`), `alternans`, `ivr` (= `aivr`, RIVA), `bigeminy`, `afib-slow`. Nuevo tipo de onda para `tap`: `spike` (espigas de marcapasos, `waveTimes(id, 'spike')`).
-- [ ] Tiras pendientes: `mat` (TAM), `pacedFailCapture`.
+- [x] **Tiras hechas (2.ª tanda)**: `mat` (TAM), `pacer-fail` (= `pacedFailCapture`, fallo de captura), `pacer-undersense` (fallo de detección), `vt-bidir` (TV bidireccional), `vt-capture` (TV con latido de captura y de fusión), `afl-4to1` (flutter 4:1), `2to1-avb` (BAV 2:1). Nuevos tipos de onda para `tap`: `capture` y `fusion` (sólo en `vt-capture`); `spike` incluye ahora también las espigas sin captura.
 - [x] **12D hechos** (`TWELVE_LEAD`): `wellens` (tipo B), `wellens-a` (tipo A), `dewinter`, `brugada1`, `posterior`, `stemi-inf-rv` (sin V4R: lo indica la desc), `hypok`, `rvh` (HVD), `lowvoltage`, `early-repol`, `pacer12`.
-- [ ] 12D pendientes: crecimiento AI/AD, HBAI aislado, BRD+HBAI, elevación de aVR con descenso difuso, Brugada tipo 2, WPW 12D, hiperpotasemia 12D, TV 12D, DAVD (épsilon), inversión de electrodos; V4R/V7–V9 requieren derivaciones extra (no soportadas por `render12`).
-- Tests: `tests/ecg-trazados.test.js`. Los trazados previos y sus `waveTimes` no cambian.
+- [x] **12D hechos (2.ª tanda)**: `lae` (crecimiento AI), `rae` (crecimiento AD), `lafb` (HBAI aislado), `rbbb-lafb` (BRD + HBAI), `brugada2`, `wpw12` (vía posteroseptal, pseudo-Q inferior), `hyperk12`, `vt12` (concordancia negativa, eje superior), `arvc` (DAVD, épsilon), `limb-reversal` (inversión de electrodos de brazos), `lqt1`, `lqt2`, `lqt3`, `digoxin` (cubeta digitálica).
+- [ ] 12D pendientes: elevación de aVR con descenso difuso del ST; V4R/V7–V9 requieren derivaciones extra (no soportadas por `render12`).
+- Tests: `tests/ecg-trazados.test.js` y `tests/ecg-trazados2.test.js`. Los trazados previos y sus `waveTimes` no cambian (comprobado con hash de `renderEcg`/`render12`/`waveTimes` antes y después).
+- Pendiente de documentar en `CLAUDE.md` (lo hace el integrador): `wave` de `tap` admite también `capture | fusion`.
 
 ## Criterios de aceptación
 - [ ] Cada id nuevo tiene nombre y descripción en español y un test que comprueba SVG válido y señal finita.
