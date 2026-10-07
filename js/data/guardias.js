@@ -43,7 +43,7 @@ export const GUARDIAS = [
         explain: 'AAS (150–300 mg oral) y anticoagulación (p. ej., heparina no fraccionada) en todo IAMCEST que va a ICP primaria. No hay que esperar a la troponina para reperfundir.',
       },
       { who: 'nurse', text: 'Ojo: la tensión ha bajado a 85/50 y tiene la yugular ingurgitada, pero los pulmones están limpios.' },
-      { who: 'r1', text: 'Le hago las derivaciones derechas: hay elevación del ST en V4R.', ecg12: 'stemi-inf-rv' },
+      { who: 'r1', text: 'El ST también sube en V1. Le hago las derivaciones derechas: hay elevación del ST en V4R.', ecg12: 'stemi-inf-rv' },
       {
         type: 'mc',
         prompt: 'Infarto de ventrículo derecho con hipotensión. ¿Qué debes evitar?',
@@ -76,7 +76,7 @@ export const GUARDIAS = [
     steps: [
       { who: 'narrator', text: 'Sábado, 22:40. La sala de espera está llena y entra una chica pálida, con la mano en el pecho.' },
       { who: 'patient', text: 'Me ha empezado de golpe en el gimnasio. Noto el corazón a mil y muy desordenado.' },
-      { who: 'nurse', text: 'TA 115/70, saturación 98 %. En el monitor va a más de 220 lpm. Te pongo la tira.', ecg: 'afib-wpw' },
+      { who: 'nurse', text: 'TA 115/70, saturación 98 %. En el monitor va a más de 200 lpm. Te pongo la tira.', ecg: 'afib-wpw' },
       {
         type: 'mc',
         prompt: 'Taquicardia irregular, con QRS anchos de morfología cambiante. ¿Qué sospechas?',
@@ -91,7 +91,7 @@ export const GUARDIAS = [
         prompt: '¿Qué fármacos están contraindicados en la FA preexcitada?',
         options: ['Los que frenan el nodo AV: adenosina, verapamilo, diltiazem, betabloqueantes, digoxina', 'Cualquier antiarrítmico de clase I', 'La heparina', 'El oxígeno'],
         answer: 0,
-        explain: 'Bloquear el nodo AV deja que más impulsos bajen por la vía accesoria y puede degenerar en fibrilación ventricular.',
+        explain: 'Bloquear el nodo AV deja que más impulsos bajen por la vía accesoria y puede degenerar en fibrilación ventricular. Tampoco amiodarona i.v.',
       },
       { who: 'nurse', text: 'Sigue estable, consciente y sin dolor. ¿Qué preparo?' },
       {
@@ -101,17 +101,17 @@ export const GUARDIAS = [
         answer: 0,
         explain: 'La ESC recomienda cardioversión eléctrica si hay inestabilidad (o si el fármaco falla); en el paciente estable, procainamida o ibutilida i.v. (flecainida o propafenona como alternativa).',
       },
-      { who: 'narrator', text: 'Tras la cardioversión sincronizada, el monitor muestra ritmo sinusal con PR corto y onda delta.', ecg: 'wpw' },
+      { who: 'narrator', text: 'La procainamida no la revierte. Tras la cardioversión sincronizada, el monitor muestra ritmo sinusal con PR corto y onda delta.', ecg: 'wpw' },
       { who: 'patient', text: '¿Y esto me va a volver a pasar?' },
       {
         type: 'mc',
         prompt: '¿Cuál es el tratamiento definitivo recomendado?',
         options: ['Ablación con catéter de la vía accesoria', 'Betabloqueante de por vida', 'Marcapasos definitivo', 'Ninguno: es benigno'],
         answer: 0,
-        explain: 'Tras una FA preexcitada, la ablación de la vía accesoria es recomendación de clase I: elimina el riesgo de muerte súbita.',
+        explain: 'Tras una FA preexcitada, la ablación de la vía accesoria es recomendación de clase I: prácticamente elimina el riesgo de muerte súbita.',
       },
       { who: 'adj', text: 'La remitimos a la unidad de arritmias. Hoy has evitado un buen susto.' },
-      { who: 'r1', text: 'Apuntado: con onda delta, nada de frenar el nodo.' },
+      { who: 'r1', text: 'Apuntado: FA con preexcitación, nada de frenar el nodo.' },
     ],
   },
   {
@@ -125,7 +125,7 @@ export const GUARDIAS = [
     patient: { name: 'Carmen, 78 años', emoji: '👵' },
     steps: [
       { who: 'narrator', text: '5:20. Te llaman de la planta de Medicina Interna: una paciente ingresada por neumonía ha perdido el conocimiento en el baño.' },
-      { who: 'nurse', text: 'Ya está consciente, pero tiene 32 lpm y la TA en 90/50. La hemos dejado monitorizada.', ecg: 'avb3' },
+      { who: 'nurse', text: 'Ya está consciente, pero tiene 40 lpm y la TA en 90/50. La hemos dejado monitorizada.', ecg: 'avb3' },
       { who: 'patient', text: 'Me he mareado y, cuando me he dado cuenta, estaba en el suelo…' },
       {
         type: 'mc',
@@ -143,7 +143,7 @@ export const GUARDIAS = [
         answer: 0,
         explain: 'La atropina es el primer escalón (0,5 mg i.v., repetible hasta 3 mg). Si no responde: isoprenalina o adrenalina y marcapasos transcutáneo.',
       },
-      { who: 'nurse', text: 'Le hemos puesto dos dosis de atropina y sigue a 33 lpm.' },
+      { who: 'nurse', text: 'Le hemos puesto dos dosis de atropina y sigue a 40 lpm.' },
       { who: 'adj', text: 'Con escape de QRS ancho el bloqueo es infrahisiano: la atropina suele fallar. Coloca los parches.' },
       { who: 'narrator', text: 'Con el marcapasos transcutáneo capturando a 70 lpm, la tensión sube a 120/70. Se avisa para un marcapasos provisional.' },
       {
@@ -171,7 +171,7 @@ export const GUARDIAS = [
       { who: 'narrator', text: '17:15. Te avisan de Traumatología. Paciente operada de prótesis de rodilla hace cinco días.' },
       { who: 'nurse', text: 'De repente le falta el aire. FC 118, saturación 89 % y TA 128/80.' },
       { who: 'patient', text: 'Estaba leyendo y de golpe no podía respirar… y me pincha al coger aire.' },
-      { who: 'r1', text: 'La pierna operada está más hinchada que la otra. Pido un ECG.', ecg: 'tachy' },
+      { who: 'r1', text: 'La pierna operada está más hinchada que la otra. Ponle oxígeno y pido un ECG.', ecg: 'tachy' },
       {
         type: 'mc',
         prompt: '¿Cuál es el hallazgo ECG más frecuente en el TEP?',
@@ -179,7 +179,7 @@ export const GUARDIAS = [
         answer: 0,
         explain: 'El S1Q3T3 es clásico pero poco frecuente y poco sensible. Lo más habitual es la taquicardia sinusal (o un ECG normal).',
       },
-      { who: 'adj', text: 'Wells alto: cirugía reciente, signos de TVP y taquicardia. Está estable. ¿Qué hacemos mientras llega el angio-TC?' },
+      { who: 'adj', text: 'Wells de 9: cirugía reciente, signos de TVP, taquicardia y el TEP es lo más probable. Está estable. ¿Qué hacemos mientras llega el angio-TC?' },
       {
         type: 'mc',
         prompt: 'Probabilidad clínica alta y paciente estable. ¿Qué haces mientras esperas la prueba?',
@@ -211,7 +211,7 @@ export const GUARDIAS = [
     summary: 'Un soplo nuevo cuatro días después del infarto.',
     patient: { name: 'Manuel, 70 años', emoji: '🧔' },
     steps: [
-      { who: 'narrator', text: '1:30. Unidad coronaria. Manuel ingresó hace cuatro días con un infarto anterior evolucionado, sin reperfundir.', ecg12: 'stemi-ant' },
+      { who: 'narrator', text: '1:30. Unidad coronaria. Manuel ingresó hace cuatro días con un infarto anterior de presentación tardía, sin reperfundir. Este fue su ECG de ingreso.', ecg12: 'stemi-ant' },
       { who: 'nurse', text: '¡Ven rápido! Está muy disneico, frío y con la TA en 78/45.' },
       { who: 'patient', text: 'No… puedo… respirar…' },
       { who: 'r1', text: 'Oigo un soplo holosistólico rudo, nuevo, en el borde esternal izquierdo, y se palpa frémito.' },
@@ -244,7 +244,7 @@ export const GUARDIAS = [
         prompt: '¿Cuál es la actitud adecuada?',
         options: ['Soporte hemodinámico (inotrópicos, balón de contrapulsación o soporte mecánico) y cierre quirúrgico o percutáneo', 'Alta a planta y control en una semana', 'Fibrinólisis', 'Sólo diuréticos a dosis altas'],
         answer: 0,
-        explain: 'La CIV con shock tiene una mortalidad muy alta sin cierre. Se estabiliza con soporte (que reduce poscarga y cortocircuito) mientras se decide el cierre con el Heart Team.',
+        explain: 'La CIV con shock tiene una mortalidad muy alta sin cierre. Se estabiliza con soporte (el balón reduce la poscarga y el cortocircuito) mientras se decide el cierre con el Heart Team.',
       },
       { who: 'nurse', text: 'El balón de contrapulsación ya está funcionando. La TA sube a 95/60.' },
       { who: 'narrator', text: 'A las 4:00, Manuel entra en quirófano. Te quedas mirando el monitor, con el corazón también a mil.' },
