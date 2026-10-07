@@ -1,8 +1,9 @@
 import ecg from './ecg.js';
 import eco from './eco.js';
 import cate from './cateterismo.js';
+import casos from './casos.js';
 
-export const COURSES = [ecg, eco, cate];
+export const COURSES = [ecg, eco, cate, casos];
 
 // Clave estable de cada pregunta ("<lección>#<índice>") para el repaso espaciado.
 const BY_KEY = new Map();

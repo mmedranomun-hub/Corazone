@@ -50,12 +50,18 @@ Copia el bloque en el array `lessons` de la unidad correspondiente en `js/data/<
     { type: 'tap', prompt: 'Toca la onda P que no conduce', ecg: 'mobitz1', wave: 'pBlocked', explain: 'La P bloqueada aparece a su ritmo, pero no va seguida de QRS; tras ella el PR "se resetea".' },
     { type: 'tf', prompt: 'En el Mobitz II el PR de los latidos conducidos es constante.', answer: true, explain: 'El bloqueo es súbito, sin alargamiento previo del PR; suele ser infrahisiano y es indicación de marcapasos.' },
     { type: 'match', prompt: 'Relaciona el bloqueo con su nivel más probable', pairs: [['BAV 1.er grado', 'Nodo AV'], ['Mobitz II', 'His-Purkinje'], ['BAV completo con QRS ancho', 'Infrahisiano']], explain: 'El QRS del escape orienta: estrecho → nodal; ancho → infrahisiano.' },
-    { type: 'mc', prompt: 'Paciente con IAM inferior y BAV completo con escape a 45 lpm de QRS estrecho. ¿Qué arteria es la culpable más probable?', options: ['Coronaria derecha', 'Descendente anterior', 'Primera diagonal', 'Rama marginal obtusa'], answer: 0, explain: 'La CD irriga el nodo AV en ~90 % de los casos; el bloqueo suele ser transitorio.', diagram: { id: 'coronary', highlight: 'rca' } }, // REVISAR: confirmar ids en DIAGRAMS
+    { type: 'mc', prompt: 'Paciente con IAM inferior y BAV completo con escape a 45 lpm de QRS estrecho. ¿Qué arteria es la culpable más probable?', options: ['Coronaria derecha', 'Descendente anterior', 'Primera diagonal', 'Rama marginal obtusa'], answer: 0, explain: 'La CD irriga el nodo AV en ~90 % de los casos; el bloqueo suele ser transitorio.', diagram: { id: 'coronary', highlight: 'rca' } },
   ],
 },
 ```
 
+## Catálogos visuales (estado a 7-oct-2026; compruébalos en el código)
+- `ecg` / `tap` → `RHYTHMS`: sinus, brady, tachy, afib, flutter, svt, avb1, mobitz1, mobitz2, avb3, pvc, vt, vf, asystole, stemi, stdep, hyperk, lbbb, wpw, longqt.
+- `ecg12` → `TWELVE_LEAD`: normal, stemi-inf, stemi-ant, stemi-lat, pericarditis, lad, rad, lvh, rbbb, lbbb12.
+- `pressure` → `PRESSURES`: ra, rv, pa, pcwp, lv, ao, pcwp-v, ra-cannon, ra-af, rv-dip, as-lv-ao, pullback-pa-pcwp.
+- `diagram` → `DIAGRAMS` (`highlight` = clave de `parts`): coronary (lm, lad, diag, cx, om, rca, pda, am), a4c (lv, rv, la, ra, mv, tv, septum), plax (rv, lv, la, ao, mv, av, septum), psax (ant, antsep, infsep, inf, inflat, antlat, rv).
+
 ## Tras pegar
-1. `npm test` → corrige ids duplicados, `answer` fuera de rango, opciones repetidas o `explain` ausente. Nota: si `tests/content.test.js` todavía no reconoce `tap` ("tipo desconocido"), no lo uses hasta que `dev-frontend` lo añada al test; tampoco uses `ecg12`/`pressure`/`diagram` con ids que no existan en su catálogo.
+1. `npm test` → corrige ids duplicados, `answer` fuera de rango, opciones repetidas o `explain` ausente. El test valida también que `tap` lleve una tira existente y que `ecg12` exista; no uses `pressure`/`diagram` con ids que no estén en su catálogo.
 2. Marca la lección como ✅ en `recursos/temario/<curso>.md`.
 3. Pide revisión a `revisor-medico` con `recursos/checklist-revision.md`.

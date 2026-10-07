@@ -3,7 +3,8 @@
 Curso `cate` (`js/data/cateterismo.js`). Convenciones como en `temario/ecg.md`:
 ✅ existe (id) · 🟡 parcial · ⬜ pendiente. **Visual**: `diagram` (árbol coronario, proyecciones; con `highlight` para resaltar un segmento), `pressure` (curvas AD, VD, AP, PCP, VI, Ao y patológicas), `ecg`/`ecg12` (cuando la pregunta integra ECG), `—`.
 
-> `DIAGRAMS` y `PRESSURES` se están construyendo: verifica los ids reales antes de usarlos.
+> Ids a 7-oct-2026 — `DIAGRAMS.coronary` con partes `lm`, `lad`, `diag`, `cx`, `om`, `rca`, `pda`, `am`. `PRESSURES`: `ra`, `rv`, `pa`, `pcwp`, `lv`, `ao`, `pcwp-v` (onda v gigante), `ra-cannon`, `ra-af`, `rv-dip` (dip-plateau), `as-lv-ao` (gradiente VI-Ao), `pullback-pa-pcwp`. Verifica en el código antes de usarlos.
+> Existe además un curso de casos clínicos (`js/data/casos.js`, lecciones con campo `case`) para casos integrados de ETT, ETE y cateterismo.
 
 Referencias troncales: ESC 2023 SCA; ESC 2024 síndromes coronarios crónicos; ESC/EACTS 2018 revascularización; ESC/ERS 2022 HP; ESC/EACTS 2021 valvulopatías; documentos de consenso EAPCI (fisiología e imagen intracoronaria 2018/2022, CTO EuroCTO); SCAI 2019/2022 (shock); Kern *Cardiac Catheterization Handbook*; Grossman & Baim.
 

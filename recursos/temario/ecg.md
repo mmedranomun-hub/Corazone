@@ -6,7 +6,7 @@ Curso `ecg` (`js/data/ecg.js`). Temario completo por niveles. Cada lección indi
 - Estado: ✅ ya existe en la app (con su id) · ⬜ pendiente · 🟡 existe parcialmente (ampliar).
 
 > Ids de tira disponibles hoy en `RHYTHMS` (`js/ecg.js`): `sinus`, `brady`, `tachy`, `afib`, `flutter`, `svt`, `avb1`, `mobitz1`, `mobitz2`, `avb3`, `pvc`, `vt`, `vf`, `asystole`, `stemi`, `stdep`, `hyperk`, `lbbb`, `wpw`, `longqt`.
-> Los catálogos `TWELVE_LEAD` (`ecg12`) se están construyendo: comprueba los ids reales antes de usarlos. Si un trazado no existe, la orden de trabajo debe pedírselo a `dev-frontend`.
+> Ids de `TWELVE_LEAD` (`ecg12`) a 7-oct-2026: `normal`, `stemi-inf`, `stemi-ant`, `stemi-lat`, `pericarditis`, `lad` (eje izquierdo), `rad` (eje derecho), `lvh`, `rbbb`, `lbbb12`. El catálogo crece: compruébalo en `js/ecg.js` antes de usarlo. Si un trazado no existe, la orden de trabajo debe pedírselo a `dev-frontend`.
 
 Niveles:
 - **N1** — estudiante preclínico (1.º–3.º): fisiología, lectura sistemática, ritmos básicos.

@@ -61,3 +61,6 @@
 .diagram .valve.hl { stroke-width: 5; }
 .diagram .vessel.hl { stroke-width: 8; }
 .diagram .vessel.thin.hl { stroke-width: 6; }
+.diagram .aorta-o { fill: none; stroke: var(--dg-heart-line); stroke-width: 38; stroke-linecap: butt; }
+.diagram .aorta-i { fill: none; stroke: var(--dg-aorta); stroke-width: 34; stroke-linecap: butt; }
+.diagram .groove { fill: none; stroke: var(--dg-heart-line); stroke-width: 10; stroke-linecap: round; opacity: .55; }

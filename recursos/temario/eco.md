@@ -3,7 +3,7 @@
 Curso `eco` (`js/data/eco.js`). Mismas convenciones que `temario/ecg.md`:
 ✅ existe (id) · 🟡 parcial · ⬜ pendiente. **Visual**: `diagram` (esquema de plano/estructura), `pressure` (curva hemodinámica, útil para correlacionar Doppler), `—` (solo texto). En el futuro: clips/imágenes reales (ver `guia-editorial.md` § Imágenes).
 
-> Los catálogos `DIAGRAMS` (`js/diagrams.js`) y `PRESSURES` (`js/pressure.js`) se están construyendo. Comprueba los ids reales; si falta un esquema, la orden de trabajo lo pide a `dev-frontend`.
+> Ids a 7-oct-2026 — `DIAGRAMS`: `a4c` (lv, rv, la, ra, mv, tv, septum), `plax` (rv, lv, la, ao, mv, av, septum), `psax` (ant, antsep, infsep, inf, inflat, antlat, rv), `coronary`. `PRESSURES`: `ra`, `rv`, `pa`, `pcwp`, `lv`, `ao`, `pcwp-v`, `ra-cannon`, `ra-af`, `rv-dip`, `as-lv-ao`, `pullback-pa-pcwp`. Compruébalos en el código antes de usarlos; si falta un esquema, pídelo en la orden 08.
 
 Referencias troncales: cuantificación de cavidades ASE/EACVI 2015; función diastólica ASE/EACVI 2016 (actualización ASE 2025); valvulopatías ESC/EACTS 2021 y recomendaciones EACVI de regurgitación (2013/2022) y estenosis (2017); miocardiopatías ESC 2023; pericardio ESC 2015 (y 2025); FoCUS EACVI 2014/ WINFOCUS.
 

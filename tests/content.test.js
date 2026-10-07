@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { COURSES, lessonsOf } from '../js/data/courses.js';
+import { PRESSURES } from '../js/pressure.js';
+import { DIAGRAMS } from '../js/diagrams.js';
 import { RHYTHMS, TWELVE_LEAD, sampleEcg, renderEcg, render12, waveTimes } from '../js/ecg.js';
 
 test('los ids de unidades y lecciones son únicos', () => {
@@ -32,6 +34,8 @@ test('todas las preguntas están bien formadas', () => {
           assert.ok(q.explain, `${where}: falta explain`);
         } else assert.fail(`${where}: tipo desconocido ${q.type}`);
         if (q.ecg) assert.ok(RHYTHMS[q.ecg], `${where}: ritmo ${q.ecg} no existe`);
+        if (q.pressure) assert.ok(PRESSURES[q.pressure], `${where}: curva ${q.pressure} no existe`);
+        if (q.diagram) assert.ok(DIAGRAMS[q.diagram.id]?.parts[q.diagram.highlight], `${where}: diagrama ${JSON.stringify(q.diagram)} no existe`);
         if (q.ecg12) assert.ok(TWELVE_LEAD[q.ecg12], `${where}: ECG 12D ${q.ecg12} no existe`);
       }
     }
