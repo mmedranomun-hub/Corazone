@@ -35,7 +35,9 @@ function beatWave(t, b) {
       break;
     case 'vent': // QRS ventricular ancho y bizarro
       v += gauss(t, r * 1.2, 0, 0.035) + gauss(t, -0.6, 0.08, 0.035);
-      v += gauss(t, -0.4, 0.26, 0.05);
+      // ST-T discordante: opuesto a la deflexión principal del QRS
+      if (b.ventT) v += b.ventT * 0.4 * sigmoid((t - 0.1) / 0.015) * sigmoid((0.24 - t) / 0.03);
+      v += gauss(t, b.ventT ?? -0.4, 0.26, 0.05);
       break;
     case 'rsr': // BRD en V1: rSR'
       v += gauss(t, 0.3, -0.025, 0.009) + gauss(t, -0.35, 0.012, 0.01) + gauss(t, r, 0.06, 0.016);
@@ -183,7 +185,7 @@ export const RHYTHMS = {
   },
   stemi: {
     name: 'Elevación del ST (IAMCEST)',
-    desc: 'Supradesnivel del ST convexo ≥ 1 mm en ≥ 2 derivaciones contiguas (≥ 2 mm en V2–V3 en varones).',
+    desc: 'Supradesnivel del ST ≥ 1 mm en ≥ 2 derivaciones contiguas (en V2–V3: ≥ 2,5 mm varones < 40 años, ≥ 2 mm varones ≥ 40, ≥ 1,5 mm mujeres).',
     build: (s) => ({ beats: sinusBeats(85, s, { st: 0.3, tAmp: 0.45, qt: 0.34 }) }),
   },
   stdep: {
@@ -371,7 +373,7 @@ function leadBeat(lead, spec) {
   if (spec.lbbb) {
     const pos = { I: 1.1, aVL: 1.0, V5: 1.2, V6: 1.1, V4: 0.8, II: 0.6, aVF: 0.4 };
     if (pos[lead]) Object.assign(b, { morph: 'wide', rAmp: pos[lead] });
-    else Object.assign(b, { morph: 'vent', rAmp: -0.7 });
+    else Object.assign(b, { morph: 'vent', rAmp: -0.7, ventT: 0.35 });
   }
   return b;
 }
