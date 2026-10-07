@@ -1,0 +1,63 @@
+/* Curvas de presión (js/pressure.js) y esquemas anatómicos (js/diagrams.js) */
+:root {
+  --pr-paper: #f6fbfa;
+  --pr-grid: #d5e4e1;
+  --pr-trace: #0f6e63;
+  --pr-trace2: #d9480f;
+  --pr-label: #6b7c79;
+
+  --dg-bg: #eef2f4;
+  --dg-sector: #26323a;
+  --dg-tissue: #c9b8b2;
+  --dg-line: #8a7670;
+  --dg-cavity: #3a464e;
+  --dg-heart: #f2dcd6;
+  --dg-heart-line: #d9b8af;
+  --dg-aorta: #e7cbc4;
+  --dg-vessel: #9a8b87;
+  --dg-hl: #ff5a1f;
+  --dg-hl-line: #c2410c;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --pr-paper: #13201f; --pr-grid: #2a3d3b; --pr-trace: #5eead4; --pr-trace2: #ff9f5a; --pr-label: #8fa6a3;
+    --dg-bg: #172229; --dg-sector: #0b1115; --dg-tissue: #8d7f7a; --dg-line: #b4a49e; --dg-cavity: #1d272d;
+    --dg-heart: #3a2c2a; --dg-heart-line: #5c4642; --dg-aorta: #4a3532; --dg-vessel: #a2938e;
+    --dg-hl: #ff7a3d; --dg-hl-line: #ffb38a;
+  }
+}
+:root[data-theme='dark'] {
+  --pr-paper: #13201f; --pr-grid: #2a3d3b; --pr-trace: #5eead4; --pr-trace2: #ff9f5a; --pr-label: #8fa6a3;
+  --dg-bg: #172229; --dg-sector: #0b1115; --dg-tissue: #8d7f7a; --dg-line: #b4a49e; --dg-cavity: #1d272d;
+  --dg-heart: #3a2c2a; --dg-heart-line: #5c4642; --dg-aorta: #4a3532; --dg-vessel: #a2938e;
+  --dg-hl: #ff7a3d; --dg-hl-line: #ffb38a;
+}
+
+/* Presión */
+.pressure-wrap { background: var(--pr-paper); border: 2px solid var(--border, var(--pr-grid)); border-radius: 12px; overflow-x: auto; margin-bottom: 18px; }
+.pressure { display: block; width: 100%; min-width: 320px; height: auto; background: var(--pr-paper); }
+.pressure .grid { stroke: var(--pr-grid); stroke-width: 1; }
+.pressure .grid.zero { stroke-width: 1.6; }
+.pressure .lbl { fill: var(--pr-label); font: 700 11px 'Nunito', system-ui, sans-serif; }
+.pressure .trace { fill: none; stroke: var(--pr-trace); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.pressure .trace2 { stroke: var(--pr-trace2); }
+
+/* Diagramas */
+.diagram-wrap { background: var(--dg-bg); border: 2px solid var(--border, var(--dg-line)); border-radius: 12px; margin-bottom: 18px; }
+.diagram { display: block; width: 100%; max-width: 420px; height: auto; margin: 0 auto; }
+.diagram .sector { fill: var(--dg-sector); }
+.diagram .heart { fill: var(--dg-heart); stroke: var(--dg-heart-line); stroke-width: 2; }
+.diagram .aorta { fill: var(--dg-aorta); stroke: var(--dg-heart-line); stroke-width: 2; }
+.diagram .tissue { fill: var(--dg-tissue); stroke: var(--dg-line); stroke-width: 1.2; stroke-linejoin: round; }
+.diagram .cavity { fill: var(--dg-cavity); }
+.diagram .valve { fill: none; stroke: var(--dg-tissue); stroke-width: 3.5; stroke-linecap: round; }
+.diagram .vessel { fill: none; stroke: var(--dg-vessel); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.diagram .vessel.thin { stroke-width: 4; }
+.diagram .vessel.post { stroke-dasharray: 2 9; }
+.diagram .num { fill: var(--dg-line); font: 800 12px 'Nunito', system-ui, sans-serif; text-anchor: middle; dominant-baseline: middle; }
+.diagram .hl { fill: var(--dg-hl); stroke: var(--dg-hl-line); }
+.diagram .cavity.hl { stroke-width: 1.5; }
+.diagram .valve.hl, .diagram .vessel.hl { fill: none; stroke: var(--dg-hl); }
+.diagram .valve.hl { stroke-width: 5; }
+.diagram .vessel.hl { stroke-width: 8; }
+.diagram .vessel.thin.hl { stroke-width: 6; }
