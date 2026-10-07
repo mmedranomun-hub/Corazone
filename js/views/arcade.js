@@ -305,10 +305,7 @@ export function viewGuardia(id) {
   const chat = $('.chat');
   const nextBtn = $('[data-act=next]');
 
-  const scrollEnd = () => {
-    const last = chat.lastElementChild;
-    last?.scrollIntoView?.({ behavior: 'smooth', block: 'end' });
-  };
+  const scrollEnd = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
   const bubble = (s) => {
     const c = charOf(story, s.who);
@@ -341,7 +338,7 @@ export function viewGuardia(id) {
         el.insertAdjacentHTML('beforeend', `<div class="chat-fb ${ok ? 'ok' : 'ko'} pop-in"><b>${ok ? '¡Correcto!' : 'No exactamente'}</b><p>${esc(q.explain)}</p></div>`);
         waiting = false;
         nextBtn.disabled = false;
-        el.lastElementChild.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
+        scrollEnd();
       };
     });
   }
