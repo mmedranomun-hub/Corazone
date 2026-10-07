@@ -1256,5 +1256,252 @@ export default {
         },
       ],
     },
+    {
+      id: 'casos-u13',
+      title: 'Casos de cateterismo: SCA y fisiología',
+      guide: {
+        intro: 'En la sala de hemodinámica se decide contra el reloj y con datos: tiempos de reperfusión, anatomía, fisiología intracoronaria e imagen. Estos casos siguen las guías ESC de SCA (2023) y de síndrome coronario crónico (2024).',
+        sections: [
+          {
+            title: 'IAMCEST e ICP primaria',
+            points: [
+              'ICP primaria si el tiempo previsto del diagnóstico al paso de la guía es ≤ 120 min; objetivos: ≤ 60 min en centro con ICP y ≤ 90 min si hay traslado.',
+              'Si no se puede cumplir el plazo de 120 min, fibrinólisis en ≤ 10 min desde el diagnóstico y coronariografía en 2–24 h (ICP de rescate si fracasa).',
+              'Acceso radial y stent farmacoactivo (clase I); la tromboaspiración sistemática no está indicada.',
+              'Multivaso sin shock: revascularización completa en el procedimiento índice o en ≤ 45 días (COMPLETE); en el shock, solo la arteria culpable (CULPRIT-SHOCK).',
+              'DAPT 12 meses por defecto; prasugrel preferible a ticagrelor si se hace ICP (contraindicado tras ictus o AIT).',
+            ],
+            tip: 'El reloj empieza en el diagnóstico (ECG), no en la llegada a la sala.',
+          },
+          {
+            title: 'Tronco, fisiología e imagen intracoronaria',
+            points: [
+              'Descenso del ST en ≥ 6 derivaciones con elevación en aVR sugiere isquemia difusa por enfermedad del tronco o multivaso.',
+              'FFR = Pd/Pa en hiperemia (adenosina); significativa si ≤ 0,80. iFR (reposo) significativa si ≤ 0,89.',
+              'FAME: la ICP guiada por FFR reduce eventos y stents frente a la guiada por angiografía; FAME 2: si FFR ≤ 0,80, la ICP reduce la revascularización urgente frente al tratamiento médico.',
+              'IVUS en el tronco: área luminal mínima < 6 mm² indica lesión significativa (umbral algo menor en población asiática).',
+              'Tronco de complejidad baja (SYNTAX ≤ 22): ICP o CRM son alternativas válidas; con SYNTAX alto se prefiere la CRM. Decide el Heart Team con el paciente.',
+            ],
+            tip: 'Si la presión del catéter se amortigua al intubar el tronco, desengancha: puede haber enfermedad ostial.',
+          },
+          {
+            title: 'IAM de VD, SCAD y trombosis de stent',
+            points: [
+              'IAM de VD: hipotensión, yugulares ingurgitadas y pulmones limpios; ST ≥ 1 mm en V4R; PAD/PCP > 0,8. Volumen guiado, sin nitratos ni diuréticos, y sincronía AV.',
+              'SCAD: mujer joven, a menudo periparto; tipo 2 = estrechamiento largo y liso. Tratamiento conservador salvo isquemia persistente o inestabilidad; buscar displasia fibromuscular.',
+              'Trombosis de stent (ARC): aguda < 24 h, subaguda hasta 30 días, tardía hasta 1 año y muy tardía > 1 año.',
+              'La suspensión precoz de la DAPT es el principal predictor de trombosis; la imagen intracoronaria busca causas mecánicas (infraexpansión, malaposición, disección de borde).',
+            ],
+            tip: 'Si un paciente no tolera un inhibidor P2Y12, cámbialo por otro: no lo suspendas sin más.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u13-l1',
+          title: 'IAMCEST anterior: ICP primaria',
+          case: {
+            title: 'Mujer de 58 años con dolor epigástrico y sudoración',
+            text: 'Mujer de 58 años con diabetes tipo 2 e hipertensión. Avisa al 112 por dolor epigástrico opresivo de 90 minutos, con sudoración y náuseas. TA 135/85 mmHg, FC 92 lpm, sin crepitantes. Sin antecedentes de ictus ni de sangrado; pesa 70 kg. El hospital con hemodinámica 24 h está a 40 minutos.',
+          },
+          questions: [
+            { type: 'mc', context: 'El equipo del SEM registra este ECG en el domicilio.', prompt: 'Observa el ECG. ¿Cuál es la arteria culpable más probable?', ecg12: 'stemi-ant', options: ['Descendente anterior', 'Coronaria derecha', 'Circunfleja', 'Primera marginal obtusa'], answer: 0, explain: 'La elevación del ST en V1–V4 con descenso especular inferior indica oclusión de la DA. En mujeres y diabéticos el dolor puede ser epigástrico o atípico.' },
+            { type: 'mc', prompt: 'Se prevén 70 minutos desde el diagnóstico hasta el paso de la guía. Según la guía ESC 2023, ¿qué estrategia de reperfusión eliges?', options: ['ICP primaria en el centro con hemodinámica', 'Fibrinólisis en la ambulancia y traslado', 'Fibrinólisis y coronariografía en 48 h', 'Esperar la troponina para confirmar el IAM'], answer: 0, explain: 'Con un retraso previsto ≤ 120 min se prefiere la ICP primaria (objetivo ≤ 90 min si hay traslado). La fibrinólisis queda para retrasos mayores, en ≤ 10 min desde el diagnóstico.' },
+            { type: 'tf', prompt: 'En la ICP primaria se recomienda el acceso radial frente al femoral cuando el operador tiene experiencia.', answer: true, explain: 'El acceso radial reduce el sangrado y las complicaciones vasculares, y en MATRIX también la mortalidad. Es recomendación de clase I.' },
+            { type: 'mc', context: 'Coronariografía radial: oclusión trombótica de la DA proximal (TIMI 0) que se trata con stent farmacoactivo con TIMI 3 final. Estenosis del 80 % en la CD media. Sin signos de shock.', prompt: '¿Qué haces con la lesión de la CD?', diagram: { id: 'coronary', highlight: 'rca' }, options: ['ICP de la CD en el ingreso o en ≤ 45 días', 'Dejarla sin tratar salvo angina recurrente', 'Cirugía urgente de ambas arterias', 'Tratar antes la CD que la arteria culpable'], answer: 0, explain: 'En el IAMCEST multivaso sin shock, la revascularización completa reduce la muerte CV o el reinfarto (COMPLETE). En el shock se trata solo la culpable.' },
+            { type: 'mc', prompt: 'Sin ictus previo, < 75 años y riesgo hemorrágico bajo. ¿Qué tratamiento antiagregante pautas al alta?', options: ['AAS + prasugrel durante 12 meses', 'AAS + clopidogrel durante 1 mes', 'AAS en monoterapia desde el alta', 'Anticoagulación oral + clopidogrel'], answer: 0, explain: 'La DAPT dura 12 meses por defecto y, si se hace ICP, prasugrel es preferible a ticagrelor (ISAR-REACT 5). Prasugrel está contraindicado tras ictus o AIT.' },
+            { type: 'match', prompt: 'Relaciona cada intervalo de la guía ESC 2023 con su objetivo', pairs: [['Diagnóstico → guía en centro con ICP', '≤ 60 min'], ['Diagnóstico → guía con traslado', '≤ 90 min'], ['Retraso que obliga a fibrinolizar', '> 120 min'], ['Diagnóstico → bolo de fibrinolítico', '≤ 10 min']], explain: 'Todos los tiempos cuentan desde el diagnóstico electrocardiográfico; tras una fibrinólisis eficaz se hace coronariografía en 2–24 h.' },
+          ],
+        },
+        {
+          id: 'casos-u13-l2',
+          title: 'Tronco común: aVR, IVUS y Heart Team',
+          case: {
+            title: 'Varón de 71 años con angina en reposo',
+            text: 'Varón de 71 años, exfumador, hipertenso y dislipémico, sin diabetes. Desde hace 3 semanas tiene angina con esfuerzos cada vez menores; hoy, dolor en reposo de 25 minutos que cede con nitroglicerina. Ahora está asintomático y estable. Troponina elevada con curva ascendente. FEVI 60 % en la ecografía.',
+          },
+          questions: [
+            { type: 'mc', context: 'ECG durante el dolor: descenso del ST ≥ 1 mm en 7 derivaciones con elevación del ST en aVR. Se normaliza al ceder el dolor.', prompt: '¿Qué sugiere este patrón?', options: ['Isquemia difusa por enfermedad del tronco o multivaso', 'IAMCEST inferior con imagen especular', 'Pericarditis aguda', 'Repolarización precoz benigna'], answer: 0, explain: 'El descenso difuso del ST con elevación en aVR refleja isquemia subendocárdica extensa; orienta a tronco o enfermedad de tres vasos y marca alto riesgo.' },
+            { type: 'tf', context: 'Coronariografía radial: al intubar el tronco la presión del catéter se amortigua y pierde la incisura dícrota.', prompt: 'Este hallazgo sugiere enfermedad ostial del tronco y aconseja desenganchar el catéter para evitar isquemia o disección.', answer: true, explain: 'La amortiguación ("ventricularización") indica que el catéter ocluye parcialmente un ostium enfermo. Hay que retirarlo y evitar inyecciones forzadas.' },
+            { type: 'mc', context: 'Estenosis ostial del tronco de gravedad angiográfica dudosa (≈ 50 %); DA, Cx y CD sin lesiones significativas. IVUS: área luminal mínima de 4,2 mm².', prompt: '¿Cómo interpretas el IVUS?', diagram: { id: 'coronary', highlight: 'lm' }, options: ['Lesión significativa: área < 6 mm²', 'No significativa: el umbral es < 4 mm²', 'No valorable sin una FFR previa', 'Significativa solo si el área es < 2 mm²'], answer: 0, explain: 'En el tronco, un área luminal mínima < 6 mm² se asocia a isquemia (algo menos en población asiática). El umbral de 4 mm² es de otros vasos proximales.' },
+            { type: 'tf', prompt: 'En una lesión aislada del tronco sin enfermedad distal, una FFR ≤ 0,80 también la define como funcionalmente significativa.', answer: true, explain: 'La FFR es válida en el tronco; las lesiones graves en DA o Cx pueden falsear el resultado, por eso aquí ayuda que no haya enfermedad distal.' },
+            { type: 'mc', context: 'SYNTAX 12. El paciente prefiere evitar la esternotomía si los resultados son comparables.', prompt: 'Según la guía ESC 2024 de síndrome coronario crónico, ¿qué revascularización procede?', options: ['ICP o CRM, según decidan Heart Team y paciente', 'Tratamiento médico: ya está asintomático', 'CRM obligatoria: el tronco excluye la ICP', 'ICP sin imagen para acortar el procedimiento'], answer: 0, explain: 'En el tronco con SYNTAX ≤ 22 la ICP es una alternativa a la CRM con supervivencia similar (EXCEL, NOBLE). Se recomienda guiarla con IVUS u OCT.' },
+            { type: 'match', prompt: 'Relaciona cada dato con su implicación', pairs: [['SYNTAX ≤ 22 en el tronco', 'ICP o CRM'], ['SYNTAX ≥ 33', 'Se prefiere la CRM'], ['Área luminal mínima < 6 mm²', 'Lesión del tronco significativa'], ['IVUS tras el stent', 'Optimiza expansión y aposición']], explain: 'La imagen intracoronaria tras el stent detecta infraexpansión y malaposición, que se asocian a trombosis y reestenosis.' },
+          ],
+        },
+        {
+          id: 'casos-u13-l3',
+          title: 'IAM de ventrículo derecho con hipotensión',
+          case: {
+            title: 'Varón de 66 años que se hipotensa tras la nitroglicerina',
+            text: 'Varón de 66 años, fumador, con dolor torácico de 3 horas. En la ambulancia recibe nitroglicerina sublingual y la TA cae de 110/70 a 78/50 mmHg. A su llegada: FC 62 lpm, yugulares ingurgitadas y auscultación pulmonar limpia. Sin soplos.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. Además del IAM inferior, ¿qué hallazgo sugiere afectación del VD?', ecg12: 'stemi-inf-rv', options: ['Elevación del ST en V1 con III > II', 'Descenso del ST en V1–V3', 'Elevación del ST en I y aVL', 'Ondas Q en V1–V2'], answer: 0, explain: 'La elevación del ST en V1 con III > II apunta a la CD proximal. La confirmación es una elevación del ST ≥ 1 mm en V4R.' },
+            { type: 'tf', prompt: 'La caída de la TA tras la nitroglicerina se explica porque el VD isquémico depende de la precarga.', answer: true, explain: 'El VD con infarto se vacía mal y necesita llenado; los venodilatadores (nitratos) y los diuréticos reducen la precarga y precipitan la hipotensión.' },
+            { type: 'mc', context: 'Coronariografía: oclusión de la CD proximal, antes del origen de sus ramas ventriculares. Se trata con stent con TIMI 3 final.', prompt: '¿Qué rama, resaltada en el esquema, irriga la pared libre del VD?', diagram: { id: 'coronary', highlight: 'am' }, options: ['Marginal aguda', 'Marginal obtusa', 'Primera diagonal', 'Descendente posterior'], answer: 0, explain: 'Las ramas marginales agudas de la CD irrigan la pared libre del VD; por eso solo la oclusión proximal a ellas produce IAM de VD.' },
+            { type: 'mc', context: 'Tras la ICP sigue hipotenso. Catéter de Swan-Ganz: PAD 12 mmHg, PCP 8 mmHg, índice cardiaco 1,9 l/min/m².', prompt: 'Calcula el cociente PAD/PCP. ¿Qué indica?', options: ['1,5: predominio del fallo derecho', '0,7: predominio del fallo izquierdo', '1,5: hipovolemia sin disfunción del VD', '0,7: hemodinámica normal'], answer: 0, explain: 'PAD/PCP = 12/8 = 1,5. Un cociente > 0,8 con PCP normal o baja es típico del IAM de VD.' },
+            { type: 'mc', prompt: '¿Cuál es la primera medida para tratar su hipotensión?', options: ['Bolo de volumen con control de PAD y GC', 'Furosemida intravenosa', 'Nitroglicerina en perfusión', 'Morfina intravenosa'], answer: 0, explain: 'Un aporte de volumen prudente mejora el llenado; si la PAD sube sin mejorar el GC, el VD se distiende y desplaza el septo: entonces se añade un inotrópico (dobutamina).' },
+            { type: 'match', prompt: 'Relaciona cada dato del IAM de VD con su significado', pairs: [['Hipotensión, yugulares y pulmón limpio', 'Tríada clínica del IAM de VD'], ['PAD/PCP > 0,8', 'Predominio del fallo derecho'], ['ST ≥ 1 mm en V4R', 'Confirma la afectación del VD'], ['BAV completo con hipotensión', 'Estimulación con sincronía AV']], explain: 'La contracción auricular aporta mucho llenado al VD isquémico: si aparece BAV, la estimulación secuencial AV mejora el GC.' },
+          ],
+        },
+        {
+          id: 'casos-u13-l4',
+          title: 'Lesión intermedia: FFR e iFR',
+          case: {
+            title: 'Mujer de 63 años con angina de esfuerzo estable',
+            text: 'Mujer de 63 años, hipertensa y dislipémica, con angina al subir dos pisos desde hace 6 meses pese a bisoprolol y nitratos. La TC coronaria mostró una estenosis del 50–69 % en la DA media. Se indica coronariografía; no tiene prueba de isquemia previa.',
+          },
+          questions: [
+            { type: 'tf', context: 'Coronariografía: estenosis del 60 % en la DA media; resto sin lesiones.', prompt: 'Una estenosis angiográfica del 60 % basta para indicar la ICP.', answer: false, explain: 'La angiografía estima mal la repercusión de las lesiones intermedias (50–90 %). Sin prueba de isquemia, la guía recomienda valorarlas con FFR o iFR.' },
+            { type: 'mc', context: 'Guía de presión distal a la lesión y adenosina intravenosa a 140 µg/kg/min. Presión aórtica media (Pa) 90 mmHg; presión distal media (Pd) 68 mmHg.', prompt: 'Calcula la FFR.', options: ['0,76', '1,32', '0,24', '0,86'], answer: 0, explain: 'FFR = Pd/Pa en hiperemia máxima = 68/90 ≈ 0,76. Dividir al revés (1,32) o restar a 1 (0,24) son errores habituales.' },
+            { type: 'mc', prompt: '¿Qué decisión tomas con esta FFR?', diagram: { id: 'coronary', highlight: 'lad' }, options: ['ICP de la DA media con stent farmacoactivo', 'Tratamiento médico: la lesión no es significativa', 'Repetir la medida en 6 meses', 'Cirugía de revascularización urgente'], answer: 0, explain: 'FFR ≤ 0,80 indica isquemia. En FAME 2, la ICP de lesiones con FFR ≤ 0,80 redujo la revascularización urgente frente al tratamiento médico solo.' },
+            { type: 'mc', prompt: 'Si se hubiera medido el iFR (sin vasodilatador), ¿qué valor define una lesión significativa?', options: ['≤ 0,89', '≤ 0,80', '≤ 0,75', '≤ 0,95'], answer: 0, explain: 'El iFR mide Pd/Pa en el periodo diastólico sin ondas (reposo). Su umbral es ≤ 0,89, no 0,80, y evita la adenosina (DEFINE-FLAIR, iFR-SWEDEHEART).' },
+            { type: 'tf', prompt: 'En el ensayo FAME, la ICP multivaso guiada por FFR redujo los eventos frente a la guiada por angiografía y usó menos stents.', answer: true, explain: 'Tratar solo las lesiones con isquemia demostrada evita stents innecesarios: menos muerte, IAM o revascularización a 1 año y menos material.' },
+            { type: 'match', prompt: 'Relaciona cada dato con su significado', pairs: [['FFR 0,85', 'Diferir: tratamiento médico'], ['FFR 0,72', 'Isquemia: considerar ICP'], ['Adenosina intravenosa', 'Induce hiperemia máxima'], ['iFR', 'Pd/Pa en reposo, en diástole']], explain: 'Diferir la ICP en lesiones con FFR > 0,80 es seguro (DEFER, FAME); el pronóstico depende de la isquemia, no del porcentaje de estenosis.' },
+          ],
+        },
+        {
+          id: 'casos-u13-l5',
+          title: 'Disección coronaria espontánea en el posparto',
+          case: {
+            title: 'Mujer de 38 años con dolor torácico 4 semanas tras el parto',
+            text: 'Mujer de 38 años, sin factores de riesgo cardiovascular, en lactancia 4 semanas después de su segundo parto. Consulta por dolor torácico opresivo de 2 horas tras una noche sin dormir. TA 125/75 mmHg, FC 88 lpm. ECG con ondas T negativas de V2 a V4; troponina elevada. Ahora sin dolor.',
+          },
+          questions: [
+            { type: 'mc', context: 'Coronariografía: estrechamiento largo (≈ 30 mm), liso y progresivo de la DA media-distal, con segmentos proximal y distal normales y flujo TIMI 3. Arterias tortuosas, sin placas.', prompt: '¿Cuál es el diagnóstico más probable?', diagram: { id: 'coronary', highlight: 'lad' }, options: ['Disección coronaria espontánea tipo 2', 'Placa aterosclerótica complicada', 'Espasmo coronario', 'Embolia coronaria'], answer: 0, explain: 'El hematoma intramural comprime la luz y da un estrechamiento largo y liso (tipo 2). El perfil típico es la mujer joven, periparto y sin aterosclerosis.' },
+            { type: 'match', prompt: 'Relaciona cada tipo angiográfico de SCAD con su imagen', pairs: [['Tipo 1', 'Doble luz con tinción de la pared'], ['Tipo 2', 'Estrechamiento largo y liso'], ['Tipo 3', 'Corto, simula una placa'], ['Tipo 4', 'Oclusión total']], explain: 'El tipo 2 es el más frecuente. El tipo 3 es el más difícil: puede requerir imagen intracoronaria para distinguirlo de la aterosclerosis.' },
+            { type: 'tf', prompt: 'Si hubiera dudas diagnósticas, la imagen intracoronaria (IVUS u OCT) puede aclararlas, pero conlleva riesgo de extender la disección.', answer: true, explain: 'Se reserva para dudas que cambien el manejo, con cuidado al avanzar la guía y el catéter y evitando inyecciones forzadas.' },
+            { type: 'mc', prompt: 'Está estable, sin dolor y con flujo TIMI 3. ¿Qué tratamiento indicas?', options: ['Conservador con monitorización varios días', 'ICP inmediata con stent largo', 'Cirugía de revascularización', 'Fibrinólisis intravenosa'], answer: 0, explain: 'La mayoría de las SCAD cicatrizan solas en semanas; la ICP tiene más fracasos (la guía avanza a la falsa luz y el hematoma se propaga). La fibrinólisis puede agravarla.' },
+            { type: 'mc', prompt: '¿En qué situación estaría indicada la revascularización?', options: ['Isquemia persistente o inestabilidad hemodinámica', 'Estenosis angiográfica > 50 %', 'Troponina por encima de 5 veces el límite', 'Ondas T negativas en V2–V4'], answer: 0, explain: 'La guía ESC 2023 reserva la ICP para la isquemia continua, la inestabilidad o el flujo reducido con gran miocardio en riesgo; la CRM para la afectación del tronco.' },
+            { type: 'mc', prompt: 'Antes del alta, ¿qué estudio complementario está indicado?', options: ['Buscar displasia fibromuscular extracoronaria', 'Coronariografía de control a las 48 h', 'Estudio genético de miocardiopatía', 'Ergometría máxima precoz'], answer: 0, explain: 'La displasia fibromuscular coexiste con frecuencia con la SCAD: se busca con angio-TC o angio-RM de cerebro a pelvis. Se aconsejan betabloqueantes y evitar estrógenos.' }, // REVISAR: el beneficio del betabloqueante en la SCAD se basa en datos observacionales
+          ],
+        },
+        {
+          id: 'casos-u13-l6',
+          title: 'Trombosis de stent tras suspender la DAPT',
+          case: {
+            title: 'Varón de 54 años con dolor torácico 3 semanas después de una ICP',
+            text: 'Varón de 54 años al que hace 3 semanas se implantó un stent farmacoactivo en la DA proximal por un IAMSEST. Dejó el ticagrelor hace 5 días por disnea y sigue tomando AAS. Acude por dolor torácico intenso de 1 hora. TA 120/80 mmHg, FC 96 lpm. No tiene antecedentes de ictus ni de sangrado; pesa 80 kg.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa el ECG. ¿Qué diagnóstico sospechas?', ecg12: 'stemi-ant', options: ['Trombosis del stent de la DA', 'Reestenosis intrastent', 'Pericarditis tras la ICP', 'Embolia pulmonar'], answer: 0, explain: 'IAMCEST anterior en el territorio del stent tras suspender un P2Y12: trombosis de stent. La reestenosis suele dar angina progresiva meses después.' },
+            { type: 'match', prompt: 'Relaciona cada tipo de trombosis de stent (ARC) con su plazo', pairs: [['Aguda', '< 24 h'], ['Subaguda', '24 h – 30 días'], ['Tardía', '30 días – 1 año'], ['Muy tardía', '> 1 año']], explain: 'Esta es subaguda. Las precoces se asocian a factores mecánicos y a la suspensión de la DAPT; las muy tardías, a neoaterosclerosis.' },
+            { type: 'mc', prompt: '¿Cuál es el principal predictor de trombosis de stent precoz?', options: ['Suspensión prematura de la DAPT', 'Hipertensión arterial', 'Sexo masculino', 'Uso de stent farmacoactivo'], answer: 0, explain: 'Dejar el inhibidor P2Y12 en el primer mes multiplica el riesgo. Los stents farmacoactivos actuales tienen menos trombosis que los convencionales.' },
+            { type: 'tf', context: 'Coronariografía: oclusión trombótica dentro del stent de la DA (TIMI 0); tras paso de guía y balón, TIMI 3. IVUS: área mínima del stent 4,1 mm², el 60 % del área de referencia.', prompt: 'La imagen intracoronaria ayuda a identificar la causa mecánica de la trombosis, como aquí la infraexpansión.', answer: true, explain: 'IVUS u OCT muestran infraexpansión, malaposición o disección de borde; corregirlas evita la recurrencia.' },
+            { type: 'mc', prompt: '¿Cómo tratas la infraexpansión del stent?', diagram: { id: 'coronary', highlight: 'lad' }, options: ['Posdilatación con balón no distensible a alta presión', 'Tromboaspiración sistemática como único tratamiento', 'Fibrinólisis intracoronaria', 'Ningún tratamiento: el flujo ya es TIMI 3'], answer: 0, explain: 'El balón no distensible a alta presión expande el stent sin sobredistender el vaso. La tromboaspiración sistemática no mejora el pronóstico (TOTAL).' },
+            { type: 'mc', prompt: 'Al alta, ¿qué tratamiento antiagregante pautas?', options: ['AAS + prasugrel, con DAPT durante 12 meses', 'AAS en monoterapia por la disnea', 'Ticagrelor solo durante 1 mes', 'Anticoagulación oral en lugar de DAPT'], answer: 0, explain: 'La disnea por ticagrelor es frecuente y benigna; si no se tolera, se cambia de P2Y12, sin suspender la DAPT. Prasugrel requiere no tener ictus previo.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u14',
+      title: 'Casos de cateterismo: complicaciones y hemodinámica',
+      guide: {
+        intro: 'El cateterismo no solo abre arterias: mide presiones, saturaciones y gradientes, y tiene complicaciones que hay que reconocer a tiempo. Estos casos repasan el acceso vascular, los cálculos clásicos (Gorlin, Hakki, Fick) y la lectura de las curvas.',
+        sections: [
+          {
+            title: 'Acceso vascular y sus complicaciones',
+            points: [
+              'La arteria femoral común se punciona sobre la cabeza femoral, por debajo del ligamento inguinal y por encima de la bifurcación.',
+              'Punción alta → hematoma retroperitoneal (hipotensión, dolor lumbar o en flanco, caída de Hb, a veces sin hematoma visible). Diagnóstico con TC; si hay inestabilidad, angiografía y tratamiento endovascular.',
+              'Punción baja → pseudoaneurisma (masa pulsátil, flujo "yin-yang") o fístula arteriovenosa (soplo continuo).',
+              'Pseudoaneurisma: si es pequeño (< 2 cm) puede cerrarse solo; si no, inyección de trombina ecoguiada; cirugía si hay infección, crecimiento rápido o isquemia.',
+              'El acceso radial reduce el sangrado, las complicaciones vasculares y la mortalidad en el SCA (MATRIX).',
+            ],
+            tip: 'Hipotensión y taquicardia tras un acceso femoral sin hematoma visible: piensa en el retroperitoneo.',
+          },
+          {
+            title: 'Estenosis aórtica en sala',
+            points: [
+              'El cateterismo se reserva para cuando la eco y la TC no son concluyentes; cruzar la válvula estenótica tiene riesgo embólico.',
+              'Gorlin: AVA = GC / (FC × PES × 44,3 × √gradiente medio), con el GC en ml/min y el periodo de eyección sistólica (PES) en s.',
+              'Hakki (aproximación): AVA ≈ GC (l/min) / √gradiente.',
+              'El gradiente pico a pico no es simultáneo y es menor que el pico instantáneo del Doppler; para comparar con la eco usa el gradiente medio.',
+              'Signo de Carabello: la presión aórtica sube > 5 mmHg al retirar el catéter del VI en la EA grave.',
+            ],
+            tip: 'Con bajo gasto, Gorlin infraestima el área: valora el flujo antes de concluir.',
+          },
+          {
+            title: 'Oximetría y ondas v',
+            points: [
+              'Salto oximétrico significativo a nivel auricular: ≥ 7 % entre venas cavas y AD; en VD y AP, ≥ 5 %.',
+              'Saturación venosa mixta proximal al shunt (Flamm): (3 × VCS + VCI) / 4.',
+              'Qp/Qs = (SatAo − SatVM) / (SatVP − SatAP); RVP = (PAPm − PCP) / Qp, en unidades Wood.',
+              'CIA con sobrecarga de VD y RVP < 3 UW: cierre (ESC ACHD 2020); los defectos seno venoso se cierran con cirugía.',
+              'Onda v gigante en la PCP: IM aguda en una AI no distensible; no es específica (CIV, estenosis mitral) y puede faltar en la IM crónica.',
+            ],
+            tip: 'Onda v gigante en un IAM: busca el salto oximétrico en el VD para distinguir la IM de la CIV.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u14-l1',
+          title: 'Hipotensión tras un acceso femoral',
+          case: {
+            title: 'Mujer de 79 años que se hipotensa tras una ICP',
+            text: 'Mujer de 79 años, 52 kg, con enfermedad renal crónica, ingresada por IAMSEST. Tras fracasar el acceso radial por espasmo, se le hace ICP de la circunfleja por vía femoral derecha con heparina. Tres horas después: TA 85/50 mmHg, FC 112 lpm, dolor lumbar y en el flanco derecho, sin hematoma inguinal visible. Hb de 12,8 a 9,1 g/dl.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Qué complicación sospechas?', options: ['Hematoma retroperitoneal', 'Reacción vasovagal', 'Pseudoaneurisma femoral', 'Fístula arteriovenosa femoral'], answer: 0, explain: 'Hipotensión, taquicardia, dolor lumbar y caída de Hb sin hematoma visible sugieren sangrado retroperitoneal. La reacción vagal cursa con bradicardia.' },
+            { type: 'tf', prompt: 'Una punción por encima del ligamento inguinal favorece el sangrado retroperitoneal, porque la arteria no puede comprimirse contra la cabeza femoral.', answer: true, explain: 'Por eso se punciona la femoral común sobre la cabeza femoral, mejor con guía ecográfica o radioscópica.' },
+            { type: 'mc', prompt: 'Responde a la fluidoterapia. ¿Qué prueba confirma el diagnóstico?', options: ['TC abdominopélvica con contraste', 'Radiografía simple de abdomen', 'Eco Doppler de la arteria radial', 'Gammagrafía con hematíes marcados'], answer: 0, explain: 'La TC muestra el hematoma y si hay extravasación activa. Si la paciente estuviera inestable, se iría directamente a angiografía por la femoral contralateral.' },
+            { type: 'mc', context: 'TC: hematoma retroperitoneal derecho de 9 cm, sin extravasación de contraste. Sigue estable con sueroterapia.', prompt: '¿Qué manejo indicas?', options: ['Suspender la anticoagulación, reponer y vigilar Hb', 'Compresión manual de la ingle durante 1 hora', 'Cirugía abierta inmediata', 'Aumentar la dosis de heparina'], answer: 0, explain: 'La mayoría se resuelven con medidas conservadoras y transfusión si hace falta. El balón o el stent recubierto se reservan para el sangrado activo o la inestabilidad.' },
+            { type: 'mc', prompt: 'En otro paciente aparece al día siguiente una masa inguinal pulsátil. Eco Doppler: cavidad de 3 cm con flujo "yin-yang" y cuello estrecho. ¿Qué tratamiento eliges?', options: ['Inyección de trombina guiada por eco', 'Cirugía vascular urgente', 'Observación sin control posterior', 'Anticoagulación a dosis plenas'], answer: 0, explain: 'La trombina ecoguiada cierra la mayoría de los pseudoaneurismas con cuello estrecho. Los < 2 cm pueden cerrarse solos; la cirugía queda para infección o isquemia.' },
+            { type: 'match', prompt: 'Relaciona cada concepto con su hallazgo', pairs: [['Hematoma retroperitoneal', 'Dolor lumbar y caída de Hb'], ['Pseudoaneurisma', 'Masa pulsátil con flujo "yin-yang"'], ['Fístula arteriovenosa', 'Soplo continuo inguinal'], ['Acceso radial', 'Menos sangrado y mortalidad']], explain: 'La punción alta da sangrado retroperitoneal; la baja, pseudoaneurisma o fístula. El acceso radial evita la mayoría de estas complicaciones.' },
+          ],
+        },
+        {
+          id: 'casos-u14-l2',
+          title: 'Estenosis aórtica en sala: Gorlin y Hakki',
+          case: {
+            title: 'Varón de 78 años con disnea y eco no concluyente',
+            text: 'Varón de 78 años con EPOC y disnea de esfuerzo en clase NYHA III. Soplo sistólico aórtico rudo con segundo ruido débil. La ventana ecocardiográfica es mala y el diámetro del TSVI no se mide con fiabilidad. El calcio valvular por TC (1700 UA) queda en zona indeterminada para un varón.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: válvula calcificada; Vmax 3,8 m/s, gradiente medio 34 mmHg, área por continuidad 0,9 cm². FEVI 58 %; volumen sistólico indexado 40 ml/m².', prompt: '¿Cómo clasificas estos hallazgos?', options: ['Bajo gradiente con flujo normal', 'Grave de alto gradiente', 'Bajo flujo y bajo gradiente con FEVI baja', 'Estenosis ligera'], answer: 0, explain: 'Área < 1 cm² con gradiente < 40 mmHg y VSi > 35 ml/m²: discordancia con flujo normal, a menudo por error de medida del TSVI. Suele ser moderada, pero aquí hay que confirmarlo.' },
+            { type: 'mc', context: 'Cateterismo con registro simultáneo de VI y aorta: VI 180/14 mmHg, aorta 112/72 mmHg; gradiente medio 45 mmHg.', prompt: 'Observa el registro. ¿Cuál es el gradiente pico a pico?', pressure: 'as-lv-ao', options: ['68 mmHg', '45 mmHg', '108 mmHg', '166 mmHg'], answer: 0, explain: 'Pico VI − pico Ao = 180 − 112 = 68 mmHg. No es simultáneo y es menor que el pico instantáneo del Doppler; para comparar con la eco se usa el medio.' },
+            { type: 'mc', context: 'GC por termodilución 4,0 l/min; FC 72 lpm; periodo de eyección sistólica 0,33 s.', prompt: 'Calcula el área valvular por la fórmula de Gorlin.', options: ['≈ 0,57 cm²', '≈ 0,22 cm²', '≈ 0,08 cm²', '≈ 1,1 cm²'], answer: 0, explain: '4000 / (72 × 0,33) ≈ 168 ml/s; 168 / (44,3 × √45) ≈ 0,57 cm². Usar el GC por segundo, sin FC × PES, da 0,22 cm².' },
+            { type: 'mc', prompt: 'Comprueba el resultado con la fórmula simplificada de Hakki.', options: ['≈ 0,60 cm²', '≈ 0,09 cm²', '≈ 1,5 cm²', '≈ 0,30 cm²'], answer: 0, explain: 'AVA ≈ GC / √gradiente = 4,0 / √45 ≈ 0,60 cm², concordante con Gorlin. Sin la raíz cuadrada saldría 0,09 cm².' },
+            { type: 'tf', prompt: 'Según la guía ESC/EACTS 2025, la medida invasiva del gradiente aórtico se reserva para cuando las pruebas no invasivas no son concluyentes.', answer: true, explain: 'Cruzar retrógradamente una válvula estenótica puede producir embolias cerebrales; la eco y la TC suelen bastar.' },
+            { type: 'mc', context: 'Conclusión: EA grave sintomática. TC con anatomía apta para acceso transfemoral; riesgo quirúrgico intermedio.', prompt: '¿Qué tratamiento recomienda la guía ESC/EACTS 2025?', options: ['TAVI transfemoral tras valorarlo el Heart Team', 'Tratamiento médico y nueva eco en 1 año', 'Valvuloplastia con balón como tratamiento final', 'Recambio quirúrgico obligado por su EPOC'], answer: 0, explain: 'A partir de los 70 años con anatomía transfemoral favorable se prefiere la TAVI. La valvuloplastia aislada solo sirve como puente.' }, // REVISAR: umbral de edad TAVI 70 años (ESC/EACTS 2025)
+          ],
+        },
+        {
+          id: 'casos-u14-l3',
+          title: 'Salto oximétrico y Qp/Qs',
+          case: {
+            title: 'Mujer de 34 años con disnea y desdoblamiento fijo del 2R',
+            text: 'Mujer de 34 años con disnea de esfuerzo y palpitaciones desde hace 1 año. Soplo sistólico pulmonar suave y desdoblamiento fijo del segundo ruido. ECG con bloqueo incompleto de rama derecha. ETT: VD dilatado sin hipertensión pulmonar estimada, sin defecto visible en el septo interauricular. Se hace cateterismo derecho con oximetría.',
+          },
+          questions: [
+            { type: 'tf', context: 'Curva de AD: ondas a y v normales, presión media 5 mmHg.', prompt: 'Observa la curva. Un shunt auricular amplio con RVP normal es compatible con presiones derechas normales.', pressure: 'ra', answer: true, explain: 'La CIA produce sobrecarga de volumen, no de presión: el VD se dilata con presiones normales mientras la RVP se mantenga baja.' },
+            { type: 'mc', context: 'Saturaciones de O₂: VCS 68 %, VCI 76 %, AD 84 %, VD 84 %, AP 84 %, aorta 97 %.', prompt: '¿Dónde está el salto oximétrico?', options: ['Entre las venas cavas y la AD', 'Entre la AD y el VD', 'Entre el VD y la AP', 'No hay salto significativo'], answer: 0, explain: 'La saturación sube del 70 % (venosa mixta) al 84 % en la AD, un salto ≥ 7 %: shunt izquierda-derecha auricular.' },
+            { type: 'mc', prompt: 'Calcula la saturación venosa mixta proximal al shunt (fórmula de Flamm).', options: ['70 %', '72 %', '68 %', '84 %'], answer: 0, explain: '(3 × VCS + VCI) / 4 = (204 + 76) / 4 = 70 %. La media simple de VCS y VCI (72 %) sobrevalora el aporte de la VCI.' },
+            { type: 'mc', prompt: 'Asumiendo una saturación de venas pulmonares del 98 %, calcula el Qp/Qs.', options: ['≈ 1,9', '≈ 0,5', '≈ 1,2', '≈ 3,2'], answer: 0, explain: 'Qp/Qs = (97 − 70) / (98 − 84) = 27 / 14 ≈ 1,9. Un Qp/Qs ≥ 1,5 indica un shunt significativo; invertir la fórmula da 0,5.' },
+            { type: 'mc', context: 'PAP media 20 mmHg; PCP 9 mmHg; Qp por Fick 8,4 l/min (Qs 4,4 l/min).', prompt: 'Calcula la resistencia vascular pulmonar.', options: ['≈ 1,3 UW', '≈ 2,5 UW', '≈ 11 UW', '≈ 0,13 UW'], answer: 0, explain: 'RVP = (PAPm − PCP) / Qp = 11 / 8,4 ≈ 1,3 UW. Usar el Qs (2,5 UW) es el error típico cuando hay shunt.' },
+            { type: 'mc', context: 'Resonancia: CIA tipo seno venoso superior con drenaje anómalo de la vena pulmonar superior derecha a la VCS.', prompt: '¿Qué tratamiento indicas?', options: ['Corrección quirúrgica del defecto y del drenaje', 'Dispositivo percutáneo de CIA ostium secundum', 'Seguimiento: no tiene hipertensión pulmonar', 'Tratamiento vasodilatador pulmonar'], answer: 0, explain: 'Con sobrecarga de VD y RVP < 3 UW se indica el cierre (ESC ACHD 2020). El seno venoso no tiene bordes para un dispositivo y asocia drenaje venoso anómalo.' },
+          ],
+        },
+        {
+          id: 'casos-u14-l4',
+          title: 'IM aguda: onda v gigante',
+          case: {
+            title: 'Varón de 68 años con edema agudo de pulmón tras un IAM inferior',
+            text: 'Varón de 68 años que llegó con 20 horas de evolución de un IAMCEST inferior; se trató con ICP de la CD. Al tercer día presenta disnea brusca, crepitantes bilaterales y TA 85/55 mmHg. Soplo holosistólico suave en el ápex, irradiado a la axila, sin frémito.',
+          },
+          questions: [
+            { type: 'mc', prompt: '¿Qué músculo papilar se rompe con más frecuencia en un IAM inferior y por qué?', diagram: { id: 'coronary', highlight: 'pda' }, options: ['Posteromedial: irrigación única por la DP', 'Anterolateral: irrigación única por la DA', 'Posteromedial: doble irrigación (DA y Cx)', 'Anterolateral: irrigación única por la CD'], answer: 0, explain: 'El papilar posteromedial depende solo de la descendente posterior; el anterolateral recibe ramas de la DA y de la Cx, por eso se rompe menos.' },
+            { type: 'mc', context: 'Swan-Ganz: PCP media ≈ 22 mmHg con ondas v que llegan a ≈ 37 mmHg; PAP 50/24 mmHg.', prompt: 'Observa la curva de PCP. ¿Qué explica la onda v gigante?', pressure: 'pcwp-v', options: ['Insuficiencia en una AI pequeña y poco distensible', 'Contracción auricular con la mitral cerrada', 'Constricción pericárdica', 'Estenosis valvular pulmonar'], answer: 0, explain: 'La sangre regurgitada en sístole entra en una AI no dilatada y eleva mucho la presión (onda v). La onda a en cañón sería por contracción auricular contra la válvula cerrada.' },
+            { type: 'tf', context: 'Oximetría: AD 62 %, AP 63 %; sin salto oximétrico.', prompt: 'La ausencia de salto oximétrico orienta a IM aguda y no a CIV posinfarto, aunque ambas pueden dar ondas v gigantes.', answer: true, explain: 'En la CIV la sangre oxigenada pasa al VD y la saturación de la AP sube; las ondas v aparecen también por el aumento del retorno a la AI.' },
+            { type: 'tf', prompt: 'Una onda v gigante en la PCP es específica de IM grave.', answer: false, explain: 'Puede verse en la CIV, la estenosis mitral o la AI rígida, y faltar en la IM crónica grave con AI grande y distensible.' },
+            { type: 'mc', context: 'ETT: rotura de la cabeza del músculo papilar posteromedial con velo mitral "flail" e IM grave. FEVI 50 %.', prompt: '¿Qué tratamiento indicas?', options: ['Cirugía mitral urgente, con soporte como puente', 'Tratamiento médico y cirugía a las 6 semanas', 'Diuréticos y alta cuando mejore', 'Reparación percutánea programada a 3 meses'], answer: 0, explain: 'La rotura de papilar es indicación de cirugía urgente (ESC 2023). El BCIA, el soporte mecánico o los vasodilatadores estabilizan mientras tanto.' },
+            { type: 'match', prompt: 'Relaciona cada hallazgo hemodinámico con su causa', pairs: [['Onda v gigante sin salto oximétrico', 'IM aguda'], ['Salto oximétrico en el VD', 'CIV posinfarto'], ['Igualación de presiones diastólicas', 'Taponamiento cardiaco'], ['Ondas a en cañón', 'Disociación AV']], explain: 'En la IM aguda, la presión de llenado del VI se estima mejor antes de la onda v que con la PCP media.' },
+          ],
+        },
+      ],
+    },
   ],
 };
