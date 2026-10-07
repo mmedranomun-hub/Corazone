@@ -3,12 +3,15 @@
 Aprende **ECG, ecocardiograma y cateterismo** como en Duolingo: lecciones cortas, vidas, XP y rachas diarias.
 
 ## Características
-- 3 cursos (ECG, Eco, Cateterismo) organizados en unidades y lecciones con desbloqueo progresivo.
-- Preguntas de opción múltiple, verdadero/falso y emparejar, con explicación tras cada respuesta.
-- **Tiras de ECG generadas procedimentalmente** (19 ritmos: FA, flutter, bloqueos AV, TV, FV, IAMCEST, WPW, hiperpotasemia…).
-- Atlas de ritmos para repasar.
-- Vidas (se regeneran cada 30 min), XP, estrellas por lección y racha diaria guardadas en el navegador.
-- Modo oscuro automático, adaptado a móvil.
+- 4 cursos — ECG, Eco, Cateterismo y **Casos clínicos** (ETT, ETE y cateterismo) — con 42 lecciones y ~240 preguntas.
+- Preguntas de opción múltiple, verdadero/falso, emparejar y **"toca la onda"** sobre la tira de ECG.
+- Recursos visuales generados por código: **19 ritmos**, **ECG de 12 derivaciones**, **curvas de presión** hemodinámicas y **esquemas** (árbol coronario, planos de eco).
+- Repaso espaciado de preguntas falladas, objetivo diario, logros, vidas, XP y rachas.
+- Atlas de ritmos y 12 derivaciones. PWA instalable con modo offline. Modo oscuro.
+
+## Recursos y agentes
+- `recursos/`: temario por niveles (estudiante, MIR, residente), guía editorial, plantilla, checklist de revisión, bibliografía, glosario y órdenes de trabajo.
+- `.claude/agents/`: agentes `redactor-contenido`, `revisor-medico`, `dev-frontend` y `qa-tester` para seguir ampliando la app con Claude Code.
 
 ## Ejecutar en local
 Sin dependencias ni compilación:

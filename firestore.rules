@@ -1,0 +1,21 @@
+rules_version = '2';
+// Reglas de seguridad de Firestore para Corazone (ver docs/CUENTAS.md).
+// Cada usuario sólo puede leer y escribir su propio documento users/{uid}:
+//   { data: string (JSON del progreso), updatedAt: number, v: number }
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['data', 'updatedAt', 'v'])
+        && request.resource.data.data is string
+        && request.resource.data.data.size() <= 500000
+        && request.resource.data.updatedAt is number
+        && (!('v' in request.resource.data) || request.resource.data.v is int);
+    }
+    // Todo lo demás, denegado
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
