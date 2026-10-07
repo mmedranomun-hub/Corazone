@@ -148,5 +148,201 @@ export default {
         },
       ],
     },
+    {
+      id: 'eco-u6',
+      title: 'Valvulopatías avanzado',
+      guide: {
+        intro: 'Graduación ecográfica y decisiones de intervención en valvulopatías (ESC/EACTS 2025, EACVI 2017/2022, ASE 2017).',
+        sections: [
+          {
+            title: 'Estenosis aórtica',
+            points: [
+              'Grave: Vmax ≥ 4 m/s, gradiente medio ≥ 40 mmHg, área ≤ 1 cm² (≤ 0,6 cm²/m²); índice adimensional < 0,25.',
+              'Continuidad: área = (π × (D TSVI/2)² × ITV TSVI) / ITV aórtica. El diámetro va al cuadrado: 1 mm de error ≈ 10 % de error en el área.',
+              'Bajo flujo = VS indexado ≤ 35 ml/m². Con FEVI < 50 % (clásico) → eco con dobutamina: reserva de flujo si el VS sube ≥ 20 %.',
+              'Con FEVI conservada (paradójico) o sin reserva → calcio valvular por TC: ≥ 3000 UA en varones y ≥ 1600 UA en mujeres hacen muy probable la EA grave.',
+              'ESC/EACTS 2025: TAVI transfemoral recomendada a partir de los 70 años (antes ≥ 75); la decisión es del Heart Team.',
+            ],
+            tip: 'Gradiente bajo con área pequeña: antes de hablar de bajo flujo, vuelve a medir el TSVI y busca la Vmax desde todas las ventanas.',
+          },
+          {
+            title: 'Insuficiencia mitral',
+            points: [
+              'Carpentier: I movilidad normal (dilatación anular, perforación); II excesiva (prolapso, flail); IIIa restricción sisto-diastólica (reumática); IIIb restricción sistólica (isquémica/funcional).',
+              'PISA: EROA = 2πr² × Va / Vmax IM; volumen regurgitante = EROA × ITV de la IM.',
+              'IM grave: EROA ≥ 40 mm², VR ≥ 60 ml, vena contracta ≥ 7 mm, fracción regurgitante ≥ 50 %.',
+              'Primaria asintomática: cirugía (reparación) si FEVI ≤ 60 % o DTSVI ≥ 40 mm; la FA o la PSAP > 50 mmHg también la favorecen.',
+              'Secundaria grave sintomática pese a tratamiento óptimo: TEER (borde a borde) clase I en ESC/EACTS 2025 si cumple criterios tipo COAPT.',
+            ],
+          },
+          {
+            title: 'Insuficiencia aórtica y estenosis mitral',
+            points: [
+              'IA grave: vena contracta > 6 mm, THP < 200 ms, inversión holodiastólica en aorta descendente, EROA ≥ 30 mm², VR ≥ 60 ml.',
+              'Cirugía en IA grave asintomática (clase I): FEVI ≤ 50 % o DTSVI > 50 mm (> 25 mm/m²).',
+              'EM: planimetría en eje corto (referencia) y área = 220/THP; área ≤ 1,5 cm² = EM clínicamente significativa.',
+              'Wilkins (movilidad, engrosamiento, calcio, aparato subvalvular; 4–16): ≤ 8 favorece la valvuloplastia percutánea si no hay trombo en AI ni IM > leve.',
+            ],
+          },
+          {
+            title: 'Válvulas derechas, prótesis y endocarditis',
+            points: [
+              'IT: grave (VC 7–13 mm), masiva (14–20 mm) y torrencial (≥ 21 mm); la inversión sistólica en venas hepáticas apoya IT grave.',
+              'PSAP = 4 × V(IT)² + PAD (estimada por la VCI). En la IT torrencial el flujo laminar infraestima la PSAP.',
+              'Mismatch protésico aórtico: EOA indexado ≤ 0,85 moderado, ≤ 0,65 cm²/m² grave (≤ 0,70 y ≤ 0,55 si IMC ≥ 30).',
+              'Endocarditis (ESC 2023 / Duke-ISCVID 2023): la imagen (eco, TC cardiaca, PET-TC) es criterio mayor; ETE si prótesis, ETT negativo con alta sospecha o para buscar complicaciones.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'eco-u6-l1',
+          title: 'Estenosis aórtica: casos difíciles',
+          questions: [
+            { type: 'mc', prompt: 'TSVI de 2,0 cm, ITV en TSVI 20 cm e ITV aórtica 80 cm. ¿Área valvular aórtica por ecuación de continuidad?', options: ['0,79 cm²', '0,25 cm²', '3,14 cm²', '0,50 cm²'], answer: 0, explain: 'Área TSVI = π × 1,0² = 3,14 cm²; VS = 3,14 × 20 ≈ 63 ml; 63/80 ≈ 0,79 cm². El cociente 20/80 = 0,25 es el índice adimensional (< 0,25 apoya EA grave).' },
+            { type: 'mc', prompt: 'Mujer de 78 años: FEVI 62 %, área aórtica 0,79 cm², gradiente medio 32 mmHg y VS indexado 30 ml/m². ¿Cómo se clasifica?', options: ['Posible EA grave de bajo flujo-bajo gradiente paradójica', 'EA moderada: el gradiente medio es el que manda', 'EA grave clásica de bajo flujo con FE reducida', 'EA grave de alto gradiente'], answer: 0, explain: 'FEVI conservada con VSi ≤ 35 ml/m² define el bajo flujo paradójico. Tras descartar errores de medida, el calcio por TC (≥ 1600 UA en mujer) apoya que sea grave.' },
+            { type: 'tf', prompt: 'Observa la curva simultánea VI-aorta: el pulso aórtico de ascenso lento y pico tardío (parvus et tardus) apoya una EA significativa.', pressure: 'as-lv-ao', answer: true, explain: 'El gradiente medio ≥ 40 mmHg define la EA grave. El gradiente pico instantáneo del Doppler es mayor que el pico a pico del cateterismo, que no es simultáneo.' },
+            { type: 'match', prompt: 'EA bajo flujo con FEVI reducida: relaciona el hallazgo con su interpretación', pairs: [['Con dobutamina: GM ≥ 40 y área ≤ 1 cm²', 'EA verdaderamente grave'], ['Con dobutamina: área > 1 cm²', 'EA pseudograve'], ['Con dobutamina: VS sube < 20 %', 'Sin reserva de flujo'], ['Calcio por TC ≥ 3000 UA (varón)', 'EA grave muy probable']], explain: 'Sin reserva de flujo el eco de estrés no es concluyente y se recurre al calcio por TC; la ausencia de reserva empeora el pronóstico pero no contraindica la intervención.' },
+            { type: 'tf', prompt: 'Según ESC/EACTS 2025, en la EA grave sintomática con anatomía y acceso transfemoral favorables se recomienda TAVI a partir de los 70 años.', answer: true, explain: 'Las guías de 2021 fijaban el corte en 75 años. Por debajo de 70 y con bajo riesgo quirúrgico, la cirugía sigue siendo de elección; decide el Heart Team.' }, // Fuente: ESC/EACTS 2025 valvulopatías
+            { type: 'tf', prompt: 'Un error de 1 mm al medir un TSVI de 20 mm cambia el área valvular calculada en torno a un 1 %.', answer: false, explain: 'El diámetro se eleva al cuadrado: (21/20)² ≈ 1,10, es decir, ≈ 10 % de error. Mide el TSVI en mesosístole, con zoom, a 0,5–1 cm del anillo o en él.' },
+          ],
+        },
+        {
+          id: 'eco-u6-l2',
+          title: 'Insuficiencia mitral primaria y secundaria',
+          questions: [
+            { type: 'match', prompt: 'Relaciona el tipo de Carpentier con la movilidad de los velos', pairs: [['Tipo I', 'Normal: dilatación anular o perforación'], ['Tipo II', 'Excesiva: prolapso o flail'], ['Tipo IIIa', 'Restringida en sístole y diástole'], ['Tipo IIIb', 'Restringida en sístole (tethering)']], explain: 'El IIIa es típico de la enfermedad reumática; el IIIb, de la IM isquémica o funcional por remodelado del VI y desplazamiento de los papilares.' },
+            { type: 'mc', prompt: 'PISA: radio 1,0 cm con velocidad de aliasing 40 cm/s y velocidad máxima de la IM 5 m/s. ¿Cuál es el EROA?', options: ['50 mm²', '25 mm²', '5 mm²', '100 mm²'], answer: 0, explain: 'EROA = 2πr² × Va / Vmax = 6,28 × 1 × 40 / 500 = 0,50 cm² = 50 mm² → IM grave (≥ 40 mm²). Olvidar el factor 2 de la hemiesfera da 25 mm².' },
+            { type: 'mc', prompt: 'Con un EROA de 0,50 cm² y una ITV del chorro de IM de 140 cm, ¿cuál es el volumen regurgitante?', options: ['70 ml', '28 ml', '35 ml', '140 ml'], answer: 0, explain: 'VR = EROA × ITV = 0,5 × 140 = 70 ml (≥ 60 ml = grave). Comprueba la coherencia con el tamaño de la AI y del VI.' },
+            { type: 'tf', prompt: 'Observa la curva de enclavamiento: las ondas v gigantes son típicas de la IM aguda grave, con una AI no dilatada y poco distensible.', pressure: 'pcwp-v', answer: true, explain: 'En la IM crónica la AI dilatada amortigua la onda v. Además no son específicas: aparecen también con AI rígida o en la CIV postinfarto.' },
+            { type: 'mc', prompt: 'Mujer de 58 años, asintomática, con IM primaria grave por flail de P2. ¿Qué hallazgo indica cirugía (clase I)?', options: ['DTSVI de 42 mm', 'FEVI de 66 %', 'PSAP en reposo de 35 mmHg', 'Diámetro de la AI de 40 mm'], answer: 0, explain: 'En la IM primaria grave asintomática la cirugía es clase I si FEVI ≤ 60 % o DTSVI ≥ 40 mm; la FA o la PSAP > 50 mmHg la favorecen. Se prefiere la reparación.' },
+            { type: 'mc', prompt: 'Varón de 72 años, IM secundaria grave, FEVI 32 %, DTSVI 58 mm, NYHA III pese a tratamiento óptimo y TRC; el Heart Team descarta cirugía. Según ESC/EACTS 2025…', options: ['TEER mitral borde a borde (recomendación clase I)', 'Reparación quirúrgica aislada como primera opción', 'Solo tratamiento médico: la TEER no aporta beneficio', 'TEER solo si la FEVI es inferior al 20 %'], answer: 0, explain: 'Con perfil tipo COAPT (FEVI 20–50 %, DTSVI ≤ 70 mm, PSAP ≤ 70 mmHg) la TEER reduce hospitalizaciones y mortalidad; la guía de 2025 la eleva a clase I.' }, // Fuente: ESC/EACTS 2025 valvulopatías
+          ],
+        },
+        {
+          id: 'eco-u6-l3',
+          title: 'Insuficiencia aórtica y estenosis mitral',
+          questions: [
+            { type: 'match', prompt: 'Relaciona el parámetro con su umbral de IA grave (EACVI 2022)', pairs: [['Vena contracta', '> 6 mm'], ['EROA', '≥ 30 mm²'], ['Volumen regurgitante', '≥ 60 ml'], ['Fracción regurgitante', '≥ 50 %']], explain: 'Se suman los signos de flujo: inversión holodiastólica en aorta descendente (velocidad telediastólica > 20 cm/s) y THP < 200 ms.' },
+            { type: 'tf', prompt: 'Un tiempo de hemipresión (THP) del chorro de IA > 500 ms sugiere IA grave.', answer: false, explain: 'Al revés: en la IA grave las presiones de Ao y VI se igualan rápido y el THP es corto (< 200 ms); > 500 ms orienta a IA leve. Depende de la distensibilidad del VI.' },
+            { type: 'mc', prompt: 'Varón de 55 años con IA grave asintomática. ¿Qué hallazgo es indicación de cirugía clase I?', options: ['FEVI de 48 %', 'DTDVI de 62 mm', 'THP del chorro de 280 ms', 'FEVI 58 % con DTSVI de 42 mm'], answer: 0, explain: 'En la IA grave asintomática se opera (clase I) con FEVI ≤ 50 % o DTSVI > 50 mm (> 25 mm/m²). Si hay dilatación aórtica, cuenta también el diámetro de la raíz.' },
+            { type: 'mc', prompt: 'Estenosis mitral reumática con un THP de 275 ms. ¿Área mitral estimada?', options: ['0,8 cm²', '1,25 cm²', '1,6 cm²', '2,2 cm²'], answer: 0, explain: 'Área = 220/THP = 220/275 = 0,8 cm². El THP no es fiable justo tras la valvuloplastia, con IA grave ni si cambia la distensibilidad de AI o VI.' },
+            { type: 'tf', prompt: 'La planimetría en eje corto paraesternal, en el borde libre de los velos, es el método de referencia del área mitral en la EM reumática.', answer: true, explain: 'Mide el orificio anatómico sin depender del flujo ni de la distensibilidad; el 3D ayuda a alinear el plano en la punta de los velos.' },
+            { type: 'mc', prompt: 'EM reumática significativa con puntuación de Wilkins de 7, sin trombo en la AI e IM leve. Esto indica…', options: ['Anatomía favorable para valvuloplastia percutánea', 'Necesidad de sustitución valvular quirúrgica', 'Contraindicación de la valvuloplastia por IM', 'EM leve sin repercusión hemodinámica'], answer: 0, explain: 'Wilkins puntúa movilidad, engrosamiento, calcificación y aparato subvalvular (1–4 cada uno); ≤ 8 es favorable. Contraindican: trombo en AI, IM > leve y calcio comisural.' },
+          ],
+        },
+        {
+          id: 'eco-u6-l4',
+          title: 'Válvulas derechas, prótesis y endocarditis',
+          questions: [
+            { type: 'mc', prompt: 'IT con velocidad máxima 3,5 m/s y VCI de 24 mm que colapsa < 50 % con la inspiración. ¿PSAP estimada?', options: ['64 mmHg', '49 mmHg', '52 mmHg', '29 mmHg'], answer: 0, explain: '4 × 3,5² = 49 mmHg + PAD 15 mmHg (VCI > 21 mm y colapso < 50 %) = 64 mmHg. Olvidar sumar la PAD es el error más frecuente.' },
+            { type: 'match', prompt: 'Relaciona el grado de IT con su vena contracta', pairs: [['IT grave', 'VC 7–13 mm'], ['IT masiva', 'VC 14–20 mm'], ['IT torrencial', 'VC ≥ 21 mm']], explain: 'La escala ampliada (EROA ≥ 40, ≥ 60 y ≥ 80 mm²) nació para seleccionar pacientes para intervención percutánea tricuspídea.' },
+            { type: 'tf', prompt: 'Si se opera la válvula mitral, la anuloplastia tricuspídea solo está indicada cuando la IT es grave.', answer: false, explain: 'Con IT leve-moderada secundaria y anillo dilatado (≥ 40 mm o > 21 mm/m²) debe considerarse la anuloplastia, porque la IT suele progresar tras la cirugía izquierda.' },
+            { type: 'mc', prompt: 'Bioprótesis aórtica con velos móviles, tiempo de aceleración < 80 ms, gradiente medio 28 mmHg y EOA indexado 0,60 cm²/m² (IMC 26). Lo más probable es…', options: ['Mismatch paciente-prótesis grave', 'Trombosis de la prótesis', 'Obstrucción por endocarditis', 'Fuga paravalvular grave'], answer: 0, explain: 'EOAi ≤ 0,65 cm²/m² = mismatch grave (≤ 0,55 si IMC ≥ 30). En la obstrucción verdadera los velos se mueven mal, el TA > 100 ms y el cociente ITV TSVI/prótesis < 0,25.' },
+            { type: 'match', prompt: 'Relaciona el hallazgo ecográfico de endocarditis con su descripción', pairs: [['Vegetación', 'Masa móvil adherida a la válvula'], ['Absceso', 'Zona perivalvular engrosada sin flujo'], ['Pseudoaneurisma', 'Cavidad perivalvular pulsátil con flujo'], ['Dehiscencia protésica', 'Balanceo y fuga paravalvular nueva']], explain: 'Las complicaciones perivalvulares se ven mejor con ETE y son indicación quirúrgica por infección no controlada.' },
+            { type: 'tf', prompt: 'En los criterios ESC 2023 y Duke-ISCVID 2023, la TC cardiaca y la PET-TC con ¹⁸F-FDG pueden aportar un criterio mayor de imagen.', answer: true, explain: 'Son especialmente útiles en endocarditis protésica. El ETE se indica si hay prótesis, ETT negativo con alta sospecha o para buscar complicaciones.' }, // Fuente: ESC 2023 endocarditis; Duke-ISCVID 2023
+          ],
+        },
+      ],
+    },
+    {
+      id: 'eco-u7',
+      title: 'Bases físicas y cuantificación',
+      guide: {
+        intro: 'Física del ultrasonido, segmentación del VI y cuantificación de cavidades según ASE/EACVI 2015.',
+        sections: [
+          {
+            title: 'Física y knobología',
+            points: [
+              'λ = c/f (c ≈ 1540 m/s): más frecuencia → mejor resolución axial y menos penetración.',
+              'Límite de Nyquist = PRF/2; al aumentar la profundidad baja la PRF y aparece antes el aliasing. Soluciones: bajar la línea de base, subir la escala, reducir profundidad o usar Doppler continuo.',
+              'El Doppler depende del coseno del ángulo: con < 20° el error es < 6 %; a 60° se mide la mitad.',
+              'La ganancia amplifica en recepción (señal y ruido); la potencia de salida es otro mando. Menos profundidad y sector más estrecho = más frame rate.',
+            ],
+            tip: 'Ante una imagen "imposible" (flap en la aorta, trombo apical), piensa en artefacto: compruébala en otro plano.',
+          },
+          {
+            title: 'Segmentación y anatomía',
+            points: [
+              '17 segmentos: 6 basales, 6 medios, 4 apicales y el ápex (17).',
+              'DA: anteriores, anteroseptales, septal apical y ápex; CD: inferoseptales basal-medio e inferiores; Cx: anterolaterales e inferolaterales (con variaciones por dominancia).',
+              'A4C: inferoseptal y anterolateral; A2C: anterior e inferior; A3C y PEL: anteroseptal e inferolateral.',
+              'Mitral: A1/P1 laterales (junto a la orejuela), A2/P2 centrales, A3/P3 mediales; P2 es el festón que más prolapsa.',
+            ],
+          },
+          {
+            title: 'Cuantificación del VI y aurículas (ASE/EACVI 2015)',
+            points: [
+              'FEVI normal ≥ 52 % en varones y ≥ 54 % en mujeres; método recomendado: Simpson biplano (o 3D).',
+              'VTD indexado (2D) ≤ 74 ml/m² en varones y ≤ 61 ml/m² en mujeres.',
+              'Masa VI indexada (lineal) ≤ 115 g/m² en varones y ≤ 95 g/m² en mujeres; GPR = 2 × PP / DTDVI, anormal > 0,42.',
+              'Geometría: masa normal + GPR > 0,42 = remodelado concéntrico; masa alta + GPR > 0,42 = HVI concéntrica; masa alta + GPR ≤ 0,42 = HVI excéntrica.',
+              'Volumen AI indexado normal ≤ 34 ml/m²; volumen AD indexado ≈ 25 ml/m² (varones) y 21 ml/m² (mujeres).',
+            ],
+          },
+          {
+            title: 'VD, strain, 3D y contraste',
+            points: [
+              'VD anormal: diámetro basal > 41 mm, TAPSE < 17 mm, S′ < 9,5 cm/s, FAC < 35 %, strain de pared libre de magnitud < 20 %.',
+              'GLS del VI normal ≈ −20 % (depende del equipo); valores menos negativos de −16 % suelen ser anormales.',
+              'El 3D evita el escorzo y las asunciones geométricas: volúmenes mayores y más reproducibles que el 2D.',
+              'Contraste (microburbujas) si ≥ 2 segmentos contiguos no se ven, o ante sospecha de trombo apical, MCH apical o no compactación.',
+              'ASE 2025 (diastólica): strain de reservorio de la AI ≤ 18 % apoya presiones de llenado elevadas.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'eco-u7-l1',
+          title: 'Física y knobología',
+          questions: [
+            { type: 'mc', prompt: 'Si cambias de un transductor de 2,5 MHz a uno de 5 MHz, ¿qué ocurre?', options: ['Mejora la resolución axial y disminuye la penetración', 'Mejora la penetración y empeora la resolución axial', 'Aumentan la penetración y la frecuencia de imagen', 'No cambia la resolución; solo cambia el brillo'], answer: 0, explain: 'λ = c/f: con 1540 m/s, λ pasa de ≈ 0,6 a ≈ 0,3 mm, pero la atenuación crece con la frecuencia. Por eso el ETE y la eco pediátrica usan frecuencias altas.' },
+            { type: 'mc', prompt: 'En Doppler pulsado con una frecuencia de repetición de pulsos (PRF) de 6 kHz, ¿cuál es el límite de Nyquist?', options: ['3 kHz', '6 kHz', '12 kHz', '1,5 kHz'], answer: 0, explain: 'Nyquist = PRF/2. Más profundidad obliga a bajar la PRF y el aliasing aparece antes; el Doppler continuo no tiene este límite.' },
+            { type: 'match', prompt: 'Relaciona cada artefacto con su aspecto', pairs: [['Reverberación', 'Líneas repetidas a intervalos regulares'], ['Sombra acústica', 'Zona anecoica tras calcio o prótesis'], ['Lóbulo lateral', 'Eco de un reflector fuera del eje'], ['Imagen en espejo', 'Duplicado tras un reflector intenso']], explain: 'Una reverberación en la aorta ascendente puede simular un flap de disección: si cruza paredes o se mueve en paralelo a ellas en modo M, es artefacto.' },
+            { type: 'tf', prompt: 'Aumentar la ganancia global mejora la relación señal/ruido porque aumenta la potencia acústica emitida.', answer: false, explain: 'La ganancia amplifica en recepción señal y ruido por igual; la potencia de salida (índice mecánico) es otro mando. La TGC compensa la atenuación por profundidad.' },
+            { type: 'mc', prompt: 'Registras con Doppler continuo un chorro estenótico con un ángulo de 60° respecto al flujo. La velocidad medida será…', options: ['La mitad de la real (cos 60° = 0,5)', 'Igual: el Doppler continuo no depende del ángulo', 'El doble de la real', 'Solo un 6 % menor que la real'], answer: 0, explain: 'El desplazamiento Doppler es proporcional a v × cos θ; con < 20° el error es < 6 %. En la EA se busca la Vmax desde apical, paraesternal derecha y supraesternal.' },
+            { type: 'tf', prompt: 'Para aumentar la frecuencia de imagen (frame rate) puedes reducir la profundidad y estrechar el sector.', answer: true, explain: 'Hay menos líneas que barrer y el eco tarda menos en volver. Importa en el strain por speckle tracking, que necesita ≈ 40–80 imágenes/s.' },
+          ],
+        },
+        {
+          id: 'eco-u7-l2',
+          title: 'Anatomía ecográfica y 17 segmentos',
+          questions: [
+            { type: 'tf', prompt: 'El modelo de 17 segmentos tiene 6 segmentos basales, 6 medios, 4 apicales y el ápex (segmento 17).', answer: true, explain: 'Es el modelo ASE/AHA común para eco, RM y SPECT; el ápex se atribuye habitualmente a la DA.' },
+            { type: 'match', prompt: 'Relaciona el plano apical con las paredes del VI que muestra', pairs: [['Apical 4 cámaras', 'Inferoseptal y anterolateral'], ['Apical 2 cámaras', 'Anterior e inferior'], ['Apical 3 cámaras', 'Anteroseptal e inferolateral']], explain: 'El paraesternal eje largo muestra las mismas paredes que el apical 3 cámaras (anteroseptal e inferolateral basales y medias).' },
+            { type: 'mc', prompt: 'Observa el segmento resaltado en el eje corto a nivel de papilares. ¿Qué arteria lo irriga habitualmente?', diagram: { id: 'psax', highlight: 'inflat' }, options: ['Circunfleja', 'Descendente anterior', 'Coronaria derecha', 'Primera diagonal'], answer: 0, explain: 'Es el inferolateral medio (segmento 11, antes "posterior"), territorio de la Cx; en dominancia derecha puede recibir ramas de la CD.' },
+            { type: 'mc', prompt: 'Observa el segmento resaltado. ¿Cómo se llama y a qué territorio pertenece?', diagram: { id: 'psax', highlight: 'antsep' }, options: ['Anteroseptal medio – descendente anterior', 'Inferoseptal medio – coronaria derecha', 'Anterolateral medio – circunfleja', 'Anterior medio – coronaria derecha'], answer: 0, explain: 'El septo se une al VD por delante (anteroseptal, DA y sus septales) y por detrás (inferoseptal, CD).' },
+            { type: 'mc', prompt: 'En el prolapso mitral degenerativo, ¿qué festón se afecta con más frecuencia?', options: ['P2', 'A1', 'P1', 'A3'], answer: 0, explain: 'P2 es el festón central del velo posterior. P1 es lateral (junto a la comisura anterolateral y la orejuela) y P3 medial (posteromedial).' },
+            { type: 'mc', prompt: 'En el eje corto paraesternal a nivel aórtico, ¿qué velo sigmoideo queda junto al septo interauricular?', options: ['No coronariano', 'Coronariano derecho', 'Coronariano izquierdo', 'Ninguno: el septo no se ve en este plano'], answer: 0, explain: 'El no coronariano linda con el septo interauricular; el coronariano derecho es el más anterior (junto al TSVD) y el izquierdo, posterolateral. Juntos forman el signo de "Mercedes".' },
+          ],
+        },
+        {
+          id: 'eco-u7-l3',
+          title: 'Cuantificación del VI y aurículas',
+          questions: [
+            { type: 'match', prompt: 'Relaciona el parámetro con su límite superior normal (ASE/EACVI 2015)', pairs: [['Masa VI indexada, varón', '≤ 115 g/m²'], ['Masa VI indexada, mujer', '≤ 95 g/m²'], ['Grosor parietal relativo', '≤ 0,42'], ['Volumen AI indexado', '≤ 34 ml/m²']], explain: 'Son valores por método lineal (Devereux). El volumen AI > 34 ml/m² es además uno de los criterios de disfunción diastólica.' },
+            { type: 'mc', prompt: 'Varón: septo y pared posterior de 12 mm, DTDVI 48 mm y masa VI indexada de 100 g/m². ¿Qué geometría tiene el VI?', options: ['Remodelado concéntrico', 'Hipertrofia concéntrica', 'Hipertrofia excéntrica', 'Geometría normal'], answer: 0, explain: 'GPR = 2 × 12 / 48 = 0,50 (> 0,42) con masa normal (≤ 115 g/m²) = remodelado concéntrico. Con masa alta sería HVI concéntrica.' },
+            { type: 'mc', prompt: 'Simpson biplano: volumen telediastólico 150 ml y telesistólico 90 ml. ¿FEVI?', options: ['40 %', '60 %', '67 %', '50 %'], answer: 0, explain: 'FEVI = (VTD − VTS)/VTD = 60/150 = 40 %. 60 % sería VTS/VTD y 67 % dividir entre el VTS. Normal: ≥ 52 % en varones y ≥ 54 % en mujeres.' },
+            { type: 'mc', prompt: 'Mujer con superficie corporal de 1,6 m² y VTD del VI (Simpson) de 112 ml. ¿Cómo lo interpretas?', options: ['Dilatado: 70 ml/m² (límite en mujer 61)', 'Normal: 70 ml/m² (límite 74 ml/m²)', 'Normal: se indexa por talla, no por SC', 'Dilatado: 179 ml/m²'], answer: 0, explain: '112 / 1,6 = 70 ml/m². El límite de 74 ml/m² es el de varones: usar umbrales masculinos infradiagnostica la dilatación en mujeres.' },
+            { type: 'tf', prompt: 'La FEVI por modo M (Teichholz) es fiable en pacientes con alteraciones de la contractilidad segmentaria.', answer: false, explain: 'Solo mide la base y asume una geometría elipsoidal; ASE/EACVI 2015 desaconseja Teichholz y Quiñones para la FEVI. Usa Simpson biplano o 3D.' },
+            { type: 'tf', prompt: 'Medir con Simpson en planos apicales escorzados (foreshortening) tiende a infraestimar los volúmenes del VI.', answer: true, explain: 'Al cortar el VI por fuera del ápex verdadero se acorta el eje largo. El 3D y el contraste reducen este error.' },
+          ],
+        },
+        {
+          id: 'eco-u7-l4',
+          title: 'VD, strain, 3D y contraste',
+          questions: [
+            { type: 'match', prompt: 'Relaciona el parámetro del VD con su valor anormal (ASE/EACVI 2015)', pairs: [['Diámetro basal del VD', '> 41 mm'], ['TAPSE', '< 17 mm'], ['S′ tricuspídea (Doppler tisular)', '< 9,5 cm/s'], ['FAC del VD', '< 35 %']], explain: 'Integra varios parámetros: el TAPSE y la S′ solo miden la función longitudinal de la pared libre basal y dependen del ángulo y de la carga.' },
+            { type: 'mc', prompt: 'Área telediastólica del VD 24 cm² y telesistólica 18 cm². ¿Cuál es el cambio fraccional de área (FAC)?', options: ['25 %', '33 %', '75 %', '43 %'], answer: 0, explain: 'FAC = (24 − 18)/24 = 25 % (< 35 % = disfunción sistólica del VD). 75 % sería área sistólica/diastólica y 33 % dividir entre el área sistólica.' },
+            { type: 'mc', prompt: 'Paciente con FEVI 58 % y strain longitudinal global (GLS) del VI de −13 %. ¿Cómo se interpreta?', options: ['Disfunción sistólica subclínica', 'Función supranormal: más negativo es peor', 'Normal: el GLS solo vale con FEVI < 50 %', 'Artefacto: el GLS nunca es menor que −15 %'], answer: 0, explain: 'El GLS normal ronda −20 % (varía según equipo); una magnitud < 16 % es anormal aunque la FEVI sea normal. En cardio-oncología cuenta una caída relativa > 15 %.' },
+            { type: 'tf', prompt: 'Los volúmenes del VI medidos en 3D suelen ser mayores que en 2D, por lo que sus valores normales no son intercambiables.', answer: true, explain: 'El 2D escorza el ápex y asume una geometría; el 3D es más exacto y reproducible, útil en seguimiento (cardio-oncología, valvulopatías).' },
+            { type: 'mc', prompt: '¿Cuál es la indicación clásica de contraste ecográfico (microburbujas) en el eco transtorácico?', options: ['≥ 2 segmentos contiguos del VI no visibles', 'Valorar la función diastólica', 'Medir el TAPSE', 'Detectar derrame pericárdico'], answer: 0, explain: 'Mejora la definición del endocardio para FEVI y contractilidad; también ante sospecha de trombo apical, MCH apical, no compactación o pseudoaneurisma. Se usa con índice mecánico bajo.' },
+            { type: 'tf', prompt: 'En el algoritmo diastólico ASE 2025, un strain de reservorio de la AI ≤ 18 % apoya presiones de llenado del VI elevadas.', answer: true, explain: 'Es útil cuando los parámetros clásicos (E/e′, IT, volumen AI) dan un resultado indeterminado; la AI rígida pierde capacidad de reservorio.' }, // Fuente: ASE 2025 función diastólica
+          ],
+        },
+      ],
+    },
   ],
 };
