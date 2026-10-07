@@ -1010,5 +1010,251 @@ export default {
         },
       ],
     },
+    {
+      id: 'casos-u11',
+      title: 'Casos de ETT: valvulopatías',
+      guide: {
+        intro: 'Cuantificar bien una valvulopatía (continuidad, PISA, volúmenes regurgitantes) es lo que permite decidir cuándo intervenir y cómo, según la guía ESC/EACTS 2025.',
+        sections: [
+          {
+            title: 'Estenosis aórtica',
+            points: [
+              'Grave de alto gradiente: Vmax ≥ 4 m/s o gradiente medio ≥ 40 mmHg; apoyan un área < 1 cm² (< 0,6 cm²/m²) y un índice adimensional < 0,25.',
+              'Continuidad: AVA = área TSVI × VTI TSVI / VTI aórtica; el diámetro del TSVI se eleva al cuadrado, así que su error se multiplica.',
+              'Discordancia (AVA < 1 cm² con gradiente < 40 mmHg): mide el VSi (bajo flujo si ≤ 35 ml/m²) y la FEVI; con FEVI reducida, eco con dobutamina; con FEVI conservada, calcio valvular por TC.',
+              'Calcio valvular por TC: EA grave probable con ≥ 1200 UA en mujeres y ≥ 2000 UA en varones; muy probable con ≥ 1600 y ≥ 3000 UA.',
+              'ESC/EACTS 2025: TAVI transfemoral preferente desde los 70 años con válvula trivalva y anatomía favorable; cirugía por debajo de esa edad si el riesgo es bajo. Decide el Heart Team con el paciente.', // REVISAR: umbral de edad de 70 años (antes 75) según ESC/EACTS 2025; confirmar redacción exacta
+            ],
+            tip: 'Mide los gradientes con la TA controlada: la HTA durante la eco puede infraestimarlos.',
+          },
+          {
+            title: 'Insuficiencia aórtica y mitral',
+            points: [
+              'IAo grave: vena contracta > 6 mm, THP < 200 ms, flujo holodiastólico inverso en la aorta descendente, VR ≥ 60 ml, FR ≥ 50 % y ORE ≥ 30 mm².',
+              'IAo grave asintomática: cirugía si FEVI ≤ 50 % o DTSVI > 50 mm (> 25 mm/m²); con riesgo quirúrgico bajo puede adelantarse con FEVI ≤ 55 % o DTSVI > 20 mm/m².', // REVISAR: umbrales "precoces" de IAo (DTSVI indexado y FEVI ≤ 55 %) y su clase en ESC/EACTS 2025
+              'PISA: ORE = 2π × r² × Va / Vmax (Vmax en cm/s); VR = ORE × VTI del jet.',
+              'IM primaria grave: ORE ≥ 40 mm², VR ≥ 60 ml, vena contracta ≥ 7 mm y flujo sistólico invertido en las venas pulmonares.',
+              'IM primaria grave asintomática: reparación si FEVI ≤ 60 % o DTSVI ≥ 40 mm; considérala también con FA, PSAP > 50 mmHg o AI muy dilatada si la reparación duradera es probable.',
+            ],
+            tip: 'Los jets excéntricos se pegan a la pared de la aurícula (efecto Coanda): el área de color los infraestima.',
+          },
+          {
+            title: 'Insuficiencia tricuspídea',
+            points: [
+              'La IT secundaria puede ser ventricular (HP, disfunción del VD) o auricular (FA de larga evolución con anillo dilatado y velos normales).',
+              'Grave: vena contracta ≥ 7 mm, ORE ≥ 40 mm², VR ≥ 45 ml y flujo sistólico invertido en venas hepáticas; por encima se gradúa como masiva y torrencial.',
+              'En la IT masiva el Doppler infraestima la PSAP, porque las presiones de AD y VD tienden a igualarse.',
+              'En la cirugía izquierda se repara la IT grave (clase I) y se considera la anuloplastia si es moderada o el anillo mide ≥ 40 mm (> 21 mm/m²).',
+              'IT grave aislada y sintomática: cirugía en candidatos o tratamiento percutáneo (T-TEER o reemplazo) si el riesgo es alto, antes de que haya disfunción grave del VD.',
+            ],
+            tip: 'Edemas y ascitis con pulmones limpios en un anciano con FA permanente: busca una IT auricular grave.',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u11-l1',
+          title: 'EA grave de alto gradiente: TAVI o cirugía',
+          case: {
+            title: 'Varón de 73 años con angina de esfuerzo y soplo sistólico',
+            text: 'Varón de 73 años, hipertenso y dislipémico, con angina y disnea al subir dos pisos desde hace 4 meses. Se ausculta un soplo sistólico rudo en foco aórtico irradiado a carótidas, con segundo ruido apagado y pulso carotídeo lento. Vive solo, es independiente y no tiene otras comorbilidades relevantes. ECG con criterios de HVI.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: válvula aórtica trivalva muy calcificada, con apertura reducida. Vmax aórtica 4,6 m/s y gradiente medio 52 mmHg. FEVI 60 %.', prompt: '¿Cómo clasificas la estenosis aórtica?', diagram: { id: 'plax', highlight: 'av' }, options: ['Grave de alto gradiente', 'Moderada', 'Grave de bajo flujo y bajo gradiente', 'Grave paradójica con FEVI conservada'], answer: 0, explain: 'Vmax ≥ 4 m/s o gradiente medio ≥ 40 mmHg definen la EA grave de alto gradiente. El bajo flujo solo se plantea cuando el gradiente es < 40 mmHg.' },
+            { type: 'mc', context: 'Diámetro del TSVI 2,0 cm; VTI del TSVI 20 cm; VTI aórtica 100 cm.', prompt: 'Calcula el área valvular aórtica por la ecuación de continuidad.', options: ['≈ 0,63 cm²', '≈ 2,5 cm²', '≈ 0,20 cm²', '≈ 1,1 cm²'], answer: 0, explain: 'Área TSVI = π × (2,0/2)² = 3,14 cm²; AVA = 3,14 × 20 / 100 ≈ 0,63 cm². Usar el diámetro en lugar del radio da 2,5 cm², un error clásico.' },
+            { type: 'tf', prompt: 'Su índice adimensional (VTI TSVI / VTI aórtica) es 0,20 y apoya una EA grave sin depender de la medida del TSVI.', answer: true, explain: 'Un índice < 0,25 indica EA grave. Evita el error del diámetro del TSVI, que en la continuidad se eleva al cuadrado.' },
+            { type: 'mc', prompt: 'Registro simultáneo de VI y aorta en otro paciente con EA grave. ¿Qué rasgo de la curva aórtica es típico?', pressure: 'as-lv-ao', options: ['Ascenso lento con pico tardío (parvus et tardus)', 'Ascenso rápido con doble pico (bisferiens)', 'Presión diferencial amplia con caída diastólica rápida', 'Alternancia de amplitud latido a latido'], answer: 0, explain: 'La obstrucción fija retrasa y amortigua la eyección. Hoy el cateterismo solo mide el gradiente si la eco no es concluyente.' },
+            { type: 'mc', context: 'TC: anatomía apta para acceso transfemoral. STS-PROM 2,1 %. Sin enfermedad coronaria significativa. El Heart Team lo comenta con el paciente.', prompt: '¿Qué tratamiento recomienda la guía ESC/EACTS 2025?', options: ['TAVI transfemoral', 'Recambio quirúrgico, obligado por su edad', 'Valvuloplastia con balón como tratamiento final', 'Tratamiento médico y ETT en 6 meses'], answer: 0, explain: 'La guía 2025 baja a 70 años la edad a partir de la cual se prefiere la TAVI transfemoral en la válvula trivalva con anatomía favorable. La decisión la toma el Heart Team con el paciente.' }, // REVISAR: umbral de edad TAVI 70 años (ESC/EACTS 2025)
+            { type: 'match', prompt: 'Relaciona cada parámetro con su umbral de EA grave', pairs: [['Vmax aórtica', '≥ 4 m/s'], ['Gradiente medio', '≥ 40 mmHg'], ['Área valvular indexada', '< 0,6 cm²/m²'], ['Índice adimensional', '< 0,25']], explain: 'Si los parámetros discrepan (área grave con gradiente bajo), revisa el flujo (VSi) y la FEVI antes de concluir.' },
+          ],
+        },
+        {
+          id: 'casos-u11-l2',
+          title: 'EA paradójica de bajo flujo con FEVI conservada',
+          case: {
+            title: 'Mujer de 81 años con disnea y un gradiente "moderado"',
+            text: 'Mujer de 81 años, hipertensa de larga evolución, con disnea de esfuerzo progresiva (NYHA III) y un presíncope al caminar deprisa. Soplo sistólico eyectivo 3/6 en foco aórtico. TA durante la exploración 128/74 mmHg. Superficie corporal 1,70 m².',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: VI pequeño con HVI concéntrica y FEVI 65 %. Válvula aórtica calcificada. Vmax 3,5 m/s, gradiente medio 30 mmHg. TSVI 1,9 cm; VTI TSVI 16 cm; VTI aórtica 70 cm.', prompt: 'Calcula el volumen sistólico indexado (VSi).', diagram: { id: 'plax', highlight: 'av' }, options: ['≈ 27 ml/m²', '≈ 45 ml/m²', '≈ 16 ml/m²', '≈ 38 ml/m²'], answer: 0, explain: 'VS = π × (1,9/2)² × 16 ≈ 2,84 × 16 ≈ 45 ml; VSi = 45 / 1,70 ≈ 27 ml/m². Un VSi ≤ 35 ml/m² define bajo flujo.' },
+            { type: 'mc', prompt: 'Con esos datos, ¿cuál es el área valvular por continuidad?', options: ['≈ 0,65 cm²', '≈ 1,1 cm²', '≈ 0,23 cm²', '≈ 2,6 cm²'], answer: 0, explain: 'AVA = 2,84 × 16 / 70 ≈ 0,65 cm². Área grave con gradiente < 40 mmHg, FEVI ≥ 50 % y bajo flujo: EA "paradójica" de bajo flujo y bajo gradiente.' },
+            { type: 'match', prompt: 'Relaciona cada dato con lo que aporta ante una EA discordante', pairs: [['VSi ≤ 35 ml/m²', 'Bajo flujo'], ['Índice adimensional < 0,25', 'Gravedad sin medir el TSVI'], ['TA alta durante la eco', 'Puede infraestimar el gradiente'], ['Calcio valvular por TC', 'Gravedad sin depender del flujo']], explain: 'Ante la discordancia, descarta primero errores de medida y la HTA; después confirma la gravedad con un método independiente del flujo.' },
+            { type: 'tf', prompt: 'En esta paciente, la eco de estrés con dobutamina es la prueba preferente para confirmar la gravedad.', answer: false, explain: 'La dobutamina se reserva para el bajo flujo con FEVI reducida. Con FEVI conservada y VI pequeño, la prueba de elección es el calcio valvular por TC.' },
+            { type: 'mc', context: 'TC sin contraste: calcio valvular aórtico de 1650 UA.', prompt: '¿Cómo interpretas este resultado en una mujer?', options: ['EA grave muy probable', 'EA no grave: el umbral en mujeres es 3000 UA', 'Dato no valorable si hay bajo flujo', 'Sugiere bicuspidia y obliga a cirugía'], answer: 0, explain: 'Las mujeres alcanzan la EA grave con menos calcio: grave probable ≥ 1200 UA (varones ≥ 2000) y muy probable ≥ 1600 UA (varones ≥ 3000).' },
+            { type: 'mc', context: 'Confirmada la EA grave. Sin enfermedad coronaria significativa y con anatomía transfemoral favorable.', prompt: '¿Qué le indicas?', options: ['TAVI transfemoral', 'Seguimiento: el gradiente no es grave', 'Valvuloplastia con balón aislada', 'Vasodilatadores para aumentar el flujo'], answer: 0, explain: 'La EA grave de bajo flujo y bajo gradiente con FEVI conservada, confirmada y sintomática, es indicación de intervención. Por edad y anatomía, la TAVI es la opción preferente.' },
+          ],
+        },
+        {
+          id: 'casos-u11-l3',
+          title: 'Insuficiencia aórtica grave asintomática',
+          case: {
+            title: 'Varón de 46 años con un soplo diastólico en una revisión',
+            text: 'Varón de 46 años, ciclista aficionado y asintomático, al que en una revisión laboral auscultan un soplo diastólico en el borde esternal izquierdo. TA 150/50 mmHg con pulso saltón. Sin fiebre ni dolor torácico previos. Superficie corporal 2,0 m².',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: válvula aórtica trivalva con coaptación incompleta y jet central. Vena contracta 7 mm; THP 190 ms. Raíz aórtica 38 mm.', prompt: '¿Qué hallazgo adicional apoyaría mejor que la insuficiencia es grave?', diagram: { id: 'plax', highlight: 'av' }, options: ['Flujo holodiastólico inverso en la aorta descendente', 'Reflujo protodiastólico breve en la aorta descendente', 'THP de 550 ms', 'Jet que ocupa el 20 % del TSVI'], answer: 0, explain: 'El flujo inverso holodiastólico (velocidad telediastólica > 20 cm/s) es específico de IAo grave; un reflujo protodiastólico breve es normal.' },
+            { type: 'mc', context: 'VS en el TSVI 160 ml (flujo total); VS en el anillo mitral 70 ml (flujo anterógrado).', prompt: 'Calcula el volumen y la fracción regurgitantes.', options: ['90 ml y 56 %', '90 ml y 44 %', '70 ml y 44 %', '160 ml y 70 %'], answer: 0, explain: 'VR = 160 − 70 = 90 ml; FR = 90 / 160 ≈ 56 %. VR ≥ 60 ml y FR ≥ 50 % definen IAo grave.' },
+            { type: 'tf', prompt: 'Un THP largo (> 500 ms) indica IAo grave, porque las presiones de aorta y VI se igualan rápidamente.', answer: false, explain: 'Es al revés: cuanto más grave la IAo, antes se igualan las presiones y más corto es el THP (< 200 ms). Un THP > 500 ms sugiere IAo leve.' },
+            { type: 'mc', context: 'DTDVI 70 mm; DTSVI 52 mm (26 mm/m²); FEVI 56 %. Ergometría: 12 MET sin síntomas ni caída de la TA.', prompt: '¿Qué actitud recomienda la guía ESC/EACTS?', options: ['Cirugía valvular aórtica', 'ETT anual y vasodilatadores', 'Esperar a que la FEVI baje de 50 %', 'TAVI por estar asintomático'], answer: 0, explain: 'Aun sin síntomas, un DTSVI > 50 mm (o > 25 mm/m²) indica cirugía (clase I) porque anticipa disfunción irreversible. La TAVI no es de elección en la IAo pura.' },
+            { type: 'tf', prompt: 'Los vasodilatadores retrasan de forma eficaz la cirugía en la IAo grave asintomática con VI dilatado.', answer: false, explain: 'No han demostrado retrasar la cirugía; se usan para tratar la HTA. La indicación la marcan los síntomas, la FEVI y las dimensiones del VI.' },
+            { type: 'match', prompt: 'Relaciona cada parámetro con su umbral de IAo grave', pairs: [['Vena contracta', '> 6 mm'], ['Tiempo de hemipresión', '< 200 ms'], ['Volumen regurgitante', '≥ 60 ml'], ['Orificio regurgitante efectivo', '≥ 30 mm²']], explain: 'Ningún parámetro aislado basta: intégralos con el tamaño del VI, que apoya la cronicidad y la gravedad.' },
+          ],
+        },
+        {
+          id: 'casos-u11-l4',
+          title: 'IM primaria por prolapso: PISA y reparación',
+          case: {
+            title: 'Mujer de 59 años con un soplo apical',
+            text: 'Mujer de 59 años, activa y sin síntomas, remitida por un soplo holosistólico apical irradiado a la axila. Refiere palpitaciones aisladas. ECG en ritmo sinusal. Sin comorbilidades y con riesgo quirúrgico bajo.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: prolapso del festón P2 de la mitral con un jet excéntrico que se pega a la pared de la AI. Volumen de AI 48 ml/m².', prompt: '¿Por qué no debes graduar esta IM por el área del jet de color?', diagram: { id: 'a4c', highlight: 'mv' }, options: ['El jet adherido a la pared infraestima su área', 'El color sobreestima los jets excéntricos', 'El área de color solo sirve en la IM secundaria', 'El color no detecta los jets del prolapso'], answer: 0, explain: 'El efecto Coanda aplana el jet contra la pared y reduce su área aparente. Usa métodos cuantitativos: PISA, vena contracta o volumétrico.' },
+            { type: 'mc', context: 'PISA: radio 1,0 cm con velocidad de aliasing 38 cm/s. Vmax de la IM 5 m/s; VTI de la IM 150 cm.', prompt: 'Calcula el orificio regurgitante efectivo (ORE).', options: ['≈ 0,48 cm² (48 mm²)', '≈ 0,24 cm² (24 mm²)', '≈ 0,96 cm² (96 mm²)', '≈ 0,08 cm² (8 mm²)'], answer: 0, explain: 'ORE = 2π × r² × Va / Vmax = 6,28 × 1 × 38 / 500 ≈ 0,48 cm². Ojo con las unidades: Vmax en cm/s (500), no en m/s.' },
+            { type: 'mc', prompt: 'Calcula ahora el volumen regurgitante.', options: ['≈ 72 ml', '≈ 48 ml', '≈ 36 ml', '≈ 150 ml'], answer: 0, explain: 'VR = ORE × VTI de la IM = 0,48 × 150 ≈ 72 ml. ORE ≥ 40 mm² y VR ≥ 60 ml definen la IM primaria grave.' },
+            { type: 'match', prompt: 'Relaciona cada parámetro con su umbral de IM primaria grave', pairs: [['ORE', '≥ 40 mm²'], ['Volumen regurgitante', '≥ 60 ml'], ['Vena contracta', '≥ 7 mm'], ['Venas pulmonares', 'Flujo sistólico invertido']], explain: 'En la IM primaria los umbrales de gravedad son los clásicos; integra siempre varios parámetros y el remodelado de AI y VI.' },
+            { type: 'mc', context: 'FEVI 58 %, DTSVI 41 mm, PSAP 35 mmHg, ritmo sinusal. Anatomía favorable a la reparación en un centro con experiencia.', prompt: 'Sigue asintomática. ¿Qué recomiendas?', options: ['Reparación quirúrgica mitral', 'ETT de control cada 6 meses', 'Reparación percutánea borde a borde', 'Esperar a que aparezca FA'], answer: 0, explain: 'FEVI ≤ 60 % o DTSVI ≥ 40 mm marcan disfunción incipiente del VI: cirugía aun sin síntomas (clase I). La reparación preserva mejor la función que el recambio.' },
+            { type: 'tf', prompt: 'La reparación percutánea borde a borde (TEER) es la primera opción en una paciente así, con riesgo quirúrgico bajo.', answer: false, explain: 'La TEER se reserva para la IM primaria grave sintomática con riesgo quirúrgico alto y anatomía apta; con riesgo bajo, la reparación quirúrgica es de elección.' },
+          ],
+        },
+        {
+          id: 'casos-u11-l5',
+          title: 'Insuficiencia tricuspídea grave funcional',
+          case: {
+            title: 'Mujer de 77 años con edemas y ascitis en FA permanente',
+            text: 'Mujer de 77 años con FA permanente desde hace 10 años, HTA y ERC en estadio 3b. Consulta por edemas, aumento del perímetro abdominal y astenia (NYHA III) pese a dosis altas de furosemida. Tiene ingurgitación yugular con onda v gigante y hepatomegalia pulsátil. Fragilidad moderada; EuroSCORE II 8 %.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: AD y anillo tricuspídeo muy dilatados (anillo 46 mm) con velos de morfología normal que no coaptan. FEVI 58 %, sin valvulopatía izquierda significativa.', prompt: '¿Cuál es el mecanismo más probable de la insuficiencia tricuspídea?', diagram: { id: 'a4c', highlight: 'tv' }, options: ['Secundaria auricular por dilatación del anillo', 'Primaria por endocarditis', 'Secundaria a HP precapilar grave', 'Primaria por un cable de marcapasos'], answer: 0, explain: 'La FA de larga evolución dilata la AD y el anillo con velos normales y un VD poco remodelado: es la IT secundaria auricular, cada vez más frecuente en ancianos.' },
+            { type: 'match', prompt: 'Relaciona cada parámetro con su umbral de IT grave', pairs: [['Vena contracta', '≥ 7 mm'], ['ORE por PISA', '≥ 40 mm²'], ['Volumen regurgitante', '≥ 45 ml'], ['Venas hepáticas', 'Flujo sistólico invertido']], explain: 'Por encima de estos umbrales la IT se gradúa como masiva y torrencial, categorías que ayudan a seleccionar el tratamiento percutáneo.' },
+            { type: 'mc', context: 'Vena contracta 10 mm. PISA tricuspídea: radio 0,9 cm, aliasing 28 cm/s; Vmax de la IT 2,6 m/s.', prompt: 'Calcula el ORE.', options: ['≈ 55 mm²', '≈ 27 mm²', '≈ 110 mm²', '≈ 11 mm²'], answer: 0, explain: 'ORE = 2π × 0,9² × 28 / 260 ≈ 0,55 cm² = 55 mm² (grave). En FA, promedia varios latidos.' },
+            { type: 'mc', context: 'VCI de 25 mm sin colapso inspiratorio (PAD estimada 15 mmHg).', prompt: '¿Cuál es la PSAP estimada?', options: ['≈ 42 mmHg', '≈ 27 mmHg', '≈ 30 mmHg', '≈ 57 mmHg'], answer: 0, explain: 'PSAP = 4 × 2,6² + 15 ≈ 27 + 15 = 42 mmHg. En la IT masiva el Doppler la infraestima, porque las presiones de AD y VD tienden a igualarse.' },
+            { type: 'mc', context: 'TAPSE 17 mm; VD dilatado sin disfunción grave. Sin cables de dispositivos. El Heart Team la considera de riesgo quirúrgico alto y con anatomía apta para tratamiento percutáneo.', prompt: '¿Qué opción es la más adecuada?', options: ['T-TEER tras optimizar los diuréticos', 'Anuloplastia quirúrgica aislada urgente', 'Solo diuréticos hasta que falle el VD', 'Marcapasos para controlar la FC'], answer: 0, explain: 'En la IT grave sintomática con riesgo quirúrgico alto, sin disfunción grave del VD ni HP precapilar grave, el tratamiento percutáneo mejora síntomas y calidad de vida. Esperar al fallo del VD empeora el pronóstico.' }, // REVISAR: clase de recomendación del tratamiento percutáneo tricuspídeo en ESC/EACTS 2025
+            { type: 'tf', prompt: 'Si un paciente con IT grave va a operarse de la válvula mitral, se recomienda reparar la tricúspide en el mismo acto.', answer: true, explain: 'La IT grave se corrige en la cirugía izquierda (clase I); con IT moderada o anillo ≥ 40 mm (> 21 mm/m²) también debe considerarse la anuloplastia.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'casos-u12',
+      title: 'Casos de ETT y ETE: HP, trombos y endocarditis',
+      guide: {
+        intro: 'Del trombo apical tras un infarto a la endocarditis complicada: casos en los que el ETT abre la sospecha y el ETE, la TC o el cateterismo derecho cierran el diagnóstico y guían la decisión.',
+        sections: [
+          {
+            title: 'Trombo en el VI e hipertensión pulmonar',
+            points: [
+              'Trombo del VI: IAM anterior extenso, ápex acinético o aneurismático y FEVI < 40 %; el contraste mejora la detección y la RM con realce tardío es la técnica más sensible.',
+              'ESC SCA 2023: anticoagulación oral (AVK o ACOD) 3–6 meses si hay trombo, guiada por imagen de control; con stent reciente, triple terapia ≤ 1 semana y después ACO + clopidogrel.',
+              'HP (ESC 2022): PAPm > 20 mmHg; precapilar si PCP ≤ 15 mmHg y RVP > 2 UW. RVP = (PAPm − PCP) / GC.',
+              'Probabilidad eco: Vmax IT > 3,4 m/s = alta; 2,9–3,4 m/s = intermedia, o alta si hay signos adicionales de ≥ 2 categorías (ventrículos, arteria pulmonar, VCI/AD).',
+              'PSAP = 4 × Vmax IT² + PAD. TAPSE/PSAP < 0,55 mm/mmHg apoya HP y refleja desacoplamiento VD–arteria pulmonar.',
+            ],
+            tip: 'Disnea persistente tras una embolia pulmonar con probabilidad intermedia o alta: gammagrafía V/Q y derivación a un centro de HP.',
+          },
+          {
+            title: 'Endocarditis',
+            points: [
+              'Duke-ESC 2023: definida con 2 mayores, 1 mayor + 3 menores o 5 menores; posible con 1 mayor + 1 menor o 3 menores.',
+              'Criterios mayores: hemocultivos con germen típico (incluido Enterococcus faecalis) e imagen (eco, TC cardiaca y, en prótesis, PET-TC). Los émbolos vistos solo por imagen ya cuentan como criterio menor.',
+              'ETT de entrada; ETE si el ETT es negativo con sospecha alta, en prótesis o dispositivos, y también con ETT positivo para buscar complicaciones perivalvulares.',
+              'Cirugía emergente (< 24 h) por shock o edema pulmonar refractario; urgente (3–5 días) por infección no controlada (absceso, fístula, pseudoaneurisma) o vegetación ≥ 10 mm con embolia.',
+              'Un BAV nuevo en una endocarditis aórtica sugiere absceso perianular: pide ETE.',
+            ],
+            tip: 'Streptococcus gallolyticus en los hemocultivos obliga a pedir una colonoscopia.',
+          },
+          {
+            title: 'Cierre de la orejuela izquierda',
+            points: [
+              'ESC FA 2024: el cierre percutáneo puede considerarse (IIb) si hay contraindicación de anticoagulación prolongada; el cierre quirúrgico asociado a cirugía cardiaca es clase I.',
+              'Riesgo embólico con CHA₂DS₂-VA (sin el sexo como factor).',
+              'El ETE (o la TC) previo descarta trombo y mide el ostium y la profundidad en 0°, 45°, 90° y 135°.',
+              'Tras el implante y en el seguimiento (≈ 45 días y meses después): compresión y estabilidad del dispositivo, fuga peridispositivo, trombo sobre el dispositivo y derrame pericárdico.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'casos-u12-l1',
+          title: 'Trombo apical tras un infarto anterior',
+          case: {
+            title: 'Varón de 64 años con un infarto anterior evolucionado',
+            text: 'Varón de 64 años, fumador, que acude tras 10 horas de dolor torácico con un IAMCEST anterior. Se realiza ICP con stent farmacoactivo en la descendente anterior proximal. Al cuarto día está estable, sin angina y en ritmo sinusal.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: acinesia apical y anteroseptal con ápex adelgazado; FEVI 35 %. En el ápex se intuye una imagen ecodensa dudosa.', prompt: '¿Qué prueba aumenta, a pie de cama, la sensibilidad para confirmar un trombo?', diagram: { id: 'a4c', highlight: 'lv' }, options: ['ETT con contraste ecográfico', 'ETE', 'TC torácica sin contraste', 'Ventriculografía con contraste yodado'], answer: 0, explain: 'El contraste opacifica la cavidad y delinea el trombo como un defecto que no capta. La RM con realce tardío es la más sensible; el ETE ve mal el ápex.' },
+            { type: 'tf', context: 'Con contraste se confirma una masa apical sésil de 16 × 12 mm que no capta contraste.', prompt: 'La ausencia de captación de contraste apoya que la masa sea un trombo y no un tumor.', answer: true, explain: 'El trombo es avascular. Los tumores captan contraste en grado variable según su vascularización.' },
+            { type: 'match', prompt: 'Relaciona cada hallazgo con su significado', pairs: [['Trombo móvil y protruyente', 'Mayor riesgo embólico'], ['Masa que no capta contraste', 'Avascular: trombo'], ['Ápex acinético y FEVI < 40 %', 'Sustrato de trombosis'], ['RM con realce tardío', 'Técnica más sensible']], explain: 'El trombo apical suele formarse en las 2 primeras semanas tras un IAM anterior extenso; la movilidad y la protrusión aumentan el riesgo de embolia.' },
+            { type: 'mc', prompt: 'Además de la antiagregación, ¿qué recomienda la guía ESC 2023 de SCA para este trombo?', options: ['Anticoagulación oral durante 3–6 meses', 'Fibrinólisis sistémica', 'Trombectomía quirúrgica urgente', 'Anticoagular solo si hay una embolia'], answer: 0, explain: 'Con trombo confirmado debe considerarse la anticoagulación (AVK o ACOD) 3–6 meses, guiada por imagen. No se recomienda anticoagular de forma profiláctica sin trombo.' }, // Fuente: ESC SCA 2023
+            { type: 'mc', prompt: 'Lleva un stent desde hace 4 días y ahora necesita anticoagulación. ¿Qué pauta es la adecuada por defecto?', options: ['Triple terapia ≤ 1 semana y luego ACO + clopidogrel', 'Triple terapia con prasugrel durante 12 meses', 'ACO + AAS + ticagrelor durante 6 meses', 'Retirar toda antiagregación y dejar solo ACO'], answer: 0, explain: 'Para limitar sangrados, la triple terapia (ACO + AAS + clopidogrel) se acorta a ≤ 1 semana y sigue ACO + clopidogrel. Prasugrel y ticagrelor no se usan en triple terapia.' },
+            { type: 'tf', context: 'A los 3 meses, el ETT con contraste no muestra trombo y la FEVI es del 42 %.', prompt: 'Resuelto el trombo, puede retirarse la anticoagulación y mantener la antiagregación hasta completar el año del infarto.', answer: true, explain: 'La duración de la anticoagulación se guía por la imagen: si el trombo se ha resuelto, se retira y se continúa con antiagregación según el SCA.' },
+          ],
+        },
+        {
+          id: 'casos-u12-l2',
+          title: 'Probabilidad ecocardiográfica de HP',
+          case: {
+            title: 'Mujer de 52 años con disnea persistente tras una embolia pulmonar',
+            text: 'Mujer de 52 años con una embolia pulmonar bilateral hace 9 meses, anticoagulada durante 6 meses. Refiere disnea de esfuerzo progresiva (clase funcional III) y un presíncope al subir una cuesta. Segundo ruido pulmonar reforzado. NT-proBNP 1150 pg/ml.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: Vmax de la IT 3,6 m/s. VD dilatado con cociente VD/VI basal de 1,2 y aplanamiento septal en sístole.', prompt: 'Según la ESC 2022, ¿qué probabilidad ecocardiográfica de HP tiene?', diagram: { id: 'a4c', highlight: 'rv' }, options: ['Alta', 'Intermedia', 'Baja', 'No valorable sin cateterismo'], answer: 0, explain: 'Una Vmax IT > 3,4 m/s da probabilidad alta por sí sola; entre 2,9 y 3,4 m/s, la probabilidad depende de los signos adicionales.' },
+            { type: 'mc', context: 'VCI de 23 mm con colapso inspiratorio < 50 % (PAD estimada 15 mmHg). TAPSE 15 mm.', prompt: '¿Cuál es la PSAP estimada?', options: ['≈ 67 mmHg', '≈ 52 mmHg', '≈ 29 mmHg', '≈ 82 mmHg'], answer: 0, explain: 'PSAP = 4 × 3,6² + PAD ≈ 52 + 15 = 67 mmHg. Olvidar sumar la PAD (≈ 52 mmHg) es el error más frecuente.' },
+            { type: 'tf', prompt: 'Su cociente TAPSE/PSAP (≈ 0,22 mm/mmHg) indica un buen acoplamiento entre el VD y la circulación pulmonar.', answer: false, explain: 'TAPSE/PSAP = 15 / 67 ≈ 0,22 mm/mmHg. Por debajo de 0,55 apoya HP, y los valores bajos reflejan desacoplamiento VD–arteria pulmonar, de peor pronóstico.' },
+            { type: 'match', prompt: 'Relaciona cada signo ecocardiográfico adicional con su categoría', pairs: [['Cociente VD/VI basal > 1', 'Ventrículos'], ['Aceleración pulmonar < 105 ms', 'Arteria pulmonar'], ['VCI > 21 mm con colapso reducido', 'VCI y aurícula derecha']], explain: 'Con Vmax IT de 2,9–3,4 m/s, la presencia de signos de al menos dos categorías eleva la probabilidad de intermedia a alta.' },
+            { type: 'mc', prompt: 'Con probabilidad alta de HP tras una embolia pulmonar, ¿qué prueba debe hacerse a continuación?', options: ['Gammagrafía de ventilación/perfusión', 'Ergometría convencional', 'Ecografía venosa de miembros inferiores', 'Coronariografía'], answer: 0, explain: 'La gammagrafía V/Q es la prueba de cribado de la HP tromboembólica crónica (HPTEC): si es normal, la descarta; si no, deriva a un centro experto en HP.' },
+            { type: 'mc', context: 'V/Q con defectos de perfusión segmentarios no concordantes. Cateterismo derecho: PAPm 38 mmHg, PCP 10 mmHg, gasto cardiaco 4,0 l/min.', prompt: 'Calcula las RVP y clasifica la HP.', options: ['7 UW: HP precapilar', '7 UW: HP poscapilar aislada', '2,5 UW: HP poscapilar combinada', '9,5 UW: HP precapilar'], answer: 0, explain: 'RVP = (38 − 10) / 4,0 = 7 UW. PAPm > 20 mmHg, PCP ≤ 15 mmHg y RVP > 2 UW definen la HP precapilar; aquí, sospecha fundada de HPTEC.' },
+          ],
+        },
+        {
+          id: 'casos-u12-l3',
+          title: 'Endocarditis sobre válvula nativa: de Duke al ETE',
+          case: {
+            title: 'Varón de 67 años con fiebre y pérdida de peso',
+            text: 'Varón de 67 años con fiebre vespertina de hasta 38,6 °C, astenia y pérdida de 5 kg en 3 semanas. Tiene un soplo sistólico apical que no constaba en revisiones previas. No es portador de prótesis ni dispositivos. Crece Streptococcus gallolyticus en 3 de 3 sets de hemocultivos.',
+          },
+          questions: [
+            { type: 'mc', context: 'ETT: masa móvil de 8 mm adherida a la cara auricular del velo anterior mitral, con IM moderada. FEVI 60 %.', prompt: 'Con los hemocultivos y el ETT, ¿cuántos criterios mayores de Duke-ESC 2023 cumple?', diagram: { id: 'plax', highlight: 'mv' }, options: ['Dos: microbiológico y de imagen', 'Uno: solo el de imagen', 'Uno: solo el microbiológico', 'Ninguno hasta hacer un ETE'], answer: 0, explain: 'S. gallolyticus es un germen típico de endocarditis: con ≥ 2 hemocultivos positivos es criterio mayor. La vegetación vista en el ETT también es criterio mayor de imagen.' },
+            { type: 'match', prompt: 'Relaciona cada dato con su categoría en los criterios de Duke-ESC 2023', pairs: [['Infarto esplénico en la TC', 'Fenómeno vascular'], ['Glomerulonefritis', 'Fenómeno inmunológico'], ['Absceso perivalvular en el ETE', 'Criterio mayor de imagen'], ['Valvulopatía previa conocida', 'Predisposición']], explain: 'Desde 2023, los émbolos detectados solo por imagen (aunque sean asintomáticos) cuentan como criterio vascular menor.' },
+            { type: 'mc', context: 'TC abdominal: infarto esplénico asintomático.', prompt: 'Con 2 criterios mayores, fiebre e infarto esplénico, ¿cuál es el diagnóstico?', options: ['Endocarditis definida', 'Endocarditis posible', 'Endocarditis rechazada', 'Definida solo si el ETE la confirma'], answer: 0, explain: 'Definida = 2 mayores, o 1 mayor + 3 menores, o 5 menores. Posible = 1 mayor + 1 menor, o 3 menores.' },
+            { type: 'tf', prompt: 'Como el ETT ya muestra la vegetación, el ETE no aporta información adicional y puede omitirse.', answer: false, explain: 'La ESC 2023 aconseja el ETE también con ETT positivo (salvo endocarditis derecha nativa con buen ETT), porque detecta mejor abscesos, perforaciones y fístulas.' },
+            { type: 'mc', context: 'ETE: vegetación de 8 mm sin absceso ni perforación; IM moderada. Sin insuficiencia cardiaca. Hemocultivos negativos a las 48 h de antibiótico.', prompt: '¿Cuál es la actitud más adecuada?', options: ['Antibiótico dirigido 4 semanas, sin cirugía de entrada', 'Cirugía urgente por el infarto esplénico', 'Cirugía emergente en menos de 24 h', 'Antibiótico 2 semanas y alta sin controles'], answer: 0, explain: 'Sin insuficiencia cardiaca, infección no controlada ni vegetación ≥ 10 mm con embolia, no hay indicación quirúrgica de entrada. Vigila con eco la evolución de la vegetación y de la IM.' },
+            { type: 'mc', prompt: 'Por el microorganismo aislado, ¿qué exploración adicional debes solicitar?', options: ['Colonoscopia', 'Gastroscopia', 'Ecografía tiroidea', 'Densitometría ósea'], answer: 0, explain: 'S. gallolyticus (antes S. bovis biotipo I) se asocia a pólipos y neoplasias de colon: la colonoscopia está indicada.' },
+          ],
+        },
+        {
+          id: 'casos-u12-l4',
+          title: 'Absceso perianular: el PR que se alarga',
+          case: {
+            title: 'Mujer de 69 años con endocarditis aórtica por S. aureus',
+            text: 'Mujer de 69 años, diabética y en hemodiálisis por fístula arteriovenosa. Ingresa por fiebre y bacteriemia por Staphylococcus aureus sensible a meticilina. El ETT inicial muestra una vegetación de 7 mm en la válvula aórtica nativa con IAo moderada. Recibe cloxacilina intravenosa.',
+          },
+          questions: [
+            { type: 'mc', context: 'Al quinto día persiste la fiebre y los hemocultivos de control siguen positivos. El PR es ahora de 280 ms; al ingreso era de 160 ms.', prompt: 'Observa la tira. ¿Qué sugiere este hallazgo en su contexto?', ecg: 'avb1', options: ['Extensión perivalvular de la infección', 'Toxicidad por cloxacilina', 'Hiperpotasemia por la diálisis', 'Hallazgo vagal sin relevancia'], answer: 0, explain: 'Un BAV nuevo en la endocarditis aórtica sugiere un absceso perianular que alcanza el sistema de conducción, muy próximo al septo membranoso.' },
+            { type: 'mc', prompt: '¿Qué prueba solicitas a continuación?', options: ['ETE', 'Repetir el ETT en una semana', 'Holter de 24 horas', 'Coronariografía urgente'], answer: 0, explain: 'El ETE detecta abscesos con mucha más sensibilidad que el ETT. Si no es concluyente, la TC cardiaca ayuda a definir la extensión perivalvular.' },
+            { type: 'match', context: 'ETE: zona perivalvular engrosada de 12 mm en la unión mitroaórtica, sin flujo en su interior, además de la vegetación aórtica.', prompt: 'Relaciona cada hallazgo del ETE con la complicación que indica', pairs: [['Cavidad perivalvular sin flujo', 'Absceso'], ['Cavidad pulsátil con flujo en color', 'Pseudoaneurisma'], ['Comunicación entre dos cavidades', 'Fístula'], ['Solución de continuidad del velo', 'Perforación']], explain: 'Todas indican extensión local de la infección. El absceso puede evolucionar a pseudoaneurisma y este a fístula.' },
+            { type: 'mc', prompt: '¿Cuál es la actitud recomendada?', diagram: { id: 'plax', highlight: 'av' }, options: ['Cirugía urgente, en 3–5 días', 'Antibiótico 8 semanas sin cirugía', 'Marcapasos definitivo y seguir con antibiótico', 'Cirugía electiva al completar el antibiótico'], answer: 0, explain: 'El absceso perianular es una infección localmente no controlada: indicación de cirugía urgente (clase I), con desbridamiento y reconstrucción de la raíz si es preciso.' },
+            { type: 'tf', prompt: 'Si progresa a BAV completo, conviene implantar un marcapasos definitivo transvenoso antes de la cirugía.', answer: false, explain: 'Con bacteriemia activa se usa un marcapasos temporal; en la cirugía pueden dejarse electrodos epicárdicos y el definitivo se decide después, según la conducción.' },
+            { type: 'mc', prompt: '¿Quién debe decidir el tratamiento de esta endocarditis complicada?', options: ['Un equipo multidisciplinar de endocarditis', 'Solo el cirujano cardiaco', 'Solo el especialista en infecciosas', 'El nefrólogo responsable de la diálisis'], answer: 0, explain: 'La ESC 2023 recomienda manejar la endocarditis complicada en un centro con equipo de endocarditis (cardiología, cirugía, infecciosas, microbiología e imagen) y cirugía disponible.' },
+          ],
+        },
+        {
+          id: 'casos-u12-l5',
+          title: 'Cierre de orejuela izquierda guiado por ETE',
+          case: {
+            title: 'Varón de 79 años con FA y hemorragias digestivas de repetición',
+            text: 'Varón de 79 años con FA permanente, HTA, diabetes y un ictus isquémico hace 2 años. Con apixabán ha tenido tres hemorragias digestivas por angiodisplasias intestinales que requirieron transfusión, pese al tratamiento endoscópico. Su digestivo desaconseja mantener la anticoagulación a largo plazo.',
+          },
+          questions: [
+            { type: 'mc', prompt: 'Observa la tira. Con este ritmo y sus antecedentes, ¿qué puntuación CHA₂DS₂-VA tiene?', ecg: 'afib', options: ['6', '5', '4', '7'], answer: 0, explain: 'HTA (1) + edad ≥ 75 (2) + diabetes (1) + ictus previo (2) = 6. La ESC 2024 usa el CHA₂DS₂-VA, que retira el sexo femenino como factor.' },
+            { type: 'mc', prompt: 'Según la ESC 2024 de FA, ¿qué papel tiene el cierre percutáneo de la orejuela en este paciente?', options: ['Puede considerarse por la contraindicación de ACO', 'Es de primera elección frente a los ACOD', 'Está contraindicado tras un ictus', 'Solo se indica junto a cirugía cardiaca'], answer: 0, explain: 'El cierre percutáneo es una recomendación IIb en la FA con contraindicación para la anticoagulación prolongada. El cierre quirúrgico asociado a otra cirugía cardiaca es clase I.' },
+            { type: 'tf', context: 'ETE previo: orejuela en "ala de pollo", sin trombo ni ecocontraste denso. Ostium máximo de 21 mm; profundidad de 26 mm.', prompt: 'Antes del implante, el ETE debe descartar trombo en la orejuela, porque su presencia contraindica el procedimiento.', answer: true, explain: 'Manipular una orejuela con trombo puede embolizarlo. El ETE (o la TC) mide además el ostium y la profundidad en varios ángulos para elegir el tamaño.' },
+            { type: 'mc', context: 'Se implanta un dispositivo de 27 mm de diámetro nominal. Ya liberado, el ETE mide un diámetro de 22 mm en el plano de máxima compresión.', prompt: 'Calcula la compresión del dispositivo.', options: ['≈ 19 %', '≈ 23 %', '≈ 5 %', '≈ 81 %'], answer: 0, explain: 'Compresión = (27 − 22) / 27 ≈ 19 %, dentro del rango habitual (≈ 10–30 % según el dispositivo), que asegura un anclaje estable.' }, // Fuente: instrucciones de uso del dispositivo (rango orientativo)
+            { type: 'match', prompt: 'Relaciona cada hallazgo del ETE tras el implante con su significado', pairs: [['Estable al traccionar (tug test)', 'Anclaje correcto'], ['Fuga peridispositivo de 2 mm', 'Fuga pequeña'], ['Masa ecodensa en la cara auricular', 'Trombo sobre el dispositivo'], ['Derrame pericárdico nuevo', 'Posible perforación']], explain: 'El trombo sobre el dispositivo obliga a intensificar el tratamiento antitrombótico; el derrame nuevo exige descartar taponamiento.' },
+            { type: 'mc', context: 'A los 45 días, ETE: dispositivo bien posicionado, sin trombo y con fuga peridispositivo de 2 mm.', prompt: '¿Qué tratamiento antitrombótico es razonable a partir de ahora?', options: ['Antiagregación, sin anticoagulación', 'Anticoagulación oral indefinida', 'Triple terapia antitrombótica', 'Heparina de bajo peso a dosis plenas'], answer: 0, explain: 'Sin trombo y con fuga pequeña se mantiene la antiagregación (pauta según dispositivo y riesgo hemorrágico): evitar la anticoagulación era el objetivo del cierre.' },
+          ],
+        },
+      ],
+    },
   ],
 };
