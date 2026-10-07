@@ -12,7 +12,7 @@ LOG=.claude/hooks/sync.log
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   fi
-  git pull -q --rebase --autostash origin "$BRANCH" || git rebase --abort
-  git push origin "$BRANCH"
+  git -c credential.interactive=never pull -q --rebase --autostash origin "$BRANCH" || git rebase --abort
+  git -c credential.interactive=never push origin "$BRANCH"
 } >>"$LOG" 2>&1
 exit 0
