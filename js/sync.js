@@ -308,4 +308,4 @@ export function applyBackup(b, mode = 'merge') {
   return importState(next);
 }
 
-export const backupFileName = (name = '') => `${(name || 'progreso').normalize('NFD').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'progreso'}-${new Date().toISOString().slice(0, 10)}.corazone.json`;
+export const backupFileName = (name = '') => `${(name || 'progreso').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'progreso'}-${new Date().toISOString().slice(0, 10)}.corazone.json`;

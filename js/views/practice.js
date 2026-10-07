@@ -3,7 +3,7 @@ import { COURSES, lessonsOf, questionByKey } from '../data/courses.js';
 import { RHYTHMS, renderEcg, TWELVE_LEAD, render12 } from '../ecg.js';
 import { PRESSURES, renderPressure } from '../pressure.js';
 import { getState, dueReviews } from '../storage.js';
-import { shell, esc, go } from '../ui.js';
+import { shell, esc, go, emptyState } from '../ui.js';
 import { cora } from '../fx.js';
 import { GUARDIAS } from '../data/guardias.js';
 import { startLesson, startUnitTest, startUnitReview, startLegendary } from './lessonFlow.js';
@@ -32,13 +32,20 @@ export function viewPractice(kind) {
   if (kind && SESSIONS[kind]) {
     const questions = SESSIONS[kind].get();
     if (questions.length) return startLesson({ course: { id: 'practica', color: '#58cc02' }, lesson: { id: `practica-${kind}`, title: SESSIONS[kind].title, review: true, practice: true, questions } }, '#/practicar');
+    const EMPTY = {
+      errores: { mood: 'cheer', title: '¡No tienes errores pendientes!', text: 'Cuando falles una pregunta, Cora la guardará aquí para repasarla en el momento justo.' },
+      imagen: { mood: 'think', title: 'Aún no hay imágenes que leer', text: 'Completa lecciones con ECG, curvas de presión o esquemas y aparecerán aquí.' },
+    };
+    const e = EMPTY[kind] || { mood: 'think', title: 'Nada que practicar todavía', text: 'Completa alguna lección y vuelve.' };
+    return shell(`<a class="back" href="#/practicar">← Práctica</a>${emptyState({ ...e, action: '<a class="btn primary" href="#/practicar/rapida" style="--accent:var(--green)">Práctica rápida</a>' })}`, 'practice');
   }
   const n = dueReviews().length;
   const img = SESSIONS.imagen.get().length;
   const card = (href, icon, title, desc, extra = '', off = false) => `
-    <a class="practice-card ${off ? 'off' : ''}" href="${off ? '#/practicar' : href}"><span class="pi">${icon}</span><div><b>${title}</b><small>${desc}</small></div>${extra}</a>`;
+    <a class="practice-card ${off ? 'off' : ''}" href="${href}" ${off ? 'aria-disabled="true"' : ''}><span class="pi" aria-hidden="true">${icon}</span><div><b>${title}</b><small>${desc}</small></div>${extra}</a>`;
   shell(`
     <div class="hub-head">${cora('think', 90)}<div><h1>Zona de práctica</h1><p class="muted">Practicar no gasta vidas y te devuelve una ❤️ al terminar.</p></div></div>
+    <a class="search-chip" href="#/buscar" aria-label="Buscar lecciones y casos"><span aria-hidden="true">🔍</span> Busca una lección o un caso…</a>
     ${card('#/practicar/errores', '🔁', 'Repaso de errores', n ? `${n} pregunta${n > 1 ? 's' : ''} pendiente${n > 1 ? 's' : ''}` : 'No tienes errores pendientes 🎉', n ? `<span class="pill">${n}</span>` : '', !n)}
     ${card('#/practicar/rapida', '⚡', 'Práctica rápida', '8 preguntas de lo que ya has aprendido · +1 ❤️')}
     ${card('#/practicar/ondas', '👆', 'Toca la onda', 'Señala P, QRS, T y extrasístoles en la tira')}
