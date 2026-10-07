@@ -87,7 +87,7 @@ export function viewSettings() {
 }
 
 // Onboarding en pasos con barra de progreso y mascota que habla (como Duolingo).
-export function viewOnboarding(step = 0) {
+export function viewOnboarding(step = 0, animate = true) {
   const s = getState();
   const steps = [
     { say: '¡Hola! Soy Cora 🫀', sub: 'Te ayudaré a dominar el ECG, la eco y el cateterismo en sesiones de pocos minutos.', body: '', next: true },
@@ -100,7 +100,7 @@ export function viewOnboarding(step = 0) {
   const st = steps[step];
   screen(`
     <div class="ob-top">${step ? `<button class="icon-btn" data-back>←</button>` : '<span></span>'}<div class="bar"><div class="bar-fill" style="width:${(step / (steps.length - 1)) * 100}%;--accent:#58cc02"></div></div></div>
-    <div class="cora-row">${cora(st.last ? 'cheer' : step ? 'think' : 'happy', 110)}<div class="speech pop-in">${st.say}</div></div>
+    <div class="cora-row">${cora(st.last ? 'cheer' : step ? 'think' : 'happy', 110)}<div class="speech ${animate ? 'pop-in' : ''}">${st.say}</div></div>
     ${st.sub ? `<p class="muted">${st.sub}</p>` : ''}
     ${st.body}
     <button class="btn primary" data-next style="--accent:#58cc02" ${st.key && !st.next && s[st.key] == null ? 'disabled' : ''}>${st.last ? 'Empezar' : 'Continuar'}</button>`, 'onboarding');
@@ -108,7 +108,7 @@ export function viewOnboarding(step = 0) {
   app.querySelectorAll('[data-v]').forEach((b) => (b.onclick = () => {
     sfx('Tap');
     update((x) => { x[st.key] = st.key === 'dailyGoal' ? Number(b.dataset.v) : b.dataset.v; });
-    viewOnboarding(step);
+    viewOnboarding(step, false);
   }));
   app.querySelector('[data-back]')?.addEventListener('click', () => viewOnboarding(step - 1));
   app.querySelector('[data-next]').onclick = () => {

@@ -36,6 +36,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   let phase = 'answer'; // answer | feedback
   let matchState = null;
   let combo = 0;
+  let answered = 0;
   let bestCombo = 0;
   const started = Date.now();
   // En práctica/repaso no se pierden vidas (como en Duolingo)
@@ -109,6 +110,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
 
   function showFeedback(ok, correctLabel) {
     phase = 'feedback';
+    answered++;
     combo = ok ? combo + 1 : 0;
     bestCombo = Math.max(bestCombo, combo);
     recordAnswer(current.src.key, ok, { type: current.type, combo });
@@ -222,7 +224,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     if (tapSvg) return pickTap(e, tapSvg);
     const btn = e.target.closest('button');
     if (!btn) return;
-    if (btn.dataset.act === 'exit') return done > 0 ? confirmExit() : (cleanup(), onExit('salir'));
+    if (btn.dataset.act === 'exit') return answered > 0 ? confirmExit() : (cleanup(), onExit('salir'));
     if (btn.dataset.act === 'stay') return root.querySelector('.modal-back')?.remove();
     if (btn.dataset.act === 'leave') { cleanup(); return onExit('salir'); }
     if (btn.dataset.act === 'check') return check();
