@@ -676,7 +676,7 @@ export const TWELVE_LEAD = {
   },
   brugada2: {
     name: 'Patrón de Brugada tipo 2 (en silla de montar)',
-    desc: 'En V2 (y V1): r\' de despegue alto (≥ 2 mm) seguida de un ST elevado ≥ 0,5 mm y cóncavo hacia arriba ("silla de montar") con T positiva. No es diagnóstico por sí mismo: se confirma si un test con bloqueador de sodio (ajmalina, flecainida, procainamida) lo convierte en tipo 1.',
+    desc: 'En V2 (y V1): r\' de despegue alto (≥ 2 mm) seguida de un ST elevado ≥ 0,5 mm y cóncavo hacia arriba ("silla de montar") con T positiva. No es diagnóstico por sí mismo: si un test con bloqueador de sodio (ajmalina, flecainida, procainamida) lo convierte en tipo 1, el diagnóstico exige además clínica compatible.',
     extra: {
       V1: { rAmp: 0.25, sAmp: 0.6, rPrime: 0.22, st: 0.1, qt: 0.34, tAmp: 0.12 },
       V2: { rAmp: 0.3, sAmp: 0.9, rPrime: 0.4, st: 0.2, qt: 0.34, tAmp: 0.4, tWidth: 0.05 },

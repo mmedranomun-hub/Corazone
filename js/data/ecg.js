@@ -704,7 +704,7 @@ export default {
             title: 'Brugada tipo 1 frente a tipo 2',
             points: [
               'Tipo 1: J ≥ 2 mm, ST "en cúpula" descendente y T negativa en V1–V2. Es el único diagnóstico.',
-              'Tipo 2: "silla de montar", ST ≥ 0,5 mm cóncavo y T positiva. Se confirma solo si un bloqueador del sodio lo convierte en tipo 1.',
+              'Tipo 2: "silla de montar", ST ≥ 0,5 mm cóncavo y T positiva. Si un bloqueador del sodio lo convierte en tipo 1, el diagnóstico exige además clínica compatible (síncope arrítmico, historia familiar).',
               'Registra V1–V2 también en el 2.º y 3.er espacio intercostal; trata la fiebre de forma precoz.',
             ],
           },
@@ -731,8 +731,8 @@ export default {
           id: 'ecg-u11-l1',
           title: 'Brugada y QT largo por tipos',
           questions: [
-            { type: 'mc', prompt: 'Varón de 38 años con síncope durante un cuadro febril. Observa V1–V2. ¿Qué patrón muestra?', ecg12: 'brugada1', options: ['Brugada tipo 1 ("en cúpula")', 'Brugada tipo 2 ("silla de montar")', 'Bloqueo de rama derecha completo', 'IAMCEST anteroseptal'], answer: 0, explain: 'J ≥ 2 mm con ST convexo descendente que termina en T negativa: tipo 1, diagnóstico. La fiebre lo desenmascara y precipita arritmias.' },
-            { type: 'tf', prompt: 'Este patrón "en silla de montar" en V2 basta por sí solo para diagnosticar síndrome de Brugada.', ecg12: 'brugada2', answer: false, explain: 'El tipo 2 solo es sugestivo: se confirma si un test con ajmalina, flecainida o procainamida lo convierte en tipo 1. Prueba también V1–V2 en espacios intercostales altos.' },
+            { type: 'mc', prompt: 'Varón de 38 años con síncope durante un cuadro febril y este ECG. ¿Qué fármaco está contraindicado?', ecg12: 'brugada1', options: ['Flecainida', 'Paracetamol', 'Quinidina', 'Isoproterenol'], answer: 0, explain: 'Brugada tipo 1 desenmascarado por la fiebre. Los bloqueadores del sodio (flecainida, propafenona) lo agravan; la quinidina y el isoproterenol se usan en las tormentas arrítmicas.' },
+            { type: 'tf', prompt: 'Este patrón "en silla de montar" en V2 basta por sí solo para diagnosticar síndrome de Brugada.', ecg12: 'brugada2', answer: false, explain: 'El tipo 2 solo es sugestivo: si un test con ajmalina, flecainida o procainamida lo convierte en tipo 1, el diagnóstico requiere además clínica compatible. Prueba también V1–V2 en espacios intercostales altos.' },
             { type: 'match', prompt: 'Relaciona el patrón con su rasgo en el ECG', pairs: [['LQT1', 'T de base ancha'], ['LQT2', 'T bífida de bajo voltaje'], ['LQT3', 'ST largo con T tardía'], ['Brugada tipo 1', 'ST en cúpula y T negativa']], explain: 'La morfología de la T orienta el genotipo del QT largo antes del estudio genético y ayuda a elegir tratamiento y consejos.' },
             { type: 'mc', prompt: 'Chico de 14 años con síncope mientras nadaba y este ECG. ¿Tratamiento de primera línea?', ecg12: 'lqt1', options: ['Nadolol', 'Mexiletina en monoterapia', 'Quinidina', 'Isoproterenol'], answer: 0, explain: 'LQT1 (IKs): los eventos dependen del tono adrenérgico y el betabloqueante no selectivo es muy eficaz. Evita la natación de competición y los fármacos que alargan el QT.' },
             { type: 'mc', prompt: 'Mujer de 31 años, síncope en el posparto al sonar el teléfono. Observa la T. ¿Subtipo más probable?', ecg12: 'lqt2', options: ['LQT2', 'LQT1', 'LQT3', 'QT largo adquirido por fármacos'], answer: 0, explain: 'T bífida de bajo voltaje y desencadenante auditivo: LQT2 (KCNH2). Betabloqueante, mantener el K⁺ normal y evitar despertadores y timbres bruscos.' },
