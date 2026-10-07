@@ -64,9 +64,9 @@ function beatWave(t, b) {
       // Extras opcionales (sólo los usan los trazados que los declaran)
       if (b.tBiph) v += gauss(t, b.tBiph, tc - 0.05, 0.03) + gauss(t, -1.3 * b.tBiph, tc + 0.04, 0.035); // T bifásica +/−
       if (b.u) v += gauss(t, b.u, tc + 0.17, 0.04); // onda U
-      if (b.jNotch) v += gauss(t, b.jNotch, 0.034, 0.007); // muesca J
+      if (b.jNotch) v += gauss(t, b.jNotch, 0.04, 0.008); // muesca J
       if (b.jDep) v += b.jDep * sigmoid((t - 0.03) / 0.005) * sigmoid((0.11 - t) / 0.025); // ST descendido ascendente
-      if (b.coved) v += b.coved * sigmoid((t - 0.028) / 0.004) * sigmoid((0.15 - t) / 0.03); // ST en cúpula (Brugada)
+      if (b.coved) v += b.coved * sigmoid((t - 0.028) / 0.004) * sigmoid((0.16 - t) / 0.038); // ST en cúpula (Brugada)
     }
   }
   return v;
@@ -234,7 +234,7 @@ export const RHYTHMS = {
     name: 'Torsade de pointes',
     desc: 'TV polimorfa con QRS anchos cuya amplitud crece y decrece "girando" alrededor de la línea de base. Suele iniciarse con un latido sinusal con QT largo y un extrasístole sobre la T. Tratamiento: sulfato de magnesio; si es sostenida, desfibrilación.',
     build: (s) => {
-      const t0 = 1.0;
+      const t0 = 0.8; // extrasístole sobre la T del latido con QT largo
       const beats = [{ t: 0.3, qt: 0.56, tWidth: 0.06 }];
       return {
         beats,
@@ -244,7 +244,7 @@ export const RHYTHMS = {
           const onset = Math.min(1, x / 0.25);
           const env = Math.cos((2 * Math.PI * x) / 2.6 + 0.35); // la envolvente cruza cero → "giro" de la polaridad
           const ph = 2 * Math.PI * 4.2 * x;
-          return onset * (0.15 + 1.05 * Math.abs(env)) * Math.sign(env) * (Math.sin(ph) + 0.25 * Math.sin(2 * ph));
+          return onset * (0.12 + 0.82 * Math.abs(env)) * Math.sign(env) * (Math.sin(ph) + 0.25 * Math.sin(2 * ph));
         },
       };
     },
@@ -256,7 +256,7 @@ export const RHYTHMS = {
       const beats = [];
       for (let t = 0.2; t < s + 1; t += 0.2 + r() * 0.2) {
         const k = r();
-        beats.push({ t, p: false, delta: 0.25 + 0.5 * k, deltaW: 0.018 + 0.016 * k, rAmp: 0.6 + 0.9 * r(), rWidth: 0.012 + 0.012 * k, qAmp: 0, sAmp: 0.2 + 0.3 * r(), sWidth: 0.014, qt: 0.27, tAmp: -0.15 - 0.2 * k, tWidth: 0.035 });
+        beats.push({ t, p: false, delta: 0.3 + 0.45 * k, deltaW: 0.022 + 0.018 * k, rAmp: 0.5 + 0.8 * r(), rWidth: 0.02 + 0.014 * k, qAmp: 0, sAmp: 0.15 + 0.45 * r(), sWidth: 0.02, qt: 0.28, tAmp: -0.15 - 0.2 * k, tWidth: 0.035 });
       }
       return { beats };
     },
@@ -269,7 +269,7 @@ export const RHYTHMS = {
   'pacer-ddd': {
     name: 'Marcapasos bicameral (DDD)',
     desc: 'Dos espigas por ciclo: la auricular, seguida de onda P, y tras el intervalo AV programado la ventricular, seguida de QRS ancho. Estimulación secuencial AV.',
-    build: (s) => ({ beats: sinusBeats(70, s, { aSpike: 1.1, pAmp: 0.12, pr: 0.2, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 }) }),
+    build: (s) => ({ beats: sinusBeats(70, s, { aSpike: 1.1, pAmp: 0.16, pr: 0.2, morph: 'paced', vSpike: 1.4, rAmp: -0.7, ventT: 0.35 }) }),
   },
   junctional: {
     name: 'Ritmo de escape nodal (de la unión)',
@@ -481,15 +481,15 @@ export const TWELVE_LEAD = {
     name: 'Patrón de Brugada tipo 1',
     desc: 'En V1–V2: elevación del punto J ≥ 2 mm con ST "en cúpula" (coved), convexo y descendente, que termina en una T negativa. Es el único patrón diagnóstico de Brugada (canalopatía con riesgo de muerte súbita).',
     extra: {
-      V1: { rAmp: 0.25, sAmp: 0.35, coved: 0.32, tAmp: -0.22, tWidth: 0.05 },
-      V2: { rAmp: 0.35, sAmp: 0.55, coved: 0.3, tAmp: -0.18, tWidth: 0.05 },
+      V1: { rAmp: 0.25, sAmp: 0.35, coved: 0.34, tAmp: -0.3, tWidth: 0.05 },
+      V2: { rAmp: 0.35, sAmp: 0.55, coved: 0.3, tAmp: -0.25, tWidth: 0.05 },
     },
   },
   posterior: {
     name: 'IAMCEST posterior',
     desc: 'Imagen especular en V1–V3: descenso horizontal del ST con R alta y ancha (R/S > 1 en V2) y T positiva. Confirmar con V7–V9 (elevación ≥ 0,5 mm). Suele asociarse a IAM inferior o lateral (CD o Cx).',
     scale: { V1: { r: 2.5, s: 0.5 }, V2: { r: 3.5, s: 0.45 }, V3: { r: 1.6, s: 0.6 } },
-    st: { V1: -0.12, V2: -0.22, V3: -0.18, V4: -0.08 },
+    st: { V1: -0.15, V2: -0.3, V3: -0.25, V4: -0.1 },
     t: { V1: 0.25, V2: 0.4, V3: 0.4 },
   },
   'stemi-inf-rv': {
@@ -511,7 +511,7 @@ export const TWELVE_LEAD = {
     name: 'Hipertrofia ventricular derecha',
     desc: 'R alta en V1 (R/S > 1), S profundas en V5–V6, desviación derecha del eje (> +90°) y T negativas con ST descendido en V1–V3 (patrón de sobrecarga). Puede acompañarse de P pulmonale.',
     axis: 110,
-    scale: { V1: { r: 5, s: 0.2 }, V2: { r: 2.5, s: 0.6 }, V5: { r: 0.5, s: 3 }, V6: { r: 0.5, s: 5 } },
+    scale: { V1: { r: 5, s: 0.2 }, V2: { r: 2.5, s: 0.6 }, V4: { r: 0.6, s: 1.8 }, V5: { r: 0.4, s: 4 }, V6: { r: 0.45, s: 7 } },
     st: { V1: -0.05, V2: -0.06, V3: -0.04 },
     t: { V1: -0.25, V2: -0.3, V3: -0.2 },
     extra: { II: { pAmp: 0.27 }, III: { pAmp: 0.22 }, aVF: { pAmp: 0.25 } },
@@ -528,8 +528,8 @@ export const TWELVE_LEAD = {
     rate: 58,
     extra: {
       II: { st: 0.06, jNotch: 0.08 }, aVF: { st: 0.05, jNotch: 0.07 },
-      V2: { st: 0.15, jNotch: 0.12, tAmp: 0.6 }, V3: { st: 0.2, jNotch: 0.16, tAmp: 0.7 },
-      V4: { st: 0.18, jNotch: 0.16, tAmp: 0.65 }, V5: { st: 0.1, jNotch: 0.1, tAmp: 0.5 },
+      V2: { st: 0.15, jNotch: 0.12, sAmp: 0.9, tAmp: 0.6 }, V3: { st: 0.2, jNotch: 0.18, sAmp: 0.4, tAmp: 0.7 },
+      V4: { st: 0.18, jNotch: 0.22, sAmp: 0.15, tAmp: 0.65 }, V5: { st: 0.12, jNotch: 0.18, sAmp: 0.08, tAmp: 0.5 },
     },
   },
   pacer12: {

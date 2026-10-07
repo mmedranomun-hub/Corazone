@@ -40,7 +40,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - `pressure` opcional = id de `PRESSURES` (en `js/pressure.js`) → curva de presión hemodinámica.
 - `diagram` opcional = `{ id, highlight }`: id de `DIAGRAMS` (en `js/diagrams.js`) y clave de `parts` a resaltar.
 - Lección de **caso clínico**: añade `case: { title, text }` a la lección (la historia se muestra encima de cada pregunta) y opcionalmente `context` en cada pregunta (evolución: "Se realiza ETE y se observa…").
-- Tipo `tap`: `{ type: 'tap', prompt, ecg, wave, explain }` → el usuario toca la tira; `wave` ∈ `p | pBlocked | qrs | vent | t` (ver `waveTimes`).
+- Tipo `tap`: `{ type: 'tap', prompt, ecg, wave, explain }` → el usuario toca la tira; `wave` ∈ `p | pBlocked | qrs | vent | t | spike` (ver `waveTimes`).
 - Cada pregunta debe llevar `explain` (pedagógico, 1–2 frases).
 
 ## Convenciones

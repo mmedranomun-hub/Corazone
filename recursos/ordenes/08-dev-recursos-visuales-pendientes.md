@@ -16,6 +16,13 @@ Generar los trazados y esquemas que el temario necesita y que aún no existen, p
 3. **Curvas (`PRESSURES`)** — ya existen: ra, rv, pa, pcwp, lv, ao, pcwp-v, ra-cannon, ra-af, rv-dip, as-lv-ao, pullback-pa-pcwp. Faltan: VI-Ao en MCH (Brockenbrough), VI-AI en estenosis mitral, IA (Ao con diastólica baja), pulso paradójico, BCIA, Pd/Pa (FFR), interdependencia constricción vs restricción.
 4. **Esquemas (`DIAGRAMS`)** — ya existen: coronary, a4c, plax, psax. Faltan: ojo de buey de 17 segmentos con territorios, A2C, A3C, subcostal (con VCI), mitral con festones A1–P3, planos ETE, sistema de conducción, eje hexaxial, bifurcación (Medina), proyecciones angiográficas.
 
+## Estado (2026-10-07, dev-frontend)
+- [x] **Tiras hechas** (ids reales en `RHYTHMS`): `torsade`, `afib-wpw` (FA preexcitada), `pacer-vvi` (= `paced`), `pacer-ddd`, `junctional`, `sinus-arrest` (= `sinusPause`), `alternans`, `ivr` (= `aivr`, RIVA), `bigeminy`, `afib-slow`. Nuevo tipo de onda para `tap`: `spike` (espigas de marcapasos, `waveTimes(id, 'spike')`).
+- [ ] Tiras pendientes: `mat` (TAM), `pacedFailCapture`.
+- [x] **12D hechos** (`TWELVE_LEAD`): `wellens` (tipo B), `wellens-a` (tipo A), `dewinter`, `brugada1`, `posterior`, `stemi-inf-rv` (sin V4R: lo indica la desc), `hypok`, `rvh` (HVD), `lowvoltage`, `early-repol`, `pacer12`.
+- [ ] 12D pendientes: crecimiento AI/AD, HBAI aislado, BRD+HBAI, elevación de aVR con descenso difuso, Brugada tipo 2, WPW 12D, hiperpotasemia 12D, TV 12D, DAVD (épsilon), inversión de electrodos; V4R/V7–V9 requieren derivaciones extra (no soportadas por `render12`).
+- Tests: `tests/ecg-trazados.test.js`. Los trazados previos y sus `waveTimes` no cambian.
+
 ## Criterios de aceptación
 - [ ] Cada id nuevo tiene nombre y descripción en español y un test que comprueba SVG válido y señal finita.
 - [ ] Morfologías fieles a lo que se enseña (validar con `revisor-medico` mostrando capturas).
