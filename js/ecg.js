@@ -367,7 +367,7 @@ export const RHYTHMS = {
       // TV a 150 lpm que se reinicia tras la captura (la fusión llega en su momento)
       const cap = beats.find((b) => b.capture).t;
       for (let t = 0.3; t < s + 1; t += 0.4) {
-        if (t > cap - 0.15 && t < cap + 0.45) { t = cap + 0.05; continue; } // siguiente TV a 0,45 s de la captura
+        if (t > cap - 0.15 && t < cap + 0.4) { t = cap + 0.05; continue; } // siguiente TV a 0,45 s de la captura
         if (beats.some((b) => b.morph === 'fusion' && Math.abs(b.t - t) < 0.15)) continue;
         beats.push({ t, p: false, morph: 'vent' });
       }
