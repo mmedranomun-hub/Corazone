@@ -413,5 +413,190 @@ export default {
         },
       ],
     },
+    {
+      id: 'ecg-u8',
+      title: 'Arritmias ventriculares',
+      guide: {
+        intro: 'Una taquicardia de QRS ancho es una TV hasta que se demuestre lo contrario. Aprende los criterios que la distinguen de la TSV aberrada, a reconocer la torsade de pointes y las TV idiopáticas (ESC 2022 arritmias ventriculares; ESC 2019 TSV).',
+        sections: [
+          {
+            title: 'QRS ancho: ¿TV o TSV aberrada?',
+            points: [
+              'Cardiopatía estructural o IAM previo: > 90 % de las taquicardias de QRS ancho son TV. La buena tolerancia no descarta TV.',
+              'Criterios de TV: disociación AV, latidos de captura y de fusión, concordancia negativa en precordiales, eje extremo ("noroeste").',
+              'Brugada: sin RS en V1–V6 → TV; intervalo R-nadir de S > 100 ms → TV; disociación AV → TV; criterios morfológicos en V1–V2 y V6.',
+              'Vereckei (aVR): R inicial; r o q inicial > 40 ms; muesca en la rama descendente; Vi/Vt ≤ 1 → TV.',
+              'Otras causas de QRS ancho: preexcitación, marcapasos, hiperpotasemia y fármacos bloqueadores del sodio (IC, tricíclicos).',
+            ],
+            tip: 'Inestable → cardioversión sincronizada. Estable → cardioversión si el riesgo de la sedación es bajo; procainamida o amiodarona como alternativas. Nunca verapamilo en QRS ancho no filiado.',
+          },
+          {
+            title: 'TV polimórfica y torsade de pointes',
+            points: [
+              'Torsade: TV polimórfica con QRS que "giran" sobre la línea de base, sobre un QT largo y con secuencia corto-largo-corto.',
+              'Tratamiento: sulfato de magnesio IV, retirar fármacos que alargan el QT, K⁺ a 4,5–5 mmol/l y aumentar la FC (isoproterenol o marcapasos).',
+              'TV polimórfica con QT normal: piensa en isquemia aguda → coronariografía urgente.',
+              'Torsade sostenida o FV: desfibrilación no sincronizada.',
+            ],
+          },
+          {
+            title: 'TV idiopáticas y extrasistolia',
+            points: [
+              'TV del tracto de salida del VD: BRI + eje inferior, inducida por ejercicio, sensible a adenosina.',
+              'TV fascicular (posterior izquierda): BRD + eje superior izquierdo, QRS relativamente estrecho, sensible a verapamilo.',
+              'Una carga de EV > 10 % puede causar miocardiopatía reversible; el riesgo es mayor por encima del 20 %.',
+              'RIVA (50–110 lpm) tras la reperfusión: benigno y autolimitado, no requiere antiarrítmicos.',
+            ],
+            tip: 'Antes de llamar idiopática a una TV con BRI, descarta miocardiopatía arritmogénica (RM cardiaca).',
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'ecg-u8-l1',
+          title: 'QRS ancho: ¿TV o TSV aberrada?',
+          questions: [
+            { type: 'mc', prompt: 'Varón de 68 años con IAM antiguo, palpitaciones y PA 125/80 mmHg. Observa la tira. ¿Diagnóstico de trabajo?', ecg: 'vt', options: ['Taquicardia ventricular monomorfa', 'TSV con aberrancia de rama', 'Flutter auricular 2:1 con BRI', 'Taquicardia sinusal con BRI'], answer: 0, explain: 'Taquicardia regular de QRS ancho sin P visibles en un paciente con cicatriz de infarto: más del 90 % son TV, aunque la tolerancia sea buena.' },
+            { type: 'tf', prompt: 'Una buena tolerancia hemodinámica orienta a TSV con aberrancia y permite descartar una TV.', answer: false, explain: 'Muchas TV se toleran bien, sobre todo con FEVI conservada. La estabilidad decide el tratamiento, no el diagnóstico.' },
+            { type: 'match', prompt: 'Relaciona el criterio de TV con su definición', pairs: [['Disociación AV', 'P sin relación con los QRS'], ['Latido de captura', 'QRS estrecho prematuro conducido'], ['Latido de fusión', 'QRS intermedio entre sinusal y TV'], ['Concordancia negativa', 'QRS negativos de V1 a V6']], explain: 'Capturas y fusiones demuestran disociación AV: un impulso sinusal se "cuela" en los ventrículos. Son muy específicos de TV, pero poco sensibles.' },
+            { type: 'mc', prompt: 'Algoritmo de Vereckei: ¿qué hallazgo en aVR indica TV?', options: ['Onda R inicial en aVR', 'QS con descenso inicial rápido', 'Complejo rSr′ de bajo voltaje', 'T negativa tras el QRS'], answer: 0, explain: 'Una R inicial en aVR indica activación desde el ápex hacia arriba, impropia del His-Purkinje. Otros pasos: r o q inicial > 40 ms, muesca descendente y Vi/Vt ≤ 1.' },
+            { type: 'tf', prompt: 'En el algoritmo de Brugada, la ausencia de complejos RS en todas las precordiales indica TV.', answer: true, explain: 'Es el primer paso. Si hay RS, un intervalo desde el inicio de la R al nadir de la S > 100 ms en cualquier precordial también indica TV.' },
+            { type: 'mc', prompt: 'Mujer de 72 años con taquicardia regular de QRS ancho a 180 lpm, PA 70/40 mmHg y confusión. ¿Actitud inmediata?', options: ['Cardioversión eléctrica sincronizada', 'Amiodarona IV en 20 minutos', 'Adenosina 6 mg IV en bolo', 'Verapamilo 5 mg IV lento'], answer: 0, explain: 'Con inestabilidad, cardioversión sincronizada bajo sedación. El verapamilo está contraindicado en QRS ancho no filiado: si es TV puede causar colapso.' },
+          ],
+        },
+        {
+          id: 'ecg-u8-l2',
+          title: 'TV polimórfica y torsade de pointes',
+          questions: [
+            { type: 'mc', prompt: 'Mujer de 74 años tratada con haloperidol y furosemida que presenta síncopes. Observa la tira. ¿Qué ritmo muestra?', ecg: 'torsade', options: ['Torsade de pointes', 'Fibrilación ventricular', 'TV monomorfa', 'FA preexcitada'], answer: 0, explain: 'QRS anchos cuya amplitud crece y decrece girando sobre la línea de base, iniciados por una extrasístole sobre una T con QT largo. Fármaco + hipopotasemia por diurético: combinación clásica.' },
+            { type: 'tap', prompt: 'Esta paciente recibe un fármaco que alarga el QT. Toca una onda T y fíjate en lo tarde que termina.', ecg: 'longqt', wave: 't', explain: 'El QT va del inicio del QRS al final de la T (método de la tangente). Suspende el fármaco si el QTc supera 500 ms o aumenta > 60 ms.' },
+            { type: 'mc', prompt: '¿Cuál es el fármaco de primera línea para la torsade de pointes?', options: ['Sulfato de magnesio IV', 'Amiodarona IV', 'Lidocaína IV', 'Procainamida IV'], answer: 0, explain: 'El magnesio (2 g IV) suprime los pospotenciales precoces aunque la magnesemia sea normal. Amiodarona y procainamida alargan el QT y pueden empeorarla.' },
+            { type: 'tf', prompt: 'En la torsade adquirida, aumentar la frecuencia cardiaca (isoproterenol o marcapasos transitorio) ayuda a prevenir recurrencias.', answer: true, explain: 'La bradicardia y las pausas alargan el QT y favorecen la secuencia corto-largo-corto. Además, repón K⁺ hasta 4,5–5 mmol/l.' },
+            { type: 'match', prompt: 'Relaciona la TV polimórfica con su causa más típica', pairs: [['TV polimórfica con QT largo', 'Fármacos, K⁺/Mg²⁺ bajos, bradicardia'], ['TV polimórfica con QT normal', 'Isquemia aguda'], ['TV bidireccional', 'Digoxina o TVPC']], explain: 'Mide el QT en ritmo sinusal: si es largo, magnesio y retirar desencadenantes; si es normal y hay isquemia, coronariografía urgente.' },
+            { type: 'mc', prompt: 'La torsade de la paciente no cede y degenera en este ritmo, sin pulso. ¿Qué haces?', ecg: 'vf', options: ['Desfibrilación no sincronizada', 'Cardioversión sincronizada a 100 J', 'Sulfato de magnesio y esperar', 'Amiodarona 300 mg sin descarga'], answer: 0, explain: 'FV: RCP y desfibrilación inmediata. En la torsade sostenida tampoco se sincroniza: los QRS polimórficos impiden que el aparato detecte la R.' },
+          ],
+        },
+        {
+          id: 'ecg-u8-l3',
+          title: 'TV idiopáticas y extrasistolia ventricular',
+          questions: [
+            { type: 'tap', prompt: 'Observa la tira. Toca una extrasístole ventricular.', ecg: 'bigeminy', wave: 'vent', explain: 'Prematura, ancha, sin P previa y con acoplamiento fijo: cada latido sinusal va seguido de una EV (bigeminismo ventricular).' },
+            { type: 'mc', prompt: 'Mujer de 32 años sin cardiopatía con EV y rachas de TV con morfología de BRI y eje inferior que aumentan con el ejercicio. ¿Origen más probable?', options: ['Tracto de salida del VD', 'Fascículo posterior izquierdo', 'Cicatriz de IAM inferior', 'Vía accesoria posteroseptal'], answer: 0, explain: 'BRI con QRS positivo en II, III y aVF: tracto de salida. Es la TV idiopática más frecuente, sensible a adenosina y curable con ablación.' },
+            { type: 'mc', prompt: 'Varón de 24 años sin cardiopatía con TV a 170 lpm, QRS de 130 ms, morfología de BRD y eje superior izquierdo. ¿Qué fármaco suele terminarla?', options: ['Verapamilo IV', 'Adenosina IV', 'Sulfato de magnesio IV', 'Digoxina IV'], answer: 0, explain: 'TV fascicular (de Belhassen): reentrada en el fascículo posterior izquierdo, sensible a verapamilo. Su QRS relativamente estrecho la confunde con una TSV aberrada.' },
+            { type: 'tf', prompt: 'Una carga de EV > 10 % en el Holter de 24 h puede causar disfunción ventricular reversible.', answer: true, explain: 'Miocardiopatía inducida por EV: el riesgo crece con la carga (sobre todo > 20 %). Suprimirlas con ablación o fármacos puede normalizar la FEVI.' },
+            { type: 'match', prompt: 'Relaciona la taquicardia ventricular con su rasgo típico', pairs: [['TV del tracto de salida', 'BRI + eje inferior'], ['TV fascicular', 'BRD + eje superior izquierdo'], ['RIVA', '50–110 lpm tras reperfusión'], ['TV por cicatriz', 'IAM previo y FEVI deprimida']], explain: 'Las TV idiopáticas tienen buen pronóstico; la TV por cicatriz implica riesgo de muerte súbita y obliga a valorar DAI.' },
+            { type: 'mc', prompt: 'Varón de 58 años, 20 min después de una ICP primaria de la DA, asintomático y con PA normal. Observa la tira. ¿Actitud?', ecg: 'ivr', options: ['Observación: suele autolimitarse', 'Cardioversión eléctrica sincronizada', 'Amiodarona IV en bolo', 'Implante urgente de DAI'], answer: 0, explain: 'RIVA (QRS anchos regulares a ~70 lpm): marcador de reperfusión, benigno y autolimitado. No requiere antiarrítmicos.' },
+          ],
+        },
+        {
+          id: 'ecg-u8-l4',
+          title: 'QRS ancho: diferencial y manejo',
+          questions: [
+            { type: 'mc', prompt: 'Varón de 23 años con palpitaciones. Taquicardia irregular a 240 lpm con QRS anchos y cambiantes. Observa la tira. ¿Diagnóstico?', ecg: 'afib-wpw', options: ['FA preexcitada', 'TV polimórfica', 'FA con bloqueo de rama fijo', 'Torsade de pointes'], answer: 0, explain: 'Irregular, muy rápida y con QRS de anchura variable: FA conducida por una vía accesoria. Un RR preexcitado ≤ 250 ms indica riesgo de FV.' },
+            { type: 'mc', prompt: 'En la FA preexcitada hemodinámicamente estable, ¿qué fármaco debes evitar?', options: ['Verapamilo IV', 'Procainamida IV', 'Ibutilida IV', 'Flecainida IV'], answer: 0, explain: 'Frenar el nodo AV (verapamilo, betabloqueantes, digoxina, adenosina; también amiodarona IV) favorece la conducción por la vía y puede provocar FV.' },
+            { type: 'mc', prompt: 'Mujer de 81 años con QRS ancho a 60 lpm en el monitor. Observa la tira. ¿Qué explica el QRS ancho?', ecg: 'pacer-vvi', options: ['Estimulación por marcapasos ventricular', 'Ritmo idioventricular acelerado', 'Hiperpotasemia grave', 'Bloqueo de rama izquierda sinusal'], answer: 0, explain: 'Cada QRS va precedido de una espiga: captura desde el VD con morfología de BRI. Busca espigas antes de llamar TV o RIVA a un QRS ancho.' },
+            { type: 'match', prompt: 'Relaciona la causa de QRS ancho con su pista', pairs: [['Hiperpotasemia', 'T picudas, P aplanadas'], ['Antiarrítmico IC', 'Flecainida a dosis altas'], ['Tricíclicos', 'R terminal alta en aVR'], ['Preexcitación', 'PR corto y onda delta']], explain: 'No todo QRS ancho rápido es TV o TSV aberrada: iones, bloqueadores del sodio, preexcitación y marcapasos también lo ensanchan.' },
+            { type: 'tf', prompt: 'Ante una taquicardia regular de QRS ancho estable, sin preexcitación en el ECG basal, puede usarse adenosina con fines diagnósticos.', answer: true, explain: 'Termina la TSV aberrada y desenmascara un flutter o una taquicardia auricular; la TV no suele responder. Ten el desfibrilador preparado.' },
+            { type: 'tf', prompt: 'La concordancia positiva en precordiales (QRS positivos de V1 a V6) es patognomónica de TV.', answer: false, explain: 'Es muy sugestiva de TV, pero también aparece en la taquicardia antidrómica por una vía posterior izquierda. La concordancia negativa es casi exclusiva de TV.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'ecg-u9',
+      title: 'Canalopatías y miocardiopatía arritmogénica',
+      guide: {
+        intro: 'Corazones estructuralmente normales (o casi) que causan muerte súbita en jóvenes. El ECG es la clave diagnóstica: aprende a reconocer Brugada, QT largo y corto, TVPC y miocardiopatía arritmogénica (ESC 2022; consenso de onda J 2016; Task Force 2010 y Padua 2020).',
+        sections: [
+          {
+            title: 'Síndrome de Brugada',
+            points: [
+              'Tipo 1 ("coved"): J ≥ 2 mm con ST en cúpula y T negativa en ≥ 1 precordial derecha (V1–V2 en el 2.º, 3.º o 4.º espacio). Único diagnóstico.',
+              'Tipo 2 ("silla de montar"): ST cóncavo con T positiva en V2. Solo sugestivo; puede desenmascararse con ajmalina o flecainida.',
+              'Arritmias en reposo o sueño, más en varones; la fiebre y los bloqueadores del sodio las desencadenan.',
+              'DAI tras parada o TV sostenida; valorar ante síncope arrítmico. Quinidina o isoproterenol en tormentas.',
+            ],
+            tip: 'Fiebre en un paciente con Brugada: antitérmicos precoces y ECG.',
+          },
+          {
+            title: 'QT largo y QT corto',
+            points: [
+              'SQTL: QTc ≥ 480 ms en ECG repetidos o puntuación de Schwartz > 3; QTc ≥ 460 ms si hay síncope arrítmico.',
+              'LQT1 (KCNQ1): ejercicio, natación, T de base ancha. LQT2 (KCNH2): ruidos, posparto, T mellada. LQT3 (SCN5A): reposo, ST largo.',
+              'Betabloqueante no selectivo (nadolol, propranolol) si el QT está prolongado; mexiletina en LQT3; DAI tras parada.',
+              'Adquirido: retira el fármaco si QTc > 500 ms o aumento > 60 ms; corrige K⁺ y Mg²⁺.',
+              'QT corto: QTc ≤ 320 ms diagnóstico; ≤ 360 ms con mutación, historia familiar o parada recuperada.',
+            ],
+          },
+          {
+            title: 'TVPC y repolarización precoz',
+            points: [
+              'TVPC: ECG basal normal, TV bidireccional o polimórfica con el ejercicio o la emoción (RYR2). La ergometría es la prueba clave.',
+              'Tratamiento de la TVPC: nadolol ± flecainida, denervación simpática; las descargas del DAI pueden provocar tormentas.',
+              'Patrón de repolarización precoz: frecuente y benigno en asintomáticos. Síndrome solo si hay FV idiopática recuperada.',
+            ],
+          },
+          {
+            title: 'Miocardiopatía arritmogénica',
+            points: [
+              'Criterio mayor: T negativas en V1–V3 o más allá en > 14 años sin BRD completo.',
+              'Onda épsilon en V1–V3: mayor en el Task Force 2010, menor en Padua 2020. Activación terminal del QRS ≥ 55 ms: menor.',
+              'TV con BRI y eje superior: criterio mayor; con eje inferior: menor.',
+              'Evitar deporte de competición y ejercicio intenso; DAI tras TV mal tolerada o FV.',
+            ],
+          },
+        ],
+      },
+      lessons: [
+        {
+          id: 'ecg-u9-l1',
+          title: 'Síndrome de Brugada',
+          questions: [
+            { type: 'mc', prompt: 'Varón de 38 años con un síncope nocturno sin pródromos. Observa V1–V2. ¿Qué patrón muestra?', ecg12: 'brugada1', options: ['Patrón de Brugada tipo 1', 'Patrón de Brugada tipo 2', 'Bloqueo de rama derecha completo', 'IAMCEST anteroseptal'], answer: 0, explain: 'J ≥ 2 mm con ST en cúpula y T negativa en ≥ 1 precordial derecha: tipo 1, el único diagnóstico. El tipo 2 es en "silla de montar" con T positiva en V2.' },
+            { type: 'match', prompt: 'Relaciona el hallazgo con su significado en el Brugada', pairs: [['ST en cúpula + T negativa', 'Tipo 1 (diagnóstico)'], ['ST en silla de montar', 'Tipo 2 (sugestivo)'], ['Tipo 1 tras ajmalina', 'Patrón inducido por fármaco']], explain: 'Solo el tipo 1 espontáneo es diagnóstico por sí solo; el inducido requiere además clínica compatible (síncope arrítmico, parada o historia familiar).' },
+            { type: 'tf', prompt: 'Registrar V1–V2 en el 2.º o 3.er espacio intercostal aumenta la sensibilidad para detectar el patrón tipo 1.', answer: true, explain: 'El tracto de salida del VD puede quedar por encima del 4.º espacio. Un tipo 1 en V1–V2 altos tiene el mismo valor diagnóstico.' },
+            { type: 'mc', prompt: '¿En qué contexto suelen producirse las arritmias del síndrome de Brugada?', options: ['Reposo o sueño, con tono vagal alto', 'Ejercicio intenso y estrés emocional', 'Estímulos auditivos bruscos', 'Posparto inmediato'], answer: 0, explain: 'La FV del Brugada aparece típicamente de noche y en reposo, más en varones de 30–50 años. Ejercicio y emoción orientan a LQT1 o TVPC; ruidos y posparto, a LQT2.' },
+            { type: 'mc', prompt: 'Mujer de 29 años con Brugada conocido consulta por gripe con 39 °C. ¿Qué le recomiendas?', options: ['Antitérmicos precoces y ECG', 'Esperar a que la fiebre ceda sola', 'Iniciar flecainida oral profiláctica', 'Antibiótico empírico y reposo'], answer: 0, explain: 'La fiebre desenmascara el tipo 1 y desencadena arritmias: trátala pronto. Evita los bloqueadores del sodio (flecainida, propafenona) y consulta las listas de fármacos a evitar.' },
+            { type: 'tf', prompt: 'En un paciente asintomático con patrón de Brugada tipo 1 espontáneo está indicado implantar un DAI de forma sistemática.', answer: false, explain: 'El DAI se indica tras parada recuperada o TV sostenida y se valora ante síncope arrítmico. En asintomáticos se individualiza (el estudio electrofisiológico puede ayudar).' },
+          ],
+        },
+        {
+          id: 'ecg-u9-l2',
+          title: 'QT largo congénito y adquirido',
+          questions: [
+            { type: 'mc', prompt: 'Mujer de 19 años con síncope al sonar el despertador. Observa la tira (FC 65 lpm). ¿Qué alteración muestra?', ecg: 'longqt', options: ['QT largo', 'PR corto con onda delta', 'T picudas de hiperpotasemia', 'Bloqueo AV de 1.er grado'], answer: 0, explain: 'La T termina muy lejos del QRS: QTc prolongado. Un síncope desencadenado por un estímulo auditivo brusco orienta a LQT2.' },
+            { type: 'match', prompt: 'Relaciona el subtipo de QT largo con su desencadenante típico', pairs: [['LQT1 (KCNQ1)', 'Ejercicio, natación'], ['LQT2 (KCNH2)', 'Estímulos auditivos, posparto'], ['LQT3 (SCN5A)', 'Reposo y sueño']], explain: 'La T también orienta: LQT1 de base ancha; LQT2 de bajo voltaje y mellada; LQT3 con ST largo isoeléctrico y T tardía.' },
+            { type: 'mc', prompt: 'Según la ESC 2022, ¿qué QTc en ECG repetidos diagnostica el síndrome de QT largo aunque no haya síntomas?', options: ['≥ 480 ms', '≥ 440 ms', '≥ 450 ms', '≥ 520 ms'], answer: 0, explain: 'QTc ≥ 480 ms en ECG repetidos o puntuación de Schwartz > 3. Con síncope arrítmico basta un QTc ≥ 460 ms, descartadas causas secundarias.' },
+            { type: 'tf', prompt: 'Los betabloqueantes no selectivos (nadolol o propranolol) están indicados en el QT largo congénito con QT prolongado documentado.', answer: true, explain: 'Reducen los eventos, sobre todo en LQT1. En LQT3 puede añadirse mexiletina; tras parada o eventos pese al tratamiento, DAI.' },
+            { type: 'mc', prompt: 'Varón de 70 años con QTc basal de 440 ms; tras iniciar un fármaco, el QTc es de 520 ms. ¿Actitud correcta?', options: ['Suspender el fármaco y corregir K⁺ y Mg²⁺', 'Mantenerlo: el QTc aún es aceptable', 'Reducir la dosis y repetir en un mes', 'Añadir amiodarona como protección'], answer: 0, explain: 'QTc > 500 ms o aumento > 60 ms: retira el fármaco, corrige iones y monitoriza. Riesgo mayor en mujeres, ancianos, bradicardia e hipopotasemia.' },
+            { type: 'tf', prompt: 'La fórmula de Bazett infracorrige el QT con frecuencias cardiacas altas.', answer: false, explain: 'Bazett sobrecorrige con FC altas (QTc falsamente largo) e infracorrige con FC bajas. Con taquicardia es mejor Fridericia o Framingham.' },
+          ],
+        },
+        {
+          id: 'ecg-u9-l3',
+          title: 'QT corto, TVPC y repolarización precoz',
+          questions: [
+            { type: 'mc', prompt: 'Según la ESC 2022, ¿qué QTc basta por sí solo para diagnosticar el síndrome de QT corto?', options: ['≤ 320 ms', '≤ 360 ms', '≤ 380 ms', '≤ 400 ms'], answer: 0, explain: 'QTc ≤ 320 ms es diagnóstico. Con QTc ≤ 360 ms se requiere además mutación patogénica, historia familiar o parada recuperada.' },
+            { type: 'mc', prompt: 'Niña de 12 años con síncopes al correr. ECG basal normal; en la ergometría aparecen EV que progresan a TV bidireccional. ¿Diagnóstico?', options: ['TV polimórfica catecolaminérgica', 'Síndrome de QT largo tipo 3', 'Síndrome de Brugada', 'Miocardiopatía arritmogénica'], answer: 0, explain: 'TVPC: ECG basal normal y arritmias con el ejercicio o la emoción (RYR2). La ergometría es la prueba clave; tratamiento con nadolol, añadiendo flecainida si persisten.' },
+            { type: 'tf', prompt: 'En la TVPC, el DAI sin betabloqueante es una buena estrategia porque sus descargas terminan las arritmias.', answer: false, explain: 'Las descargas liberan catecolaminas y pueden desencadenar tormentas arrítmicas. Base: betabloqueante ± flecainida o denervación simpática; DAI tras parada.' },
+            { type: 'match', prompt: 'Relaciona la arritmia con su fármaco característico', pairs: [['QT largo tipo 3', 'Mexiletina'], ['TVPC', 'Nadolol + flecainida'], ['QT corto', 'Quinidina'], ['Torsade de pointes', 'Sulfato de magnesio']], explain: 'La mexiletina bloquea la corriente tardía de sodio (LQT3); la flecainida inhibe el receptor RyR2 (TVPC); la quinidina alarga el QT en el QT corto.' },
+            { type: 'tf', prompt: 'En un deportista asintomático, este patrón de repolarización precoz no requiere más estudios.', ecg12: 'early-repol', answer: true, explain: 'Es frecuente y benigno en asintomáticos. Solo se habla de síndrome de repolarización precoz si hay FV idiopática recuperada.' },
+            { type: 'mc', prompt: '¿Qué rasgo de la repolarización precoz se asocia a mayor riesgo arrítmico?', options: ['J ≥ 2 mm en inferiores con ST horizontal', 'ST cóncavo ascendente en V2–V4', 'Muesca en J en V4–V6 con T altas', 'Bradicardia sinusal del deportista'], answer: 0, explain: 'Más riesgo con J alto en derivaciones inferiores o difuso, seguido de ST horizontal o descendente. La variante lateral con ST ascendente es la típica benigna.' },
+          ],
+        },
+        {
+          id: 'ecg-u9-l4',
+          title: 'Miocardiopatía arritmogénica',
+          questions: [
+            { type: 'mc', prompt: 'Varón de 26 años, ciclista, con palpitaciones al esfuerzo. ECG con T negativas de V1 a V4 sin BRD. ¿Qué diagnóstico debes descartar?', options: ['Miocardiopatía arritmogénica del VD', 'Síndrome de Brugada tipo 2', 'Pericarditis aguda en fase IV', 'Síndrome de QT corto'], answer: 0, explain: 'T negativas en V1–V3 o más allá en > 14 años sin BRD completo: criterio mayor (Task Force 2010). Pide eco, RM cardiaca y Holter.' },
+            { type: 'match', prompt: 'Relaciona el hallazgo con lo que representa en la miocardiopatía arritmogénica', pairs: [['Onda épsilon', 'Potenciales tardíos tras el QRS'], ['T negativas en V1–V3', 'Repolarización anómala del VD'], ['TV con BRI y eje superior', 'Origen en la pared inferior del VD'], ['Activación terminal ≥ 55 ms', 'Despolarización lenta en V1–V3']], explain: 'La épsilon es una pequeña deflexión entre el final del QRS y la T en V1–V3, por conducción lenta en el miocardio fibroadiposo.' },
+            { type: 'tf', prompt: 'En los criterios de Padua 2020, la onda épsilon pasó de criterio mayor a menor.', answer: true, explain: 'Es específica pero difícil de identificar y con gran variabilidad entre observadores. Padua incorpora el realce tardío en RM y la afectación del VI.' },
+            { type: 'mc', prompt: '¿Qué morfología de TV es criterio mayor de miocardiopatía arritmogénica del VD?', options: ['BRI con eje superior', 'BRI con eje inferior', 'BRD con eje superior', 'BRD con eje inferior'], answer: 0, explain: 'TV con BRI y eje superior (negativa en II, III y aVF) es criterio mayor; con eje inferior es menor, porque se solapa con la TV idiopática del tracto de salida.' },
+            { type: 'tf', prompt: 'En la miocardiopatía arritmogénica se recomienda evitar el deporte de competición y el ejercicio de alta intensidad.', answer: true, explain: 'El ejercicio intenso acelera la progresión y aumenta el riesgo arrítmico. La mayoría de casos se deben a genes desmosómicos (PKP2 el más frecuente).' },
+            { type: 'mc', prompt: 'Mujer de 34 años con miocardiopatía arritmogénica ingresa por TV sostenida mal tolerada, ya cardiovertida, sin causa reversible. ¿Qué indicas?', options: ['Implante de DAI', 'Solo betabloqueante y alta', 'Restricción del ejercicio aislada', 'Flecainida oral en monoterapia'], answer: 0, explain: 'Tras TV mal tolerada o FV, el DAI está indicado. Se asocia betabloqueante y, si la TV recurre, ablación (a menudo con abordaje epicárdico).' },
+          ],
+        },
+      ],
+    },
   ],
 };

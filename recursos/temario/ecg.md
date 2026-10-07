@@ -78,12 +78,13 @@ Niveles:
 | Preexcitación y WPW | 🟡 | Reconocer PR corto + onda delta; localizar aproximadamente la vía; manejar FA preexcitada (evitar frenadores del nodo AV). | `ecg: wpw`, `ecg12` WPW |
 | Taquicardia auricular multifocal y otras | ⬜ | Reconocer ≥ 3 morfologías de P y asociarla a EPOC; diferenciar de FA. | `ecg` (pendiente) |
 
-### Unidad 8. Arritmias ventriculares ⬜
+### Unidad 8. Arritmias ventriculares ✅ (`ecg-u8`)
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
-| Taquicardia de QRS ancho: ¿TV o TSV aberrada? | ⬜ | Aplicar criterios de TV (disociación AV, latidos de captura/fusión, concordancia precordial, eje extremo); conocer Brugada y Vereckei (aVR); regla: ante la duda, TV. | `ecg: vt`, `ecg12` TV |
-| TV polimórfica y torsade de pointes | ⬜ | Reconocer torsade con QT largo; tratar con magnesio, retirar fármacos, aumentar FC. | `ecg` torsade (pendiente) |
-| TV idiopáticas y extrasistolia frecuente | ⬜ | Reconocer TV de TSVD (BRI + eje inferior) y fascicular (BRD + HBAI); conocer la miocardiopatía por EV (> 10–15 % de carga). | `ecg12` |
+| Taquicardia de QRS ancho: ¿TV o TSV aberrada? (`ecg-u8-l1`) | ✅ | Aplicar criterios de TV (disociación AV, latidos de captura/fusión, concordancia precordial, eje extremo); conocer Brugada y Vereckei (aVR); regla: ante la duda, TV. | `ecg: vt`, `ecg12` TV |
+| TV polimórfica y torsade de pointes (`ecg-u8-l2`) | ✅ | Reconocer torsade con QT largo; tratar con magnesio, retirar fármacos, aumentar FC. | `ecg` torsade (pendiente) |
+| TV idiopáticas y extrasistolia frecuente (`ecg-u8-l3`) | ✅ | Reconocer TV de TSVD (BRI + eje inferior) y fascicular (BRD + HBAI); conocer la miocardiopatía por EV (> 10–15 % de carga). | `ecg: bigeminy, ivr`, `tap: vent` |
+| QRS ancho: diferencial y manejo (`ecg-u8-l4`) | ✅ | Reconocer FA preexcitada y evitar frenadores del nodo AV; identificar QRS ancho por marcapasos, iones y fármacos; usar adenosina diagnóstica con seguridad; interpretar la concordancia precordial. | `ecg: afib-wpw, pacer-vvi` |
 
 ### Unidad 9. Trastornos iónicos, fármacos y otros patrones 🟡 (`ecg-u3-l2`)
 | Lección | Estado | Objetivos | Visual |
@@ -97,13 +98,13 @@ Niveles:
 
 ## Nivel 3 — Residente de cardiología
 
-### Unidad 10. Canalopatías y miocardiopatías arritmogénicas ⬜
+### Unidad 10. Canalopatías y miocardiopatías arritmogénicas 🟡 (`ecg-u9`)
 | Lección | Estado | Objetivos | Visual |
 |---|---|---|---|
-| Síndrome de Brugada | ⬜ | Diferenciar patrón tipo 1 (diagnóstico, "coved" ≥ 2 mm en V1–V2, incluso en 2.º–3.er EIC) del tipo 2 ("silla de montar"); conocer desencadenantes (fiebre, fármacos) y el test con flecainida/ajmalina. | `ecg12` Brugada 1 y 2 |
-| QT largo congénito y adquirido | 🟡 | Medir QT (método de la tangente); clasificar LQT1–3 por morfología de T y desencadenantes; aplicar puntuación de Schwartz; manejar fármacos que alargan el QT. | `ecg: longqt`, `ecg12` |
-| QT corto, TVPC y repolarización precoz maligna | ⬜ | Reconocer QTc ≤ 320–360 ms; sospechar TV polimórfica catecolaminérgica (TV bidireccional con esfuerzo); identificar patrón de repolarización precoz de riesgo. | `ecg12` |
-| Miocardiopatía arritmogénica (DAVD) | ⬜ | Reconocer T negativas V1–V3 (> 14 años sin BRD), onda épsilon, QRS prolongado en V1–V3, EV con morfología BRI; conocer criterios del Task Force 2010 / Padua 2020. | `ecg12` DAVD |
+| Síndrome de Brugada (`ecg-u9-l1`) | ✅ | Diferenciar patrón tipo 1 (diagnóstico, "coved" ≥ 2 mm en V1–V2, incluso en 2.º–3.er EIC) del tipo 2 ("silla de montar"); conocer desencadenantes (fiebre, fármacos) y el test con flecainida/ajmalina. | `ecg12` Brugada 1 y 2 |
+| QT largo congénito y adquirido (`ecg-u9-l2`) | ✅ | Medir QT (método de la tangente); clasificar LQT1–3 por morfología de T y desencadenantes; aplicar puntuación de Schwartz; manejar fármacos que alargan el QT. | `ecg: longqt`, `ecg12` |
+| QT corto, TVPC y repolarización precoz maligna (`ecg-u9-l3`) | ✅ | Reconocer QTc ≤ 320–360 ms; sospechar TV polimórfica catecolaminérgica (TV bidireccional con esfuerzo); identificar patrón de repolarización precoz de riesgo. | `ecg12` |
+| Miocardiopatía arritmogénica (DAVD) (`ecg-u9-l4`) | ✅ | Reconocer T negativas V1–V3 (> 14 años sin BRD), onda épsilon, QRS prolongado en V1–V3, EV con morfología BRI; conocer criterios del Task Force 2010 / Padua 2020. | `ecg12` DAVD |
 | MCH y otras miocardiopatías en el ECG | ⬜ | Reconocer HVI con T negativas gigantes (MCH apical), Q septales profundas, bajo voltaje en amiloidosis. | `ecg12` |
 
 ### Unidad 11. Marcapasos y DAI ⬜
@@ -133,4 +134,5 @@ Niveles:
 
 ## Resumen de cobertura
 - ✅ 8 lecciones existentes (≈ 45 preguntas) + 10 lecciones nuevas (60 preguntas) en `ecg-u5` (crecimientos), `ecg-u6` (bloqueos de rama/fasciculares) y `ecg-u7` (infarto: criterios, localización, OMI y diferencial).
-- Prioridad alta para siguientes órdenes: Unidad 8 (QRS ancho), Unidad 10 (canalopatías), Unidad 13 (casos).
+- Orden 05: 8 lecciones nuevas (48 preguntas) en `ecg-u8` (arritmias ventriculares) y `ecg-u9` (canalopatías y miocardiopatía arritmogénica). Trazados pendientes: `ecg12` de TV monomorfa, Brugada tipo 2, DAVD (T negativas V1–V3 + épsilon), LQT1–3; tira de TV bidireccional y de TV con capturas/fusión.
+- Prioridad alta para siguientes órdenes: Unidad 13 (casos), MCH y otras miocardiopatías (Unidad 10).
