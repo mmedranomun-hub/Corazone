@@ -20,3 +20,19 @@ self.addEventListener('fetch', (e) => {
       .catch(() => caches.match(e.request).then((r) => r || caches.match('./index.html'))),
   );
 });
+
+// Recordatorio diario: al tocar la notificación se abre (o enfoca) la app.
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      const win = list.find((c) => 'focus' in c);
+      return win ? win.focus() : self.clients.openWindow('./');
+    }),
+  );
+});
+
+// La app puede pedir al service worker que muestre el aviso (p. ej. desde una pestaña en segundo plano).
+self.addEventListener('message', (e) => {
+  if (e.data?.type === 'reminder') e.waitUntil?.(self.registration.showNotification(e.data.title, e.data.options));
+});

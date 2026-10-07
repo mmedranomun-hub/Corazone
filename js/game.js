@@ -125,3 +125,20 @@ export function msToWeekEnd() {
   const start = new Date(`${weekId()}T00:00:00`).getTime();
   return start + 7 * 864e5 - Date.now();
 }
+
+// ---------- Niveles legendarios ----------
+// Gratis si hoy ya se ha completado alguna misión diaria (como recompensa por constancia).
+export const legendaryFree = () => todaysQuests().some((q) => q.done);
+
+// ---------- Recordatorio diario ----------
+export const REMINDER_TEXT = { title: 'Corazone', body: '¡Tu corazón necesita práctica! 🫀 Cora te espera para tu lección de hoy.' };
+
+// Milisegundos hasta el próximo aviso a la hora "HH:MM" (local). Si hoy ya se ha practicado
+// o la hora ya pasó, se programa para mañana.
+export function nextReminderDelay(time, now = new Date(), practicedToday = false) {
+  const [h, m] = String(time || '20:00').split(':').map(Number);
+  const at = new Date(now);
+  at.setHours(h || 0, m || 0, 0, 0);
+  if (practicedToday || at <= now) at.setDate(at.getDate() + 1);
+  return at - now;
+}

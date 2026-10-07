@@ -5,7 +5,7 @@ import { PRESSURES, renderPressure } from '../pressure.js';
 import { getState, dueReviews } from '../storage.js';
 import { shell, esc, go } from '../ui.js';
 import { cora } from '../fx.js';
-import { startLesson } from './lessonFlow.js';
+import { startLesson, startUnitTest, startUnitReview, startLegendary } from './lessonFlow.js';
 
 const sample = (arr, n) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 const doneQuestions = () => {
@@ -20,7 +20,13 @@ const SESSIONS = {
   imagen: { title: 'Lectura de imagen', get: () => sample(doneQuestions().filter((q) => q.ecg || q.ecg12 || q.pressure || q.diagram), 8) },
 };
 
+// Sesiones especiales lanzadas desde la ruta (sin rutas nuevas en el router):
+// #/practicar/prueba-<unidad>, #/practicar/repaso-<unidad>, #/practicar/legendario-<lección>
+const SPECIAL = [['prueba-', startUnitTest], ['repaso-', startUnitReview], ['legendario-', startLegendary]];
+
 export function viewPractice(kind) {
+  const special = kind && SPECIAL.find(([p]) => kind.startsWith(p));
+  if (special) return special[1](kind.slice(special[0].length));
   if (kind && SESSIONS[kind]) {
     const questions = SESSIONS[kind].get();
     if (questions.length) return startLesson({ course: { id: 'practica', color: '#58cc02' }, lesson: { id: `practica-${kind}`, title: SESSIONS[kind].title, review: true, practice: true, questions } }, '#/practicar');

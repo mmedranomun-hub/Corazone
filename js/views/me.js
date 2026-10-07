@@ -3,7 +3,7 @@ import { COURSES } from '../data/courses.js';
 import { getState, update, resetProgress, GOALS, dayKey, xpOn, MAX_FREEZES } from '../storage.js';
 import { ACHIEVEMENTS, unlocked } from '../achievements.js';
 import { LEAGUES } from '../game.js';
-import { shell, screen, esc, go, app, applyTheme } from '../ui.js';
+import { shell, screen, esc, go, app, applyTheme, notifySupported, requestNotify, scheduleReminder } from '../ui.js';
 import { cora, sfx } from '../fx.js';
 import { weekRow } from './lessonFlow.js';
 
@@ -66,8 +66,12 @@ export function viewStreak() {
     <p class="muted">Completa al menos una lección al día para mantener tu racha. Un protector de racha la salva si fallas un día.</p>`, 'profile');
 }
 
-export function viewSettings() {
+export function viewSettings(note = '') {
   const s = getState();
+  const rem = s.reminder || { on: false, time: '20:00' };
+  const supported = notifySupported();
+  const perm = supported ? Notification.permission : 'unsupported';
+  const remNote = note || (!supported ? 'Tu navegador no admite notificaciones.' : rem.on && perm === 'denied' ? 'Las notificaciones están bloqueadas en el navegador.' : rem.on ? `Cora te avisará a las ${rem.time} si aún no has practicado.` : 'Desactivado');
   shell(`
     <a class="back" href="#/perfil">← Perfil</a><h1 class="page-title">Ajustes</h1>
     <label class="field"><span>Nombre</span><input id="name" maxlength="20" value="${esc(s.name)}" placeholder="Tu nombre"/></label>
@@ -78,7 +82,23 @@ export function viewSettings() {
       <button class="opt toggle ${s.sound ? 'sel' : ''}" data-sound><b>🔊 Efectos de sonido</b><small>${s.sound ? 'Activados' : 'Desactivados'}</small></button>
       ${[['auto', '🌓 Tema automático'], ['light', '☀️ Tema claro'], ['dark', '🌙 Tema oscuro']].map(([k, l]) => `<button class="opt ${s.theme === k ? 'sel' : ''}" data-theme-opt="${k}"><b>${l}</b></button>`).join('')}
     </div>
+    <h2 class="sec-title">Notificaciones</h2>
+    <div class="opts">
+      <button class="opt toggle ${rem.on ? 'sel' : ''}" data-reminder ${supported ? '' : 'disabled'}><b>🔔 Recordatorio diario</b><small>${esc(remNote)}</small></button>
+      <label class="field reminder-time ${rem.on ? '' : 'off'}"><span>Hora del aviso</span><input type="time" id="rem-time" value="${esc(rem.time)}" ${rem.on ? '' : 'disabled'}/></label>
+      ${rem.on ? `<div class="cora-row reminder-preview">${cora('happy', 48)}<div class="speech">¡Tu corazón necesita práctica! 🫀</div></div>` : ''}
+    </div>
     <button class="btn ghost danger" data-reset>Reiniciar progreso</button>`, 'profile');
+  app.querySelector('[data-reminder]').onclick = async () => {
+    sfx('Tap');
+    if (rem.on) { update((x) => { x.reminder = { ...rem, on: false }; }); scheduleReminder(true); return viewSettings(); }
+    const p = await requestNotify();
+    if (p !== 'granted') return viewSettings(p === 'unsupported' ? 'Tu navegador no admite notificaciones.' : 'Permiso denegado: actívalo en los ajustes del navegador.');
+    update((x) => { x.reminder = { ...rem, on: true }; });
+    scheduleReminder(true);
+    viewSettings();
+  };
+  app.querySelector('#rem-time').onchange = (e) => { update((x) => { x.reminder = { ...rem, time: e.target.value || '20:00' }; }); scheduleReminder(true); viewSettings(); };
   app.querySelector('#name').onchange = (e) => update((x) => { x.name = e.target.value.trim(); });
   app.querySelectorAll('[data-goal]').forEach((b) => (b.onclick = () => { update((x) => { x.dailyGoal = Number(b.dataset.goal); }); viewSettings(); }));
   app.querySelector('[data-sound]').onclick = () => { update((x) => { x.sound = !x.sound; }); sfx('Tap'); viewSettings(); };

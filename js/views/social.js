@@ -2,7 +2,7 @@
 import { getState, buy, PRICES, MAX_FREEZES, MAX_HEARTS, boostActive } from '../storage.js';
 import { LEAGUES, PROMOTE, DEMOTE, leaderboard, settleLeague, msToWeekEnd, weekXp, todaysQuests, claimQuest } from '../game.js';
 import { shell, esc, fmtTime, modal } from '../ui.js';
-import { cora, sfx, party } from '../fx.js';
+import { cora, sfx, party, flyGems } from '../fx.js';
 
 const shield = (i, cls = '') => `<div class="shield ${cls}" style="--lc:${LEAGUES[i].color}" title="Liga ${LEAGUES[i].name}">🛡️</div>`;
 
@@ -54,8 +54,15 @@ export function viewQuests() {
     <h2 class="sec-title">Meta diaria</h2>
     <p class="muted">Tu meta es ${s.dailyGoal} XP al día. Cámbiala en <a href="#/ajustes">Ajustes</a>.</p>
     <a class="practice-card" href="#/logros"><span class="pi">🏅</span><div><b>Logros</b><small>Consulta tus insignias</small></div></a>`, 'quests');
-  document.querySelectorAll('[data-claim]').forEach((b) => b.addEventListener('click', () => {
-    if (claimQuest(b.dataset.claim)) { sfx('Complete'); party(); viewQuests(); }
+  document.querySelectorAll('[data-claim]').forEach((b) => b.addEventListener('click', async () => {
+    if (!claimQuest(b.dataset.claim)) return;
+    sfx('Complete');
+    party();
+    b.disabled = true;
+    b.classList.add('pop-in');
+    // Las gemas vuelan al contador de la barra superior; al re-pintar, el número sube.
+    await flyGems(b, document.querySelector('.tb-stat.gem'), 7);
+    if (location.hash.startsWith('#/misiones')) viewQuests();
   }));
 }
 

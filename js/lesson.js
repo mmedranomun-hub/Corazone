@@ -6,6 +6,12 @@ import { sfx, cora } from './fx.js';
 
 const PRAISE = ['¡Correcto!', '¡Genial!', '¡Excelente!', '¡Bien hecho!', '¡Perfecto!', '¡Así se hace!'];
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
+// Mensajes breves de Cora durante la lección (como el búho de Duolingo).
+const CORA_SAYS = {
+  3: ['¡Tres seguidas! Vas lanzado 🔥', '¡Qué buen ritmo sinusal llevas!', '¡Eso es! Sigue así'],
+  5: ['¡Cinco seguidas! Eres una máquina 💪', '¡Imparable! Ni una arritmia', '¡Increíble racha de aciertos!'],
+  miss2: ['¡Tranquilo! Respira y lee con calma 🫀', 'Los errores también enseñan. ¡Ánimo!', 'No pasa nada, ¡a por la siguiente!'],
+};
 
 const shuffle = (arr) => {
   const a = [...arr];
@@ -38,16 +44,20 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   let combo = 0;
   let answered = 0;
   let bestCombo = 0;
+  let missRun = 0;
   const started = Date.now();
+  // Vidas propias (prueba de unidad, legendario): no gastan las vidas globales y no repiten preguntas.
+  const ownLives = lesson.lives || 0;
+  let lives = ownLives;
   // En práctica/repaso no se pierden vidas (como en Duolingo)
-  const usesHearts = !lesson.practice;
+  const usesHearts = !lesson.practice && !ownLives;
 
   root.innerHTML = `
     <div class="lesson" style="--accent:${course.color}">
       <header class="lesson-top">
         <button class="icon-btn" data-act="exit" aria-label="Salir">✕</button>
         <div class="bar"><div class="bar-fill"></div></div>
-        <div class="hearts">${usesHearts ? '❤️ <span></span>' : '♾️'}</div>
+        <div class="hearts ${lesson.mode || ''}">${usesHearts || ownLives ? `${lesson.mode === 'legendary' ? '👑' : '❤️'} <span></span>` : '♾️'}</div>
       </header>
       <main class="lesson-body"></main>
       <footer class="lesson-foot">
@@ -63,10 +73,11 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   const updateTop = () => {
     $('.bar-fill').style.width = `${(done / total) * 100}%`;
     const h = $('.hearts span');
-    if (h) h.textContent = getState().hearts;
+    if (h) h.textContent = ownLives ? lives : getState().hearts;
   };
 
   function next() {
+    if (ownLives && lives <= 0) { cleanup(); return onExit('fallo'); }
     if (!queue.length) return finish();
     if (usesHearts && getState().hearts <= 0) { cleanup(); return onExit('sin-vidas'); }
     current = queue.shift();
@@ -112,6 +123,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     phase = 'feedback';
     answered++;
     combo = ok ? combo + 1 : 0;
+    missRun = ok ? 0 : missRun + 1;
     bestCombo = Math.max(bestCombo, combo);
     recordAnswer(current.src.key, ok, { type: current.type, combo });
     sfx(ok ? 'Correct' : 'Wrong');
@@ -119,8 +131,9 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     else {
       mistakes++;
       if (usesHearts) loseHeart();
+      if (ownLives) { lives--; done++; }
       // Como en Duolingo: la pregunta fallada vuelve al final (una vez).
-      if (!retried.has(current.src)) {
+      else if (!retried.has(current.src)) {
         retried.add(current.src);
         queue.push(prepare(current.src));
       } else done++;
@@ -131,11 +144,19 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
       <strong>${ok ? pick(PRAISE) : 'Incorrecto'}</strong>
       ${ok && combo >= 3 ? `<span class="combo pop-in">🔥 ${combo} seguidas</span>` : ''}
       ${!ok && correctLabel ? `<p>Respuesta: <b>${esc(correctLabel)}</b></p>` : ''}
-      ${current.explain ? `<p>${esc(current.explain)}</p>` : ''}`;
+      ${current.explain ? `<p>${esc(current.explain)}</p>` : ''}
+      ${coach(ok)}`;
     checkBtn.hidden = false;
     checkBtn.disabled = false;
-    checkBtn.textContent = 'Continuar';
+    checkBtn.textContent = ownLives && lives <= 0 ? 'Ver resultado' : 'Continuar';
     checkBtn.focus();
+  }
+
+  // Cora aparece tras 3 y 5 aciertos seguidos o al fallar dos seguidas (debajo de la explicación).
+  function coach(ok) {
+    const key = ok ? (combo === 3 || combo === 5 ? combo : null) : missRun === 2 ? 'miss2' : null;
+    if (!key) return '';
+    return `<div class="cora-row coach slide-up">${cora(ok ? 'cheer' : 'think', 52)}<div class="speech">${esc(pick(CORA_SAYS[key]))}</div></div>`;
   }
 
   function check() {
@@ -211,12 +232,12 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   function finish() {
     const stars = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
     // XP: base + bonus por lección perfecta y por combo; doble con potenciador
-    const base = 10 + (mistakes === 0 ? 5 : 0) + (bestCombo >= 5 ? 3 : 0);
+    const base = lesson.xp ?? 10 + (mistakes === 0 ? 5 : 0) + (bestCombo >= 5 ? 3 : 0);
     const xp = boostActive() ? base * 2 : base;
     const seconds = Math.round((Date.now() - started) / 1000);
-    const { streakExtended } = completeLesson(lesson.id, { xp, stars, review: !!lesson.review, minutes: seconds / 60 });
+    const { streakExtended, milestone } = completeLesson(lesson.id, { xp, stars, review: !!lesson.review, minutes: seconds / 60 });
     cleanup();
-    onFinish({ xp, stars, mistakes, total, seconds, bestCombo, streakExtended, boosted: boostActive() });
+    onFinish({ xp, stars, mistakes, total, seconds, bestCombo, streakExtended, milestone, boosted: boostActive() });
   }
 
   function onClick(e) {

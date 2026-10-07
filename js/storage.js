@@ -29,7 +29,17 @@ const defaults = () => ({
   onboarded: false, name: '', level: null, course: null, dailyGoal: 20, joined: Date.now(),
   gems: 500, freezes: 0, frozenDays: [], boostUntil: 0, sound: true, theme: 'auto',
   daily: {}, claimed: {}, league: { tier: 0, week: null }, lastLeagueResult: null,
+  // Recompensas: niveles legendarios, cofre diario y recordatorio
+  legendary: {}, chestDay: null, reminder: { on: false, time: '20:00' },
 });
+
+// Hitos de racha (días → gemas de recompensa)
+export const STREAK_MILESTONES = { 3: 10, 7: 20, 14: 30, 30: 50, 50: 75, 100: 100 };
+export const milestoneReward = (days) => STREAK_MILESTONES[days] || 0;
+export const LEGENDARY_PRICE = 100;
+export const LEGENDARY_XP = 40;
+export const CHEST_MIN = 5;
+export const CHEST_MAX = 20;
 
 let state = load();
 
@@ -163,15 +173,22 @@ export const todayXp = () => state.xpByDay[today()] || 0;
 
 export const xpOn = (key) => state.xpByDay[key] || 0;
 
-// Devuelve { streakExtended } para mostrar la pantalla de racha.
+// Devuelve { streakExtended, milestone } para mostrar la pantalla de racha.
+// milestone = { days, gems } si la racha acaba de alcanzar un hito (ya abonado).
 export function completeLesson(lessonId, { xp, stars, review = false, minutes = 0 }) {
   const d = today();
   let streakExtended = false;
+  let milestone = null;
   if (state.lastDay !== d) {
     state.streak = state.lastDay === daysAgo(1) ? state.streak + 1 : 1;
     state.lastDay = d;
     state.bestStreak = Math.max(state.bestStreak, state.streak);
     streakExtended = true;
+    const gems = milestoneReward(state.streak);
+    if (gems) {
+      state.gems += gems;
+      milestone = { days: state.streak, gems };
+    }
   }
   state.xp += xp;
   state.xpByDay[d] = (state.xpByDay[d] || 0) + xp;
@@ -185,7 +202,48 @@ export function completeLesson(lessonId, { xp, stars, review = false, minutes = 
   }
   if (!review) state.completed[lessonId] = Math.max(state.completed[lessonId] || 0, stars);
   save();
-  return { streakExtended };
+  return { streakExtended, milestone };
+}
+
+// Prueba de unidad superada: todas sus lecciones pendientes pasan a completadas con 1 estrella.
+// Devuelve cuántas lecciones se han marcado.
+export function passUnitTest(lessonIds) {
+  let n = 0;
+  for (const id of lessonIds) {
+    if (!state.completed[id]) {
+      state.completed[id] = 1;
+      n++;
+    }
+  }
+  save();
+  return n;
+}
+
+// Nivel legendario: gratis si hoy se ha completado alguna misión; si no, cuesta gemas.
+export function payLegendary(free = false) {
+  if (free) return true;
+  if (state.gems < LEGENDARY_PRICE) return false;
+  state.gems -= LEGENDARY_PRICE;
+  save();
+  return true;
+}
+
+export function markLegendary(lessonId) {
+  state.legendary = { ...state.legendary, [lessonId]: true };
+  save();
+}
+
+export const isLegendary = (lessonId) => !!state.legendary?.[lessonId];
+
+// Cofre diario: una sola vez al día, al cumplir la meta. Devuelve las gemas (0 si no procede).
+export function openDailyChest(rand = Math.random) {
+  const d = today();
+  if (state.chestDay === d || (state.xpByDay[d] || 0) < state.dailyGoal) return 0;
+  const gems = CHEST_MIN + Math.floor(rand() * (CHEST_MAX - CHEST_MIN + 1));
+  state.chestDay = d;
+  state.gems += gems;
+  save();
+  return gems;
 }
 
 export function resetProgress() {

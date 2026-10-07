@@ -346,3 +346,60 @@ h1, h2, h3 { font-weight: 900; margin: 0 0 .5rem; }
 .ob-top .bar-fill { background: var(--green); }
 .onboarding .cora-row { margin-top: 12px; }
 .onboarding .btn[data-next] { margin-top: auto; }
+
+/* ===== Recompensas, prueba de unidad y legendario (v0.4) ===== */
+:root { --purple: #ce82ff; --purple-dark: #a568cc; }
+.tb-stat.xp { color: var(--gold); }
+.tb-stat { display: inline-block; }
+.bump { animation: tb-bump .45s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes tb-bump { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+.fly-gem { position: fixed; z-index: 60; pointer-events: none; font-size: 1.4rem; transform: translate(-50%, -50%); animation: fly-gem .75s cubic-bezier(.5, 0, .75, 0) both; }
+@keyframes fly-gem {
+  0% { transform: translate(-50%, -50%) scale(.4); opacity: 0; }
+  25% { transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(1.15); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.6); opacity: .2; }
+}
+
+/* Prueba de unidad (salto) */
+.unit-head { flex-wrap: wrap; }
+.jump-btn { order: 3; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.45); border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: .9rem; box-shadow: 0 3px 0 rgba(0,0,0,.15); }
+.jump-btn b { text-transform: uppercase; letter-spacing: .4px; }
+.jump-btn:active { transform: translateY(3px); box-shadow: none; }
+a.trophy.won { cursor: pointer; transition: transform .1s; }
+a.trophy.won:hover { transform: scale(1.05); }
+a.trophy.won:active { transform: translateY(6px); box-shadow: none; }
+.trophy-label { margin-top: 10px; font-weight: 900; font-size: .72rem; color: #d9a900; letter-spacing: .5px; }
+
+/* Nivel legendario */
+.node.legendary { background: var(--purple); box-shadow: 0 6px 0 var(--purple-dark); }
+.popover.done.legendary { background: var(--purple); color: #fff; }
+.popover.done.legendary::before { border-bottom-color: var(--purple); }
+.btn.legend { margin-top: 8px; background: var(--purple); color: #fff; box-shadow: 0 4px 0 var(--purple-dark); }
+.btn.legend.off { background: rgba(255,255,255,.55); color: #8a7a52; box-shadow: none; cursor: not-allowed; }
+.legend-hint { display: block; margin-top: 6px; font-size: .72rem; font-weight: 800; opacity: .85; }
+.legend-note { font-weight: 900; margin: 10px 0 0 !important; }
+.legend-tag { color: var(--purple); font-weight: 900; margin: 0; }
+.hearts.legendary { color: var(--purple); }
+
+/* Cora durante la lección */
+.coach { margin-top: 10px; gap: 8px; }
+.coach .speech { font-size: .9rem; padding: 8px 12px; }
+
+/* Hitos de racha y cofre */
+.reward-pill { display: inline-flex; align-items: center; gap: 6px; background: color-mix(in srgb, var(--blue) 14%, transparent); border: 2px solid var(--blue); color: var(--text); border-radius: 999px; padding: 8px 16px; font-weight: 800; margin-top: 6px; }
+.reward-pill b { color: var(--blue); }
+.center-screen.milestone .streak-num { font-size: 5rem; }
+.chest-big { font-size: 6rem; line-height: 1; background: none; border: 0; cursor: pointer; padding: 12px; margin: 10px 0; }
+.chest-big.opened { cursor: default; }
+.wiggle { animation: wiggle 1.2s ease-in-out infinite; }
+@keyframes wiggle { 0%, 60%, 100% { transform: rotate(0); } 70% { transform: rotate(-10deg) scale(1.05); } 80% { transform: rotate(9deg) scale(1.05); } 90% { transform: rotate(-5deg); } }
+.gem-total { font-weight: 900; font-size: 1.3rem; color: var(--blue); margin-top: 8px; display: inline-block; }
+
+/* Recordatorio */
+.reminder-time.off { opacity: .5; }
+.reminder-time input { max-width: 160px; }
+.reminder-preview .speech { font-size: .9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bump, .wiggle, .fly-gem { animation: none; }
+}
