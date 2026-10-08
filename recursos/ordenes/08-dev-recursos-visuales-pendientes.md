@@ -22,6 +22,10 @@ Generar los trazados y esquemas que el temario necesita y que aún no existen, p
 - [x] **12D hechos** (`TWELVE_LEAD`): `wellens` (tipo B), `wellens-a` (tipo A), `dewinter`, `brugada1`, `posterior`, `stemi-inf-rv` (sin V4R: lo indica la desc), `hypok`, `rvh` (HVD), `lowvoltage`, `early-repol`, `pacer12`.
 - [x] **12D hechos (2.ª tanda)**: `lae` (crecimiento AI), `rae` (crecimiento AD), `lafb` (HBAI aislado), `rbbb-lafb` (BRD + HBAI), `brugada2`, `wpw12` (vía posteroseptal, pseudo-Q inferior), `hyperk12`, `vt12` (concordancia negativa, eje superior), `arvc` (DAVD, épsilon), `limb-reversal` (inversión de electrodos de brazos), `lqt1`, `lqt2`, `lqt3`, `digoxin` (cubeta digitálica).
 - [ ] 12D pendientes: elevación de aVR con descenso difuso del ST; V4R/V7–V9 requieren derivaciones extra (no soportadas por `render12`).
+- [x] **Curvas hechas** (`PRESSURES`): `ms-lv-la` (EM: VI–AI), `ar-ao-lv` (IA), `hcm-brockenbrough` (MCH, latido postextrasistólico), `pulsus-paradoxus`, `iabp` (BCIA 1:2), `ffr` (Pa/Pd con adenosina), `constriction-lv-rv` y `restriction-lv-rv` (VI–VD con respiración). Nuevos moduladores en `js/pressure.js`: `beatGain` (latido a latido), `insp` (respiración), `above`.
+- [x] **Esquemas hechos** (`DIAGRAMS`): `bullseye` (17 segmentos; partes `b-*`, `m-*`, `a-*`, `apex`) y `conduction` (`sa`, `internodal`, `av`, `his`, `rb`, `lb`, `laf`, `lpf`, `purkinje`). Clase CSS nueva `.diagram .node`.
+- [x] Usados en contenido: `cate-u7-l4` (nueva, 9 preguntas), `cate-u7-l3`, `eco-u7-l2`, `ecg-u1-l2`, `ecg-u6-l3`. Tests: `tests/visuals-avanzado.test.js` (comprobaciones fisiológicas de cada curva).
+- [ ] Esquemas pendientes: A2C, A3C, subcostal con VCI, mitral con festones, planos ETE, eje hexaxial, bifurcación (Medina), proyecciones angiográficas.
 - Tests: `tests/ecg-trazados.test.js` y `tests/ecg-trazados2.test.js`. Los trazados previos y sus `waveTimes` no cambian (comprobado con hash de `renderEcg`/`render12`/`waveTimes` antes y después).
 - Pendiente de documentar en `CLAUDE.md` (lo hace el integrador): `wave` de `tap` admite también `capture | fusion`.
 

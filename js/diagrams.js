@@ -80,6 +80,37 @@ const PSAX = [
   ['tissue', null, 'M166 186 C174 182 184 188 182 196 C180 204 168 204 164 198 C162 194 162 188 166 186 Z'],
 ];
 
+// Ojo de buey (17 segmentos AHA): anterior arriba, septo a la izquierda, lateral a la derecha.
+// Anillo externo = basal (6), medio = medio (6), interno = apical (4), centro = ápex (17).
+const BE_C = [170, 150];
+const SIX = [['ant', 60], ['antsep', 120], ['infsep', 180], ['inf', 240], ['inflat', 300], ['antlat', 0]];
+const FOUR = [['ant', 45], ['sep', 135], ['inf', 225], ['lat', 315]];
+const BULLSEYE = [
+  ...SIX.map(([k, a]) => ['tissue', `b-${k}`, ring(...BE_C, 102, 136, a, a + 60)]),
+  ...SIX.map(([k, a]) => ['tissue', `m-${k}`, ring(...BE_C, 66, 102, a, a + 60)]),
+  ...FOUR.map(([k, a]) => ['tissue', `a-${k}`, ring(...BE_C, 30, 66, a, a + 90)]),
+  ['tissue', 'apex', `M${BE_C[0] - 30} ${BE_C[1]} A30 30 0 1 0 ${BE_C[0] + 30} ${BE_C[1]} A30 30 0 1 0 ${BE_C[0] - 30} ${BE_C[1]} Z`],
+];
+
+// Sistema de conducción en un corte de 4 cámaras (frontal): AD arriba a la izquierda de la imagen.
+const CONDUCTION = [
+  ['heart', null, 'M96 52 C60 60 44 104 52 146 C58 196 92 250 150 290 C176 306 200 304 226 284 C278 240 304 186 300 132 C296 90 270 58 232 54 C206 50 186 62 170 74 C152 58 126 46 96 52 Z'],
+  ['aorta', null, 'M88 20 L118 20 L118 62 L88 62 Z'], // vena cava superior
+  ['cavity', null, 'M74 82 C90 66 128 66 152 84 L156 140 L80 142 C68 124 66 98 74 82 Z'], // AD
+  ['cavity', null, 'M188 86 C210 70 254 70 274 92 C284 112 284 132 278 142 L188 140 Z'], // AI
+  ['cavity', null, 'M80 156 L154 156 L156 260 C126 240 96 206 80 156 Z'], // VD
+  ['cavity', null, 'M188 156 L280 156 C280 200 248 248 192 272 Z'], // VI
+  ['vessel thin', 'internodal', 'M110 72 C118 96 130 120 150 142 M110 72 C140 74 170 78 196 90 M110 72 C112 104 126 128 150 142'],
+  ['node', 'sa', 'M98 62 C108 56 122 60 124 70 C124 80 108 84 100 78 C94 74 94 66 98 62 Z'],
+  ['node', 'av', 'M152 136 C160 130 174 134 174 142 C174 150 160 154 154 150 C148 146 148 140 152 136 Z'],
+  ['vessel', 'his', 'M166 148 L170 168'],
+  ['vessel', 'rb', 'M168 170 C164 200 158 234 150 264'],
+  ['vessel', 'lb', 'M170 168 L182 184'],
+  ['vessel thin', 'laf', 'M182 184 C204 184 236 176 262 170'],
+  ['vessel thin', 'lpf', 'M182 184 C196 210 214 236 232 252'],
+  ['vessel thin post', 'purkinje', 'M150 264 C162 280 178 284 192 272 M232 252 C244 236 262 214 270 190 M150 264 C128 246 108 222 94 194'],
+];
+
 export const DIAGRAMS = {
   coronary: {
     name: 'Árbol coronario (visión anterior)',
@@ -137,6 +168,46 @@ export const DIAGRAMS = {
       rv: 'Ventrículo derecho',
     },
     els: PSAX,
+  },
+  bullseye: {
+    name: 'Modelo de 17 segmentos (ojo de buey)',
+    viewBox: '0 0 340 300',
+    parts: {
+      'b-ant': 'Segmento anterior basal',
+      'b-antsep': 'Segmento anteroseptal basal',
+      'b-infsep': 'Segmento inferoseptal basal',
+      'b-inf': 'Segmento inferior basal',
+      'b-inflat': 'Segmento inferolateral basal',
+      'b-antlat': 'Segmento anterolateral basal',
+      'm-ant': 'Segmento anterior medio',
+      'm-antsep': 'Segmento anteroseptal medio',
+      'm-infsep': 'Segmento inferoseptal medio',
+      'm-inf': 'Segmento inferior medio',
+      'm-inflat': 'Segmento inferolateral medio',
+      'm-antlat': 'Segmento anterolateral medio',
+      'a-ant': 'Segmento anterior apical',
+      'a-sep': 'Segmento septal apical',
+      'a-inf': 'Segmento inferior apical',
+      'a-lat': 'Segmento lateral apical',
+      apex: 'Ápex (segmento 17)',
+    },
+    els: BULLSEYE,
+  },
+  conduction: {
+    name: 'Sistema de conducción',
+    viewBox: '0 0 340 320',
+    parts: {
+      sa: 'Nodo sinusal',
+      internodal: 'Vías internodales',
+      av: 'Nodo auriculoventricular',
+      his: 'Haz de His',
+      rb: 'Rama derecha',
+      lb: 'Rama izquierda (tronco)',
+      laf: 'Fascículo anterior izquierdo',
+      lpf: 'Fascículo posterior izquierdo',
+      purkinje: 'Red de Purkinje',
+    },
+    els: CONDUCTION,
   },
 };
 

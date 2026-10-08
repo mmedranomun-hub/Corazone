@@ -144,6 +144,23 @@ function atrium(o, t, starts) {
   return p;
 }
 
+// ---------- Moduladores (latido a latido y respiración) ----------
+// Ganancia por latido: 1 en diástole; durante la sístole de cada latido vale gainOf(rrPrevio, rrSiguiente).
+// Ventana sistólica con bordes suaves → sin saltos entre latidos.
+function beatGain(t, starts, gainOf) {
+  for (let k = 1; k < starts.length - 1; k++) {
+    const x = t - starts[k];
+    if (x < 0 || x > 0.5) continue;
+    const gk = gainOf(starts[k] - starts[k - 1], starts[k + 1] - starts[k]);
+    return 1 + (gk - 1) * smooth((x - 0.03) / 0.07) * (1 - smooth((x - 0.4) / 0.1));
+  }
+  return 1;
+}
+// Inspiración: 0 (espiración) → 1 (fin de inspiración), ciclo de `period` s
+const insp = (t, period = 4, phase = 0.4) => (1 - Math.cos((2 * Math.PI * (t - phase)) / period)) / 2;
+// Escala sólo la parte de la curva por encima de `floor` (respeta la diástole)
+const above = (v, floor, f) => (v > floor ? v + (v - floor) * f : v);
+
 // ---------- Parámetros fisiológicos ----------
 const LV = { pdia: 80, psys: 120, pclose: 100, peakAt: 0.35, grad: 3, hang: 16, pmin: 3, pdi: 7, tauFill: 0.04, fillSlope: 2, aKick: 4, runoff: 0.9 };
 const AO = { ...LV, hang: 0, notch: 6 };
@@ -238,6 +255,100 @@ export const PRESSURES = {
       return (1 - w) * artery(PA, t, s) + w * atrium({ ...PCWP, base: 7 }, t, s);
     })],
     seconds: 3.2,
+  },
+  'ms-lv-la': {
+    name: 'Estenosis mitral: VI y AI simultáneas',
+    desc: 'Gradiente diastólico entre la aurícula izquierda (onda a alta, descenso y lento) y el VI, cuyo llenado es lento. Gradiente medio > 10 mmHg = estenosis grave; aumenta con la taquicardia.',
+    traces: [
+      one('VI', (t, s) => ventricle({ ...LV, pdia: 74, psys: 112, pclose: 94, pmin: 3, pdi: 9, tauFill: 0.16, fillSlope: 2, aKick: 3 }, t, s), VENT_BLUR),
+      one('AI', (t, s) => atrium({ base: 24, a: 9, c: 1.5, x: 3, v: 8, y: 2.2, vWide: 0.1, damp: 1.6 }, t, s)),
+    ],
+  },
+  'ar-ao-lv': {
+    name: 'Insuficiencia aórtica: aorta y VI',
+    desc: 'Presión de pulso amplia (≈ 160/45) con caída diastólica rápida de la aorta y telediastólica del VI elevada que asciende durante la diástole. En la IA aguda grave ambas presiones casi se igualan al final de la diástole.',
+    traces: [
+      one('Ao', (t, s) => artery({ ...AO, pdia: 46, psys: 160, pclose: 112, peakAt: 0.3, notch: 3, runoff: 0.3 }, t, s)),
+      one('VI', (t, s) => ventricle({ ...LV, pdia: 46, psys: 160, pclose: 112, peakAt: 0.3, grad: 4, hang: 22, pmin: 8, pdi: 12, tauFill: 0.04, fillSlope: 26, aKick: 3, runoff: 0.3 }, t, s), VENT_BLUR),
+    ],
+  },
+  'hcm-brockenbrough': {
+    name: 'MCH obstructiva: signo de Brockenbrough',
+    desc: 'Tras una extrasístole ventricular, el latido postextrasistólico aumenta la contractilidad y la obstrucción dinámica del TSVI: sube la sistólica del VI y el gradiente, y la presión de pulso aórtica disminuye (Brockenbrough-Braunwald-Morrow). En la estenosis aórtica fija, en cambio, la presión de pulso aumenta.',
+    traces: [
+      one('VI', (t, s) => {
+        const g = beatGain(t, s, (prev) => (prev < 0.6 ? 0.62 : prev > 1 ? 1.34 : 1));
+        return above(ventricle({ ...LV, pdia: 76, psys: 116, pclose: 92, peakAt: 0.7, grad: 54, gradPow: 2.2, pmin: 6, pdi: 16, aKick: 6, fillSlope: 3 }, t, s), 76, g - 1);
+      }, VENT_BLUR),
+      one('Ao', (t, s) => {
+        const g = beatGain(t, s, (prev) => (prev < 0.6 ? 0.55 : prev > 1 ? 0.62 : 1));
+        const base = artery({ ...AO, pdia: 76, psys: 116, pclose: 92, peakAt: 0.22, notch: 2.5 }, t, s);
+        return above(base, 76, g - 1);
+      }),
+    ],
+    rr: [0.8, 0.8, 0.46, 1.14],
+    seconds: 3.6,
+  },
+  'pulsus-paradoxus': {
+    name: 'Pulso paradójico (taponamiento)',
+    desc: 'La presión sistólica arterial cae > 10 mmHg durante la inspiración (aquí ≈ 20 mmHg): el VD se llena a expensas del VI por la interdependencia ventricular con el pericardio a tensión.',
+    traces: [one('Ao', (t, s) => {
+      const base = artery({ ...AO, pdia: 64, psys: 102, pclose: 86, notch: 3 }, t, s);
+      return above(base, 64, -0.52 * insp(t, 3.2, 0.3)) - 3 * insp(t, 3.2, 0.3);
+    })],
+    rr: 0.55,
+    seconds: 6.4,
+  },
+  iabp: {
+    name: 'Balón de contrapulsación intraaórtico (1:2)',
+    desc: 'Latidos asistidos alternos: el balón se infla en la incisura dícrota (aumento diastólico, que supera la sistólica) y se desinfla justo antes de la sístole, lo que baja la telediastólica aórtica y la sistólica del latido siguiente (descarga del VI).',
+    traces: [one('Ao', (t, s) => {
+      let v = artery({ ...AO, pdia: 64, psys: 108, pclose: 90, notch: 4 }, t, s);
+      for (let k = 1; k < s.length - 1; k += 2) {
+        const tc = s[k] + TC, next = s[k + 1];
+        if (t < tc - 0.3 || t > next + 0.5) continue;
+        const on = smooth((t - tc - 0.004) / 0.05);
+        const off = 1 - smooth((t - next + 0.11) / 0.1);
+        v += 40 * on * off * Math.exp(-Math.max(0, t - tc - 0.06) / 0.5); // aumento diastólico
+        v -= 12 * gauss(t, 1, next + 0.03, 0.05); // telediastólica asistida (desinflado)
+        v -= 7 * gauss(t, 1, next + 0.22, 0.08); // sistólica asistida
+      }
+      return v;
+    })],
+    seconds: 3.2,
+  },
+  ffr: {
+    name: 'Reserva fraccional de flujo (Pd/Pa)',
+    desc: 'Presión aórtica (Pa, catéter guía) y distal a la estenosis (Pd, guía de presión). En hiperemia máxima con adenosina, Pd/Pa = FFR; aquí cae de 0,93 a ≈ 0,72. FFR ≤ 0,80 indica estenosis funcionalmente significativa.',
+    traces: [
+      one('Pa', (t, s) => artery({ ...AO, pdia: 70, psys: 112, pclose: 96, notch: 5 }, t, s) - 6 * smooth((t - 2.2) / 1.6)),
+      one('Pd', (t, s) => {
+        const pa = artery({ ...AO, pdia: 70, psys: 112, pclose: 96, notch: 1.5 }, t, s) - 6 * smooth((t - 2.2) / 1.6);
+        return pa * (0.93 - 0.21 * smooth((t - 2) / 2));
+      }),
+    ],
+    rr: 0.75,
+    seconds: 6,
+  },
+  'constriction-lv-rv': {
+    name: 'Constricción: VI y VD con la respiración',
+    desc: 'Igualación de las diastólicas (diferencia ≤ 5 mmHg) con dip-plateau en ambos ventrículos y discordancia sistólica: en inspiración sube la sistólica del VD y baja la del VI (interdependencia aumentada). Índice de área sistólica > 1,1.',
+    traces: [
+      one('VI', (t, s) => above(ventricle({ ...LV, pdia: 70, psys: 104, pclose: 88, pmin: 3, pdi: 21, tauFill: 0.022, fillSlope: 0, aKick: 1 }, t, s), 21, -0.16 * insp(t, 4)), VENT_BLUR),
+      one('VD', (t, s) => above(ventricle({ ...RV, pdia: 21, psys: 38, pclose: 32, pmin: 2, pdi: 19, tauFill: 0.022, fillSlope: 0, aKick: 0.8 }, t, s), 19, 0.3 * insp(t, 4)), VENT_BLUR),
+    ],
+    rr: 0.75,
+    seconds: 6,
+  },
+  'restriction-lv-rv': {
+    name: 'Restricción: VI y VD con la respiración',
+    desc: 'Dip-plateau, pero la telediastólica del VI supera a la del VD (> 5 mmHg), la sistólica del VD suele ser > 50 mmHg y las sistólicas de ambos ventrículos varían de forma concordante con la respiración.',
+    traces: [
+      one('VI', (t, s) => above(ventricle({ ...LV, pdia: 72, psys: 106, pclose: 90, pmin: 4, pdi: 28, tauFill: 0.022, fillSlope: 0, aKick: 1 }, t, s), 28, -0.08 * insp(t, 4)), VENT_BLUR),
+      one('VD', (t, s) => above(ventricle({ ...RV, pdia: 26, psys: 54, pclose: 44, pmin: 2, pdi: 18, tauFill: 0.022, fillSlope: 0, aKick: 0.8 }, t, s), 18, -0.1 * insp(t, 4)), VENT_BLUR),
+    ],
+    rr: 0.75,
+    seconds: 6,
   },
 };
 

@@ -55,6 +55,7 @@
 .diagram .vessel.thin { stroke-width: 4; }
 .diagram .vessel.post { stroke-dasharray: 2 9; }
 .diagram .num { fill: var(--dg-line); font: 800 12px 'Nunito', system-ui, sans-serif; text-anchor: middle; dominant-baseline: middle; }
+.diagram .node { fill: var(--dg-vessel); stroke: var(--dg-heart-line); stroke-width: 1.2; }
 .diagram .hl { fill: var(--dg-hl); stroke: var(--dg-hl-line); }
 .diagram .cavity.hl { stroke-width: 1.5; }
 .diagram .valve.hl, .diagram .vessel.hl { fill: none; stroke: var(--dg-hl); }
