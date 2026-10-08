@@ -1,5 +1,6 @@
 // Mecánicas de juego tipo Duolingo: misiones diarias y ligas semanales.
 import { getState, daily, update, dayKey, xpOn } from './storage.js';
+import { isPremium } from './premium.js';
 
 // ---------- Misiones diarias ----------
 // Cada día se eligen 3 misiones de forma determinista a partir de la fecha.
@@ -128,7 +129,7 @@ export function msToWeekEnd() {
 
 // ---------- Niveles legendarios ----------
 // Gratis si hoy ya se ha completado alguna misión diaria (como recompensa por constancia).
-export const legendaryFree = () => todaysQuests().some((q) => q.done);
+export const legendaryFree = () => isPremium() || todaysQuests().some((q) => q.done);
 
 // ---------- Recordatorio diario ----------
 export const REMINDER_TEXT = { title: 'Corazone', body: '¡Tu corazón necesita práctica! 🫀 Cora te espera para tu lección de hoy.' };

@@ -2,15 +2,15 @@
 // funcione sin conexión. Estrategia "stale-while-revalidate": responde desde la caché y, en
 // segundo plano, actualiza la copia (la versión nueva se ve en la siguiente visita).
 // Sube CACHE al cambiar la lista o la estrategia para invalidar las cachés antiguas.
-const CACHE = 'corazone-v5';
+const CACHE = 'corazone-v6';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
   'css/styles.css', 'css/visuals.css', 'css/fx.css',
   'js/app.js', 'js/ui.js', 'js/storage.js', 'js/game.js', 'js/fx.js', 'js/lesson.js', 'js/achievements.js',
   'js/mascot.js', 'js/sound.js', 'js/confetti.js', 'js/visuals.js', 'js/ecg.js', 'js/pressure.js', 'js/diagrams.js',
-  'js/sync.js', 'js/auth.js', 'js/firebase-config.js',
+  'js/sync.js', 'js/auth.js', 'js/firebase-config.js', 'js/app-config.js', 'js/premium.js', 'js/analytics.js',
   'js/views/learn.js', 'js/views/lessonFlow.js', 'js/views/practice.js', 'js/views/social.js', 'js/views/arcade.js',
-  'js/views/me.js', 'js/views/account.js',
+  'js/views/me.js', 'js/views/account.js', 'js/views/premium.js', 'js/views/legal.js',
   'js/data/courses.js', 'js/data/ecg.js', 'js/data/eco.js', 'js/data/cateterismo.js', 'js/data/casos.js',
   'js/data/guardias.js', 'js/data/guides.js',
 ];

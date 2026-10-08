@@ -36,6 +36,8 @@ const defaults = () => ({
   legendary: {}, chestDay: null, pathChests: {}, reminder: { on: false, time: '20:00' },
   // Arcade: récords de Contrarreloj e historias de guardia completadas
   records: { timed: 0 }, stories: {},
+  // Lanzamiento: plan Premium, prueba usada, versión del aviso legal aceptada y analítica
+  premium: null, trialUsed: false, legalAccepted: 0, analytics: true,
 });
 
 // Hitos de racha (días → gemas de recompensa)

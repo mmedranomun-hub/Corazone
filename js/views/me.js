@@ -8,6 +8,10 @@ import { cora, sfx } from '../fx.js';
 import { weekRow } from './lessonFlow.js';
 import { accountCard, bindAccountCard } from './account.js';
 import { isConfigured as cloudOn, hasAccount, localProfile } from '../auth.js';
+import { LEGAL_VERSION } from './legal.js';
+import { activePlan, PLAN_NAMES } from '../premium.js';
+import { analyticsConfigured } from '../analytics.js';
+import { APP_CONFIG } from '../app-config.js';
 
 const LEVELS = [
   { id: 'pre', icon: '📗', label: 'Estudiante preclínico', desc: 'Empiezo desde cero' },
@@ -38,10 +42,19 @@ export function viewProfile() {
     <div class="week">${days.map(({ d, xp }) => `<div class="day"><div class="col-bar ${xp >= s.dailyGoal ? 'goal' : ''}" style="height:${(xp / max) * 100}%" title="${xp} XP"></div><small>${'DLMXJVS'[new Date(`${d}T12:00`).getDay()]}</small></div>`).join('')}</div>
     <h2 class="sec-title">Logros <a class="see" href="#/logros">VER TODO</a></h2>
     <div class="badges">${ACHIEVEMENTS.filter((a) => got.has(a.id)).slice(0, 6).map(badge).join('') || '<p class="muted">Completa lecciones para conseguir logros.</p>'}</div>
+    ${premiumCard(s)}
     <a class="practice-card" href="#/tienda"><span class="pi">💎</span><div><b>Tienda</b><small>${s.gems} gemas disponibles</small></div></a>
     <h2 class="sec-title">Cuenta</h2>
     ${accountCard()}`, 'profile');
   bindAccountCard();
+}
+
+// Tarjeta del plan: invita a Premium o muestra el plan activo.
+export function premiumCard(s = getState()) {
+  const p = activePlan(s);
+  return p
+    ? `<a class="practice-card pro-card on" href="#/premium"><span class="pi">👑</span><div><b>${esc(PLAN_NAMES[p.plan])}</b><small>${p.until ? `Activo hasta el ${new Date(p.until).toLocaleDateString('es-ES')}` : 'Sin caducidad'}</small></div></a>`
+    : `<a class="practice-card pro-card" href="#/premium"><span class="pi">👑</span><div><b>Hazte Premium</b><small>Todos los casos y guardias, vidas ilimitadas${s.trialUsed ? '' : ' · 7 días gratis'}</small></div></a>`;
 }
 
 // Perfil activo (local o nube) con acceso a la cuenta.
@@ -99,7 +112,18 @@ export function viewSettings(note = '') {
       <label class="field reminder-time ${rem.on ? '' : 'off'}"><span>Hora del aviso</span><input type="time" id="rem-time" value="${esc(rem.time)}" ${rem.on ? '' : 'disabled'}/></label>
       ${rem.on ? `<div class="cora-row reminder-preview">${cora('happy', 48)}<div class="speech">¡Tu corazón necesita práctica! 🫀</div></div>` : ''}
     </div>
+    <h2 class="sec-title">Plan</h2>
+    ${premiumCard(s)}
+    <h2 class="sec-title">Privacidad</h2>
+    <div class="opts">
+      ${analyticsConfigured() ? `<button class="opt toggle ${s.analytics !== false ? 'sel' : ''}" data-analytics><b>📊 Estadísticas anónimas</b><small>${s.analytics !== false ? 'Activadas: sin cookies ni datos personales' : 'Desactivadas'}</small></button>` : ''}
+      <a class="opt" href="#/legal/aviso"><b>⚕️ Aviso médico</b></a>
+      <a class="opt" href="#/legal/privacidad"><b>🔒 Política de privacidad</b></a>
+      <a class="opt" href="#/legal/terminos"><b>📄 Términos de uso</b></a>
+      ${APP_CONFIG.contactEmail ? `<a class="opt" href="mailto:${esc(APP_CONFIG.contactEmail)}?subject=Corazone"><b>✉️ Contacto</b><small>${esc(APP_CONFIG.contactEmail)}</small></a>` : ''}
+    </div>
     <button class="btn ghost danger" data-reset>Reiniciar progreso</button>`, 'profile');
+  app.querySelector('[data-analytics]')?.addEventListener('click', () => { update((x) => { x.analytics = x.analytics === false; }); viewSettings(); });
   app.querySelector('[data-reminder]').onclick = async () => {
     sfx('Tap');
     if (rem.on) { update((x) => { x.reminder = { ...rem, on: false }; }); scheduleReminder(true); return viewSettings(); }
@@ -121,7 +145,7 @@ export function viewSettings(note = '') {
 export function viewOnboarding(step = 0, animate = true) {
   const s = getState();
   const steps = [
-    { say: '¡Hola! Soy Cora 🫀', sub: 'Te ayudaré a dominar el ECG, la eco y el cateterismo en sesiones de pocos minutos.', body: '<a class="link-btn ob-have" href="#/entrar">Ya tengo un perfil o un código de progreso</a>', next: true },
+    { say: '¡Hola! Soy Cora 🫀', sub: 'Te ayudaré a dominar el ECG, la eco y el cateterismo en sesiones de pocos minutos.', body: '<a class="link-btn ob-have" href="#/entrar">Ya tengo un perfil o un código de progreso</a><p class="muted small ob-legal">Corazone es una herramienta educativa: no sustituye el juicio clínico. Al continuar aceptas el <a href="#/legal/aviso">aviso médico</a>, la <a href="#/legal/privacidad">privacidad</a> y los <a href="#/legal/terminos">términos</a>.</p>', next: true },
     { say: '¿Qué quieres aprender?', body: `<div class="opts">${COURSES.map((c) => `<button class="opt ${s.course === c.id ? 'sel' : ''}" data-v="${c.id}"><span class="oi">${c.icon}</span><b>${esc(c.subtitle)}</b></button>`).join('')}</div>`, key: 'course' },
     { say: '¿Cuál es tu nivel?', body: `<div class="opts">${LEVELS.map((l) => `<button class="opt ${s.level === l.id ? 'sel' : ''}" data-v="${l.id}"><span class="oi">${l.icon}</span><b>${l.label}</b><small>${l.desc}</small></button>`).join('')}</div>`, key: 'level' },
     { say: '¿Cuál será tu meta diaria?', body: `<div class="opts">${GOALS.map((g) => `<button class="opt ${s.dailyGoal === g.xp ? 'sel' : ''}" data-v="${g.xp}"><b>${g.label}</b><small>${g.xp} XP · ${g.desc}</small></button>`).join('')}</div>`, key: 'dailyGoal' },
@@ -146,7 +170,7 @@ export function viewOnboarding(step = 0, animate = true) {
     ${st.sub ? `<p class="muted">${st.sub}</p>` : ''}
     ${st.body}
     <button class="btn ${st.account ? 'ghost' : 'primary'}" data-next style="--accent:#58cc02" ${st.key && !st.next && s[st.key] == null ? 'disabled' : ''}>${st.account ? 'Ahora no' : st.last ? 'Empezar' : 'Continuar'}</button>`, 'onboarding');
-  const finish = (to) => { update((x) => { x.onboarded = true; x.course = x.course || 'ecg'; }); go(to || `#/curso/${getState().course}`); };
+  const finish = (to) => { update((x) => { x.onboarded = true; x.course = x.course || 'ecg'; x.legalAccepted = LEGAL_VERSION; }); go(to || `#/curso/${getState().course}`); };
   app.querySelectorAll('[data-acc]').forEach((b) => (b.onclick = () => { sfx('Tap'); finish(b.dataset.acc); }));
   app.querySelectorAll('[data-v]').forEach((b) => (b.onclick = () => {
     sfx('Tap');

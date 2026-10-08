@@ -2,6 +2,7 @@
 // Al iniciar sesión se descarga el remoto y se fusiona con el local (mergeStates, pura);
 // después cada guardado se sube con debounce, al volver la conexión y al ocultar la pestaña.
 import { exportState, importState, onSave } from './storage.js';
+import { bestPlan } from './premium.js';
 import * as auth from './auth.js';
 
 const DEBOUNCE_MS = 2000;
@@ -73,6 +74,9 @@ export function mergeStates(local, remote) {
 
   m.joined = Math.min(...[local.joined, remote.joined].filter(Number.isFinite), Date.now());
   m.onboarded = !!(local.onboarded || remote.onboarded);
+  m.premium = bestPlan(local.premium, remote.premium);
+  m.trialUsed = !!(local.trialUsed || remote.trialUsed);
+  m.legalAccepted = Math.max(num(local.legalAccepted), num(remote.legalAccepted));
   m.updatedAt = Math.max(num(local.updatedAt), num(remote.updatedAt));
   return m;
 }

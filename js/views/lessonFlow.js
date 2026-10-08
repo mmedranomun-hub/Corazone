@@ -7,6 +7,8 @@ import { todaysQuests, claimQuest, legendaryFree } from '../game.js';
 import { app, esc, go, screen, fmtTime } from '../ui.js';
 import { cora, sfx, party, countUp, flyGems, buzz, accuracy, fmtClock, timeTag, accTag } from '../fx.js';
 import { lessonStatus } from './learn.js';
+import { isPremium, isPremiumUnit } from '../premium.js';
+import { track } from '../analytics.js';
 
 let stop = null;
 export const stopLesson = () => { stop?.(); stop = null; };
@@ -16,18 +18,21 @@ export function viewLesson(id) {
   if (!found) return go('#/');
   const back = `#/curso/${found.course.id}`;
   const st = lessonStatus(found.course).find((l) => l.id === id);
+  if (st.paywall) return go('#/premium');
   if (st.state === 'locked') return go(back);
   startLesson(found, back);
 }
 
 export function startLesson(found, back) {
   const { lesson } = found;
-  if (!lesson.practice && !lesson.lives && getState().hearts <= 0) return viewNoHearts(back);
+  if (!lesson.practice && !lesson.lives && !isPremium() && getState().hearts <= 0) return viewNoHearts(back);
+  track('Lesson start', { course: found.course.id, mode: lesson.mode || (lesson.practice ? 'practice' : 'lesson') });
   const before = unlocked(getState());
   const questsBefore = todaysQuests().filter((q) => q.done).map((q) => q.key);
   stop = runLesson(app, found, {
     onExit: (reason) => (reason === 'sin-vidas' ? viewNoHearts(back) : reason === 'fallo' ? failScreen(found, back) : go(back)),
     onFinish: (r) => {
+      track('Lesson complete', { course: found.course.id, mistakes: r.mistakes });
       if (lesson.practice && r.mistakes < r.total) gainHeart();
       if (lesson.mode === 'unitTest') r.unlockedLessons = passUnitTest(lesson.unitLessons);
       if (lesson.mode === 'legendary') markLegendary(lesson.id);
@@ -59,6 +64,7 @@ export const UNIT_TEST_LIVES = 3;
 export function startUnitTest(unitId) {
   const f = unitOf(unitId);
   if (!f) return go('#/');
+  if (!isPremium() && isPremiumUnit(f.course, f.unit)) return go('#/premium');
   const questions = shuffled(f.unit.lessons.flatMap((l) => l.questions)).slice(0, UNIT_TEST_SIZE);
   startLesson({ course: f.course, lesson: {
     id: `prueba-${unitId}`, title: `Prueba · ${f.unit.title}`, review: true, mode: 'unitTest', lives: UNIT_TEST_LIVES,
@@ -70,6 +76,7 @@ export function startUnitTest(unitId) {
 export function startUnitReview(unitId) {
   const f = unitOf(unitId);
   if (!f) return go('#/');
+  if (!isPremium() && isPremiumUnit(f.course, f.unit)) return go('#/premium');
   const questions = shuffled(f.unit.lessons.flatMap((l) => l.questions)).slice(0, 10);
   startLesson({ course: f.course, lesson: { id: `repaso-${unitId}`, title: `Repaso · ${f.unit.title}`, review: true, practice: true, questions } }, `#/curso/${f.course.id}`);
 }
@@ -250,6 +257,8 @@ export function viewNoHearts(back) {
     <div class="hearts-row">${'🤍'.repeat(5)}</div>
     <button class="btn primary" data-act="buy" style="--accent:#1cb0f6" ${s.gems < PRICES.hearts ? 'disabled' : ''}>Recargar vidas · ${PRICES.hearts} 💎</button>
     <a class="btn primary" href="#/practicar/rapida" style="--accent:#58cc02">Practicar para ganar vidas</a>
+    <a class="btn primary pro-btn" href="#/premium">♾️ Vidas ilimitadas con Premium</a>
     <a class="btn ghost" href="${back}">Ahora no</a>`);
+  track('Out of hearts');
   app.querySelector('[data-act=buy]').onclick = () => { if (buy('hearts')) { sfx('Complete'); go(back); } };
 }

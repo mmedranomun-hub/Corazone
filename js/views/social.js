@@ -2,6 +2,7 @@
 import { getState, buy, PRICES, MAX_FREEZES, MAX_HEARTS, boostActive } from '../storage.js';
 import { LEAGUES, PROMOTE, DEMOTE, leaderboard, settleLeague, msToWeekEnd, weekXp, todaysQuests, claimQuest } from '../game.js';
 import { shell, esc, fmtTime, modal } from '../ui.js';
+import { premiumCard } from './me.js';
 import { cora, sfx, party, flyGems } from '../fx.js';
 
 const shield = (i, cls = '') => `<div class="shield ${cls}" style="--lc:${LEAGUES[i].color}" title="Liga ${LEAGUES[i].name}">🛡️</div>`;
@@ -73,6 +74,7 @@ export function viewShop() {
     <button class="btn mini" data-buy="${id}" ${disabled || s.gems < PRICES[id] ? 'disabled' : ''}>${label || `${PRICES[id]} 💎`}</button></div>`;
   shell(`
     <div class="shop-head"><h1>Tienda</h1><div class="gems">💎 ${s.gems}</div></div>
+    ${premiumCard(s)}
     <h2 class="sec-title">Vidas</h2>
     ${item('hearts', '❤️', 'Recargar vidas', `Tienes ${s.hearts}/${MAX_HEARTS}. Vuelve a tener todas tus vidas.`, s.hearts >= MAX_HEARTS, s.hearts >= MAX_HEARTS ? 'LLENAS' : null)}
     <h2 class="sec-title">Potenciadores</h2>

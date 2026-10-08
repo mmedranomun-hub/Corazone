@@ -11,6 +11,9 @@ import { viewTimed, viewGuardias, viewGuardia, stopArcade } from './views/arcade
 import { viewProfile, viewAchievements, viewStreak, viewSettings, viewOnboarding } from './views/me.js';
 import { viewAccount, viewSignIn, viewSignUp } from './views/account.js';
 import { hasProfiles, localProfile } from './auth.js';
+import { viewPremium } from './views/premium.js';
+import { viewLegal, viewLegalGate, legalPending } from './views/legal.js';
+import { pageview } from './analytics.js';
 
 const ROUTES = {
   '': viewLearn,
@@ -38,9 +41,11 @@ const ROUTES = {
   cuenta: viewAccount,
   entrar: viewSignIn,
   registro: viewSignUp,
+  premium: viewPremium,
+  legal: viewLegal,
 };
 // Rutas accesibles antes del onboarding (crear perfil, entrar, importar progreso).
-const PRE_ONBOARDING = { entrar: viewSignIn, registro: viewSignUp, cuenta: viewAccount, bienvenida: () => viewOnboarding(0) };
+const PRE_ONBOARDING = { entrar: viewSignIn, registro: viewSignUp, cuenta: viewAccount, legal: viewLegal, bienvenida: () => viewOnboarding(0) };
 
 // La ruta del curso activo se pinta en cuanto ese curso está cargado; el resto de vistas
 // (búsqueda, práctica, perfil…) necesitan todos los cursos y esperan a que lleguen.
@@ -65,6 +70,9 @@ async function route() {
       // Dispositivo con perfiles y nadie dentro: "¿Quién está aprendiendo?"
       return hasProfiles() && !localProfile() ? viewSignIn() : viewOnboarding(0);
     }
+    pageview(view);
+    // Aviso médico y legal: se acepta una vez (y de nuevo si cambia su versión)
+    if (legalPending() && view !== 'legal') return viewLegalGate(() => route());
     await (ROUTES[view] || viewLearn)(arg);
   } catch (err) {
     if (id === routeId) errorScreen(err);

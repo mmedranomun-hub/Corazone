@@ -2,6 +2,17 @@
 import { waveTimes, WAVE_TOLERANCE } from './ecg.js';
 import { visualFor } from './visuals.js';
 import { getState, loseHeart, completeLesson, recordAnswer, boostActive } from './storage.js';
+import { isPremium } from './premium.js';
+import { APP_CONFIG } from './app-config.js';
+
+// Enlace «Reportar» (correo con la pregunta identificada) si hay correo de contacto configurado.
+export function reportLink(key, prompt) {
+  const to = APP_CONFIG.contactEmail;
+  if (!to) return '';
+  const subject = `Corazone · error en ${key || 'pregunta'}`;
+  const body = `Pregunta: ${prompt || ''}\nId: ${key || '-'}\n\n¿Qué está mal o qué propones?\n`;
+  return `<a class="fb-report" href="mailto:${esc(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}" target="_blank" rel="noopener">⚑ Reportar</a>`;
+}
 import { sfx, cora, buzz, bump, comboLabel, feedbackTitle, COMBO_MIN } from './fx.js';
 
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
@@ -51,7 +62,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
   const ownLives = lesson.lives || 0;
   let lives = ownLives;
   // En práctica/repaso no se pierden vidas (como en Duolingo)
-  const usesHearts = !lesson.practice && !ownLives;
+  const usesHearts = !lesson.practice && !ownLives && !isPremium(); // Premium: vidas ilimitadas
 
   root.innerHTML = `
     <div class="lesson" style="--accent:${course.color}">
@@ -162,7 +173,7 @@ export function runLesson(root, { course, lesson }, { onExit, onFinish }) {
     foot.className = `lesson-foot ${ok ? 'ok' : 'ko'} fb-in`;
     // Panel inferior tipo Duolingo: icono redondo + titular variado; sube desde abajo.
     $('.feedback').innerHTML = `
-      <div class="fb-head"><span class="fb-icon" aria-hidden="true">${ok ? '✓' : '✕'}</span><strong>${feedbackTitle(ok)}</strong></div>
+      <div class="fb-head"><span class="fb-icon" aria-hidden="true">${ok ? '✓' : '✕'}</span><strong>${feedbackTitle(ok)}</strong>${reportLink(current.src.key, current.src.prompt)}</div>
       ${!ok && correctLabel ? `<p class="fb-answer">Respuesta correcta:<br><b>${esc(correctLabel)}</b></p>` : ''}
       ${current.explain ? `<p>${esc(current.explain)}</p>` : ''}
       ${coach(ok)}`;

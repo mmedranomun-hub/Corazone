@@ -28,6 +28,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - `js/sync.js` — sincronización con Firestore `users/{uid}`: `mergeStates(local, remote)` (pura), subida con debounce vía `onSave` de storage, `initSync`, `syncStatus`/`onStatus`.
 - `js/views/account.js` — pantallas `#/entrar`, `#/registro`, `#/cuenta` y tarjeta "Cuenta" del perfil (`accountCard`, `bindAccountCard`).
 - `tests/sync.test.js` — fusión de estados y modo sin configuración (no importa Firebase).
+- Lanzamiento (ver `docs/LANZAMIENTO.md`): `js/app-config.js` (titular, correo, precios, enlaces de pago, clave pública Premium, analítica; `null` = desactivado), `js/premium.js` (plan, prueba de 7 días, códigos `CZP1.…` firmados ECDSA, `FREE` = qué es gratis: 4 primeras unidades de casos y 2 guardias; `isPremiumUnit`, `guardiaNeedsPremium`), `js/views/premium.js` (`#/premium`), `js/views/legal.js` (`#/legal/aviso|privacidad|terminos`, pantalla de aceptación con `LEGAL_VERSION`), `js/analytics.js` (`track`, `pageview`; sin cookies), `scripts/premium.mjs` (emitir códigos; la clave privada vive en `.premium/`, ignorada por git), `.github/workflows/pages.yml` (despliegue).
 - `js/data/courses.js` — índice de cursos. Contenido en `js/data/ecg.js`, `js/data/eco.js`, `js/data/cateterismo.js`.
 
 ## Formato de contenido

@@ -7,6 +7,7 @@ import { TIMED_SECONDS, TIMED_BONUS_SECONDS, timedMultiplier, timedPoints, timed
 import { app, esc, go, screen, shell, scrollBehavior } from '../ui.js';
 import { cora, sfx, party, countUp, bump } from '../fx.js';
 import { visualFor } from '../visuals.js';
+import { isPremium, guardiaNeedsPremium } from '../premium.js';
 
 let stopFn = null;
 export const stopArcade = () => { stopFn?.(); stopFn = null; };
@@ -263,16 +264,18 @@ const isQuestion = (s) => s.type === 'mc';
 export function viewGuardias() {
   const { stories = {} } = getState();
   const n = GUARDIAS.filter((g) => stories[g.id]).length;
-  const cards = GUARDIAS.map((g) => {
+  const pro = isPremium();
+  const cards = GUARDIAS.map((g, gi) => {
     const done = !!stories[g.id];
+    const paywall = !pro && guardiaNeedsPremium(gi);
     const faces = ['r1', 'adj', 'nurse'].map((k) => CHARACTERS[k].emoji).concat(g.patient.emoji);
     return `
-      <a class="story-card ${done ? 'done' : ''}" href="#/guardia/${g.id}" style="--accent:${g.color}">
+      <a class="story-card ${done ? 'done' : ''} ${paywall ? 'pro' : ''}" href="${paywall ? '#/premium' : `#/guardia/${g.id}`}" style="--accent:${g.color}">
         <div class="story-cover"><span>${g.emoji}</span>${done ? '<i class="story-check">✓</i>' : ''}</div>
         <b>${esc(g.title)}</b>
         <small>🕒 ${esc(g.time)} · ${esc(g.place)}</small>
         <div class="story-faces">${faces.map((f) => `<span>${f}</span>`).join('')}</div>
-        <em class="story-state">${done ? 'Completada' : 'Nueva'}</em>
+        <em class="story-state">${paywall ? '💎 Premium' : done ? 'Completada' : 'Nueva'}</em>
       </a>`;
   }).join('');
   shell(`
@@ -284,6 +287,7 @@ export function viewGuardias() {
 export function viewGuardia(id) {
   const story = guardiaById(id);
   if (!story) return go('#/guardias');
+  if (!isPremium() && guardiaNeedsPremium(GUARDIAS.indexOf(story))) return go('#/premium');
   const steps = story.steps;
   const total = steps.length;
   const nq = steps.filter(isQuestion).length;
