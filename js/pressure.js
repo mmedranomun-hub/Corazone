@@ -186,6 +186,19 @@ function blurPoints(points, hw) {
   return points.map((q, i) => ({ t: q.t, p: p[i] }));
 }
 
+// MCH: el latido postextrasistólico (RR previo largo) aumenta VI y gradiente y reduce la presión de pulso aórtica
+const DESC_HCM = 'Tras una extrasístole ventricular, el latido postextrasistólico aumenta la contractilidad y la obstrucción dinámica del TSVI: sube la sistólica del VI y el gradiente, y la presión de pulso aórtica disminuye (Brockenbrough-Braunwald-Morrow). En la estenosis aórtica fija, en cambio, la presión de pulso aumenta.';
+const hcmLV = (t, s) => {
+  const g = beatGain(t, s, (prev) => (prev < 0.6 ? 0.62 : prev > 1 ? 1.34 : 1));
+  return above(ventricle({ ...LV, pdia: 76, psys: 116, pclose: 92, peakAt: 0.5, grad: 54, gradPow: 2.2, pmin: 6, pdi: 16, aKick: 6, fillSlope: 3 }, t, s), 76, g - 1);
+};
+const hcmAo = (t, s) => {
+  const g = beatGain(t, s, (prev) => (prev < 0.6 ? 0.55 : prev > 1 ? 0.62 : 1));
+  return above(artery({ ...AO, pdia: 76, psys: 116, pclose: 92, peakAt: 0.3, notch: 2.5 }, t, s), 76, g - 1);
+};
+const AR_AO = { ...AO, pdia: 46, psys: 160, pclose: 112, peakAt: 0.3, notch: 3, runoff: 0.3 };
+const AR_LV = { ...LV, pdia: 46, psys: 160, pclose: 112, peakAt: 0.3, grad: 4, hang: 22, pmin: 8, pdi: 12, tauFill: 0.04, fillSlope: 26, aKick: 3, runoff: 0.3 };
+
 export const PRESSURES = {
   ra: {
     name: 'Aurícula derecha normal',
@@ -258,7 +271,7 @@ export const PRESSURES = {
   },
   'ms-lv-la': {
     name: 'Estenosis mitral: VI y AI simultáneas',
-    desc: 'Gradiente diastólico entre la aurícula izquierda (onda a alta, descenso y lento) y el VI, cuyo llenado es lento. Gradiente medio > 10 mmHg = estenosis grave; aumenta con la taquicardia.',
+    desc: 'Gradiente diastólico entre la aurícula izquierda (onda a alta, descenso y lento) y el VI, cuyo llenado es lento. Gradiente medio > 10 mmHg apoya una estenosis grave (la gravedad se define por el área ≤ 1,5 cm²); aumenta con la taquicardia.',
     traces: [
       one('VI', (t, s) => ventricle({ ...LV, pdia: 74, psys: 112, pclose: 94, pmin: 3, pdi: 9, tauFill: 0.16, fillSlope: 2, aKick: 3 }, t, s), VENT_BLUR),
       one('AI', (t, s) => atrium({ base: 24, a: 9, c: 1.5, x: 3, v: 8, y: 2.2, vWide: 0.1, damp: 1.6 }, t, s)),
@@ -268,24 +281,19 @@ export const PRESSURES = {
     name: 'Insuficiencia aórtica: aorta y VI',
     desc: 'Presión de pulso amplia (≈ 160/45) con caída diastólica rápida de la aorta y telediastólica del VI elevada que asciende durante la diástole. En la IA aguda grave ambas presiones casi se igualan al final de la diástole.',
     traces: [
-      one('Ao', (t, s) => artery({ ...AO, pdia: 46, psys: 160, pclose: 112, peakAt: 0.3, notch: 3, runoff: 0.3 }, t, s)),
-      one('VI', (t, s) => ventricle({ ...LV, pdia: 46, psys: 160, pclose: 112, peakAt: 0.3, grad: 4, hang: 22, pmin: 8, pdi: 12, tauFill: 0.04, fillSlope: 26, aKick: 3, runoff: 0.3 }, t, s), VENT_BLUR),
+      one('Ao', (t, s) => artery(AR_AO, t, s)),
+      one('VI', (t, s) => ventricle(AR_LV, t, s), VENT_BLUR),
     ],
+    ejectClamp: { ao: 0, lv: 1 },
   },
   'hcm-brockenbrough': {
     name: 'MCH obstructiva: signo de Brockenbrough',
-    desc: 'Tras una extrasístole ventricular, el latido postextrasistólico aumenta la contractilidad y la obstrucción dinámica del TSVI: sube la sistólica del VI y el gradiente, y la presión de pulso aórtica disminuye (Brockenbrough-Braunwald-Morrow). En la estenosis aórtica fija, en cambio, la presión de pulso aumenta.',
+    desc: DESC_HCM,
     traces: [
-      one('VI', (t, s) => {
-        const g = beatGain(t, s, (prev) => (prev < 0.6 ? 0.62 : prev > 1 ? 1.34 : 1));
-        return above(ventricle({ ...LV, pdia: 76, psys: 116, pclose: 92, peakAt: 0.7, grad: 54, gradPow: 2.2, pmin: 6, pdi: 16, aKick: 6, fillSlope: 3 }, t, s), 76, g - 1);
-      }, VENT_BLUR),
-      one('Ao', (t, s) => {
-        const g = beatGain(t, s, (prev) => (prev < 0.6 ? 0.55 : prev > 1 ? 0.62 : 1));
-        const base = artery({ ...AO, pdia: 76, psys: 116, pclose: 92, peakAt: 0.22, notch: 2.5 }, t, s);
-        return above(base, 76, g - 1);
-      }),
+      one('VI', hcmLV, VENT_BLUR),
+      one('Ao', hcmAo),
     ],
+    ejectClamp: { ao: 1, lv: 0 },
     rr: [0.8, 0.8, 0.46, 1.14],
     seconds: 3.6,
   },
@@ -301,7 +309,7 @@ export const PRESSURES = {
   },
   iabp: {
     name: 'Balón de contrapulsación intraaórtico (1:2)',
-    desc: 'Latidos asistidos alternos: el balón se infla en la incisura dícrota (aumento diastólico, que supera la sistólica) y se desinfla justo antes de la sístole, lo que baja la telediastólica aórtica y la sistólica del latido siguiente (descarga del VI).',
+    desc: 'Latidos asistidos alternos: el balón se infla en la incisura dícrota (aumento diastólico, que habitualmente supera la sistólica) y se desinfla justo antes de la sístole, lo que baja la telediastólica aórtica y la sistólica del latido siguiente (descarga del VI).',
     traces: [one('Ao', (t, s) => {
       let v = artery({ ...AO, pdia: 64, psys: 108, pclose: 90, notch: 4 }, t, s);
       for (let k = 1; k < s.length - 1; k += 2) {
@@ -357,7 +365,7 @@ export function samplePressure(id) {
   if (!def) throw new Error(`Curva de presión desconocida: ${id}`);
   const seconds = def.seconds ?? sec;
   const starts = beatStarts(def.rr ?? 0.8, seconds);
-  return def.traces.map(({ label, fn, blur }) => {
+  const out = def.traces.map(({ label, fn, blur }) => {
     const points = [];
     for (let i = 0; i * DT <= seconds + 1e-9; i++) {
       const t = +(i * DT).toFixed(4);
@@ -365,6 +373,15 @@ export function samplePressure(id) {
     }
     return { label, points: blur ? blurPoints(points, blur) : points };
   });
+  // En la eyección la aorta no puede superar al VI: mientras ambas suben (tras la apertura valvular)
+  // el VI se eleva hasta la aorta (el suavizado del VI y los perfiles distintos podrían retrasarlo).
+  if (def.ejectClamp) {
+    const ao = out[def.ejectClamp.ao].points, lv = out[def.ejectClamp.lv].points;
+    for (let i = 1; i < ao.length; i++) {
+      if (ao[i].p > ao[i - 1].p + 0.05 && lv[i].p > lv[i - 1].p && lv[i].p > ao[i].p - 30) lv[i] = { t: lv[i].t, p: Math.max(lv[i].p, ao[i].p) };
+    }
+  }
+  return out;
 }
 
 function scaleFor(max) {

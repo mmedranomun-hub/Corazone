@@ -70,3 +70,15 @@ test('esquemas nuevos: 17 segmentos y sistema de conducción', () => {
     }
   }
 });
+
+test('durante la eyección la aorta no supera al VI (MCH e IA)', () => {
+  for (const id of ['hcm-brockenbrough', 'ar-ao-lv']) {
+    const lv = trace(id, 'VI'), ao = trace(id, 'Ao');
+    // ascenso de la eyección: suben a la vez aorta y VI (excluye el rebote de la incisura)
+    for (let i = 1; i < ao.length; i++) {
+      const rising = ao[i].p - ao[i - 1].p > 0.3 && lv[i].p > lv[i - 1].p && lv[i].p > 40;
+      // tolerancia 4 mmHg: el suavizado del VI redondea la esquina de la apertura valvular
+      if (rising) assert.ok(lv[i].p >= ao[i].p - 4, `${id} t=${ao[i].t}: VI ${lv[i].p.toFixed(1)} < Ao ${ao[i].p.toFixed(1)}`);
+    }
+  }
+});
