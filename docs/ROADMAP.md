@@ -24,6 +24,6 @@
 - [ ] Confirmar clase ESC del soporte mecánico en shock (`// REVISAR` en casos.js)
 - [x] Despliegue en GitHub Pages (workflow; falta activar Pages y fusionar en main)
 - [x] Premium (prueba, códigos firmados, paywall), aviso médico/privacidad/términos, analítica sin cookies — ver `docs/LANZAMIENTO.md`
-- [ ] Cobro automático (webhook que emita códigos o suscripción en Firebase)
+- [x] Cobro automático: Lemon Squeezy + servidor de licencias (`worker/`, `docs/PAGOS.md`); falta abrir cuentas y desplegar
 - [ ] Revisión médica completa de las 991 preguntas
 - [ ] Cuentas de usuario y sincronización (backend opcional)

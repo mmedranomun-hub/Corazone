@@ -8,9 +8,14 @@ export const APP_CONFIG = {
   contactEmail: null, // p. ej. 'hola@corazone.app'
 
   premium: {
-    // Enlaces de pago (Stripe Payment Links, Lemon Squeezy…). Tras pagar, el usuario recibe un
-    // código CZP1.… generado con `node scripts/premium.mjs issue` y lo canjea en #/premium.
+    // Cobro automático (docs/PAGOS.md): enlaces de pago de Lemon Squeezy. Tras pagar, el usuario
+    // recibe por correo una clave de licencia, la pega en #/premium y la app la activa con el
+    // servidor de licencias (worker/). También se aceptan códigos CZP1.… emitidos a mano.
     checkout: { monthly: null, annual: null },
+    // URL del servidor de licencias desplegado, p. ej. 'https://corazone-licencias.<tu-cuenta>.workers.dev'
+    licenseEndpoint: null,
+    // Dónde gestiona el usuario su suscripción (cancelar, cambiar tarjeta, facturas)
+    manageUrl: 'https://app.lemonsqueezy.com/my-orders',
     prices: { monthly: '4,99 €', annual: '29,99 €', annualPerMonth: '2,50 €' },
     trialDays: 7,
     // Clave pública ECDSA P-256 (JWK) con la que se verifican los códigos. La genera

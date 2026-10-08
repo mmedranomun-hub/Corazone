@@ -87,6 +87,51 @@ export async function redeemCode(code, publicKey) {
   return { ok: true, plan: p, until: e || 0 };
 }
 
+// ---------- Licencias de Lemon Squeezy (cobro automático) ----------
+// La clave de licencia (UUID) se envía al servidor de licencias, que devuelve un código CZP1 de
+// corta duración. Se renueva sola cuando quedan menos de RENEW_DAYS días.
+const RENEW_DAYS = 7;
+export const looksLikeLicense = (s) => /^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$/.test(String(s || '').trim());
+
+async function callLicense(body, endpoint, fetchImpl) {
+  if (!endpoint) return { ok: false, error: 'La activación automática de licencias aún no está disponible.' };
+  try {
+    const res = await fetchImpl(`${endpoint.replace(/\/$/, '')}/license`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json().catch(() => ({}));
+    return data && typeof data === 'object' ? { ...data, ok: !!data.ok, httpStatus: res.status } : { ok: false, error: 'Respuesta no válida del servidor.' };
+  } catch {
+    return { ok: false, offline: true, error: 'No hay conexión. Inténtalo de nuevo en un momento.' };
+  }
+}
+
+export async function activateLicense(licenseKey, { endpoint = APP_CONFIG.premium.licenseEndpoint, publicKey = APP_CONFIG.premium.publicKey, fetchImpl = globalThis.fetch, device = 'Corazone' } = {}) {
+  const key = String(licenseKey || '').trim();
+  const r = await callLicense({ license_key: key, instance_name: device }, endpoint, fetchImpl);
+  if (!r.ok) return r;
+  const v = await verifyCode(r.code, publicKey);
+  if (!v.ok) return v;
+  update((s) => { s.premium = { plan: v.payload.p, until: v.payload.e || 0, source: 'license', license: key, instance: r.instance_id || null, since: Date.now() }; });
+  return { ok: true, plan: v.payload.p, until: v.payload.e || 0 };
+}
+
+// Renovación silenciosa (al abrir la app o la pantalla Premium). Sin conexión o con error del
+// servidor no cambia nada: el plan sigue hasta su fecha. Devuelve 'renewed' | 'ended' | 'skip'.
+export async function refreshLicense({ endpoint = APP_CONFIG.premium.licenseEndpoint, publicKey = APP_CONFIG.premium.publicKey, fetchImpl = globalThis.fetch, now = Date.now() } = {}) {
+  const p = getState().premium;
+  if (!p || p.source !== 'license' || !p.license || !endpoint) return 'skip';
+  if (p.until === 0 || (p.until && p.until - now > RENEW_DAYS * DAY)) return 'skip';
+  const r = await callLicense({ license_key: p.license, instance_id: p.instance || undefined }, endpoint, fetchImpl);
+  if (!r.ok) {
+    // Cancelada, caducada o reembolsada: se vuelve al plan gratuito (el progreso no se toca)
+    if (r.status === 'expired' || r.status === 'disabled') { update((s) => { s.premium = null; }); return 'ended'; }
+    return 'skip';
+  }
+  const v = await verifyCode(r.code, publicKey);
+  if (!v.ok) return 'skip';
+  update((s) => { s.premium = { ...p, plan: v.payload.p, until: v.payload.e || 0, instance: r.instance_id || p.instance }; });
+  return 'renewed';
+}
+
 // Firma (la usa scripts/premium.mjs y los tests; necesita la clave privada).
 export async function signCode(payload, privateKey) {
   const subtle = globalThis.crypto.subtle;

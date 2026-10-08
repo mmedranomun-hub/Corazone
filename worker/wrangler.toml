@@ -1,0 +1,16 @@
+# Servidor de licencias de Corazone (Cloudflare Workers, plan gratuito).
+# Despliegue: ver docs/PAGOS.md.
+name = "corazone-licencias"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Orígenes desde los que se sirve la app (separados por comas), p. ej. "https://usuario.github.io"
+ALLOWED_ORIGINS = "https://usuario.github.io"
+# IDs de Lemon Squeezy (Settings → Stores y Products). LS_STORE_ID es obligatorio.
+LS_STORE_ID = ""
+LS_PRODUCT_ID = ""
+LS_VARIANT_MONTHLY = ""
+LS_VARIANT_ANNUAL = ""
+LS_VARIANT_LIFETIME = ""
+# Secreto (no va aquí): npx wrangler secret put PREMIUM_PRIVATE_JWK  ← pega el contenido de .premium/private.jwk

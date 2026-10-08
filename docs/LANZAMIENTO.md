@@ -27,7 +27,7 @@ Leyenda: 🟢 listo · 🟡 funciona, con trabajo pendiente · 🔴 bloquea el l
 | 🟢 | Prueba gratuita | 7 días, una por perfil, sin tarjeta. |
 | 🟢 | Códigos Premium | `CZP1.…` firmados con ECDSA P-256: la app sólo tiene la clave pública, así que no se pueden falsificar. Se emiten con `node scripts/premium.mjs issue`. Se conservan al sincronizar entre dispositivos. |
 | 🟡 | Precios | 4,99 €/mes o 29,99 €/año (2,50 €/mes), editables en `js/app-config.js`. Son orientativos para estudiantes en España; valídalos en la beta. |
-| 🔴 | Cobro automático | Hoy el flujo es: el usuario paga por un enlace de pago → tú le envías un código. Vale para la beta y los primeros clientes, pero no escala. Para automatizarlo hace falta un pequeño backend (un webhook del proveedor que firme y envíe el código, o Firebase con la suscripción en la cuenta). |
+| 🟡 | Cobro automático | **Hecho** (ver `docs/PAGOS.md`): Lemon Squeezy cobra y envía la licencia; el servidor de licencias (`worker/`, Cloudflare gratis) la valida y la app se activa y renueva sola. Falta que abras las cuentas y despliegues (≈ 45 min). Probado con 7 tests de punta a punta (Lemon Squeezy simulado). |
 | 🟡 | Seguridad del paywall | El bloqueo es en el cliente: alguien con conocimientos puede editar el localStorage y darse Premium. Es aceptable para empezar (casi todas las PWA de nicho lo asumen); se cierra al mover la suscripción al servidor junto con el cobro automático. |
 
 ## 3. Legal y privacidad (hecho en esta entrega, falta revisión)
@@ -37,7 +37,7 @@ Leyenda: 🟢 listo · 🟡 funciona, con trabajo pendiente · 🔴 bloquea el l
 | 🟢 | Aviso médico | Se acepta en el onboarding y, para usuarios ya existentes, en una pantalla única (`LEGAL_VERSION`; al subirla se vuelve a pedir). Visible en Ajustes y en `#/legal/aviso`. |
 | 🟡 | Privacidad y términos | Plantillas en `#/legal/privacidad` y `#/legal/terminos` (RGPD, desistimiento UE, suscripciones, códigos). **Deben revisarlas un abogado antes de cobrar.** |
 | 🔴 | Identidad del titular | La LSSI exige un aviso legal con nombre o razón social, NIF y domicilio si hay actividad económica. Rellena `owner` y `contactEmail` en `js/app-config.js` y añade esos datos al aviso legal. |
-| 🔴 | IVA y facturación | La venta digital a consumidores de la UE tributa IVA en el país del comprador. Recomendación: un *merchant of record* (Lemon Squeezy o Paddle), que factura y liquida el IVA por ti. Con Stripe directo tendrías que gestionarlo tú (OSS). |
+| 🟡 | IVA y facturación | Resuelto con Lemon Squeezy como *merchant of record*: factura y liquida el IVA de la UE. Tú declaras los ingresos que te paga (consulta con tu gestor: alta como autónomo o actividad económica según volumen). |
 | 🟡 | Google Fonts | La fuente Nunito se carga desde Google, lo que envía la IP del usuario a Google (en Alemania hay sentencias en contra). Conviene alojarla en el propio sitio. |
 | 🟢 | Datos | Todo en el dispositivo por defecto. Nube opcional (Firebase). Sin cookies de seguimiento. |
 
@@ -45,7 +45,7 @@ Leyenda: 🟢 listo · 🟡 funciona, con trabajo pendiente · 🔴 bloquea el l
 
 | | Estado | Detalle |
 |---|---|---|
-| 🟢 | Calidad | 106 tests automáticos en verde (contenido, trazados, fisiología de las curvas, cuentas, sincronización, Premium). Flujos nuevos probados en Chromium a 390 px, en claro y oscuro, sin errores de consola. |
+| 🟢 | Calidad | 113 tests automáticos en verde (contenido, trazados, fisiología de las curvas, cuentas, sincronización, Premium). Flujos nuevos probados en Chromium a 390 px, en claro y oscuro, sin errores de consola. |
 | 🟢 | PWA | Instalable, funciona sin conexión, caché `corazone-v6` con todos los archivos nuevos. |
 | 🟢 | Despliegue | `.github/workflows/pages.yml` publica en GitHub Pages en cada push a `main` tras pasar los tests; `tests.yml` los ejecuta en ramas y PR. |
 | 🟡 | Rama | El trabajo reciente está en `claude/charming-maxwell-s8et8t`; hay que fusionarlo en `main` (PR) para publicarlo. |
@@ -59,7 +59,7 @@ Leyenda: 🟢 listo · 🟡 funciona, con trabajo pendiente · 🔴 bloquea el l
 
 1. **Datos del titular**: en `js/app-config.js`, rellena `owner` y `contactEmail`.
 2. **Clave Premium**: ejecuta `node scripts/premium.mjs init`, pega la clave pública que imprime en `premium.publicKey` y guarda `.premium/private.jwk` en un gestor de contraseñas. Si la pierdes, no podrás emitir códigos; si se filtra, cualquiera podrá hacerlo.
-3. **Cobro**: crea los productos (mensual y anual) en Lemon Squeezy o Paddle y pega los enlaces de pago en `premium.checkout`. En cada venta: `node scripts/premium.mjs issue annual` (o `monthly`) y envía el código al comprador. Para los primeros clientes basta con hacerlo a mano.
+3. **Cobro automático**: sigue `docs/PAGOS.md` (Lemon Squeezy + servidor de licencias en Cloudflare). Después no hay que hacer nada por venta.
 4. **Publicar**: fusiona la rama en `main` y en GitHub ve a Settings → Pages → Source: **GitHub Actions**. La URL será `https://<usuario>.github.io/corazone/` (o tu dominio propio).
 5. **Analítica** (opcional): crea el sitio en Plausible y pon `provider: 'plausible'` y `domain` en `analytics`.
 6. **Beta cerrada**: entre 20 y 50 estudiantes o residentes durante 2–3 semanas.
@@ -69,11 +69,11 @@ Leyenda: 🟢 listo · 🟡 funciona, con trabajo pendiente · 🔴 bloquea el l
 - Retención a los 7 días ≥ 25 % y al menos 3 lecciones por usuario activo y semana.
 - Menos de 1 error de contenido reportado por cada 200 preguntas respondidas, y todos corregidos.
 - Al menos un 5 % de los usuarios que ven el paywall inicia la prueba; si nadie paga tras la prueba, revisa el precio o qué entra en Premium.
-- Resueltos los 🔴: textos legales revisados, identidad del titular, IVA con un merchant of record y, a ser posible, cobro automático.
+- Resueltos los 🔴: textos legales revisados e identidad del titular; cobro automático desplegado y probado en modo test.
 
 ## Siguientes pasos propuestos
 
 1. **B — Revisión médica completa** de las 991 preguntas, por curso y en paralelo, aplicando las correcciones.
-2. Cobro automático: un webhook del proveedor que emita el código y lo envíe por correo, o la suscripción en Firebase.
+2. Desplegar el cobro automático (`docs/PAGOS.md`).
 3. Alojar la fuente en el propio sitio y añadir la página de aviso legal (LSSI) con los datos del titular.
 4. Activar Firebase para las cuentas en la nube.

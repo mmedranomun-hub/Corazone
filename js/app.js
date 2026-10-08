@@ -86,6 +86,8 @@ await route();
 // Precarga en segundo plano del resto de cursos (no bloquea el primer render).
 const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 300));
 idle(() => loadAllCourses().catch(() => {}));
+// Renueva en silencio la licencia Premium si está a punto de caducar (sin conexión no hace nada).
+idle(() => import('./premium.js').then((m) => m.refreshLicense()).catch(() => {}));
 
 // Cuentas y sincronización en la nube: sólo si hay js/firebase-config.js; nunca bloquea el arranque.
 window.addEventListener('corazone:synced', applyTheme);

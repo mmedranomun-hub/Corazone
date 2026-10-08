@@ -1,14 +1,18 @@
 // Pantalla Premium: beneficios, planes, prueba gratuita y canje de códigos.
 import { getState } from '../storage.js';
 import { APP_CONFIG } from '../app-config.js';
-import { PERKS, PLAN_NAMES, activePlan, canTrial, startTrial, redeemCode, FREE } from '../premium.js';
+import { PERKS, PLAN_NAMES, activePlan, canTrial, startTrial, redeemCode, activateLicense, refreshLicense, looksLikeLicense, FREE } from '../premium.js';
 import { shell, esc, app } from '../ui.js';
 import { cora, sfx, party } from '../fx.js';
 import { track } from '../analytics.js';
 
 const fmtDate = (ms) => new Date(ms).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
+let refreshed = false;
+
 export function viewPremium(planArg) {
+  // Una vez por sesión: renueva la licencia si toca y vuelve a pintar si cambió algo
+  if (!refreshed) { refreshed = true; refreshLicense().then((r) => { if (r !== 'skip' && location.hash.startsWith('#/premium')) viewPremium(planArg); }); }
   const s = getState();
   const plan = activePlan(s);
   const cfg = APP_CONFIG.premium;
@@ -18,6 +22,7 @@ export function viewPremium(planArg) {
       <a class="back" href="#/perfil">← Perfil</a>
       <div class="pro-hero">${cora('cheer', 110)}<div><h1>¡Eres Premium! 💎</h1><p class="muted">${esc(PLAN_NAMES[plan.plan] || 'Premium')}${plan.until ? ` · activo hasta el ${fmtDate(plan.until)}` : ' · sin caducidad'}</p></div></div>
       ${perks}
+      ${plan.source === 'license' && cfg.manageUrl ? `<a class="btn ghost" href="${esc(cfg.manageUrl)}" target="_blank" rel="noopener">Gestionar suscripción y facturas</a><p class="muted small">Se renueva automáticamente mientras tu suscripción esté activa.</p>` : ''}
       ${plan.plan === 'trial' ? `<p class="muted">Cuando termine la prueba, vuelves al plan gratuito sin perder nada de tu progreso.</p>${checkout('annual', cfg) ? `<a class="btn primary pro-btn" href="${esc(checkout('annual', cfg))}" target="_blank" rel="noopener">Suscribirme · ${esc(cfg.prices.annual)}/año</a>` : ''}` : ''}
       ${redeemBox()}
       <p class="muted small">Gracias por apoyar Corazone. <a href="#/legal/terminos">Términos</a></p>`, 'profile');
@@ -40,7 +45,7 @@ export function viewPremium(planArg) {
     ${url ? `<a class="btn ${canTrial(s) ? 'ghost' : 'primary pro-btn'}" href="${esc(url)}" target="_blank" rel="noopener" data-checkout>Suscribirme · ${esc(sel === 'annual' ? `${cfg.prices.annual}/año` : `${cfg.prices.monthly}/mes`)}</a>`
       : '<p class="muted small center">El pago online estará disponible muy pronto. Mientras tanto, prueba Premium gratis o canjea un código.</p>'}
     ${redeemBox()}
-    <p class="muted small">Tras el pago recibirás tu código por correo. Puedes cancelar la renovación cuando quieras. Al suscribirte aceptas los <a href="#/legal/terminos">Términos</a> y la <a href="#/legal/privacidad">Política de privacidad</a>.</p>`, 'profile');
+    <p class="muted small">Pago seguro con Lemon Squeezy (tarjeta, Apple Pay, Google Pay o PayPal). Tras el pago recibirás por correo tu clave de licencia. Puedes cancelar la renovación cuando quieras. Al suscribirte aceptas los <a href="#/legal/terminos">Términos</a> y la <a href="#/legal/privacidad">Política de privacidad</a>.</p>`, 'profile');
   app.querySelector('[data-trial]')?.addEventListener('click', () => {
     if (!startTrial()) return;
     track('Trial start');
@@ -54,10 +59,18 @@ export function viewPremium(planArg) {
 
 const checkout = (plan, cfg) => cfg.checkout?.[plan] || null;
 
+// Nombre del dispositivo para la lista de activaciones de la licencia (sin datos personales).
+const deviceName = () => {
+  const ua = navigator.userAgent || '';
+  const os = /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Web';
+  return `Corazone · ${os}`;
+};
+
 const redeemBox = () => `
   <details class="redeem">
-    <summary>¿Tienes un código Premium?</summary>
-    <form class="redeem-form"><input id="pro-code" autocomplete="off" spellcheck="false" placeholder="CZP1.…" aria-label="Código Premium"/><button class="btn mini" type="submit">Canjear</button></form>
+    <summary>¿Ya has pagado? Activa tu licencia</summary>
+    <p class="muted small">Pega la clave de licencia que te llegó por correo tras el pago (o un código Premium).</p>
+    <form class="redeem-form"><input id="pro-code" autocomplete="off" spellcheck="false" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" aria-label="Clave de licencia o código Premium"/><button class="btn mini" type="submit">Activar</button></form>
     <p class="redeem-msg" role="status"></p>
   </details>`;
 
@@ -68,7 +81,8 @@ function bindRedeem() {
     e.preventDefault();
     const msg = app.querySelector('.redeem-msg');
     msg.textContent = 'Comprobando…';
-    const r = await redeemCode(app.querySelector('#pro-code').value);
+    const value = app.querySelector('#pro-code').value.trim();
+    const r = looksLikeLicense(value) ? await activateLicense(value, { device: deviceName() }) : await redeemCode(value);
     if (!r.ok) { msg.textContent = r.error; msg.classList.add('err'); sfx('Wrong'); return; }
     track('Premium unlock', { plan: r.plan });
     sfx('Complete');

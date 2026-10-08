@@ -38,7 +38,7 @@ const PAGES = {
         <li><b>Progreso de aprendizaje</b> (XP, lecciones, racha, ajustes, nombre que elijas): se guarda <b>en tu dispositivo</b>. Si creas un perfil local, su contraseña se guarda cifrada (PBKDF2) en el propio dispositivo.</li>
         <li><b>Cuenta en la nube</b> (sólo si la creas): correo electrónico y progreso, almacenados en Google Firebase para sincronizar tus dispositivos. Base jurídica: ejecución del servicio que solicitas.</li>
         <li><b>Estadísticas de uso</b> (si están activadas): eventos agregados y anónimos (p. ej. «lección completada»), sin cookies, sin identificadores personales y sin seguimiento entre sitios. Puedes desactivarlas en Ajustes; también se respetan «Do Not Track» y «Global Privacy Control». Base jurídica: interés legítimo en mejorar la aplicación.</li>
-        <li><b>Pagos de Premium</b>: los gestiona el proveedor de pago (p. ej. Stripe), que trata tus datos de facturación como responsable independiente; Corazone no ve ni guarda los datos de tu tarjeta. Conservamos el correo y el código de tu suscripción para darte soporte y cumplir obligaciones fiscales.</li>
+        <li><b>Pagos de Premium</b>: los gestiona Lemon Squeezy, que actúa como vendedor oficial (<i>merchant of record</i>) y trata tus datos de pago y facturación como responsable independiente según su propia política de privacidad. Corazone no ve ni guarda los datos de tu tarjeta. Para activar Premium, la clave de licencia que pegas en la app se envía a nuestro servidor de licencias (Cloudflare), que la comprueba con Lemon Squeezy y no la almacena. En tu dispositivo se guardan la clave y la fecha de tu plan.</li>
       </ul>
       <h2>Qué no hacemos</h2>
       <p>No vendemos tus datos, no mostramos publicidad personalizada y no usamos cookies de seguimiento. No pedimos ni tratamos datos de salud de pacientes: no introduzcas datos de pacientes reales en la aplicación.</p>
@@ -56,7 +56,7 @@ const PAGES = {
       <h2>Uso</h2>
       <p>Corazone se ofrece para uso educativo personal. Aceptas el <a href="#/legal/aviso">aviso médico</a>: el contenido no constituye consejo médico ni sustituye a las guías clínicas.</p>
       <h2>Plan gratuito y Premium</h2>
-      <p>El plan gratuito incluye los cursos principales. Premium amplía el acceso (casos clínicos y guardias completos, vidas ilimitadas y otros beneficios descritos en la pantalla Premium) durante el periodo contratado. Las suscripciones se renuevan automáticamente hasta que las canceles en el proveedor de pago; la cancelación surte efecto al final del periodo ya pagado.</p>
+      <p>El plan gratuito incluye los cursos principales. Premium amplía el acceso (casos clínicos y guardias completos, vidas ilimitadas y otros beneficios descritos en la pantalla Premium) durante el periodo contratado. La venta la realiza Lemon Squeezy como revendedor autorizado (<i>merchant of record</i>), que cobra, emite la factura y aplica los impuestos; sus condiciones de compra se aplican al pago. Las suscripciones se renuevan automáticamente hasta que las canceles (enlace «Gestionar suscripción» en la pantalla Premium o en el correo de compra); la cancelación surte efecto al final del periodo ya pagado. Cada licencia puede activarse en hasta 5 dispositivos.</p>
       <h2>Prueba gratuita</h2>
       <p>La prueba gratuita es de uso único por perfil y termina automáticamente sin cargo.</p>
       <h2>Desistimiento</h2>
