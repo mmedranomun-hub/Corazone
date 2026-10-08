@@ -21,7 +21,7 @@ Cada archivo es una orden lista para entregar a un agente (`redactor-contenido`,
 - `eco-u4` Miocardiopatías y `eco-u5` Función diastólica y POCUS (24 preguntas), creadas junto con esta carpeta.
 - [03 — Eco: valvulopatías avanzado](03-eco-valvulopatias-avanzado.md) → `eco-u6` (4 lecciones).
 - [09 — Eco: física, segmentos y cuantificación](09-eco-fisica-segmentacion-y-cuantificacion.md) → `eco-u7` (4 lecciones).
-- Temario eco Unidad 7 "Pericardio ampliado" (sin orden propia) → `eco-u8` (3 lecciones, 18 preguntas: derrame y taponamiento, constrictiva, pericarditis aguda/drenaje/diagnóstico diferencial). Pendiente: actualizar `recursos/temario/eco.md` y revisión médica.
+- Temario eco Unidad 7 "Pericardio ampliado" (sin orden propia) → `eco-u8` (3 lecciones, 18 preguntas: derrame y taponamiento, constrictiva, pericarditis aguda/drenaje/diagnóstico diferencial). Revisión médica aplicada (criterios Mayo, Talreja, colapso AD, ESC 2015/2025). Pendiente: actualizar `recursos/temario/eco.md`.
 
 ## Reglas para ejecutar una orden
 1. Una orden por agente y por archivo de datos a la vez (evita conflictos: `js/data/*.js` puede estar editándose en paralelo; lee el estado actual justo antes).
