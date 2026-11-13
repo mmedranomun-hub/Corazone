@@ -5,12 +5,15 @@ import { legendaryFree, searchLessons, fold } from '../game.js';
 import { shell, esc, currentCourse, go, modal, emptyState, skeleton, scrollBehavior } from '../ui.js';
 import { cora, sfx, flyGems, countUp } from '../fx.js';
 import { buyLegendary } from './lessonFlow.js';
+import { isPremium, isPremiumUnit } from '../premium.js';
 
 export function lessonStatus(course) {
   const { completed, legendary = {} } = getState();
   const lessons = lessonsOf(course);
   const firstOpen = lessons.findIndex((l) => !completed[l.id]);
-  return lessons.map((l, i) => ({ ...l, stars: completed[l.id] || 0, legendary: !!(completed[l.id] && legendary[l.id]), state: completed[l.id] ? 'done' : i === firstOpen ? 'current' : 'locked' }));
+  const pro = isPremium();
+  // paywall: lección de una unidad Premium sin plan activo (se ve en la ruta, pero abre la pantalla Premium)
+  return lessons.map((l, i) => ({ ...l, stars: completed[l.id] || 0, legendary: !!(completed[l.id] && legendary[l.id]), state: completed[l.id] ? 'done' : i === firstOpen ? 'current' : 'locked', paywall: !pro && isPremiumUnit(course, l.unit) }));
 }
 
 export const progressOf = (course) => {
@@ -40,7 +43,7 @@ export function viewLearn(courseId) {
     const decoAt = !hasCur && ui % 2 === 1 && unitLessons.length >= 3 ? 1 : -1;
     const nodes = unitLessons.map((l, li) => {
       const off = OFFSETS[idx++ % 8];
-      const inner = l.state === 'locked' ? '🔒' : l.legendary ? '👑' : l.state === 'done' ? '✓' : l.unit.lessons.length - 1 === li ? '📋' : '★';
+      const inner = l.paywall && l.state !== 'done' ? '💎' : l.state === 'locked' ? '🔒' : l.legendary ? '👑' : l.state === 'done' ? '✓' : l.unit.lessons.length - 1 === li ? '📋' : '★';
       const isCur = l.state === 'current';
       return `
         <div class="node-row" style="--x:${off}px">
@@ -54,9 +57,9 @@ export function viewLearn(courseId) {
     return `
       <section class="unit ${hasCur ? 'is-current' : ''}">
         <div class="unit-head">
-          <div><small>SECCIÓN ${Math.floor(ui / UNITS_PER_SECTION) + 1}, UNIDAD ${ui + 1}</small><h2>${esc(u.title)}</h2></div>
+          <div><small>SECCIÓN ${Math.floor(ui / UNITS_PER_SECTION) + 1}, UNIDAD ${ui + 1}${unitLessons[0]?.paywall ? ' · <a class="pro-tag" href="#/premium">💎 PREMIUM</a>' : ''}</small><h2>${esc(u.title)}</h2></div>
           <a class="guide-btn" href="#/guia/${u.id}" title="Guía de la unidad" aria-label="Guía de la unidad ${ui + 1}: ${esc(u.title)}"><span aria-hidden="true">📖</span><span>GUÍA</span></a>
-          ${unitLocked ? `<a class="jump-btn" href="#/prueba/${u.id}">⏩ ¿Ya lo sabes? <b>Haz la prueba</b></a>` : ''}
+          ${unitLocked && !unitLessons[0]?.paywall ? `<a class="jump-btn" href="#/prueba/${u.id}">⏩ ¿Ya lo sabes? <b>Haz la prueba</b></a>` : ''}
         </div>
         <div class="path">${nodes}
           <div class="node-row" style="--x:0px">${unitDone
@@ -146,7 +149,9 @@ function openPopover(node, l, status, course) {
     ? '<p class="legend-note">👑 ¡Nivel legendario conseguido!</p>'
     : `<a class="btn legend ${canPay ? '' : 'off'}" ${canPay ? `href="#/legendario/${l.id}"` : 'aria-disabled="true"'}>👑 LEGENDARIO · ${free ? 'GRATIS' : `${LEGENDARY_PRICE} 💎`}</a>
        <small class="legend-hint">${free ? '¡Gratis por completar misiones hoy! ' : ''}Todas las preguntas, sin fallos · +40 XP</small>`;
-  pop.innerHTML = l.state === 'locked'
+  pop.innerHTML = l.paywall && l.state !== 'done'
+    ? `<b>${esc(l.title)}</b><p>💎 Caso clínico Premium. Desbloquea todos los casos y las guardias.</p><a class="btn white" href="#/premium">VER PREMIUM</a>`
+    : l.state === 'locked'
     ? `<b>${esc(l.title)}</b><p>Completa los niveles anteriores para desbloquear este</p><button class="btn" disabled>BLOQUEADO</button>`
     : `<b>${esc(l.title)}</b><p>Lección ${n} de ${inUnit.length}${l.case ? ' · Caso clínico' : ''}</p>
        <a class="btn ${l.state === 'done' ? 'gold' : 'white'}" href="#/leccion/${l.id}">${l.state === 'done' ? 'PRACTICAR +5 XP' : 'EMPEZAR +10 XP'}</a>${legend}`;
@@ -273,6 +278,7 @@ export function viewSearch(arg = '') {
     const b = e.target.closest('[data-r]');
     if (!b) return;
     const r = results[Number(b.dataset.r)];
+    if (!isPremium() && isPremiumUnit(r.course, r.unit)) return go('#/premium');
     if (r.state !== 'locked') return go(`#/leccion/${r.lesson.id}`);
     lockedInfo(r);
   });

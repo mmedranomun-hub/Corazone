@@ -19,7 +19,11 @@
 ## Próximo (ver `recursos/ordenes/`)
 - [ ] Órdenes 01–10 de `recursos/ordenes/` (hipertrofias, OMI, valvulopatías avanzado, SCA y shock…)
 - [ ] Nuevos casos: TEP, disección aórtica tipo A, perforación coronaria, TAVI
-- [ ] Más detalle en el esquema coronario; tiras de alternancia eléctrica y PCP elevada
+- [ ] Más detalle en el esquema coronario; esquemas eco restantes (A2C, A3C, subcostal, festones mitrales, ETE)
+- [x] Curvas avanzadas (EM, IA, Brockenbrough, pulso paradójico, BCIA, FFR, constricción vs restricción), ojo de buey de 17 segmentos y sistema de conducción
 - [ ] Confirmar clase ESC del soporte mecánico en shock (`// REVISAR` en casos.js)
-- [ ] Ligas y despliegue en GitHub Pages
+- [x] Despliegue en GitHub Pages (workflow; falta activar Pages y fusionar en main)
+- [x] Premium (prueba, códigos firmados, paywall), aviso médico/privacidad/términos, analítica sin cookies — ver `docs/LANZAMIENTO.md`
+- [x] Cobro automático: Lemon Squeezy + servidor de licencias (`worker/`, `docs/PAGOS.md`); falta abrir cuentas y desplegar
+- [ ] Revisión médica completa de las 991 preguntas
 - [ ] Cuentas de usuario y sincronización (backend opcional)

@@ -18,7 +18,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - Cuentas (ver `docs/CUENTAS.md`): `js/auth.js` (Firebase opcional + perfiles locales con PBKDF2), `js/sync.js` (`mergeStates`, sincronización nube, código/archivo de progreso `CZ1.…`), `js/views/account.js` (Entrar, Registro, Cuenta con pestañas). Estado por perfil en `corazone:v1:<id>` (invitado: `corazone:v1`).
 - `js/ecg.js` — generador **procedural** de tiras de ECG en SVG (suma de gaussianas por onda). `RHYTHMS` = catálogo con nombre y descripción; `renderEcg(id)` devuelve SVG string. Puro, sin DOM → testeable en Node.
 - `js/pressure.js` — curvas de presión (AD, VD, AP, PCP, VI, Ao y patológicas) en SVG. `PRESSURES`, `renderPressure(id)`.
-- `js/diagrams.js` — esquemas SVG (árbol coronario, planos de eco). `DIAGRAMS`, `renderDiagram(id, highlight)`.
+- `js/diagrams.js` — esquemas SVG (árbol coronario, planos de eco, ojo de buey de 17 segmentos, sistema de conducción). `DIAGRAMS`, `renderDiagram(id, highlight)`.
 - `js/mascot.js` — mascota Cora (corazón) en SVG. `MOODS`, `mascot(mood, { size, beat })`. Puro.
 - `js/sound.js` — sonidos WebAudio sintetizados (`playCorrect/Wrong/Complete/Tap/Streak`, `setMuted`, `isMuted`; clave `corazone:muted`). No-op sin AudioContext.
 - `js/confetti.js` — `confetti(container, { count })`, DOM+CSS, se autoelimina; respeta reduced-motion.
@@ -28,6 +28,7 @@ App web tipo Duolingo para aprender **ECG, ecocardiograma y cateterismo** (públ
 - `js/sync.js` — sincronización con Firestore `users/{uid}`: `mergeStates(local, remote)` (pura), subida con debounce vía `onSave` de storage, `initSync`, `syncStatus`/`onStatus`.
 - `js/views/account.js` — pantallas `#/entrar`, `#/registro`, `#/cuenta` y tarjeta "Cuenta" del perfil (`accountCard`, `bindAccountCard`).
 - `tests/sync.test.js` — fusión de estados y modo sin configuración (no importa Firebase).
+- Lanzamiento (ver `docs/LANZAMIENTO.md`): `js/app-config.js` (titular, correo, precios, enlaces de pago, clave pública Premium, analítica; `null` = desactivado), `js/premium.js` (plan, prueba de 7 días, códigos `CZP1.…` firmados ECDSA, `FREE` = qué es gratis: 4 primeras unidades de casos y 2 guardias; `isPremiumUnit`, `guardiaNeedsPremium`), `js/views/premium.js` (`#/premium`), `js/views/legal.js` (`#/legal/aviso|privacidad|terminos`, pantalla de aceptación con `LEGAL_VERSION`), `js/analytics.js` (`track`, `pageview`; sin cookies), `scripts/premium.mjs` (emitir códigos; la clave privada vive en `.premium/`, ignorada por git), `worker/` (servidor de licencias en Cloudflare: valida licencias de Lemon Squeezy y firma códigos; guía `docs/PAGOS.md`; `activateLicense`/`refreshLicense` en premium.js), `.github/workflows/pages.yml` (despliegue).
 - `js/data/courses.js` — índice de cursos. Contenido en `js/data/ecg.js`, `js/data/eco.js`, `js/data/cateterismo.js`.
 
 ## Formato de contenido

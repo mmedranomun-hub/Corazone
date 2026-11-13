@@ -3,6 +3,7 @@ import { getState, dayKey, xpOn } from './storage.js';
 import { courseById } from './data/courses.js';
 import { unclaimedQuests, nextReminderDelay, REMINDER_TEXT, todaysQuests, leaderboard, LEAGUES, weekXp, PROMOTE } from './game.js';
 import { countUp, bump, cora } from './fx.js';
+import { isPremium } from './premium.js';
 
 export const app = document.getElementById('app');
 export const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -26,7 +27,9 @@ export function topbar() {
       <a href="#/racha" class="tb-stat ${s.lastDay === dayKey() ? 'lit' : 'dim'}" title="Racha" aria-label="Racha: ${s.streak} días"><span aria-hidden="true">🔥</span> <span data-tb="streak">${v('streak')}</span></a>
       <a href="#/perfil" class="tb-stat xp" title="XP total" aria-label="XP total: ${s.xp}"><span aria-hidden="true">⚡</span> <span data-tb="xp">${v('xp')}</span></a>
       <a href="#/tienda" class="tb-stat gem" title="Gemas" aria-label="Gemas: ${s.gems}. Ir a la tienda"><span aria-hidden="true">💎</span> <span data-tb="gems">${v('gems')}</span></a>
-      <a href="#/tienda" class="tb-stat heart" title="Vidas" aria-label="Vidas: ${s.hearts}"><span aria-hidden="true">❤️</span> <span data-tb="hearts">${v('hearts')}</span></a>
+      ${isPremium(s)
+        ? '<a href="#/premium" class="tb-stat heart pro" title="Vidas ilimitadas (Premium)" aria-label="Vidas ilimitadas, Premium"><span aria-hidden="true">❤️</span> <span>♾️</span></a>'
+        : `<a href="#/tienda" class="tb-stat heart" title="Vidas" aria-label="Vidas: ${s.hearts}"><span aria-hidden="true">❤️</span> <span data-tb="hearts">${v('hearts')}</span></a>`}
     </header>`;
 }
 
